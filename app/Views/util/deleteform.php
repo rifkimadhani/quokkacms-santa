@@ -1,5 +1,9 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); 
-	$currentctrl = $this->router->fetch_class(); 
+<?php //defined('BASEPATH') OR exit('No direct script access allowed');
+//	$currentctrl = $this->router->fetch_class();
+
+$router = service('router');
+$currentctrl = $router->controllerName();
+
 ?>
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">

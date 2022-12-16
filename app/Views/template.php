@@ -321,16 +321,16 @@ if ($fStat==0) $fStat='hidden'; else $fStat='';
 <!--        </div>-->
 <!--      </section>-->
 <!--    --><?php //endif; ?>
-    <?php view('util/flash'); ?>
+    <?= view('util/flash'); ?>
     <section class="content">
         <div class="row">
             <div class="col-xs-12">
-                <?php view($mainview); ?>
+                <?= view($mainview); ?>
             </div>
         </div>
     </section>
-    <?php view('util/modal'); ?>
-    <?php view('util/modal-image-preview');?>
+    <?= view('util/modal'); ?>
+    <?= view('util/modal-image-preview');?>
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">

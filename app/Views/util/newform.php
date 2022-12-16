@@ -1,5 +1,8 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); 
-  $currentctrl = $this->router->fetch_class();
+<?php //defined('BASEPATH') OR exit('No direct script access allowed');
+$router = service('router');
+$currentctrl = $router->controllerName();
+
+//  $currentctrl = $this->router->fetch_class();
   if(isset($this->headertitle))
   {
     $title = $this->headertitle;

@@ -5,7 +5,7 @@ $currentctrl = $router->controllerName();
 //  $currentctrl = $this->router->fetch_class();
 ?>
 <div class="modal fade newModal" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
-    <?php view('util/newform');?>
+    <?= view('util/newform');?>
 </div>
 
 <div class="modal fade editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -13,7 +13,7 @@ $currentctrl = $router->controllerName();
 </div>
 
 <div class="modal fade deleteModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <?php view('util/deleteform');?>
+    <?= view('util/deleteform');?>
 </div>
 
 <div class="modal fade" id="modal-checkbox" style="min-width:1200px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
