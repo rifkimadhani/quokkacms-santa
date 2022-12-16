@@ -92,3 +92,21 @@ define('EVENT_PRIORITY_NORMAL', 100);
  * @deprecated Use \CodeIgniter\Events\Events::PRIORITY_HIGH instead.
  */
 define('EVENT_PRIORITY_HIGH', 10);
+
+/**
+ * set baseurl menjadi automatic base url,
+ * value BASEURL di set pada config/App.php
+ */
+if ( (! empty($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https') ||
+    (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ||
+    (! empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443') ) {
+    $protocole = 'https://';
+} else {
+    $protocole = 'http://';
+}
+
+$host = $_SERVER['HTTP_HOST'] . '/';
+$project = explode('/', $_SERVER['REQUEST_URI']);
+$baseurl = $protocole . $host . $project[1];
+$myappBaseUrl = $baseurl.'/';
+defined('BASESEURL') || define('BASESEURL',$myappBaseUrl);
