@@ -1,23 +1,12 @@
 <?php
 use App\Models\SubscriberGroupForm;
-use App\Models\SubscriberGroupModel;
 use App\Libraries\Dialog;
 
-//$router = service('router');
-//$controllerName = $router->controllerName();
+$form = new SubscriberGroupForm();
 
-$group = new SubscriberGroupModel();
-$data = $group->get(1);
-
-$metadata = new SubscriberGroupForm();
-
-$urlAction = base_url('/subscribergroup/insert');
-
-$htmlEdit = $metadata->renderPlainDialog('formEdit');
-$htmlNew = $metadata->renderDialog('New group', 'formNew', $urlAction);
-
-$actionDelete = base_url('/subscribergroup/delete');
-$htmlDelete = Dialog::renderDelete('DELETE group', 'formDelete', $actionDelete);
+$htmlEdit = $form->renderPlainDialog('formEdit');
+$htmlNew = $form->renderDialog('New group', 'formNew', "{$baseUrl}/insert");
+$htmlDelete = Dialog::renderDelete('DELETE group', 'formDelete');
 ?>
 
 <?=$htmlEdit?>
@@ -58,13 +47,13 @@ $htmlDelete = Dialog::renderDelete('DELETE group', 'formDelete', $actionDelete);
 
 <script>
     var dataTable;
-    const urlSsp = "<?= base_url('subscribergroup/ssp') ?>";
+    const urlSsp = "<?= $baseUrl ?>/ssp";
     const lastCol = <?= count($fieldList) ?>;
 
     //exec when ready
     $('document').ready(function () {
         initDataTable();
-        initDialog();
+//        initDialog();
     });
 
     function initDataTable() {
@@ -82,7 +71,7 @@ $htmlDelete = Dialog::renderDelete('DELETE group', 'formDelete', $actionDelete);
                         //action column
                         targets: lastCol,
                         className: "center",
-                        defaultContent: '<a class="showDeleteModal" onclick="onTrashClick(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
+                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
                     }
 
                 ]
@@ -95,7 +84,7 @@ $htmlDelete = Dialog::renderDelete('DELETE group', 'formDelete', $actionDelete);
             event.stopPropagation();
             const data = dataTable.row( $(this)).data();
             const value = data[0];
-            const url = "<?=base_url('/subscribergroup/edit')?>/" + value;
+            const url = "<?=$baseUrl?>/edit/" + value;
 
             //show hourglass
             jQuery('#overlay-loader-indicator').show();
@@ -114,16 +103,16 @@ $htmlDelete = Dialog::renderDelete('DELETE group', 'formDelete', $actionDelete);
     }
 
     //attach submit pada form
-    function initDialog() {
-        $('#formEdit').on('submit', function() {
-
-            //ambila value dari child of form
-            const v = $('#password').val();
-            console.log(v);
-
-            return true;
-        });
-
+//    function initDialog() {
+//        $('#formEdit').on('submit', function() {
+//
+//            //ambila value dari child of form
+//            const v = $('#password').val();
+//            console.log(v);
+//
+//            return true;
+//        });
+//
 //        $('#formNew').on('submit', function() {
 //
 //            const v = $('#formNew #password').val();
@@ -131,11 +120,11 @@ $htmlDelete = Dialog::renderDelete('DELETE group', 'formDelete', $actionDelete);
 //
 //            return false;
 //        });
-    }
+//    }
 
     //
     //
-    function onTrashClick(event, that) {
+    function onClickTrash(event, that) {
         event.stopPropagation();
 
         const data = dataTable.row( $(that).parents('tr') ).data();
@@ -143,9 +132,7 @@ $htmlDelete = Dialog::renderDelete('DELETE group', 'formDelete', $actionDelete);
         const name = data[1];
 
         showDialogDelete('formDelete', 'Are you sure to delete group ' + name, function () {
-            const url = "<?=base_url('/subscribergroup/delete') ?>/" + groupId;
-//            console.log(url);
-            window.location.href = url;
+            window.location.href = "<?=$baseUrl?>/delete/" + groupId;
         })
     }
 
@@ -154,9 +141,9 @@ $htmlDelete = Dialog::renderDelete('DELETE group', 'formDelete', $actionDelete);
     function showDialog(dialogName) {
         $(dialogName).modal();
     }
-    function hideDialog(dialogName) {
-        $(dialogName).modal('hide');
-    }
+//    function hideDialog(dialogName) {
+//        $(dialogName).modal('hide');
+//    }
 
     function showDialogDelete(formId, message, callback) {
         $('.dialog'+formId).modal();
@@ -165,6 +152,4 @@ $htmlDelete = Dialog::renderDelete('DELETE group', 'formDelete', $actionDelete);
             callback();
         });
     }
-
-
 </script>

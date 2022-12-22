@@ -49,4 +49,13 @@ abstract class BaseController extends Controller
 
         // E.g.: $this->session = \Config\Services::session();
     }
+
+    protected function getBaseUrl(){
+        $router = service('router');
+        $controllerName = $router->controllerName();
+
+        $className = strtolower(class_basename($controllerName));
+
+        return base_url('/' . $className);
+    }
 }

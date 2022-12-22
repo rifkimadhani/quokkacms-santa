@@ -28,6 +28,7 @@ class SubscriberGroup extends BaseController
 
     public function index()
     {
+        $baseUrl = $this->getBaseUrl();
 
         $mainview = "subscriber_group/index";
         $primary = 'group_id';
@@ -36,7 +37,7 @@ class SubscriberGroup extends BaseController
         $group = new SubscriberGroupModel();
         $fieldList = $group->getFieldList();
 
-        return view('template', compact('mainview','primary', 'fieldList', 'title'));
+        return view('template', compact('mainview','primary', 'fieldList', 'title', 'baseUrl'));
     }
 
     public function ssp()
