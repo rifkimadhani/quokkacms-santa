@@ -109,6 +109,10 @@ HTML;
                     $element = $this->renderPassword($item, $attr);
                     break;
 
+                case 'select':
+                    $element = $this->renderSelect($item, $attr);
+                    break;
+
                 default:
                     $element = '';
                     break;
@@ -202,21 +206,92 @@ HTML;
 HTML;
     }
 
+    function renderSelect($item, $value){
+        $label = $this->getAndUnset($value, 'label');
+
+        //semua attr yg di pakai harus di buat disini sebelum buildAttribute
+        $required = $this->getAndUnset($value, 'required');
+        $readonly = $this->getAndUnset($value, 'readonly');
+        $valueData = $this->getAndUnset($value, 'value');
+        $default = $this->getAndUnset($value, 'default'); //berisikan daftar list yg bisa di pilih
+        $placeholder = $this->getAndUnset($value, 'placeholder');
+
+        $attr = $this->buildAttribute($value);
+
+        //build options utk select
+        $options = "<option value=''>{$placeholder}</option>";
+        foreach ($default as $opt){
+            $id = $opt['id'];
+            $text = $opt['value'];
+
+            //apabila value adalah pilihan maka set selected
+            if ($id==$valueData) $selected = 'selected'; else $selected='';
+
+            $option = "<option value='{$id}' {$selected}>{$text}</option>";
+            $options .= $option;
+        }
+
+        return <<< HTML
+        <div class="form-group">
+            <label class="col-form-label"><b>{$label}</b></label>
+            <select name='{$item}' id='{$item}' class='form-control' {$attr} {$required} {$readonly}>
+                {$options}
+            </select>
+        </div>
+HTML;
+
+
+//        if(count($item['default'])> 0 )
+//        {
+//            if($item['placeholder'])
+//            {
+//                echo "<option value=''>{$item['placeholder']}</option>";
+//            }
+//            foreach ($item['default'] as $key => $valueoption)
+//            {
+//
+//                $selected = false;
+//                $disabled = '';
+//                if($valueoption['id'] == $value)$selected='selected';
+//                if(isset($valueoption['status_select']) && $valueoption['status_select'] == 'disabled' && $selected !='selected')$disabled='disabled=disabled';
+//                if(isset($valueoption['data']))
+//                {
+//                    if(gettype($valueoption['data']) !== 'string')
+//                    {
+//                        $data = json_encode($valueoption['data'],JSON_HEX_APOS);
+//                    }
+//                    else
+//                    {
+//                        $data = $valueoption['data'];
+//                    }
+//                    echo "<option value='{$valueoption['id']}' {$selected} data-src='{$data}' label='{$valueoption['value']}' {$disabled}>{$valueoption['value']}</option>";
+//                }
+//                else
+//                {
+//                    echo "<option value='{$valueoption['id']}' {$selected} label='{$valueoption['value']}' {$disabled}>{$valueoption['value']}</option>";
+//                }
+//            }
+//        }
+
+    }
+
+
+
     /**
-     * Ambil value dari array kemudian unset
+     * Ambil value dari array kemudian unset.
      *
      * @param $data
      * @param $key
      * @return string
      */
-    function getAndUnset(&$data, $key){
+    function getAndUnset(&$data, $key) {
         if (isset($data[$key])) $value = $data[$key]; else $value = '';
         unset($data[$key]);
         return $value;
     }
 
     /**
-     * buat string dari array
+     * buat attribut yg akan di pakai utk tag dari array
      *
      * @param $data
      * @return string
