@@ -15,6 +15,7 @@
  * @license MIT - http://datatables.net/license_mit
  */
 
+namespace App\Libraries;
 
 // REMOVE THIS BLOCK - used for DataTables test environment only!
 $file = $_SERVER['DOCUMENT_ROOT'].'/datatables/pdo.php';
@@ -384,14 +385,14 @@ class SSP {
 	static function sql_connect ( $sql_details )
 	{
 		try {
-			$db = @new PDO(
+			$db = @new \PDO(
 				"mysql:host={$sql_details['host']};dbname={$sql_details['db']}",
 				$sql_details['user'],
 				$sql_details['pass'],
-				array( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION )
+				array( \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION )
 			);
 		}
-		catch (PDOException $e) {
+		catch (\PDOException $e) {
 			self::fatal(
 				"An error occurred while connecting to the database. ".
 				"The error reported by the server was: ".$e->getMessage()
@@ -434,12 +435,12 @@ class SSP {
 		try {
 			$stmt->execute();
 		}
-		catch (PDOException $e) {
+		catch (\PDOException $e) {
 			self::fatal( "An SQL error occurred: ".$e->getMessage() );
 		}
 
 		// Return all
-		return $stmt->fetchAll( PDO::FETCH_BOTH );
+		return $stmt->fetchAll( \PDO::FETCH_BOTH );
 	}
 
 
