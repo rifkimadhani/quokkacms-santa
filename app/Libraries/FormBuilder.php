@@ -213,29 +213,28 @@ HTML;
         $required = $this->getAndUnset($value, 'required');
         $readonly = $this->getAndUnset($value, 'readonly');
         $valueData = $this->getAndUnset($value, 'value');
-        $default = $this->getAndUnset($value, 'default'); //berisikan daftar list yg bisa di pilih
+        $options = $this->getAndUnset($value, 'options'); //berisikan daftar list yg bisa di pilih
         $placeholder = $this->getAndUnset($value, 'placeholder');
 
         $attr = $this->buildAttribute($value);
 
         //build options utk select
-        $options = "<option value=''>{$placeholder}</option>";
-        foreach ($default as $opt){
+        $htmlOptions = "<option value=''>{$placeholder}</option>";
+        foreach ($options as $opt){
             $id = $opt['id'];
             $text = $opt['value'];
 
             //apabila value adalah pilihan maka set selected
             if ($id==$valueData) $selected = 'selected'; else $selected='';
 
-            $option = "<option value='{$id}' {$selected}>{$text}</option>";
-            $options .= $option;
+            $htmlOptions .= "<option value='{$id}' {$selected}>{$text}</option>";
         }
 
         return <<< HTML
         <div class="form-group">
             <label class="col-form-label"><b>{$label}</b></label>
             <select name='{$item}' id='{$item}' class='form-control' {$attr} {$required} {$readonly}>
-                {$options}
+                {$htmlOptions}
             </select>
         </div>
 HTML;
