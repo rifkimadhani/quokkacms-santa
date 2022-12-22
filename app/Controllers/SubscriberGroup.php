@@ -14,7 +14,7 @@ use CodeIgniter\Controller;
 use App\Models\SubscriberGroupForm;
 use App\Models\SubscriberGroupModel;
 
-class SubscriberGroup extends Controller
+class SubscriberGroup extends BaseController
 {
 //    public $headertitle = 'Guest group';
 
@@ -29,79 +29,92 @@ class SubscriberGroup extends Controller
     public function index()
     {
 
-        $mainview   = "subscriber_group/index";
-        $primary 	= 'group_id';
+        $mainview = "subscriber_group/index";
+        $primary = 'group_id';
         $title = 'Guest group';
 
-//        $group = new SubscriberGroupModel();
-//        $field_list = $group->getFieldList();
-//
-//        $data = $group->get(1);
-//        $metadata = new SubscriberGroupForm();
-//        $builder = new FormBuilder();
-//        return $builder->renderDialog('newForm', $metadata, '', $data);
+        $group = new SubscriberGroupModel();
+        $fieldList = $group->getFieldList();
 
-        return view('template', compact('mainview'));
-//        return view('template', compact('mainview','primary', 'metadata', 'field_list', 'title'));
+        return view('template', compact('mainview','primary', 'fieldList', 'title'));
     }
 
     public function ssp()
     {
+        $group = new SubscriberGroupModel();
+
         header('Content-Type: application/json');
-        echo json_encode($this->maindb->getSsp());
+        echo json_encode($group->getSsp());
     }
 
-    public function detail(int $message_id)
-    {
-        $mainview   = "messages/detail";
-        $messages   = $this->maindb->getMessagesByIDMessages($message_id);
-        $this->load->view('template', compact('mainview','messages'));
-    }
-    public function ssprole()
-    {
-        header('Content-Type: application/json');
-        echo json_encode($this->sspmodel->getAll());
+//    public function detail(int $message_id)
+//    {
+//        $mainview   = "messages/detail";
+//        $messages   = $this->maindb->getMessagesByIDMessages($message_id);
+//        $this->load->view('template', compact('mainview','messages'));
+//    }
+
+    public function insert(){
+        $name = $_POST['name'];
+        $status = $_POST['status'];
+
+        $model = new SubscriberGroupModel();
+        $r = $model->add(['name'=>$name, 'status'=>$status]);
+
+        return redirect()->to('subscribergroup');
     }
 
     public function edit($groupId)
     {
-        $this->load->model('SubscriberGroupForm');
+        $model = new SubscriberGroupModel();
+        $data = $model->get($groupId);
 
-//        $this->session->set_userdata(['columnName'=>urldecode($columnName),'columnValue'=>urldecode($columnValue)]);
-        $entity 	= $this->maindb->get($groupId);
-//        $entity['url_image']  =  $this->maindb->getImagesByIDMessages($columnValue);
-        $metadata 	= new SubscriberGroupForm();
-//        unset($metadata->room_id);
+        $form = new SubscriberGroupForm();
 
-        $mainview   = "util/editformmodal";
-        $this->load->view($mainview, compact('entity','metadata'));
+        $urlAction = base_url('/subscribergroup/update');
+        return $form->renderForm('Edit group', 'formEdit', $urlAction, $data);
     }
 
-    public function delete()
-    {
-        if($this->input->server('REQUEST_METHOD') == 'POST')
-        {
-//            $columnName 	= $this->input->post('columnName');
-            $groupId = $this->input->post('columnValue');
+    public function update(){
+        $groupId = $_POST['group_id'];
 
-            $err = $this->maindb->delete($groupId);
+        $model = new SubscriberGroupModel();
+        $r = $model->modify($groupId, $_POST);
 
-            $this->logVarDump($err);
-
-            //apabila ada error maka tampilkan ke user
-            if ($err['code']>0){
-                $this->session->set_flashdata('error_msg', 'DELETE FAIL, GROUP IN USE');
-            } else {
-                $this->session->set_flashdata('success_msg', 'DELETE SUCCESS');
-            }
-
-            redirect($this->agent->referrer());
-        }
-        else
-        {
-            redirect('errorpage/methodnotallowed');
-        }
+        return redirect()->to('subscribergroup');
     }
+
+    public function delete($groupId){
+        $model = new SubscriberGroupModel();
+        $r = $model->modify($groupId, $_POST);
+
+    }
+
+//    public function delete()
+//    {
+//        if($this->input->server('REQUEST_METHOD') == 'POST')
+//        {
+////            $columnName 	= $this->input->post('columnName');
+//            $groupId = $this->input->post('columnValue');
+//
+//            $err = $this->maindb->delete($groupId);
+//
+//            $this->logVarDump($err);
+//
+//            //apabila ada error maka tampilkan ke user
+//            if ($err['code']>0){
+//                $this->session->set_flashdata('error_msg', 'DELETE FAIL, GROUP IN USE');
+//            } else {
+//                $this->session->set_flashdata('success_msg', 'DELETE SUCCESS');
+//            }
+//
+//            redirect($this->agent->referrer());
+//        }
+//        else
+//        {
+//            redirect('errorpage/methodnotallowed');
+//        }
+//    }
 
 //    public function bulkdelete()
 //    {
@@ -118,30 +131,30 @@ class SubscriberGroup extends Controller
 //        }
 //    }
 
-    protected function procesToDatabase($typeaction)
-    {
-        $this->load->model('SubscriberGroupForm');
-
-        $groupId = 0;
-        $metadata 	= new SubscriberGroupForm();
-
-        $datatosave = [];
-        foreach ($metadata as $key => $value)
-        {
-            $datatosave[$key] = $this->input->post($key);
-
-            //simpan value groupId
-            if ($key=='group_id') $groupId = $this->input->post($key);
-        }
-
-        if($typeaction == 'create')
-        {
-            $this->maindb->insert($datatosave);
-        }
-        else
-        {
-            $this->maindb->update($groupId, $datatosave);
-        }
-    }
+//    protected function procesToDatabase($typeaction)
+//    {
+//        $this->load->model('SubscriberGroupForm');
+//
+//        $groupId = 0;
+//        $metadata 	= new SubscriberGroupForm();
+//
+//        $datatosave = [];
+//        foreach ($metadata as $key => $value)
+//        {
+//            $datatosave[$key] = $this->input->post($key);
+//
+//            //simpan value groupId
+//            if ($key=='group_id') $groupId = $this->input->post($key);
+//        }
+//
+//        if($typeaction == 'create')
+//        {
+//            $this->maindb->insert($datatosave);
+//        }
+//        else
+//        {
+//            $this->maindb->update($groupId, $datatosave);
+//        }
+//    }
 
 }

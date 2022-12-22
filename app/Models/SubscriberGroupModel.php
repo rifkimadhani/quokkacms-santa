@@ -8,12 +8,14 @@
  */
 namespace App\Models;
 
+use App\Libraries\SSP;
 use CodeIgniter\Model;
 
 class SubscriberGroupModel extends Model
 {
     protected $table      = 'tsubscriber_group';
     protected $primaryKey = 'group_id';
+    protected $allowedFields = ['name', 'status'];
 
     const SQL_GET = 'SELECT * FROM tsubscriber_group WHERE group_id=?';
     const SQL_GET_ALL_ACTIVE_FOR_SELECT = 'SELECT group_id as id, name as value FROM tsubscriber_group WHERE status=\'ACTIVE\' ORDER BY name';
@@ -53,49 +55,16 @@ class SubscriberGroupModel extends Model
         return [];
     }
 
-    public function updateData($groupId, $value){
-
-        $this->db->update(self::TABLE, $value, array(self::PK => $groupId));
-
-        //check error
-        $err = $this->db->error();
-        if ($err['code']>0) {
-            log_message('error', $err['message']);
-            return $err['message'];
-        }
-
-        return '';
+    public function modify($groupId, $value){
+        return $this->update($groupId, $value);
     }
 
-    public function insertData($value)  {
-
-        parent::insert($value);
-
-//        //check error
-//        $err = $db->error();
-//
-//        if ($err['code']>0) {
-//            log_message('error', $err['message']);
-//            return $err['message'];
-//        }
-//
-//        return $err;
+    public function add($value)  {
+        return parent::insert($value);
     }
 
-    public function deleteData($groupId){
-        $this->db->db_debug = FALSE; //disable debugging
-
-        $r = $this->db->delete(self::TABLE, [self::PK => $groupId]);
-
-        //check error
-        $err = $this->db->error();
-        if ($err['code']>0) {
-            $this->errCode = $err['code'];
-            $this->errMessage = $err['message'];
-//            log_message('error', $err['message']);
-        }
-
-        return $err;
+    public function remove($groupId){
+        return $this->delete($groupId);
     }
 
     /**
@@ -107,6 +76,8 @@ class SubscriberGroupModel extends Model
     {
         require_once __DIR__ . '/../../library/ssp.class.php';
 
+        $this->db = \Config\Database::connect();
+
         $columns = [];
         $field_list = $this->getFieldList();
 
@@ -116,6 +87,19 @@ class SubscriberGroupModel extends Model
             $columns[] = ['db' =>$value,'dt'=>$key];
         }
 
-        return SSP::simple($_GET, $this->getFullConnection(), self::TABLE, self::PK, $columns);
+        $con = array(
+            "host"=>'localhost',
+            "user"=>'web',
+            "pass"=>'P@ssword%',
+            "db"=>'alpha',
+        );
+//        $con = array(
+//            "host"=>$this->db->hostname,
+//            "user"=>$this->db->username,
+//            "pass"=>$this->db->password,
+//            "db"=>$this->db->database,
+//        );
+
+        return SSP::simple($_GET, $con, $this->table, $this->primaryKey, $columns);
     }
 }

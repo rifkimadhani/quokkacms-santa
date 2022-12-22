@@ -24,23 +24,41 @@ class FormBuilder
 //    }
 
     function renderDialog($dialogTitle, $formId, $form, $action, $data=[]){
-        $htmlForm = $this->render($formId, $form, $action, $data);
+        $htmlForm = $this->render($dialogTitle, $formId, $form, $action, $data);
+        return $this->renderPlainDialog($formId, $htmlForm);
 
+//        return <<< HTML
+//<div class="modal fade dialog{$formId}" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
+//<div class="modal-dialog modal-lg flipInX animated" role="document">
+//    <div class="modal-content">
+//      <div class="modal-header">
+//        <h5 class="modal-title" id="exampleModalLabel">{$dialogTitle}</h5>
+//        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+//          <span aria-hidden="true">&times;</span>
+//        </button>
+//      </div>
+//      <div class="modal-body">
+//            {$htmlForm}
+//      </div>
+//    </div>
+//</div>
+//</div>
+//HTML;
+    }
+
+    /**
+     * Hanya render dialog container saja, tanpa isi.
+     * ini di pergunakan utk form edit
+     *
+     * @param $dialogTitle
+     * @param $formId
+     * @param string $htmlContent
+     * @return string
+     */
+    function renderPlainDialog($formId, $htmlContent=''){
         return <<< HTML
-<div class="modal fade dialog{$formId}" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg flipInX animated" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{$dialogTitle}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-            {$htmlForm}
-      </div>
-    </div>
-</div>
+<div class="modal fade dialog{$formId}" tabindex="-1" role="dialog" aria-hidden="true">
+    {$htmlContent}
 </div>
 HTML;
     }
@@ -52,7 +70,7 @@ HTML;
      * @param array $data
      * @return string HTML
      */
-    function render($formId, $form, $action, $data=[]){
+    function render($dialogTitle, $formId, $form, $action, $data=[]){
 //        $action = 'http://192.168.2.7/alpha/auth/logincheck';
 
         $inputElement = '';
@@ -100,13 +118,28 @@ HTML;
         }
 
         return <<< HTML
-<form id="{$formId}" action="{$action}" method="post" enctype="multipart/form-data">
-    {$inputElement}
-    <div class="modal-footer">
-        <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-success btn-newformsubmit">Submit</button>
+<div class="modal-dialog modal-lg flipInX animated" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{$dialogTitle}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form id="{$formId}" action="{$action}" method="post" enctype="multipart/form-data">
+            {$inputElement}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success btn-newformsubmit">Submit</button>
+            </div>
+        </form>
+
+      </div>
     </div>
-</form>
+</div>
+</div>
 HTML;
     }
 
@@ -123,7 +156,7 @@ HTML;
         return <<< HTML
     <div class="form-group">
         <label class='col-form-label'><b>{$label}</b></label>
-        <input name='{$item}' type='text' class=form-control {$attr} {$required} {$readonly}>
+        <input name='{$item}' type='text' id='{$item}' class=form-control {$attr} {$required} {$readonly}>
     </div>
 HTML;
     }
@@ -142,7 +175,7 @@ HTML;
         return <<< HTML
     <div class="form-group">
         <label class='col-form-label'><b>{$label}</b></label>
-        <textarea name='{$item}' class=form-control {$attr} {$required} {$readonly}>{$message}</textarea>
+        <textarea name='{$item}' id='{$item}' class=form-control {$attr} {$required} {$readonly}>{$message}</textarea>
     </div>
 HTML;
     }
@@ -150,7 +183,7 @@ HTML;
     function renderHidden($item, $value){
         $value = $this->getAndUnset($value, 'value');
         return <<< HTML
-        <input name='{$item}' type='hidden' value='{$value}'>
+        <input name='{$item}' id='{$item}' type='hidden' value='{$value}'>
 HTML;
     }
 
