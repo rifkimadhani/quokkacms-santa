@@ -119,6 +119,7 @@ if ($fStat==0) $fStat='hidden'; else $fStat='';
         <li class="header">MAIN NAVIGATION</li>
         <li><a href="<?= base_url('dashboard'); ?>"><i class="fa fa-home"></i> <span>Home</span></a></li>
         <li><a href="<?= base_url('subscriber'); ?>"><i class="fa fa-group"></i> <span>Guest</span></a></li>
+        <li><a href="<?= base_url('subscribergroup'); ?>"><i class="fa fa-group"></i> <span>Guest group</span></a></li>
         <li><a href="<?= base_url('user'); ?>"><i class="fa fa-group"></i> <span>User mobile</span></a></li>
         <li><a href="<?= base_url('messages'); ?>"><i class="fa fa-envelope-o"></i> <span>Messages</span></a></li>
         <li><a href="<?= base_url('inbox'); ?>"><i class="fa fa-envelope-o"></i> <span>Inbox</span></a></li>
