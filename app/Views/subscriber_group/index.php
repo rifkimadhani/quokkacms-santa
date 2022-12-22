@@ -1,6 +1,7 @@
 <?php
 use App\Models\SubscriberGroupForm;
 use App\Models\SubscriberGroupModel;
+use App\Libraries\Dialog;
 
 //$router = service('router');
 //$controllerName = $router->controllerName();
@@ -14,10 +15,14 @@ $urlAction = base_url('/subscribergroup/insert');
 
 $htmlEdit = $metadata->renderPlainDialog('formEdit');
 $htmlNew = $metadata->renderDialog('New group', 'formNew', $urlAction);
+
+$actionDelete = base_url('/subscribergroup/delete');
+$htmlDelete = Dialog::renderDelete('DELETE group', 'formDelete', $actionDelete);
 ?>
 
 <?=$htmlEdit?>
 <?=$htmlNew?>
+<?=$htmlDelete?>
 
 <div class="box">
     <div class="box-header">
@@ -77,7 +82,7 @@ $htmlNew = $metadata->renderDialog('New group', 'formNew', $urlAction);
                         //action column
                         targets: lastCol,
                         className: "center",
-                        defaultContent: '<a class="showDeleteModal" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
+                        defaultContent: '<a class="showDeleteModal" onclick="onTrashClick(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
                     }
 
                 ]
@@ -92,16 +97,18 @@ $htmlNew = $metadata->renderDialog('New group', 'formNew', $urlAction);
             const value = data[0];
             const url = "<?=base_url('/subscribergroup/edit')?>/" + value;
 
+            //show hourglass
             jQuery('#overlay-loader-indicator').show();
+
             $.ajax({url: url}).done(function(result)
             {
                 $('.dialogformEdit').html(result);
                 $('.dialogformEdit').modal();
             })
-                .always(function()
-                {
-                    jQuery('#overlay-loader-indicator').hide();
-                });
+            .always(function()
+            {
+                jQuery('#overlay-loader-indicator').hide();
+            });
         });
 
     }
@@ -128,11 +135,35 @@ $htmlNew = $metadata->renderDialog('New group', 'formNew', $urlAction);
 
     //
     //
+    function onTrashClick(event, that) {
+        event.stopPropagation();
+
+        const data = dataTable.row( $(that).parents('tr') ).data();
+        const groupId = data[0];
+        const name = data[1];
+
+        showDialogDelete('formDelete', 'Are you sure to delete group ' + name, function () {
+            const url = "<?=base_url('/subscribergroup/delete') ?>/" + groupId;
+//            console.log(url);
+            window.location.href = url;
+        })
+    }
+
+    //
+    //
     function showDialog(dialogName) {
         $(dialogName).modal();
     }
     function hideDialog(dialogName) {
         $(dialogName).modal('hide');
+    }
+
+    function showDialogDelete(formId, message, callback) {
+        $('.dialog'+formId).modal();
+        $('.dialog'+formId + ' #message'+formId).text(message);
+        $('.dialog'+formId + ' #btnDelete'+formId).on('click', function() {
+            callback();
+        });
     }
 
 

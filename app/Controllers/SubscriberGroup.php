@@ -86,8 +86,9 @@ class SubscriberGroup extends BaseController
 
     public function delete($groupId){
         $model = new SubscriberGroupModel();
-        $r = $model->modify($groupId, $_POST);
+        $r = $model->remove($groupId);
 
+        return redirect()->to('subscribergroup');
     }
 
 //    public function delete()
