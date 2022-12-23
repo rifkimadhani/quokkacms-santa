@@ -11,18 +11,19 @@ namespace App\Models;
 use App\Libraries\SSP;
 use CodeIgniter\Model;
 
-class SubscriberGroupModel extends Model
+class SubscriberGroupModel extends BaseModel
 {
+    const SQL_MODIFY = 'UPDATE tsubscriber_group SET name=?, status=? WHERE group_id=?';
+    const SQL_GET = 'SELECT * FROM tsubscriber_group WHERE group_id=?';
+    const SQL_GET_ALL_ACTIVE_FOR_SELECT = 'SELECT group_id as id, name as value FROM tsubscriber_group WHERE status=\'ACTIVE\' ORDER BY name';
+
     protected $table      = 'tsubscriber_group';
     protected $primaryKey = 'group_id';
     protected $allowedFields = ['name', 'status'];
 
-    const SQL_GET = 'SELECT * FROM tsubscriber_group WHERE group_id=?';
-    const SQL_GET_ALL_ACTIVE_FOR_SELECT = 'SELECT group_id as id, name as value FROM tsubscriber_group WHERE status=\'ACTIVE\' ORDER BY name';
-
-    protected $db;
-    protected $errCode;
-    protected $errMessage;
+//    protected $db;
+    public $errCode;
+    public $errMessage;
 
     public function get($groupId)
     {
@@ -47,7 +48,7 @@ class SubscriberGroupModel extends Model
      * @return mixed
      */
     public function getAllActiveForSelect(){
-        $result = $this->db->query(self::SQL_GET_ALL_ACTIVE_FOR_SELECT)->result_array();
+        $result = $this->db->query(self::SQL_GET_ALL_ACTIVE_FOR_SELECT)->getResult();
         if(sizeof($result) > 0)
         {
             return $result;
@@ -55,7 +56,33 @@ class SubscriberGroupModel extends Model
         return [];
     }
 
-    public function modify($groupId, $value){
+    /**
+     * update dgn cara PDO, karena dgn cara ci4 tdk ada rowCount, shg tdk tahu apakah update berhasil atau tdk
+     *
+     * @param $groupId
+     * @param $name
+     * @param $status
+     * @return \PDOException|\Exception|int => 0/1 = count update, -1 = pdo exception
+     */
+    public function modify($groupId, $name, $status){
+        $this->errCode = '';
+        $this->errMessage = '';
+
+        try{
+            $pdo = $this->openPdo();
+            $stmt = $pdo->prepare(self::SQL_MODIFY);
+            $stmt->execute( [$name, $status, $groupId] );
+
+            return $stmt->rowCount();
+
+        }catch (\PDOException $e){
+            log_message('error', json_encode($e));
+            $this->errCode = $e->getCode();
+            $this->errMessage = $e->getMessage();
+            return -1;
+        }
+    }
+    public function modify_old($groupId, $value){
         return $this->update($groupId, $value);
     }
 
@@ -88,17 +115,11 @@ class SubscriberGroupModel extends Model
         }
 
         $con = array(
-            "host"=>'localhost',
-            "user"=>'web',
-            "pass"=>'P@ssword%',
-            "db"=>'alpha',
+            "host"=>$_ENV['database.default.hostname'],
+            "user"=>$_ENV['database.default.username'],
+            "pass"=>$_ENV['database.default.password'],
+            "db"=>$_ENV['database.default.database'],
         );
-//        $con = array(
-//            "host"=>$this->db->hostname,
-//            "user"=>$this->db->username,
-//            "pass"=>$this->db->password,
-//            "db"=>$this->db->database,
-//        );
 
         return SSP::simple($_GET, $con, $this->table, $this->primaryKey, $columns);
     }

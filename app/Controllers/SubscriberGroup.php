@@ -78,9 +78,17 @@ class SubscriberGroup extends BaseController
 
     public function update(){
         $groupId = $_POST['group_id'];
+        $name = $_POST['name'];
+        $status = $_POST['status'];
 
         $model = new SubscriberGroupModel();
-        $r = $model->modify($groupId, $_POST);
+        $r = $model->modify($groupId, $name, $status);
+
+        if ($r>0){
+            $this->setSuccessMessage('UPDATE success');
+        } else {
+            $this->setErrorMessage('UPDATE fail ' . $model->errMessage);
+        }
 
         return redirect()->to('subscribergroup');
     }
@@ -92,71 +100,12 @@ class SubscriberGroup extends BaseController
         return redirect()->to('subscribergroup');
     }
 
-//    public function delete()
-//    {
-//        if($this->input->server('REQUEST_METHOD') == 'POST')
-//        {
-////            $columnName 	= $this->input->post('columnName');
-//            $groupId = $this->input->post('columnValue');
-//
-//            $err = $this->maindb->delete($groupId);
-//
-//            $this->logVarDump($err);
-//
-//            //apabila ada error maka tampilkan ke user
-//            if ($err['code']>0){
-//                $this->session->set_flashdata('error_msg', 'DELETE FAIL, GROUP IN USE');
-//            } else {
-//                $this->session->set_flashdata('success_msg', 'DELETE SUCCESS');
-//            }
-//
-//            redirect($this->agent->referrer());
-//        }
-//        else
-//        {
-//            redirect('errorpage/methodnotallowed');
-//        }
-//    }
-
-//    public function bulkdelete()
-//    {
-//        if($this->input->server('REQUEST_METHOD') == 'POST')
-//        {
-//            $bulk_message_id 	= $this->input->post('bulk_message_id');
-//            $arraymessage_id = explode(",",$bulk_message_id);
-//            $this->maindb->bulkDelete($arraymessage_id);
-//            redirect($this->agent->referrer());
-//        }
-//        else
-//        {
-//            redirect('errorpage/methodnotallowed');
-//        }
-//    }
-
-//    protected function procesToDatabase($typeaction)
-//    {
-//        $this->load->model('SubscriberGroupForm');
-//
-//        $groupId = 0;
-//        $metadata 	= new SubscriberGroupForm();
-//
-//        $datatosave = [];
-//        foreach ($metadata as $key => $value)
-//        {
-//            $datatosave[$key] = $this->input->post($key);
-//
-//            //simpan value groupId
-//            if ($key=='group_id') $groupId = $this->input->post($key);
-//        }
-//
-//        if($typeaction == 'create')
-//        {
-//            $this->maindb->insert($datatosave);
-//        }
-//        else
-//        {
-//            $this->maindb->update($groupId, $datatosave);
-//        }
-//    }
-
+    private function setSuccessMessage($message){
+        $session = session();
+        $session->setFlashdata('success_msg', $message);
+    }
+    private function setErrorMessage($message){
+        $session = session();
+        $session->setFlashdata('error_msg', $message);
+    }
 }
