@@ -121,7 +121,7 @@ $isEmergency = false;
         <li><a href="<?= base_url('subscriber'); ?>"><i class="fa fa-group"></i> <span>Guest</span></a></li>
         <li><a href="<?= base_url('subscribergroup'); ?>"><i class="fa fa-group"></i> <span>Guest group</span></a></li>
         <li><a href="<?= base_url('user'); ?>"><i class="fa fa-group"></i> <span>User mobile</span></a></li>
-        <li><a href="<?= base_url('messages'); ?>"><i class="fa fa-envelope-o"></i> <span>Messages</span></a></li>
+        <li><a href="<?= base_url('message'); ?>"><i class="fa fa-envelope-o"></i> <span>Messages</span></a></li>
         <li><a href="<?= base_url('inbox'); ?>"><i class="fa fa-envelope-o"></i> <span>Inbox</span></a></li>
         <li><a href="<?= base_url('hotelservice'); ?>"><i class="fa fa-envelope-o"></i> <span>Hotel Service</span></a></li>
         <li <?=$fKitchen?>><a href="<?= base_url('roomservice'); ?>"><i class="fa fa-shopping-cart"></i> <span>Room Service</span></a></li>

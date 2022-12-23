@@ -41,14 +41,21 @@ $routes->get('/dashboard', 'Dashboard::index');
 
 $routes->get('/subscriber', 'Subscriber::index');
 
-//
+//subscriber group
 $routes->get('/subscribergroup', 'SubscriberGroup::index');
 $routes->get('/subscribergroup/ssp', 'SubscriberGroup::ssp');
 $routes->get('/subscribergroup/edit/(:num)', 'SubscriberGroup::edit/$1');
 $routes->get('/subscribergroup/delete/(:num)', 'SubscriberGroup::delete/$1');
-
 $routes->post('/subscribergroup/insert', 'SubscriberGroup::insert');
 $routes->post('/subscribergroup/update', 'SubscriberGroup::update');
+
+//Message
+$routes->get('/message', 'Message::index');
+$routes->get('/message/ssp', 'Message::ssp');
+$routes->get('/message/edit/(:num)', 'Message::edit/$1');
+$routes->get('/message/delete/(:num)', 'Message::delete/$1');
+$routes->post('/message/insert', 'Message::insert');
+$routes->post('/message/update', 'Message::update');
 
 /*
  * --------------------------------------------------------------------

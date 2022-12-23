@@ -1,16 +1,21 @@
 <?php
-//defined('BASEPATH') OR exit('No direct script access allowed');
+/**
+ * Created by PhpStorm.
+ * User: erick
+ * Date: 12/23/2022
+ * Time: 1:29 PM
+ */
 
 namespace App\Models;
 
 use App\Libraries\SSP;
 
-class SubscriberModel extends BaseModel
+class RoomModel extends BaseModel
 {
-    const SQL_GET_FOR_SELECT = 'SELECT subscriber_id AS id, CONCAT(name, \' \', last_name) AS value FROM tsubscriber ORDER BY name';
+    const SQL_GET_FOR_SELECT = 'SELECT room_id AS id, name AS value FROM troom ORDER BY name';
 
-    protected $table      = 'tsubscriber';
-    protected $primaryKey = 'subscriber_id';
+    protected $table      = 'troom';
+    protected $primaryKey = 'room_id';
     protected $allowedFields = [];
 
     public function get($id){

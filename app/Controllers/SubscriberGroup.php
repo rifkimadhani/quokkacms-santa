@@ -9,23 +9,11 @@
 
 namespace App\Controllers;
 
-use App\Libraries\FormBuilder;
-use CodeIgniter\Controller;
 use App\Models\SubscriberGroupForm;
 use App\Models\SubscriberGroupModel;
 
 class SubscriberGroup extends BaseController
 {
-//    public $headertitle = 'Guest group';
-
-//    public function __construct()
-//    {
-//        parent::__construct();
-//        $this->load->model('SubscriberGroupModel', 'maindb');
-//        $this->load->model('MessagesFormModel');
-//        $this->load->model('MessagesSspModel','sspmodel');
-//    }
-
     public function index()
     {
         $baseUrl = $this->getBaseUrl();
@@ -98,14 +86,5 @@ class SubscriberGroup extends BaseController
         $r = $model->remove($groupId);
 
         return redirect()->to('subscribergroup');
-    }
-
-    private function setSuccessMessage($message){
-        $session = session();
-        $session->setFlashdata('success_msg', $message);
-    }
-    private function setErrorMessage($message){
-        $session = session();
-        $session->setFlashdata('error_msg', $message);
     }
 }

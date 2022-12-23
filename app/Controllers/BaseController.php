@@ -21,6 +21,18 @@ use Psr\Log\LoggerInterface;
  */
 abstract class BaseController extends Controller
 {
+    protected $className;
+    protected $baseUrl;
+
+    function __construct()
+    {
+        //init className & baseUrl
+        $router = service('router');
+        $controllerName = $router->controllerName();
+        $this->className = strtolower(class_basename($controllerName));
+        $this->baseUrl = base_url('/' . $this->className);
+    }
+
     /**
      * Instance of the main Request object.
      *
@@ -51,11 +63,21 @@ abstract class BaseController extends Controller
     }
 
     protected function getBaseUrl(){
-        $router = service('router');
-        $controllerName = $router->controllerName();
+        return $this->baseUrl;
+//        $router = service('router');
+//        $controllerName = $router->controllerName();
+//
+//        $className = strtolower(class_basename($controllerName));
+//
+//        return base_url('/' . $className);
+    }
 
-        $className = strtolower(class_basename($controllerName));
-
-        return base_url('/' . $className);
+    protected function setSuccessMessage($message){
+        $session = session();
+        $session->setFlashdata('success_msg', $message);
+    }
+    protected function setErrorMessage($message){
+        $session = session();
+        $session->setFlashdata('error_msg', $message);
     }
 }
