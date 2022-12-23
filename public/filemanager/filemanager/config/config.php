@@ -58,7 +58,7 @@ define('DEBUG_ERROR_MESSAGE', false); // TRUE or FALSE
 */
 
 //set base host utk include sub folder
-require_once __DIR__ . '/../../../library/Util.php';
+require_once __DIR__ . '/../../../../library/Util.php';
 $base_host = Util::baseUrl('../../');
 
 $config = array(
