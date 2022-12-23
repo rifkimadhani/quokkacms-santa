@@ -32,12 +32,12 @@ class SubscriberGroup extends BaseController
 
         $mainview = "subscriber_group/index";
         $primary = 'group_id';
-        $title = 'Guest group';
+        $pageTitle = 'Guest group';
 
         $group = new SubscriberGroupModel();
         $fieldList = $group->getFieldList();
 
-        return view('template', compact('mainview','primary', 'fieldList', 'title', 'baseUrl'));
+        return view('template', compact('mainview','primary', 'fieldList', 'pageTitle', 'baseUrl'));
     }
 
     public function ssp()

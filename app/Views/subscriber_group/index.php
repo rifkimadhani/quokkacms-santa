@@ -12,6 +12,9 @@ $htmlDelete = Dialog::renderDelete('DELETE group', 'formDelete');
 <?=$htmlEdit?>
 <?=$htmlNew?>
 <?=$htmlDelete?>
+<!--<section class="content-header">-->
+<!--    <h1>Guest group</h1>-->
+<!--</section>-->
 
 <div class="box">
     <div class="box-header">

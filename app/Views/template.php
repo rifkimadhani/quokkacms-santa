@@ -15,6 +15,9 @@ if ($fDimsum==0) $fDimsum='hidden'; else $fDimsum='';
 
 $fStat= ModelSetting::getFeatureLivetvStat();
 if ($fStat==0) $fStat='hidden'; else $fStat='';
+
+$username = 'admin';
+$isEmergency = false;
 ?>
 <!DOCTYPE html>
 <html>
@@ -54,9 +57,6 @@ if ($fStat==0) $fStat='hidden'; else $fStat='';
 <body class="hold-transition skin-blue sidebar-mini fixed">
 <div class="wrapper">
 
-    baseur = <?=base_url()?>
-
-
   <header class="main-header">
     <!-- Logo -->
     <a href="index2.html" class="logo">
@@ -77,7 +77,7 @@ if ($fStat==0) $fStat='hidden'; else $fStat='';
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="<?= base_url('plugin/adminlte/dist/img/avatar04.png') ?>" class="user-image" alt="User Image">
-              <span class="hidden-xs"><?php echo $username; ?></span>
+              <span class="hidden-xs"><?= $username ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -314,15 +314,15 @@ if ($fStat==0) $fStat='hidden'; else $fStat='';
     <div id="overlay-loader-indicator">
         <div class="loader-indicator"></div>
     </div>
-<!--    --><?php //if($this->isemergency): ?>
-<!--      <section class="content-header">-->
-<!--        <div class="alert alert-danger alert-dismissible">-->
-<!--          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>-->
-<!--          <h4><i class="icon fa fa-ban"></i> EMERGENCY CURRENT STATUS : ON!</h4>-->
-<!--        </div>-->
-<!--      </section>-->
-<!--    --><?php //endif; ?>
-    <?= view('util/flash'); ?>
+    <?php if($isEmergency): ?>
+      <section class="content-header">
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h4><i class="icon fa fa-ban"></i> EMERGENCY CURRENT STATUS : ON!</h4>
+        </div>
+      </section>
+    <?php endif; ?>
+    <?= view('util/flash', compact('pageTitle')); ?>
     <section class="content">
         <div class="row">
             <div class="col-xs-12">

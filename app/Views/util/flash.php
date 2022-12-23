@@ -20,7 +20,7 @@ $session = session();
 			<?= $session->getFlashdata('success_msg') ?>
 		</div>
 	<?php endif;?>
-	<?php if(isset($this->headertitle)):?>
-    	<h1><?php echo $this->headertitle; ?></h1>
+	<?php if(isset($pageTitle)):?>
+    	<h1><?= $pageTitle; ?></h1>
     <?php endif;?>
 </section>
