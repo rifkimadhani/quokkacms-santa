@@ -101,26 +101,6 @@ class SubscriberGroupModel extends BaseModel
      */
     public function getSsp()
     {
-        require_once __DIR__ . '/../../library/ssp.class.php';
-
-        $this->db = \Config\Database::connect();
-
-        $columns = [];
-        $field_list = $this->getFieldList();
-
-        foreach($field_list as $key => $value)
-        {
-            //add semua field ke columns
-            $columns[] = ['db' =>$value,'dt'=>$key];
-        }
-
-        $con = array(
-            "host"=>$_ENV['database.default.hostname'],
-            "user"=>$_ENV['database.default.username'],
-            "pass"=>$_ENV['database.default.password'],
-            "db"=>$_ENV['database.default.database'],
-        );
-
-        return SSP::simple($_GET, $con, $this->table, $this->primaryKey, $columns);
+        return $this->_getSsp($this->table, $this->primaryKey, $this->getFieldList());
     }
 }
