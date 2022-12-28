@@ -113,6 +113,10 @@ HTML;
                     $element = $this->renderSelect($item, $attr);
                     break;
 
+                case 'filemanager':
+                    $element = $this->renderFilemanager($formId, $item, $attr);
+                    break;
+
                 default:
                     $element = '';
                     break;
@@ -238,39 +242,60 @@ HTML;
             </select>
         </div>
 HTML;
+    }
+
+    function renderFilemanager($formId, $item, $data){
+        $label = $this->getAndUnset($data, 'label');
+        $required = $this->getAndUnset($data, 'required');
+        $readonly = $this->getAndUnset($data, 'readonly');
+
+        $attr = $this->buildAttribute($data);
+
+        return <<< HTML
+<div class="form-group">
+    <label class="col-form-label"><b>{$label}</b></label>
+    <div class="input-group" style="width: 100%;">
+        <input type="hidden" id="{$formId}_{$item}">
+        <input type="text" name="{$item}" id="{$item}" class="form-control" autocomplete="off" {$readonly} {$required} {$attr}/>
+        <div class="input-group-addon" style="cursor: pointer;" form-id="{$formId}" input-id="{$item}">Browse</div>
+    </div>
+    <div id="images-preview-{$formId}-{$item}" class="images-preview" form-id="{$formId}" input-id="{$item}">
+    </div>
+</div>
+HTML;
 
 
-//        if(count($item['default'])> 0 )
-//        {
-//            if($item['placeholder'])
-//            {
-//                echo "<option value=''>{$item['placeholder']}</option>";
-//            }
-//            foreach ($item['default'] as $key => $valueoption)
-//            {
-//
-//                $selected = false;
-//                $disabled = '';
-//                if($valueoption['id'] == $value)$selected='selected';
-//                if(isset($valueoption['status_select']) && $valueoption['status_select'] == 'disabled' && $selected !='selected')$disabled='disabled=disabled';
-//                if(isset($valueoption['data']))
-//                {
-//                    if(gettype($valueoption['data']) !== 'string')
-//                    {
-//                        $data = json_encode($valueoption['data'],JSON_HEX_APOS);
-//                    }
-//                    else
-//                    {
-//                        $data = $valueoption['data'];
-//                    }
-//                    echo "<option value='{$valueoption['id']}' {$selected} data-src='{$data}' label='{$valueoption['value']}' {$disabled}>{$valueoption['value']}</option>";
-//                }
-//                else
-//                {
-//                    echo "<option value='{$valueoption['id']}' {$selected} label='{$valueoption['value']}' {$disabled}>{$valueoption['value']}</option>";
-//                }
-//            }
-//        }
+        ////////////////////////////////////////////////
+        ///
+
+        if($item['type'] == 'filemanager' && ($parentkey == $key))
+        {
+            $imagefile = urldecode($value);
+            $viewimage = explode(",",$imagefile);
+            $imageurl  = urldecode($value);
+            if (strpos($value,base_url()) === false)
+            {
+                $imagefile = base_url($value);
+            }
+
+            echo'<div class="form-group">';
+            if($item['label']!='')echo"<label class='col-form-label'><b>{$item['label']}</b></label>";
+            echo"<div class='input-group' style='width:100%'>
+                <input type='text' value='{$imageurl}' name='{$key}'  id='{$key}' class='form-control' placeholder='Klik Browse Untuk Upload Gambar'  readonly autocomplete='off' >
+                <div class='input-group-addon' style='cursor:pointer' data-id='{$key}'>Browse</div>
+            </div>";
+            foreach($viewimage as $imagetoshow)
+            {
+                echo "<img src='{$imagetoshow}' class='displayimagefilemanager'>";
+            }
+            echo "</div>";
+        }
+
+
+
+
+        ///
+        /// //////////////////////////////////////////
 
     }
 

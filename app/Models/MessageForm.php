@@ -22,7 +22,11 @@ class MessageForm extends BaseForm
     public $title;
     public $message;
     public $url_image;
+    public $url_image2;
     public $status;
+
+    public $password;
+    public $password2;
 
     public function __construct( $subscriber=[], $room=[])
     {
@@ -32,9 +36,12 @@ class MessageForm extends BaseForm
 
         $this->title         = ['type'=>'varchar','label'=>'Judul Message','required'=>'required','min'=>0,'max'=>100,'default'=>null,'placeholder'=>''];
         $this->message       = ['type'=>'text','label'=>'Isi Message','required'=>'required','maxlength'=>null,'rows'=>5,'default'=>null,'placeholder'=>''];
-        $this->url_image     = ['type'=>'filemanager','label'=>'Image/Video','placeholder'=>'Masukkan Logo Channel Disini'];
+        $this->url_image     = ['type'=>'filemanager','label'=>'Image','placeholder'=>''];
+        $this->url_image2    = ['type'=>'filemanager','label'=>'Image','placeholder'=>''];
 
         $this->status = ['type'=>'select','label'=>'Status', 'options'=>self::STATUS, 'placeholder'=>'---', 'required'=>'required'];
+//        $this->password = ['type'=>'password','label'=>'Password', 'placeholder'=>'---'];
+//        $this->password2 = ['type'=>'password','label'=>'Password', 'placeholder'=>'---'];
     }
 
 }
