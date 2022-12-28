@@ -50,7 +50,8 @@ class SubscriberGroup extends BaseController
         $model = new SubscriberGroupModel();
         $r = $model->add(['name'=>$name, 'status'=>$status]);
 
-        return redirect()->to('subscribergroup');
+//        return redirect()->to('subscribergroup');
+        return redirect()->to($this->baseUrl);
     }
 
     public function edit($groupId)
@@ -78,13 +79,13 @@ class SubscriberGroup extends BaseController
             $this->setErrorMessage('UPDATE fail ' . $model->errMessage);
         }
 
-        return redirect()->to('subscribergroup');
+        return redirect()->to($this->baseUrl);
     }
 
     public function delete($groupId){
         $model = new SubscriberGroupModel();
         $r = $model->remove($groupId);
 
-        return redirect()->to('subscribergroup');
+        return redirect()->to($this->baseUrl);
     }
 }
