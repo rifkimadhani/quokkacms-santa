@@ -36,7 +36,7 @@ class MessageForm extends BaseForm
         $this->message       = ['type'=>'text','label'=>'Isi Message','required'=>'required','maxlength'=>null,'rows'=>5,'default'=>null,'placeholder'=>''];
         $this->url_image     = ['type'=>'filemanager','label'=>'Image','placeholder'=>''];
 
-        $this->status = ['type'=>'select','label'=>'Status', 'options'=>self::STATUS, 'placeholder'=>'---', 'required'=>'required'];
+        $this->status = ['type'=>'select','label'=>'Status', 'default'=>'NEW', 'options'=>self::STATUS, 'placeholder'=>'---', 'required'=>'required'];
     }
 
 }

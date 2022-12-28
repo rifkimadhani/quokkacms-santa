@@ -210,17 +210,23 @@ HTML;
 HTML;
     }
 
-    function renderSelect($item, $value){
-        $label = $this->getAndUnset($value, 'label');
+    function renderSelect($item, $data){
+        $label = $this->getAndUnset($data, 'label');
 
         //semua attr yg di pakai harus di buat disini sebelum buildAttribute
-        $required = $this->getAndUnset($value, 'required');
-        $readonly = $this->getAndUnset($value, 'readonly');
-        $valueData = $this->getAndUnset($value, 'value');
-        $options = $this->getAndUnset($value, 'options'); //berisikan daftar list yg bisa di pilih
-        $placeholder = $this->getAndUnset($value, 'placeholder');
+        $required = $this->getAndUnset($data, 'required');
+        $readonly = $this->getAndUnset($data, 'readonly');
+        $options = $this->getAndUnset($data, 'options'); //berisikan daftar list yg bisa di pilih
+        $placeholder = $this->getAndUnset($data, 'placeholder');
 
-        $attr = $this->buildAttribute($value);
+        //ambil value dari default atau dari value
+        if (isset($data['value'])){
+            $value = $this->getAndUnset($data, 'value');
+        } else {
+            $value = $this->getAndUnset($data, 'default');
+        }
+
+        $attr = $this->buildAttribute($data);
 
         //build options utk select
         $htmlOptions = "<option value=''>{$placeholder}</option>";
@@ -229,7 +235,7 @@ HTML;
             $text = $opt['value'];
 
             //apabila value adalah pilihan maka set selected
-            if ($id==$valueData) $selected = 'selected'; else $selected='';
+            if ($id==$value) $selected = 'selected'; else $selected='';
 
             $htmlOptions .= "<option value='{$id}' {$selected}>{$text}</option>";
         }
