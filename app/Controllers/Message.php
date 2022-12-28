@@ -10,6 +10,7 @@ namespace App\Controllers;
 
 use App\Models\MessageForm;
 
+use App\Models\MessageMediaModel;
 use App\Models\MessageModel;
 use App\Models\RoomModel;
 use App\Models\SubscriberModel;
@@ -40,19 +41,40 @@ class Message extends BaseController
     }
 
     public function insert(){
-        $name = $_POST['name'];
+        $subscriberId = $_POST['subscriber_id'];
+        $title = $_POST['title'];
+        $message = $_POST['message'];
         $status = $_POST['status'];
+        $urlImage = $_POST['url_image'];
 
-        $model = new SubscriberGroupModel();
-        $r = $model->add(['name'=>$name, 'status'=>$status]);
+        $model = new MessageModel();
+        $messageId = $model->add($_POST);
 
-        return redirect()->to($this->className);
+        $media = new MessageMediaModel();
+        $media->write($messageId, $urlImage);
+
+        return redirect()->to($this->baseUrl);
     }
 
     public function edit($messageId)
     {
         $model = new MessageModel();
         $data = $model->get($messageId);
+
+        //ambil image dari table
+        $media = new MessageMediaModel();
+        $ar = $media->getAll($messageId);
+
+        //rubah array ke string
+        $urlImage = '';
+        foreach ($ar as $row){
+            if (strlen($urlImage)==0){
+                $urlImage = $row['url_image'];
+            } else {
+                $urlImage .= ',' . $row['url_image'];
+            }
+        }
+        $data['url_image'] = $urlImage; //simpan hasil conversi ke dalam url_image
 
         $room = new RoomModel();
         $roomData = $room->getForSelect();
@@ -68,9 +90,14 @@ class Message extends BaseController
 
     public function update(){
         $id = $_POST['message_id'];
+        $urlImage = $_POST['url_image'];
 
         $model = new MessageModel();
         $r = $model->modify($id, $_POST);
+
+
+        $media = new MessageMediaModel();
+        $r = $media->write($id, $urlImage);
 
         if ($r>0){
             $this->setSuccessMessage('UPDATE success');
@@ -78,7 +105,7 @@ class Message extends BaseController
             $this->setErrorMessage('UPDATE fail ' . $model->errMessage);
         }
 
-        return redirect()->to($this->className);
+        return redirect()->to($this->baseUrl);
     }
 
     public function delete($messageId){
@@ -91,7 +118,7 @@ class Message extends BaseController
             $this->setErrorMessage('DELETE fail');
         }
 
-        return redirect()->to($this->className);
+        return redirect()->to($this->baseUrl);
     }
 
 }

@@ -251,6 +251,16 @@ HTML;
 
         $attr = $this->buildAttribute($data);
 
+        $value = $this->getAndUnset($data, 'value');
+
+        $htmlImagePreview = '';
+        if (strlen($value)>0){
+            foreach(explode(',', $value) as $url)
+            {
+                $htmlImagePreview .= "<div class='img' style='background-image:url({$url});'><span>remove</span></div>";
+            }
+        }
+
         return <<< HTML
 <div class="form-group">
     <label class="col-form-label"><b>{$label}</b></label>
@@ -260,6 +270,7 @@ HTML;
         <div class="input-group-addon" style="cursor: pointer;" form-id="{$formId}" input-id="{$item}">Browse</div>
     </div>
     <div id="images-preview-{$formId}-{$item}" class="images-preview" form-id="{$formId}" input-id="{$item}">
+        {$htmlImagePreview}
     </div>
 </div>
 HTML;

@@ -76,7 +76,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
                 order: [['0','desc']],
                 columnDefs: [
                     {
-                        targets: [],visible: false,searchable: false
+                        targets: [1, 3, 4, 5],visible: false,searchable: false
                     },
                     {
                         //action column
@@ -174,8 +174,6 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
         </div>
     </div>
 </div>
-
-<button data-id='url_foto' onclick="showFilemanager(this);">FILEMANAGER</button>
 
 <script>
 

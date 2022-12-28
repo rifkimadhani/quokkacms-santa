@@ -19,7 +19,7 @@ class MessageModel extends BaseModel
 
     protected $table      = 'tmessage';
     protected $primaryKey = 'message_id';
-    protected $allowedFields = ['title', 'message', 'status'];
+    protected $allowedFields = ['subscriber_id', 'title', 'message', 'status', 'from'];
 
 //    protected $db;
     public $errCode;
@@ -89,7 +89,8 @@ class MessageModel extends BaseModel
     }
 
     public function add($value)  {
-        return parent::insert($value);
+        parent::insert($value);
+        return $this->getInsertID();
     }
 
     public function remove($groupId){
@@ -103,24 +104,6 @@ class MessageModel extends BaseModel
      */
     public function getSsp()
     {
-        require_once __DIR__ . '/../../library/ssp.class.php';
-
-        $columns = [];
-        $field_list = $this->getFieldList();
-
-        foreach($field_list as $key => $value)
-        {
-            //add semua field ke columns
-            $columns[] = ['db' =>$value,'dt'=>$key];
-        }
-
-        $con = array(
-            "host"=>$_ENV['database.default.hostname'],
-            "user"=>$_ENV['database.default.username'],
-            "pass"=>$_ENV['database.default.password'],
-            "db"=>$_ENV['database.default.database'],
-        );
-
-        return SSP::simple($_GET, $con, self::VIEW, $this->primaryKey, $columns);
+        return $this->_getSsp(self::VIEW, $this->primaryKey, $this->getFieldList());
     }
 }
