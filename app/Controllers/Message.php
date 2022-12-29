@@ -51,6 +51,10 @@ class Message extends BaseController
         $messageId = $model->add($_POST);
 
         $media = new MessageMediaModel();
+
+        //convert url -> {BASE-HOST}
+        $urlImage = str_replace($this->baseHost, '{BASE-HOST}', $urlImage);
+
         $media->write($messageId, $urlImage);
 
         return redirect()->to($this->baseUrl);
@@ -74,6 +78,10 @@ class Message extends BaseController
                 $urlImage .= ',' . $row['url_image'];
             }
         }
+
+        //convert {BASE-HOST} --> URL
+        $urlImage = str_replace('{BASE-HOST}', $this->baseHost, $urlImage);
+
         $data['url_image'] = $urlImage; //simpan hasil conversi ke dalam url_image
 
         $room = new RoomModel();
@@ -91,6 +99,9 @@ class Message extends BaseController
     public function update(){
         $id = $_POST['message_id'];
         $urlImage = $_POST['url_image'];
+
+        //convert URL --> {BASE-HOST}
+        $urlImage = str_replace($this->baseHost, '{BASE-HOST}', $urlImage);
 
         $model = new MessageModel();
         $r = $model->modify($id, $_POST);

@@ -23,6 +23,7 @@ abstract class BaseController extends Controller
 {
     protected $className;
     protected $baseUrl;
+    protected $baseHost;
 
     function __construct()
     {
@@ -30,6 +31,7 @@ abstract class BaseController extends Controller
         $router = service('router');
         $controllerName = $router->controllerName();
         $this->className = strtolower(class_basename($controllerName));
+        $this->baseHost = base_url();
         $this->baseUrl = base_url('/' . $this->className);
     }
 
