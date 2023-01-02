@@ -8,7 +8,7 @@ $room = new RoomModel();
 $roomData = $room->getForSelect();
 
 $subscriber = new SubscriberModel();
-$subscriberData = $subscriber->getForSelect();
+$subscriberData = $subscriber->getCheckinForSelect();
 
 $form = new MessageForm($subscriberData, $roomData);
 

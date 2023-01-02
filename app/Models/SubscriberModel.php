@@ -7,7 +7,7 @@ use App\Libraries\SSP;
 
 class SubscriberModel extends BaseModel
 {
-    const SQL_GET_FOR_SELECT = 'SELECT subscriber_id AS id, CONCAT(name, \' \', last_name) AS value FROM tsubscriber ORDER BY name';
+    const SQL_GET_FOR_SELECT = 'SELECT subscriber_id AS id, CONCAT(name, \' \', last_name) AS value FROM tsubscriber WHERE status=\'CHECKIN\' ORDER BY name';
 
     protected $table      = 'tsubscriber';
     protected $primaryKey = 'subscriber_id';
@@ -21,7 +21,13 @@ class SubscriberModel extends BaseModel
         return $this->findAll();
     }
 
-    public function getForSelect(){
+    /**
+     * semua subscriber yg berstatus checkin
+     * return khusus di format utk selection
+     *
+     * @return array di format khusus utk selection pada form
+     */
+    public function getCheckinForSelect(){
         $db = db_connect();
         return $db->query(self::SQL_GET_FOR_SELECT)->getResult('array');
     }

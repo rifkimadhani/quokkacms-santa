@@ -25,7 +25,7 @@ class MessageForm extends BaseForm
     public $url_image;
     public $status;
 
-    public function __construct( $subscriber=[], $room=[])
+    public function __construct( $subscriber=[])
     {
         $this->from = ['type'=>'hidden', 'value'=>'admin'];
         $this->message_id = ['type'=>'varchar', 'label'=>'Message Id', 'readonly'=>'readonly'];

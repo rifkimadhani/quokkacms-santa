@@ -12,9 +12,7 @@ use App\Models\MessageForm;
 
 use App\Models\MessageMediaModel;
 use App\Models\MessageModel;
-use App\Models\RoomModel;
 use App\Models\SubscriberModel;
-use App\Models\SubscriberGroupModel;
 
 class Message extends BaseController
 {
@@ -84,13 +82,32 @@ class Message extends BaseController
 
         $data['url_image'] = $urlImage; //simpan hasil conversi ke dalam url_image
 
-        $room = new RoomModel();
-        $roomData = $room->getForSelect();
-
+        //cari subscriber
         $subscriber = new SubscriberModel();
-        $subscriberData = $subscriber->getForSelect();
+        $subscriberData = $subscriber->getCheckinForSelect();
 
-        $form = new MessageForm($subscriberData, $roomData);
+        $subscriberId = $data['subscriber_id'];
+
+        //cari apakah subscriber pada message ada di daftar subscriber ??
+        $found = false;
+        foreach ($subscriberData as $item){
+            if ($item['id']==$subscriberId){
+                $found = true;
+                break;
+            }
+        }
+
+        //apabila subscriber tdk ada, ambil dari db dan tambahkan ke dalam dafar subscriber
+        if ($found==false){
+            //cari pada db
+            $subscriberCurrent = $subscriber->get($subscriberId);
+
+            //tambahkan subscriber ke dalam daftar
+            $value = $subscriberCurrent['name'] . ' ' . $subscriberCurrent['last_name'];
+            $subscriberData[] = ['id'=>$subscriberId, 'value'=>$value];
+        }
+
+        $form = new MessageForm($subscriberData);
 
         $urlAction = $this->baseUrl . '/update';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
