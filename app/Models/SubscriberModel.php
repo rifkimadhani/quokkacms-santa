@@ -3,15 +3,81 @@
 
 namespace App\Models;
 
-use App\Libraries\SSP;
-
 class SubscriberModel extends BaseModel
 {
+    const STATUS_VACANT= 'VACANT';
+    const STATUS_OCCUPIED = 'OCCUPIED';
+
+    const VIEW = 'vsubscriber';
+    const PK = 'Subscriber ID'; //primary key yg di pergunakan pada SSP
+
+    const SQL_ADD_1 = 'INSERT INTO tsubscriber (group_id, salutation, name, last_name, status, checkin_date) VALUES (?,?,?,?,?,now())';
+    const SQL_ADD_2 = 'UPDATE troom SET subscriber_id=?, status=? WHERE status=\'VACANT\' AND room_id=?';
+    const SQL_ADD_3 = 'INSERT INTO tsubscriber_room (subscriber_id, room_id) VALUES (?, ?)';
+
     const SQL_GET_FOR_SELECT = 'SELECT subscriber_id AS id, CONCAT(name, \' \', last_name) AS value FROM tsubscriber WHERE status=\'CHECKIN\' ORDER BY name';
 
-    protected $table      = 'tsubscriber';
+    public $errCode;
+    public $errMessage;
+
+    protected $table = 'tsubscriber';
     protected $primaryKey = 'subscriber_id';
-    protected $allowedFields = [];
+    protected $allowedFields = ['group_id', 'salutation', 'name', 'last_name', 'status', 'checkin_date', 'checkout_date'];
+
+    public function addCheckin($value)  {
+
+        if (empty($value['group_id'])) $groupId = null; else $groupId = $value['group_id'];
+
+        $salutation = $value['salutation'];
+        $name = $value['name'];
+        $lastName = $value['last_name'];
+        $status = 'CHECKIN';
+
+        $rooms = $value['room_id'];
+
+        try{
+            $db = $this->openPdo();
+            $db->beginTransaction();
+
+            //insert tsubscriber
+            $stmt = $db->prepare(self::SQL_ADD_1);
+            $stmt->execute( [$groupId, $salutation, $name, $lastName, $status] );
+            $subscriberId = $db->lastInsertId();
+
+            $status = self::STATUS_OCCUPIED;
+            $countSuccess = 0;
+            foreach ($rooms as $roomId){
+                //update room
+                $stmt = $db->prepare(self::SQL_ADD_2);
+                $stmt->execute( [$subscriberId, $status, $roomId] );
+                $countSuccess += $stmt->rowCount();
+
+                //insert tsubscriber_room
+                $stmt = $db->prepare(self::SQL_ADD_3);
+                $stmt->execute( [$subscriberId, $roomId] );
+            }
+
+            log_message('error', "addCheckin countSuccess={$countSuccess}");
+
+            if ($countSuccess!=sizeof($rooms)){
+                $db->rollBack();
+                return 0;
+            }
+
+            $db->commit();
+
+            return $countSuccess;
+
+        }catch (\PDOException $e){
+            log_message('error', json_encode($e));
+            $this->errCode = $e->getCode();
+            $this->errMessage = $e->getMessage();
+            return -1;
+        }
+
+        ////////////////////////////////////////
+
+    }
 
     public function get($id){
         return $this->find($id);
@@ -19,6 +85,10 @@ class SubscriberModel extends BaseModel
 
     public function getAll(){
         return $this->findAll();
+    }
+
+    public function getFieldList(){
+        return ['Subscriber ID', 'Full name', 'theme', 'package', 'Room', 'status', 'Checkin Date', 'Checkout Date', 'Create Date', 'Update Date', 'group_name'];
     }
 
     /**
@@ -30,5 +100,10 @@ class SubscriberModel extends BaseModel
     public function getCheckinForSelect(){
         $db = db_connect();
         return $db->query(self::SQL_GET_FOR_SELECT)->getResult('array');
+    }
+
+    public function getSsp()
+    {
+        return $this->_getSsp(self::VIEW, self::PK, $this->getFieldList());
     }
 }

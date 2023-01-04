@@ -39,7 +39,13 @@ $routes->get('/', 'Home::index');
 
 $routes->get('/dashboard', 'Dashboard::index');
 
+//subscriber / guest
 $routes->get('/subscriber', 'Subscriber::index');
+$routes->get('/subscriber/ssp', 'Subscriber::ssp');
+$routes->get('/subscriber/edit/(:num)', 'Subscriber::edit/$1');
+$routes->get('/subscriber/delete/(:num)', 'Subscriber::delete/$1');
+$routes->post('/subscriber/insert', 'Subscriber::insert');
+$routes->post('/subscriber/update', 'Subscriber::update');
 
 //subscriber group
 $routes->get('/subscribergroup', 'SubscriberGroup::index');

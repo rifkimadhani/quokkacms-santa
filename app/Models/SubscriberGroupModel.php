@@ -48,7 +48,7 @@ class SubscriberGroupModel extends BaseModel
      * @return mixed
      */
     public function getAllActiveForSelect(){
-        $result = $this->db->query(self::SQL_GET_ALL_ACTIVE_FOR_SELECT)->getResult();
+        $result = $this->db->query(self::SQL_GET_ALL_ACTIVE_FOR_SELECT)->getResult('array');
         if(sizeof($result) > 0)
         {
             return $result;

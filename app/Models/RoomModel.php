@@ -13,6 +13,7 @@ use App\Libraries\SSP;
 class RoomModel extends BaseModel
 {
     const SQL_GET_FOR_SELECT = 'SELECT room_id AS id, name AS value FROM troom ORDER BY name';
+    const SQL_GET_VACANT_FOR_SELECT = 'SELECT room_id AS id, name AS value FROM troom WHERE status=\'VACANT\' ORDER BY name';
 
     protected $table      = 'troom';
     protected $primaryKey = 'room_id';
@@ -29,5 +30,10 @@ class RoomModel extends BaseModel
     public function getForSelect(){
         $db = db_connect();
         return $db->query(self::SQL_GET_FOR_SELECT)->getResult('array');
+    }
+
+    public function getVacantForSelect(){
+        $db = db_connect();
+        return $db->query(self::SQL_GET_VACANT_FOR_SELECT)->getResult('array');
     }
 }

@@ -113,6 +113,10 @@ HTML;
                     $element = $this->renderSelect($item, $attr);
                     break;
 
+                case 'select-multiple':
+                    $element = $this->renderSelectMultiple($item, $attr);
+                    break;
+
                 case 'filemanager':
                     $element = $this->renderFilemanager($formId, $item, $attr);
                     break;
@@ -244,6 +248,47 @@ HTML;
         <div class="form-group">
             <label class="col-form-label"><b>{$label}</b></label>
             <select name='{$item}' id='{$item}' class='form-control' {$attr} {$required} {$readonly}>
+                {$htmlOptions}
+            </select>
+        </div>
+HTML;
+    }
+
+    function renderSelectMultiple($item, $data){
+        $label = $this->getAndUnset($data, 'label');
+
+        //semua attr yg di pakai harus di buat disini sebelum buildAttribute
+        $required = $this->getAndUnset($data, 'required');
+        $readonly = $this->getAndUnset($data, 'readonly');
+        $options = $this->getAndUnset($data, 'options'); //berisikan daftar list yg bisa di pilih
+        $placeholder = $this->getAndUnset($data, 'placeholder');
+
+        //ambil value dari default atau dari value
+        if (isset($data['value'])){
+            $value = $this->getAndUnset($data, 'value');
+        } else {
+            $value = $this->getAndUnset($data, 'default');
+        }
+
+        $attr = $this->buildAttribute($data);
+
+        //build options utk select
+        $htmlOptions = '';//"<option value=''>{$placeholder}</option>";
+        foreach ($options as $opt){
+            $id = $opt['id'];
+            $text = $opt['value'];
+
+            //apabila value adalah pilihan maka set selected
+            if ($id==$value) $selected = 'selected'; else $selected='';
+
+            $htmlOptions .= "<option value='{$id}' label='{$text}' {$selected}>{$text}</option>";
+        }
+
+        return <<< HTML
+        <div class="form-group">
+            <label class="col-form-label"><b>{$label}</b></label>
+            <select name='{$item}[]' id='{$item}' class='js-example-basic-multiple form-control' multiple="multiple" {$attr} {$required} {$readonly}>
+            <!--<select name='{$item}[]' id='{$item}' class='js-example-basic-multiple js-states form-control' multiple="multiple" {$attr} {$required} {$readonly}>-->
                 {$htmlOptions}
             </select>
         </div>
