@@ -64,4 +64,26 @@ class BaseModel extends Model
 
         return SSP::simple($_GET, $con, $table, $pk, $columns);
     }
+
+    protected function _getSspComplex($table, $pk, $fieldList, $where)
+    {
+        require_once __DIR__ . '/../../library/ssp.class.php';
+
+        $columns = [];
+
+        foreach($fieldList as $key => $value)
+        {
+            //add semua field ke columns
+            $columns[] = ['db' =>$value,'dt'=>$key];
+        }
+
+        $con = array(
+            "host"=>$_ENV['database.default.hostname'],
+            "user"=>$_ENV['database.default.username'],
+            "pass"=>$_ENV['database.default.password'],
+            "db"=>$_ENV['database.default.database'],
+        );
+
+        return SSP::complex($_GET, $con, $table, $pk, $columns, $where);
+    }
 }

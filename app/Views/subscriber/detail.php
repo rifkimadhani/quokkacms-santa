@@ -12,13 +12,36 @@ $group = new SubscriberGroupModel();
 $groupData = $group->getAllActiveForSelect();
 
 $subscriber = new SubscriberModel();
-$subscriberData = $subscriber->getCheckinForSelect();
+$subscriberData = $subscriber->get($subscriberId);
 
 $form = new SubscriberForm($roomData, $groupData);
+unset($form->room_id); //remove room dari form
 
-$htmlEdit = '';//$form->renderPlainDialog('formEdit');
-$htmlNew = $form->renderDialog('NEW', 'formNew', "{$baseUrl}/insert");
+$htmlEdit = $form->renderBody('Edit', 'formEdit', "{$baseUrl}/update", $subscriberData);
+//$htmlNew = $form->renderDialog('NEW', 'formNew', "{$baseUrl}/insert");
 $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
+
+function renderTable($subscriberId, $fields){
+
+    //build head
+    $htmlHead = '';
+    foreach ($fields as $field){
+        $htmlHead = "<th>{$field}</th>";
+    }
+
+    return <<< HTML
+            <table id="datalist" class="table table-bordered table-hover table-striped" style="width:100%">
+                <thead>
+                <tr>
+                    <?=$htmlHead?>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+HTML;
+}
 ?>
 <div class="box">
     <div class="box">
@@ -26,41 +49,47 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
         <div class="row">
             <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 col-4">
                     <a href="javascript:;" role="button" class="btn btn-primary showNewModal" onclick="showDialog('.dialogformNew')">
-                        CREATE
+                        CHECKOUT
                     </a>
             </div>
             <div class="col-xl-8 col-lg-6 col-md-5 col-sm-4 col-8">
             </div>
             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12 text-right">
-                <a href="javascript:;" role="button" class="btn btn-success showOptionsModal">
-                    OPTIONS
-                </a>
+<!--                <a href="javascript:;" role="button" class="btn btn-success showOptionsModal">-->
+<!--                    OPTIONS-->
+<!--                </a>-->
             </div>
         </div>
     </div>
-    <div class="box-body table-responsive padding">
-            <table id="datalist" class="table table-bordered table-hover table-striped" style="width:100%">
-                <thead>
-                <tr>
-                    <?php foreach ($fieldList as $field): ?>
-                        <th><?=$field?></th>
-                    <?php endforeach;?>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-            </table>
+    <div class="row">
+        <div class="col-lg-6">
+            <?=$htmlEdit?>
+        </div>
+        <div class="col-lg-6">
+            <div class="box-body table-responsive padding">
+                <table id="datalist" class="table table-bordered table-hover table-striped" style="width:100%">
+                    <thead>
+                    <tr>
+                        <?php foreach ($fieldList as $field): ?>
+                            <th><?=$field?></th>
+                        <?php endforeach;?>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 </div>
 
-<?=$htmlEdit?>
-<?=$htmlNew?>
+<?//=$htmlNew?>
 <?=$htmlDelete?>
 
 <script>
     var dataTable;
     const primaryKey = "<?=$primaryKey?>";
-    const urlSsp = "<?= $baseUrl ?>/ssp";
+    const urlSsp = "<?= $baseUrl ?>/sspRoom/<?=$subscriberId?>";
     const lastCol = <?= count($fieldList) ?>;
 
     //exec when ready
@@ -90,18 +119,6 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 
                 ]
             });
-
-        //handle click on row
-        //
-        $('#datalist tbody').on( 'click', 'tr', function (event)
-        {
-            event.stopPropagation();
-            const data = dataTable.row( $(this)).data();
-            const value = data[0];
-
-            window.location.href = "<?=$baseUrl?>/detail/" + value;
-        });
-
     }
 
     //
@@ -110,10 +127,11 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
         event.stopPropagation();
 
         const data = dataTable.row( $(that).parents('tr') ).data();
-        const id = data[0];
+        const id = data[1];
+        const name = data[2];
 
-        showDialogDelete('formDelete', 'Are you sure to delete message #' + id, function () {
-            window.location.href = "<?=$baseUrl?>/checkout/" + id;
+        showDialogDelete('formDelete', 'Are you sure checkout room #' + name, function () {
+            window.location.href = "<?=$baseUrl?>/checkout_room/<?=$subscriberId?>/" + id;
         })
     }
 

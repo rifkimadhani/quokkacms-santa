@@ -43,7 +43,9 @@ $routes->get('/dashboard', 'Dashboard::index');
 $routes->get('/subscriber', 'Subscriber::index');
 $routes->get('/subscriber/ssp', 'Subscriber::ssp');
 $routes->get('/subscriber/detail/(:num)', 'Subscriber::detail/$1');
+$routes->get('/subscriber/sspRoom/(:num)', 'Subscriber::sspRoom/$1');
 $routes->get('/subscriber/checkout/(:num)', 'Subscriber::checkout/$1');
+$routes->get('/subscriber/checkout_room/(:num)/(:num)', 'Subscriber::checkoutRoom/$1/$2');
 $routes->post('/subscriber/insert', 'Subscriber::insert');
 $routes->post('/subscriber/update', 'Subscriber::update');
 

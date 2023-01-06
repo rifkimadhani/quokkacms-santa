@@ -27,4 +27,9 @@ class BaseForm
         $builder = new FormBuilder();
         return $builder->render($dialogTitle, $formId, $this, $urlAction, $data);
     }
+
+    public function renderBody($dialogTitle, $formId, $urlAction, $data=[]){
+        $builder = new FormBuilder();
+        return $builder->renderBody($dialogTitle, $formId, $this, $urlAction, $data);
+    }
 }

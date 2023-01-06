@@ -14,6 +14,7 @@ use App\Models\MessageMediaModel;
 use App\Models\MessageModel;
 use App\Models\RoomModel;
 use App\Models\SubscriberModel;
+use App\Models\SubscriberRoomModel;
 
 class Subscriber extends BaseController
 {
@@ -38,6 +39,14 @@ class Subscriber extends BaseController
 
         header('Content-Type: application/json');
         echo json_encode($model->getSsp());
+    }
+
+    public function sspRoom($subscriberId)
+    {
+        $model = new SubscriberRoomModel();
+
+        header('Content-Type: application/json');
+        echo json_encode($model->getssp($subscriberId));
     }
 
     public function insert(){
@@ -69,9 +78,10 @@ class Subscriber extends BaseController
 
         $pageTitle = $data['name'] . ' ' . $data['last_name'];
 
-        $fieldList = $model->getFieldList();
+        $room = new SubscriberRoomModel();
+        $fieldList = $room->getFieldList();
 
-        return view('template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl'));
+        return view('template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'subscriberId'));
     }
 
 //    public function edit($messageId)
@@ -129,28 +139,20 @@ class Subscriber extends BaseController
 //        return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
 //    }
 
-//    public function update(){
-//        $id = $_POST['message_id'];
-//        $urlImage = $_POST['url_image'];
-//
-//        //convert URL --> {BASE-HOST}
-//        $urlImage = str_replace($this->baseHost, '{BASE-HOST}', $urlImage);
-//
-//        $model = new MessageModel();
-//        $r = $model->modify($id, $_POST);
-//
-//
-//        $media = new MessageMediaModel();
-//        $r = $media->write($id, $urlImage);
-//
-//        if ($r>0){
-//            $this->setSuccessMessage('UPDATE success');
-//        } else {
-//            $this->setErrorMessage('UPDATE fail ' . $model->errMessage);
-//        }
-//
-//        return redirect()->to($this->baseUrl);
-//    }
+    public function update(){
+        $id = $_POST['subscriber_id'];
+
+        $model = new SubscriberModel();
+        $r = $model->modify($id, $_POST);
+
+        if ($r>0){
+            $this->setSuccessMessage('UPDATE success');
+        } else {
+            $this->setErrorMessage('UPDATE fail ' . $model->errMessage);
+        }
+
+        return redirect()->to($this->baseUrl);
+    }
 
     /**
      * checkout all room
@@ -162,10 +164,22 @@ class Subscriber extends BaseController
         $room = new RoomModel();
         $rooms = $room->getBySubscriber($subscriberId);
 
-        log_message('error', 'rooms=' . json_encode($rooms));
-
         $model = new SubscriberModel();
         $r = $model->checkout($subscriberId, $rooms);
+
+        if ($r>0){
+            $this->setSuccessMessage('DELETE success');
+        } else {
+            $this->setErrorMessage('DELETE fail');
+        }
+
+        return redirect()->to($this->baseUrl);
+    }
+
+    public function checkoutRoom($subscriberId, $roomId){
+
+        $model = new SubscriberModel();
+        $r = $model->checkout($subscriberId, [ ['room_id'=>$roomId] ]);
 
         if ($r>0){
             $this->setSuccessMessage('DELETE success');

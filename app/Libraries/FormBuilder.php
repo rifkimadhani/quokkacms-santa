@@ -71,6 +71,36 @@ HTML;
      * @return string HTML
      */
     function render($dialogTitle, $formId, $form, $action, $data=[]){
+
+        $inputElement = $this->renderBody($dialogTitle, $formId, $form, $action, $data);
+
+        return <<< HTML
+<div class="modal-dialog modal-lg flipInX animated" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{$dialogTitle}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>      
+      {$inputElement}
+    </div>
+</div>
+</div>
+HTML;
+    }
+
+    /**
+     * hanya render form saja, tanpa ada ada dialog
+     *
+     * @param $dialogTitle
+     * @param $formId
+     * @param $form
+     * @param $action
+     * @param array $data
+     * @return string
+     */
+    function renderBody($dialogTitle, $formId, $form, $action, $data=[]){
 //        $action = 'http://192.168.2.7/alpha/auth/logincheck';
 
         $inputElement = '';
@@ -130,16 +160,7 @@ HTML;
         }
 
         return <<< HTML
-<div class="modal-dialog modal-lg flipInX animated" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{$dialogTitle}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
       <div class="modal-body">
-
         <form id="{$formId}" action="{$action}" method="post" enctype="multipart/form-data">
             {$inputElement}
             <div class="modal-footer">
@@ -147,11 +168,7 @@ HTML;
                 <button type="submit" class="btn btn-success btn-newformsubmit">Submit</button>
             </div>
         </form>
-
       </div>
-    </div>
-</div>
-</div>
 HTML;
     }
 

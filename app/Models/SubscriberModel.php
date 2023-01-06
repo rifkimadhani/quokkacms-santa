@@ -28,6 +28,8 @@ class SubscriberModel extends BaseModel
 
     const SQL_GET_FOR_SELECT = 'SELECT subscriber_id AS id, CONCAT(name, \' \', last_name) AS value FROM tsubscriber WHERE status=\'CHECKIN\' ORDER BY name';
 
+    const SQL_MODIFY = 'UPDATE tsubscriber SET group_id=?, salutation=?, name=?, last_name=? WHERE subscriber_id=?';
+
     public $errCode;
     public $errMessage;
 
@@ -212,4 +214,28 @@ class SubscriberModel extends BaseModel
         }
     }
 
+    public function modify($subscriberId, $data){
+        $this->errCode = '';
+        $this->errMessage = '';
+
+        if (empty($data['group_id'])) $group_id = null; else $group_id = $data['group_id'];
+
+        $salutation = $data['salutation'];
+        $name = $data['name'];
+        $lastName = $data['last_name'];
+
+        try{
+            $pdo = $this->openPdo();
+            $stmt = $pdo->prepare(self::SQL_MODIFY);
+            $stmt->execute( [$group_id, $salutation, $name, $lastName, $subscriberId] );
+
+            return $stmt->rowCount();
+
+        }catch (\PDOException $e){
+            log_message('error', json_encode($e));
+            $this->errCode = $e->getCode();
+            $this->errMessage = $e->getMessage();
+            return -1;
+        }
+    }
 }
