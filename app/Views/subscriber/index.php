@@ -98,20 +98,8 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
             event.stopPropagation();
             const data = dataTable.row( $(this)).data();
             const value = data[0];
-            const url = "<?=$baseUrl?>/edit/" + value;
 
-            //show hourglass
-            jQuery('#overlay-loader-indicator').show();
-
-            $.ajax({url: url}).done(function(result)
-            {
-                $('.dialogformEdit').html(result);
-                $('.dialogformEdit').modal();
-            })
-            .always(function()
-            {
-                jQuery('#overlay-loader-indicator').hide();
-            });
+            window.location.href = "<?=$baseUrl?>/detail/" + value;
         });
 
     }
@@ -125,7 +113,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
         const id = data[0];
 
         showDialogDelete('formDelete', 'Are you sure to delete message #' + id, function () {
-            window.location.href = "<?=$baseUrl?>/delete/" + id;
+            window.location.href = "<?=$baseUrl?>/checkout/" + id;
         })
     }
 

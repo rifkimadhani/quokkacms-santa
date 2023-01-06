@@ -7,17 +7,24 @@ class SubscriberModel extends BaseModel
 {
     const STATUS_VACANT= 'VACANT';
     const STATUS_OCCUPIED = 'OCCUPIED';
+    const STATUS_CHECKIN = 'CHECKIN';
+    const STATUS_CHECKOUT = 'CHECKOUT';
 
     const VIEW = 'vsubscriber';
     const PK = 'Subscriber ID'; //primary key yg di pergunakan pada SSP
 
     const SQL_ADD_1 = 'INSERT INTO tsubscriber (group_id, salutation, name, last_name, status, checkin_date) VALUES (?,?,?,?,?,now())';
     const SQL_ADD_2 = 'UPDATE troom SET subscriber_id=?, status=? WHERE status=\'VACANT\' AND room_id=?';
-    const SQL_ADD_3 = 'INSERT INTO tsubscriber_room (subscriber_id, room_id) VALUES (?, ?)';
+    const SQL_ADD_3 = 'INSERT INTO tsubscriber_room (subscriber_id, room_id, checkin_date, status) VALUES (?, ?, now(), ?)';
 
     const SQL_REMOVE_1 = 'DELETE FROM tsubscriber WHERE subscriber_id=?';
     const SQL_REMOVE_2 = 'DELETE FROM tsubscriber_room WHERE subscriber_id=?';
     const SQL_REMOVE_3 = 'UPDATE troom SET status=?, subscriber_id=null WHERE subscriber_id=?';
+
+    const SQL_CHECKOUT_1 = 'UPDATE tsubscriber_room SET status=?, checkout_date=now() WHERE subscriber_id=? AND room_id=? AND status=?';
+    const SQL_CHECKOUT_2 = 'UPDATE troom SET status=?, subscriber_id=null WHERE subscriber_id=? AND room_id=?';
+    const SQL_CHECKOUT_3 = 'SELECT COUNT(*) as total FROM troom WHERE subscriber_id=?';
+    const SQL_CHECKOUT_4 = 'UPDATE tsubscriber SET status=?, checkout_date=now() WHERE subscriber_id=?';
 
     const SQL_GET_FOR_SELECT = 'SELECT subscriber_id AS id, CONCAT(name, \' \', last_name) AS value FROM tsubscriber WHERE status=\'CHECKIN\' ORDER BY name';
 
@@ -58,7 +65,7 @@ class SubscriberModel extends BaseModel
 
                 //insert tsubscriber_room
                 $stmt = $db->prepare(self::SQL_ADD_3);
-                $stmt->execute( [$subscriberId, $roomId] );
+                $stmt->execute( [$subscriberId, $roomId, self::STATUS_CHECKIN] );
             }
 
             log_message('error', "addCheckin countSuccess={$countSuccess}");
@@ -135,6 +142,63 @@ class SubscriberModel extends BaseModel
             //hapus troom
             $stmt = $db->prepare(self::SQL_REMOVE_3);
             $stmt->execute( [self::STATUS_VACANT, $subscriberId] );
+
+            $db->commit();
+
+            return 1;
+
+        }catch (\PDOException $e){
+            log_message('error', json_encode($e));
+            $this->errCode = $e->getCode();
+            $this->errMessage = $e->getMessage();
+            return -1;
+        }
+    }
+
+    /**
+     * @param $subscriberId
+     * @return int
+     */
+    public function checkout($subscriberId, $rooms)  {
+
+        try{
+            $db = $this->openPdo();
+            $db->beginTransaction();
+
+            foreach ($rooms as $room){
+                $roomId = $room['room_id'];
+
+                log_message('error', "roomId={$roomId}");
+
+
+                //rubah tsubscriber_room dgn status CHECKIN --> CHECKOUT
+                $stmt = $db->prepare(self::SQL_CHECKOUT_1);
+                $stmt->execute( [self::STATUS_CHECKOUT, $subscriberId, $roomId, self::STATUS_CHECKIN] );
+
+                //rubah troom dari OCCUPIED --> VACANT
+                $stmt = $db->prepare(self::SQL_CHECKOUT_2);
+                $stmt->execute( [self::STATUS_VACANT, $subscriberId, $roomId] );
+            }
+
+            //hitung ada brp room yg masih link ke subscriber_id
+            $stmt = $db->prepare(self::SQL_CHECKOUT_3);
+            $stmt->execute( [$subscriberId] );
+
+            $rows = $stmt->fetchAll();
+
+            $count = (int) $rows[0]['total'];
+
+            log_message('error', "rows=" . $count);
+
+
+            //apabila room sdh tdk ada yg terhubung ke subscriber,
+            //maka set CHECKOUT
+            if ($count==0){
+                log_message('error', "CHECKOUT subscriber");
+
+                $stmt = $db->prepare(self::SQL_CHECKOUT_4);
+                $stmt->execute( [self::STATUS_CHECKOUT, $subscriberId] );
+            }
 
             $db->commit();
 

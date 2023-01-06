@@ -58,87 +58,114 @@ class Subscriber extends BaseController
         return redirect()->to($this->baseUrl);
     }
 
-    public function edit($messageId)
-    {
-        $model = new MessageModel();
-        $data = $model->get($messageId);
+    public function detail($subscriberId){
+        $baseUrl = $this->baseUrl;
+        $mainview = "subscriber/detail";
+        $primaryKey = 'subscriber_id';
 
-        //ambil image dari table
-        $media = new MessageMediaModel();
-        $ar = $media->getAll($messageId);
-
-        //rubah array ke string
-        $urlImage = '';
-        foreach ($ar as $row){
-            if (strlen($urlImage)==0){
-                $urlImage = $row['url_image'];
-            } else {
-                $urlImage .= ',' . $row['url_image'];
-            }
-        }
-
-        //convert {BASE-HOST} --> URL
-        $urlImage = str_replace('{BASE-HOST}', $this->baseHost, $urlImage);
-
-        $data['url_image'] = $urlImage; //simpan hasil conversi ke dalam url_image
-
-        //cari subscriber
-        $subscriber = new SubscriberModel();
-        $subscriberData = $subscriber->getCheckinForSelect();
-
-        $subscriberId = $data['subscriber_id'];
-
-        //cari apakah subscriber pada message ada di daftar subscriber ??
-        $found = false;
-        foreach ($subscriberData as $item){
-            if ($item['id']==$subscriberId){
-                $found = true;
-                break;
-            }
-        }
-
-        //apabila subscriber tdk ada, ambil dari db dan tambahkan ke dalam dafar subscriber
-        if ($found==false){
-            //cari pada db
-            $subscriberCurrent = $subscriber->get($subscriberId);
-
-            //tambahkan subscriber ke dalam daftar
-            $value = $subscriberCurrent['name'] . ' ' . $subscriberCurrent['last_name'];
-            $subscriberData[] = ['id'=>$subscriberId, 'value'=>$value];
-        }
-
-        $form = new MessageForm($subscriberData);
-
-        $urlAction = $this->baseUrl . '/update';
-        return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
-    }
-
-    public function update(){
-        $id = $_POST['message_id'];
-        $urlImage = $_POST['url_image'];
-
-        //convert URL --> {BASE-HOST}
-        $urlImage = str_replace($this->baseHost, '{BASE-HOST}', $urlImage);
-
-        $model = new MessageModel();
-        $r = $model->modify($id, $_POST);
-
-
-        $media = new MessageMediaModel();
-        $r = $media->write($id, $urlImage);
-
-        if ($r>0){
-            $this->setSuccessMessage('UPDATE success');
-        } else {
-            $this->setErrorMessage('UPDATE fail ' . $model->errMessage);
-        }
-
-        return redirect()->to($this->baseUrl);
-    }
-
-    public function delete($subscriberId){
         $model = new SubscriberModel();
-        $r = $model->remove($subscriberId);
+
+        $data = $model->get($subscriberId);
+
+        $pageTitle = $data['name'] . ' ' . $data['last_name'];
+
+        $fieldList = $model->getFieldList();
+
+        return view('template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl'));
+    }
+
+//    public function edit($messageId)
+//    {
+//        $model = new MessageModel();
+//        $data = $model->get($messageId);
+//
+//        //ambil image dari table
+//        $media = new MessageMediaModel();
+//        $ar = $media->getAll($messageId);
+//
+//        //rubah array ke string
+//        $urlImage = '';
+//        foreach ($ar as $row){
+//            if (strlen($urlImage)==0){
+//                $urlImage = $row['url_image'];
+//            } else {
+//                $urlImage .= ',' . $row['url_image'];
+//            }
+//        }
+//
+//        //convert {BASE-HOST} --> URL
+//        $urlImage = str_replace('{BASE-HOST}', $this->baseHost, $urlImage);
+//
+//        $data['url_image'] = $urlImage; //simpan hasil conversi ke dalam url_image
+//
+//        //cari subscriber
+//        $subscriber = new SubscriberModel();
+//        $subscriberData = $subscriber->getCheckinForSelect();
+//
+//        $subscriberId = $data['subscriber_id'];
+//
+//        //cari apakah subscriber pada message ada di daftar subscriber ??
+//        $found = false;
+//        foreach ($subscriberData as $item){
+//            if ($item['id']==$subscriberId){
+//                $found = true;
+//                break;
+//            }
+//        }
+//
+//        //apabila subscriber tdk ada, ambil dari db dan tambahkan ke dalam dafar subscriber
+//        if ($found==false){
+//            //cari pada db
+//            $subscriberCurrent = $subscriber->get($subscriberId);
+//
+//            //tambahkan subscriber ke dalam daftar
+//            $value = $subscriberCurrent['name'] . ' ' . $subscriberCurrent['last_name'];
+//            $subscriberData[] = ['id'=>$subscriberId, 'value'=>$value];
+//        }
+//
+//        $form = new MessageForm($subscriberData);
+//
+//        $urlAction = $this->baseUrl . '/update';
+//        return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
+//    }
+
+//    public function update(){
+//        $id = $_POST['message_id'];
+//        $urlImage = $_POST['url_image'];
+//
+//        //convert URL --> {BASE-HOST}
+//        $urlImage = str_replace($this->baseHost, '{BASE-HOST}', $urlImage);
+//
+//        $model = new MessageModel();
+//        $r = $model->modify($id, $_POST);
+//
+//
+//        $media = new MessageMediaModel();
+//        $r = $media->write($id, $urlImage);
+//
+//        if ($r>0){
+//            $this->setSuccessMessage('UPDATE success');
+//        } else {
+//            $this->setErrorMessage('UPDATE fail ' . $model->errMessage);
+//        }
+//
+//        return redirect()->to($this->baseUrl);
+//    }
+
+    /**
+     * checkout all room
+     *
+     * @param $subscriberId
+     * @return $this
+     */
+    public function checkout($subscriberId){
+        $room = new RoomModel();
+        $rooms = $room->getBySubscriber($subscriberId);
+
+        log_message('error', 'rooms=' . json_encode($rooms));
+
+        $model = new SubscriberModel();
+        $r = $model->checkout($subscriberId, $rooms);
 
         if ($r>0){
             $this->setSuccessMessage('DELETE success');
