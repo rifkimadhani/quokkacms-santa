@@ -14,7 +14,7 @@ use CodeIgniter\Model;
 class BaseModel extends Model
 {
     /**
-     * open pdo
+     * open pdo utk melakukan update lewat pdo
      *
      * @return \PDO
      */

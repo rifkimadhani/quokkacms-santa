@@ -15,6 +15,10 @@ class SubscriberModel extends BaseModel
     const SQL_ADD_2 = 'UPDATE troom SET subscriber_id=?, status=? WHERE status=\'VACANT\' AND room_id=?';
     const SQL_ADD_3 = 'INSERT INTO tsubscriber_room (subscriber_id, room_id) VALUES (?, ?)';
 
+    const SQL_REMOVE_1 = 'DELETE FROM tsubscriber WHERE subscriber_id=?';
+    const SQL_REMOVE_2 = 'DELETE FROM tsubscriber_room WHERE subscriber_id=?';
+    const SQL_REMOVE_3 = 'UPDATE troom SET status=?, subscriber_id=null WHERE subscriber_id=?';
+
     const SQL_GET_FOR_SELECT = 'SELECT subscriber_id AS id, CONCAT(name, \' \', last_name) AS value FROM tsubscriber WHERE status=\'CHECKIN\' ORDER BY name';
 
     public $errCode;
@@ -24,7 +28,7 @@ class SubscriberModel extends BaseModel
     protected $primaryKey = 'subscriber_id';
     protected $allowedFields = ['group_id', 'salutation', 'name', 'last_name', 'status', 'checkin_date', 'checkout_date'];
 
-    public function addCheckin($value)  {
+    public function checkin($value)  {
 
         if (empty($value['group_id'])) $groupId = null; else $groupId = $value['group_id'];
 
@@ -106,4 +110,42 @@ class SubscriberModel extends BaseModel
     {
         return $this->_getSsp(self::VIEW, self::PK, $this->getFieldList());
     }
+
+    /**
+     * hapus record pada tsubscriber & tsubscriber_room
+     * reset record pada troom
+     *
+     * @param $subscriberId
+     */
+    public function remove($subscriberId)  {
+
+
+        try{
+            $db = $this->openPdo();
+            $db->beginTransaction();
+
+            //hapus tsubscriber
+            $stmt = $db->prepare(self::SQL_REMOVE_1);
+            $stmt->execute( [$subscriberId] );
+
+            //hapus tsubscriber_room
+            $stmt = $db->prepare(self::SQL_REMOVE_2);
+            $stmt->execute( [$subscriberId] );
+
+            //hapus troom
+            $stmt = $db->prepare(self::SQL_REMOVE_3);
+            $stmt->execute( [self::STATUS_VACANT, $subscriberId] );
+
+            $db->commit();
+
+            return 1;
+
+        }catch (\PDOException $e){
+            log_message('error', json_encode($e));
+            $this->errCode = $e->getCode();
+            $this->errMessage = $e->getMessage();
+            return -1;
+        }
+    }
+
 }

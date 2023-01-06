@@ -47,7 +47,7 @@ class Subscriber extends BaseController
         $rooms = $_POST['room_id'];
 
         $model = new SubscriberModel();
-        $count = $model->addCheckin($_POST);
+        $count = $model->checkin($_POST);
 
         if ($count==0){
             $this->setErrorMessage('Add guest fail, room already occupied');
@@ -136,11 +136,11 @@ class Subscriber extends BaseController
         return redirect()->to($this->baseUrl);
     }
 
-    public function delete($messageId){
-        $model = new MessageModel();
-        $r = $model->remove($messageId);
+    public function delete($subscriberId){
+        $model = new SubscriberModel();
+        $r = $model->remove($subscriberId);
 
-        if ($r){
+        if ($r>0){
             $this->setSuccessMessage('DELETE success');
         } else {
             $this->setErrorMessage('DELETE fail');
