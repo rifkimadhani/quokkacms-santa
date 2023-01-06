@@ -48,7 +48,7 @@ HTML;
     <div class="box-header">
         <div class="row">
             <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 col-4">
-                    <a href="javascript:;" role="button" class="btn btn-primary showNewModal" onclick="showDialog('.dialogformNew')">
+                    <a href="javascript:;" role="button" class="btn btn-primary showNewModal" onclick="onClickCheckout()">
                         CHECKOUT
                     </a>
             </div>
@@ -132,6 +132,12 @@ HTML;
 
         showDialogDelete('formDelete', 'Are you sure checkout room #' + name, function () {
             window.location.href = "<?=$baseUrl?>/checkout_room/<?=$subscriberId?>/" + id;
+        })
+    }
+
+    function onClickCheckout() {
+        showDialogDelete('formDelete', 'Are you sure checkout', function () {
+            window.location.href = "<?=$baseUrl?>/checkout/<?=$subscriberId?>";
         })
     }
 
