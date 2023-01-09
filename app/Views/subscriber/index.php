@@ -79,13 +79,27 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
                 order: [['0','desc']],
                 columnDefs: [
                     {
-                        targets: [],visible: false,searchable: false
+                        //hide theme, package
+                        targets: [2,3],visible: false,searchable: false
                     },
                     {
                         //action column
                         targets: lastCol,
                         className: "center",
                         defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"><span class="label label-danger">CHECKOUT</span></a>'
+                    },
+                    {
+                        //rooms
+                        targets:[4],render: function(data)
+                        {
+                            const room = data.split(",");
+                            var html = '';
+                            room.forEach(function(value){
+                                console.log(value);
+                                html += "<button class='btn btn-block btn-info btn-xs'>"+value+"</button>";
+                            });
+                            return html;
+                        }
                     }
 
                 ]
