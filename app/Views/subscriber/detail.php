@@ -48,7 +48,7 @@ HTML;
     <div class="box-header">
         <div class="row">
             <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 col-4">
-                    <a href="javascript:;" role="button" class="btn btn-primary showNewModal" onclick="onClickCheckout()">
+                    <a href="javascript:;" role="button" class="btn btn-danger showNewModal" onclick="onClickCheckout()">
                         CHECKOUT
                     </a>
             </div>
@@ -108,13 +108,13 @@ HTML;
                 order: [['0','desc']],
                 columnDefs: [
                     {
-                        targets: [],visible: false,searchable: false
+                        targets: [0],visible: false,searchable: false
                     },
                     {
                         //action column
                         targets: lastCol,
                         className: "center",
-                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
+                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"><span class="label label-danger">CHECKOUT</span></a>'
                     }
 
                 ]

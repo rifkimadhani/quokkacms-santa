@@ -85,7 +85,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
                         //action column
                         targets: lastCol,
                         className: "center",
-                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
+                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"><span class="label label-danger">CHECKOUT</span></a>'
                     }
 
                 ]
@@ -111,8 +111,9 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 
         const data = dataTable.row( $(that).parents('tr') ).data();
         const id = data[0];
+        const name = data[1];
 
-        showDialogDelete('formDelete', 'Are you sure to delete message #' + id, function () {
+        showDialogDelete('formDelete', 'Are you sure to checkout ' + name + ' ?', function () {
             window.location.href = "<?=$baseUrl?>/checkout/" + id;
         })
     }
