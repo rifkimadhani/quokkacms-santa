@@ -95,7 +95,6 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
                             const room = data.split(",");
                             var html = '';
                             room.forEach(function(value){
-                                console.log(value);
                                 html += "<button class='btn btn-block btn-info btn-xs'>"+value+"</button>";
                             });
                             return html;
