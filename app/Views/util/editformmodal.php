@@ -1,4 +1,9 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); 
+<?php
+
+exit();
+
+
+defined('BASEPATH') OR exit('No direct script access allowed');
   $currentctrl = $this->router->fetch_class();
   if(isset($this->headertitle))
   {

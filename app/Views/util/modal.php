@@ -1,4 +1,8 @@
 <?php //defined('BASEPATH') OR exit('No direct script access allowed');
+
+exit();
+
+
 $router = service('router');
 $currentctrl = $router->controllerName();
 

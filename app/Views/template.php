@@ -330,8 +330,8 @@ $isEmergency = false;
             </div>
         </div>
     </section>
-    <?= view('util/modal'); ?>
-    <?= view('util/modal-image-preview');?>
+<!--    --><?//= view('util/modal'); ?>
+<!--    --><?//= view('util/modal-image-preview');?>
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
@@ -360,7 +360,7 @@ $isEmergency = false;
 <script src="<?= base_url('plugin/adminlte/bower_components/jquery-slimscroll/jquery.slimscroll.js') ?>"></script>
 <script src="<?= base_url('plugin/js/datetostring.js'); ?>"></script>
 <script src="<?= base_url('plugin/js/uriquerystring.js'); ?>"></script>
-<script src="<?= base_url('plugin/js/modalutil.js'); ?>"></script>
+<!--<script src="--><?//= base_url('plugin/js/modalutil.js'); ?><!--"></script>-->
 <script src="<?= base_url('plugin/js/videohls.js'); ?>" type="text/javascript"></script>
 
 <script>

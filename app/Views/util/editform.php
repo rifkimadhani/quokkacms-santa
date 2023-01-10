@@ -1,4 +1,8 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); 
+<?php
+
+exit();
+
+defined('BASEPATH') OR exit('No direct script access allowed');
   $currentctrl = $this->router->fetch_class();
 ?>
 <form id="editForm" action="<?= base_url($currentctrl.'/update') ?>" method="post" enctype="multipart/form-data">
