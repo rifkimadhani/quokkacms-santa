@@ -111,12 +111,16 @@ HTML;
                         targets: [0],visible: false,searchable: false
                     },
                     {
-                        //action column
-                        targets: lastCol,
-                        className: "center",
-                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"><span class="label label-danger">CHECKOUT</span></a>'
-                    }
+                        targets:[lastCol], render: function(data, type, row, meta)
+                        {
+                            data = row[3];
 
+                            //apabila data null, maka room sdh checkout
+                            if (data==null) return '';
+
+                            return '<a onclick="onClickTrash(event, this);" href="javascript:;"><span class="label label-danger">CHECKOUT</span></a>'
+                        }
+                    }
                 ]
             });
     }
