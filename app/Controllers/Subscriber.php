@@ -76,7 +76,7 @@ class Subscriber extends BaseController
 
         $data = $model->get($subscriberId);
 
-        $pageTitle = $data['name'] . ' ' . $data['last_name'];
+        $pageTitle = $data['salutation'] . ' ' . $data['name'] . ' ' . $data['last_name'];
 
         $room = new SubscriberRoomModel();
         $fieldList = $room->getFieldList();
