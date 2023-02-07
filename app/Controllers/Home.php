@@ -6,9 +6,10 @@ class Home extends BaseController
 {
     public function index()
     {
+        $pageTitle = 'Home';
 
         $mainview = 'welcome_message';
-        return view('template', compact('mainview'));
+        return view('template', compact('mainview', 'pageTitle'));
 
 //        return view('welcome_message');
     }
