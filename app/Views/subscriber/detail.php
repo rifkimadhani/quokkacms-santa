@@ -5,8 +5,8 @@ use App\Models\SubscriberGroupModel;
 use App\Models\SubscriberForm;
 use App\Libraries\Dialog;
 
-$room = new RoomModel();
-$roomData = $room->getVacantForSelect();
+//$room = new RoomModel();
+//$roomData = $room->getVacantForSelect();
 
 $group = new SubscriberGroupModel();
 $groupData = $group->getAllActiveForSelect();
@@ -14,8 +14,8 @@ $groupData = $group->getAllActiveForSelect();
 $subscriber = new SubscriberModel();
 $subscriberData = $subscriber->get($subscriberId);
 
-$form = new SubscriberForm($roomData, $groupData);
-unset($form->room_id); //remove room dari form
+$form = new SubscriberForm([], $groupData);
+unset($form->room_id); //di remove krm room tdk bisa di rubah2 setelah di create
 
 $htmlEdit = $form->renderBody('Edit', 'formEdit', "{$baseUrl}/update", $subscriberData);
 //$htmlNew = $form->renderDialog('NEW', 'formNew', "{$baseUrl}/insert");

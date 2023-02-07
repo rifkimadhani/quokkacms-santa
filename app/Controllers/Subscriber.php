@@ -67,6 +67,13 @@ class Subscriber extends BaseController
         return redirect()->to($this->baseUrl);
     }
 
+    /**
+     * utk edit detail subscriber, tapi tdk bisa add/remove room yg sdh di pilih saat create
+     * utk checkout bisa
+     *
+     * @param $subscriberId
+     * @return string
+     */
     public function detail($subscriberId){
         $baseUrl = $this->baseUrl;
         $mainview = "subscriber/detail";
