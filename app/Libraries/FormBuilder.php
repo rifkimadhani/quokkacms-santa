@@ -305,7 +305,6 @@ HTML;
         <div class="form-group">
             <label class="col-form-label"><b>{$label}</b></label>
             <select name='{$item}[]' id='{$item}' class='js-example-basic-multiple form-control' multiple="multiple" {$attr} {$required} {$readonly}>
-            <!--<select name='{$item}[]' id='{$item}' class='js-example-basic-multiple js-states form-control' multiple="multiple" {$attr} {$required} {$readonly}>-->
                 {$htmlOptions}
             </select>
         </div>

@@ -57,6 +57,8 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 <?=$htmlNew?>
 <?=$htmlDelete?>
 
+<?= view('util/scripts') ?>
+
 <script>
     var dataTable;
     const primaryKey = "<?=$primaryKey?>";
@@ -133,4 +135,3 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 
 </script>
 
-<?= view('util/scripts') ?>

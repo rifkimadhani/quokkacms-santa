@@ -11,12 +11,19 @@
  * Time: 1:46 PM
  */
 ?>
+<style>
+    /*style ini  utk multi select*/
+    .select2 {
+        width:100%!important;
+    }
+</style>
 
 <!--scripts.php-->
 <script>
 
     function initSelectMultiple() {
         //handle select-multiple
+        //https://select2.org/
         $('.js-example-basic-multiple').select2();
     }
 
