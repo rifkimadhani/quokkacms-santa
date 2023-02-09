@@ -100,6 +100,12 @@ class SubscriberModel extends BaseModel
         return $this->findAll();
     }
 
+    /**
+     * field list ini di pakai utk keperluan datatable,
+     * shg bila ada penambahan field pada table/view tdk mempengaruhi output datatable
+     *
+     * @return array
+     */
     public function getFieldList(){
         return ['Subscriber ID', 'Full name', 'theme', 'package', 'Room', 'status', 'Checkin Date', 'Checkout Date', 'Create Date', 'Update Date', 'group_name'];
     }

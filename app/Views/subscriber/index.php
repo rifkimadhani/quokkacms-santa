@@ -1,20 +1,5 @@
 <?php
-use App\Models\RoomModel;
-use App\Models\SubscriberModel;
-use App\Models\SubscriberGroupModel;
-use App\Models\SubscriberForm;
 use App\Libraries\Dialog;
-
-$room = new RoomModel();
-$roomData = $room->getVacantForSelect();
-
-$group = new SubscriberGroupModel();
-$groupData = $group->getAllActiveForSelect();
-
-$subscriber = new SubscriberModel();
-$subscriberData = $subscriber->getCheckinForSelect();
-
-$form = new SubscriberForm($roomData, $groupData);
 
 $htmlEdit = '';//$form->renderPlainDialog('formEdit');
 $htmlNew = $form->renderDialog('NEW', 'formNew', "{$baseUrl}/insert");

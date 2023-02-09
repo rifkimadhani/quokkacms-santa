@@ -8,13 +8,11 @@
 
 namespace App\Controllers;
 
-use App\Models\MessageForm;
-
-use App\Models\MessageMediaModel;
-use App\Models\MessageModel;
 use App\Models\RoomModel;
 use App\Models\SubscriberModel;
 use App\Models\SubscriberRoomModel;
+use App\Models\SubscriberGroupModel;
+use App\Models\SubscriberForm;
 
 class Subscriber extends BaseController
 {
@@ -26,11 +24,22 @@ class Subscriber extends BaseController
         $mainview = "subscriber/index";
         $primaryKey = 'subscriber_id';
 
-        $model = new SubscriberModel();
+        //ambil record room2 yg vacant
+        $room = new RoomModel();
+        $roomData = $room->getVacantForSelect();
 
-        $fieldList = $model->getFieldList();
+        //ambil semua liat group yg active
+        $group = new SubscriberGroupModel();
+        $groupData = $group->getAllActiveForSelect();
 
-        return view('template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl'));
+        //ambil field list
+        $subscriber = new SubscriberModel();
+        $fieldList = $subscriber->getFieldList();
+
+        //form ini akan di render saat di view
+        $form = new SubscriberForm($roomData, $groupData);
+
+        return view('template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
     }
 
     public function ssp()
