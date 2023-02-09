@@ -3,7 +3,7 @@ use App\Libraries\Dialog;
 
 $htmlEdit = '';//$form->renderPlainDialog('formEdit');
 $htmlNew = $form->renderDialog('NEW', 'formNew', "{$baseUrl}/insert");
-$htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
+$htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
 ?>
 <div class="box">
     <div class="box">
@@ -54,6 +54,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
     $('document').ready(function () {
         initDataTable();
 
+        //ini di pakai utk multiselect saja
         initSelectMultiple();
     });
 
@@ -73,7 +74,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
                         //action column
                         targets: lastCol,
                         className: "center",
-                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"><span class="label label-danger">CHECKOUT</span></a>'
+                        defaultContent: '<a onclick="onClickCheckout(event, this);" href="javascript:;"><span class="label label-danger">CHECKOUT</span></a>'
                     },
                     {
                         //rooms
@@ -106,7 +107,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 
     //
     //
-    function onClickTrash(event, that) {
+    function onClickCheckout(event, that) {
         event.stopPropagation();
 
         const data = dataTable.row( $(that).parents('tr') ).data();

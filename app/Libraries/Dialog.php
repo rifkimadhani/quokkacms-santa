@@ -10,7 +10,7 @@ namespace App\Libraries;
 
 class Dialog
 {
-    public static function renderDelete($title, $formId){
+    public static function renderDelete($buttonName='Delete', $title='DELETE', $formId='formDelete'){
         return <<< HTML
 <div class="modal fade dialog{$formId}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -25,7 +25,7 @@ class Dialog
             <h5 id="message{$formId}">Message</h5>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Cancel</button>
-                    <button id="btnDelete{$formId}" type="button" class="btn btn-primary btn-newformsubmit full-right">Delete</button>
+                    <button id="btnDelete{$formId}" type="button" class="btn btn-primary btn-newformsubmit full-right">{$buttonName}</button>
                 </div>
           </div>
         </div>

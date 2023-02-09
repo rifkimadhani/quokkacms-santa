@@ -89,15 +89,21 @@ class Subscriber extends BaseController
         $primaryKey = 'subscriber_id';
 
         $model = new SubscriberModel();
+        $subscriberData= $model->get($subscriberId);
 
-        $data = $model->get($subscriberId);
-
-        $pageTitle = $data['salutation'] . ' ' . $data['name'] . ' ' . $data['last_name'];
+        $pageTitle = $subscriberData['salutation'] . ' ' . $subscriberData['name'] . ' ' . $subscriberData['last_name'];
 
         $room = new SubscriberRoomModel();
         $fieldList = $room->getFieldList();
 
-        return view('template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'subscriberId'));
+        $group = new SubscriberGroupModel();
+        $groupData = $group->getAllActiveForSelect();
+
+        //utk form edit, room tdk bisa di rubah2 lagi, shg tdk di perlukan
+        $form = new SubscriberForm([], $groupData);
+        unset($form->room_id); //di remove krm room tdk bisa di rubah2 setelah di create
+
+        return view('template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'subscriberId', 'subscriberData', 'form'));
     }
 
 //    public function edit($messageId)
