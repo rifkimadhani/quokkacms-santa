@@ -32,7 +32,7 @@ HTML;
     <div class="box-header">
         <div class="row">
             <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 col-4">
-                    <a href="javascript:;" role="button" class="btn btn-danger showNewModal" onclick="onClickCheckout()">
+                    <a href="javascript:;" role="button" class="btn btn-danger showNewModal" onclick="onCheckoutAll()">
                         CHECKOUT
                     </a>
             </div>
@@ -104,16 +104,17 @@ HTML;
                             //apabila data null, maka room sdh checkout
                             if (data==null) return '';
 
-                            return '<a onclick="onClickTrash(event, this);" href="javascript:;"><span class="label label-danger">CHECKOUT</span></a>'
+                            return '<a onclick="onCheckoutRoom(event, this);" href="javascript:;"><span class="label label-danger">CHECKOUT</span></a>'
                         }
                     }
                 ]
             });
     }
 
+    //hanya checkout room saja,
+    // room yg terakhir di checkout akan otomatis mencheckout subscriber juga
     //
-    //
-    function onClickTrash(event, that) {
+    function onCheckoutRoom(event, that) {
         event.stopPropagation();
 
         const data = dataTable.row( $(that).parents('tr') ).data();
@@ -125,7 +126,9 @@ HTML;
         })
     }
 
-    function onClickCheckout() {
+    //checkout semua room
+    //
+    function onCheckoutAll() {
         showDialogDelete('formDelete', 'Are you sure checkout', function () {
             window.location.href = "<?=$baseUrl?>/checkout/<?=$subscriberId?>";
         })
