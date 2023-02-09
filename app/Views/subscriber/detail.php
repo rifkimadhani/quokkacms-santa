@@ -69,6 +69,7 @@ HTML;
 
 <?//=$htmlNew?>
 <?=$htmlDelete?>
+<?= view('util/scripts') ?>
 
 <script>
     var dataTable;
@@ -80,7 +81,8 @@ HTML;
     $('document').ready(function () {
         initDataTable();
 
-        initSelectMultiple();
+        //detail subscriber tdk memakai multi select
+//        initSelectMultiple();
     });
 
     function initDataTable() {
@@ -130,5 +132,3 @@ HTML;
     }
 
 </script>
-
-<?= view('util/scripts') ?>
