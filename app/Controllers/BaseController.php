@@ -76,10 +76,12 @@ abstract class BaseController extends Controller
 
     protected function setSuccessMessage($message){
         $session = session();
-        $session->setFlashdata('success_msg', $message);
+        $session->setFlashdata('type', 'success');
+        $session->setFlashdata('message', $message);
     }
     protected function setErrorMessage($message){
         $session = session();
-        $session->setFlashdata('error_msg', $message);
+        $session->setFlashdata('type', 'error');
+        $session->setFlashdata('message', $message);
     }
 }
