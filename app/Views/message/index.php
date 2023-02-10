@@ -1,16 +1,5 @@
 <?php
-use App\Models\MessageForm;
-use App\Models\RoomModel;
-use App\Models\SubscriberModel;
 use App\Libraries\Dialog;
-
-$room = new RoomModel();
-$roomData = $room->getForSelect();
-
-$subscriber = new SubscriberModel();
-$subscriberData = $subscriber->getCheckinForSelect();
-
-$form = new MessageForm($subscriberData, $roomData);
 
 $htmlEdit = $form->renderPlainDialog('formEdit');
 $htmlNew = $form->renderDialog('NEW', 'formNew', "{$baseUrl}/insert");

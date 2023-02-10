@@ -13,6 +13,7 @@ use App\Models\MessageForm;
 use App\Models\MessageMediaModel;
 use App\Models\MessageModel;
 use App\Models\SubscriberModel;
+use App\Models\RoomModel;
 
 class Message extends BaseController
 {
@@ -27,7 +28,16 @@ class Message extends BaseController
         $group = new MessageModel();
         $fieldList = $group->getFieldList();
 
-        return view('template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl'));
+        $room = new RoomModel();
+        $roomData = $room->getForSelect();
+
+        $subscriber = new SubscriberModel();
+        $subscriberData = $subscriber->getCheckinForSelect();
+
+        $form = new MessageForm($subscriberData, $roomData);
+
+
+        return view('template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
     }
 
     public function ssp()
