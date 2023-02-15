@@ -20,7 +20,9 @@ class Dashboard extends BaseController {
 
     public function index()
     {
+        $baseUrl = $this->baseUrl;
         $mainview = "dashboard/index";
+        $pageTitle = 'Dashboard';
 
         $db = new \App\Models\CountingModel();
 
@@ -34,6 +36,6 @@ class Dashboard extends BaseController {
 //        $dataguest     = $this->maindbaction->getGuestCounting();
 //        $dataemergency = $this->maindbaction->getEmergencyCounting();
 
-        return view('template',compact('mainview','datastb','dataroom','dataguest','dataemergency'));
+        return view('layout/template',compact('mainview','pageTitle','datastb','dataroom','dataguest','dataemergency'));
     }
 }

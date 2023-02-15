@@ -37,7 +37,7 @@ class Message extends BaseController
         $form = new MessageForm($subscriberData, $roomData);
 
 
-        return view('template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
+        return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
     }
 
     public function ssp()

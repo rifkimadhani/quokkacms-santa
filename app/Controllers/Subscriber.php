@@ -39,7 +39,7 @@ class Subscriber extends BaseController
         //form ini akan di render saat di view
         $form = new SubscriberForm($roomData, $groupData);
 
-        return view('template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
+        return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
     }
 
     public function ssp()

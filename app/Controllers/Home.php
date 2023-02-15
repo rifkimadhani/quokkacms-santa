@@ -9,7 +9,7 @@ class Home extends BaseController
         $pageTitle = 'Home';
 
         $mainview = 'welcome_message';
-        return view('template', compact('mainview', 'pageTitle'));
+        return view('layout/template', compact('mainview', 'pageTitle'));
 
 //        return view('welcome_message');
     }

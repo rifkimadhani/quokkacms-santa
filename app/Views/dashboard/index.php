@@ -1,70 +1,75 @@
-<div class="row">
+<!-- Row #1 -->
+<div class="row gutters-tiny">
     <div class="col-md-6">
-        <div class="info-box bg-green">
-        <span class="info-box-icon" style="height:112px;line-height:112px;">
-            <a href="<?= base_url('stbdevices'); ?>"><i class="fa fa-wifi"></i></a>
-        </span>
-        <div class="info-box-content">
-            <span class="info-box-text">STB ONLINE</span>
-            <span class="info-box-number"><?php echo $datastb['online']; ?> STB</span>
-
-            <div class="progress">
-                <!-- <div class="progress-bar" style="width: 50%"></div> -->
+        <a class="block block-link-shadow" href="<?= base_url('stbdevices'); ?>">
+            <div class="block-content block-content-full" style="background-color: #f7f7f7;">
+                <i class="si si-feed fa-2x text-pulse"></i>
+                <div class="row py-20 text-center">
+                    <div class="col-6 border-r">
+                        <div class="font-size-h3 font-w600 text-info"><?php echo $datastb['online']; ?></div>
+                        <div class="font-size-sm font-w600 text-uppercase text-muted">STB Online</div>
+                    </div>
+                    <div class="col-6">
+                        <div class="font-size-h3 font-w600 text-warning"><?php echo $datastb['offline']; ?></div>
+                        <div class="font-size-sm font-w600 text-uppercase text-muted">STB Offline</div>
+                    </div>
+                </div>
             </div>
-            <span class="info-box-text">STB OFLINE</span>
-            <span class="info-box-number"><?php echo $datastb['offline']; ?> STB</span>
-        </div>
-        </div>
+        </a>
     </div>
     <div class="col-md-6">
-        <div class="info-box bg-yellow">
-        <span class="info-box-icon" style="height:112px;line-height:112px;">
-            <a href="<?= base_url('subscriber'); ?>"><i class="fa fa-group"></i></a>
-        </span>
-        <div class="info-box-content">
-            <span class="info-box-text">GUEST CHEK-IN TODAY</span>
-            <span class="info-box-number"><?php echo $dataguest['checkin'];?> GUEST</span>
-
-            <div class="progress">
-                <!-- <div class="progress-bar" style="width: 50%"></div> -->
+        <a class="block block-link-shadow" href="<?= base_url('subscriber'); ?>">
+            <div class="block-content block-content-full" style="background-color: #f7f7f7;">
+                <div class="text-right">
+                    <i class="si si-users fa-2x text-success"></i>
+                </div>
+                <div class="row py-20 text-center">
+                    <div class="col-6 border-r">
+                        <div class="font-size-h3 font-w600 text-info"><?php echo $dataguest['checkin'];?></div>
+                        <div class="font-size-sm font-w600 text-uppercase text-muted">Guest Check-In</div>
+                    </div>
+                    <div class="col-6">
+                        <div class="font-size-h3 font-w600 text-warning"><?php echo $dataguest['checkout'];?></div>
+                        <div class="font-size-sm font-w600 text-uppercase text-muted">Guest Check-Out</div>
+                    </div>
+                </div>
             </div>
-            <span class="info-box-text">GUEST CHECK-OUT TODAY</span>
-            <span class="info-box-number"><?php echo $dataguest['checkout'];?> GUEST</span>
-        </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="info-box bg-red">
-        <span class="info-box-icon" style="height:112px;line-height:112px;">
-            <a href="<?= base_url('emergencyhistory'); ?>"><i class="fa fa-bullhorn"></i></a>
-        </span>
-        <div class="info-box-content">
-            <span class="info-box-text">&nbsp;</span>
-            <span class="info-box-number">EMERGENCY TODAY</span>
-
-            <div class="progress">
-                <!-- <div class="progress-bar" style="width: 50%"></div> -->
-            </div>
-            <span class="info-box-text" style="font-size:32px;"><?php echo $dataemergency['emergency_count'];?> TIMES</span>
-        </div>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="info-box bg-aqua">
-        <span class="info-box-icon" style="height:112px;line-height:112px;">
-            <a href="<?= base_url('room'); ?>"><i class="fa fa-bed"></i></a>
-        </span>
-        <div class="info-box-content">
-            <span class="info-box-text">ROOM OCCUPIED</span>
-            <span class="info-box-number"><?php echo $dataroom['occupied'];?> ROOM</span>
-
-            <div class="progress">
-                <!-- <div class="progress-bar" style="width: 50%"></div> -->
-            </div>
-            <span class="info-box-text">ROOM VACANT</span>
-            <span class="info-box-number"><?php echo $dataroom['vacant'];?> ROOM</span>
-        </div>
-        </div>
+        </a>
     </div>
 </div>
+<!-- Row #2 -->
+<div class="row gutters-tiny" style="padding-bottom: 1rem;">
+    <div class="col-md-6">
+        <a class="block block-link-shadow text-right" href="<?= base_url('emergencyhistory'); ?>">
+            <div class="block-content block-content-full clearfix bg-warning">
+                <div class="float-left mt-10">
+                    <i class="si si-info fa-3x text-body-bg-dark"></i>
+                </div>
+                <div class="font-size-h3 font-w600 text-white"><?php echo $dataemergency['emergency_count'];?></div>
+                <div class="font-size-sm font-w600 text-uppercase text-light">Emergency Today</div>
+            </div>
+        </a>
+    </div>    
+    <div class="col-md-6 col-xl-3">
+        <a class="block block-link-shadow text-right" href="<?= base_url('room'); ?>">
+            <div class="block-content block-content-full clearfix bg-info">
+                <div class="float-left mt-10">
+                    <i class="si si-user fa-3x text-body-bg-dark"></i>
+                </div>
+                <div class="font-size-h3 font-w600 text-white"><?php echo $dataroom['occupied'];?></div>
+                <div class="font-size-sm font-w600 text-uppercase text-light">Room Occupied</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <a class="block block-link-shadow text-left" href="<?= base_url('room'); ?>">
+            <div class="block-content block-content-full clearfix bg-success">
+                <div class="float-right mt-10">
+                    <i class="si si-ghost fa-3x text-body-bg-dark"></i>
+                </div>
+                <div class="font-size-h3 font-w600 text-white"><?php echo $dataroom['vacant'];?></div>
+                <div class="font-size-sm font-w600 text-uppercase text-light">Room Vacant</div>
+            </div>
+        </a>
+    </div>   
+</div>   

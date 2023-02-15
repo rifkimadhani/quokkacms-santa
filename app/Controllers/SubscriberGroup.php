@@ -25,7 +25,7 @@ class SubscriberGroup extends BaseController
         $group = new SubscriberGroupModel();
         $fieldList = $group->getFieldList();
 
-        return view('template', compact('mainview','primary', 'fieldList', 'pageTitle', 'baseUrl'));
+        return view('layout/template', compact('mainview','primary', 'fieldList', 'pageTitle', 'baseUrl'));
     }
 
     public function ssp()

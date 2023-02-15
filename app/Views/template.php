@@ -243,7 +243,7 @@ $isEmergency = false;
             <li><a href="<?= base_url('kitchenmenu'); ?>"><i class="fa fa-circle-o"></i>Menu</a></li>
           </ul>
         </li>
-<!-- shop START-->
+        <!-- shop START-->
           <li class="treeview">
               <a href="javascript:;">
                   <i class="fa fa-shopping-cart"></i> <span>Shop</span>
@@ -257,8 +257,8 @@ $isEmergency = false;
                   <li><a href="<?= base_url('shoporder'); ?>"><i class="fa fa-circle-"></i>Order</a></li>
               </ul>
           </li>
-<!--shop END-->
-          <li class="treeview" <?=$fMarketing?>>
+        <!--shop END-->
+        <li class="treeview" <?=$fMarketing?>>
           <a href="javascript:;">
             <i class="fa fa-font"></i> <span>Marketing</span>
             <span class="pull-right-container">
