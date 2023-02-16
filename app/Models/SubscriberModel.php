@@ -41,10 +41,13 @@ class SubscriberModel extends BaseModel
 
         if (empty($value['group_id'])) $groupId = null; else $groupId = $value['group_id'];
 
-        $salutation = $value['salutation'];
-        $name = $value['name'];
-        $lastName = $value['last_name'];
+        //htmlentities utk xss
+        $salutation = htmlentities($value['salutation'], ENT_QUOTES, 'UTF-8');//$value['salutation'];
+        $name = htmlentities($value['name'], ENT_QUOTES, 'UTF-8');//$value['name'];
+        $lastName = htmlentities($value['last_name'], ENT_QUOTES, 'UTF-8');//$value['last_name'];
         $status = 'CHECKIN';
+
+
 
         $rooms = $value['room_id'];
 
@@ -226,9 +229,10 @@ class SubscriberModel extends BaseModel
 
         if (empty($data['group_id'])) $group_id = null; else $group_id = $data['group_id'];
 
-        $salutation = $data['salutation'];
-        $name = $data['name'];
-        $lastName = $data['last_name'];
+        //xss
+        $salutation = htmlentities($data['salutation'], ENT_QUOTES, 'UTF-8');//$data['salutation'];
+        $name = htmlentities($data['name'], ENT_QUOTES, 'UTF-8');//$data['name'];
+        $lastName = htmlentities($data['last_name'], ENT_QUOTES, 'UTF-8');//$data['last_name'];
 
         try{
             $pdo = $this->openPdo();
