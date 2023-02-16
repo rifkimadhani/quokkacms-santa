@@ -65,6 +65,7 @@ class SubscriberGroupModel extends BaseModel
      * @return \PDOException|\Exception|int => 0/1 = count update, -1 = pdo exception
      */
     public function modify($groupId, $name, $status){
+        $name = htmlentities($name, ENT_QUOTES, 'UTF-8');//$_POST['name'];
         $this->errCode = '';
         $this->errMessage = '';
 
@@ -87,6 +88,7 @@ class SubscriberGroupModel extends BaseModel
     }
 
     public function add($value)  {
+        $value['name'] = htmlentities($value['name'], ENT_QUOTES, 'UTF-8');//$_POST['name'];
         return parent::insert($value);
     }
 
