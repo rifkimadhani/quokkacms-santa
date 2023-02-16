@@ -66,8 +66,11 @@ class MessageModel extends BaseModel
 
         $subscriberId = $data['subscriber_id'];
         $roomId = $data['room_id'];
-        $title = $data['title'];
-        $messge = $data['message'];
+
+        //xss
+        $title = htmlentities($data['title'], ENT_QUOTES, 'UTF-8');//$data['title'];
+        $messge = htmlentities($data['message'], ENT_QUOTES, 'UTF-8');//$data['message'];
+
         $status = $data['status'];
 
         try{
@@ -89,6 +92,11 @@ class MessageModel extends BaseModel
     }
 
     public function add($value)  {
+
+        //xss
+        $value['title'] = htmlentities($value['title'], ENT_QUOTES, 'UTF-8');
+        $value['message'] = htmlentities($value['message'], ENT_QUOTES, 'UTF-8');
+
         parent::insert($value);
         return $this->getInsertID();
     }
