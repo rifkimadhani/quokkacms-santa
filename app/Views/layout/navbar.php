@@ -1,5 +1,5 @@
 <?php
-//  defined('BASEPATH') OR exit('No direct script access allowed');
+    //  defined('BASEPATH') OR exit('No direct script access allowed');
     $username  = session('username');//$this->session->userdata('username');
 
     require_once __DIR__ . '/../../../model/ModelSetting.php';
@@ -65,7 +65,7 @@
             'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
             'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
         -->
-        <div id="page-container" class="sidebar-o enable-page-overlay side-scroll page-header-fixed page-header-modern main-content-narrow">
+        <div id="page-container" class="sidebar-o sidebar-inverse enable-page-overlay page-header-fixed page-header-modern side-scroll main-content-narrow">
 
             <!-- Sidebar -->
             <!--

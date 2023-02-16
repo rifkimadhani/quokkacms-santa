@@ -2,20 +2,6 @@
     //  defined('BASEPATH') OR exit('No direct script access allowed');
     $username  = session('username');//$this->session->userdata('username');
 
-    require_once __DIR__ . '/../../../model/ModelSetting.php';
-
-    $fKitchen = ModelSetting::getFeatureKitchen();
-    if ($fKitchen==0) $fKitchen='hidden'; else $fKitchen='';
-
-    $fMarketing = ModelSetting::getFeatureMarketing();
-    if ($fMarketing==0) $fMarketing='hidden'; else $fMarketing='';
-
-    $fDimsum = ModelSetting::getFeatureDimsum();
-    if ($fDimsum==0) $fDimsum='hidden'; else $fDimsum='';
-
-    $fStat= ModelSetting::getFeatureLivetvStat();
-    if ($fStat==0) $fStat='hidden'; else $fStat='';
-
     $username = 'admin';
     $isEmergency = false;
 ?>
@@ -39,6 +25,7 @@
         <?php endif; ?>
         <!-- END Emergency Alert -->
         <?= view('util/flash', compact('pageTitle')); ?>
+
         <div class="block">
             <div class="block-content">
                 <?= view($mainview); ?>
@@ -48,5 +35,32 @@
     <!-- END Page Content -->
 </main>
 <!-- END Main Container -->
+
+<!-- Modal Options (show & hide column) -->
+<div class="modal fade" id="modal-checkbox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-popout" role="document">
+        <div class="modal-content">
+            <div class="block block-themed block-transparent mb-0">
+                <div class="block-header bg-primary-dark">
+                    <h3 class="block-title"><?= $pageTitle; ?>'s Options</h3>
+                    <div class="block-options">
+                        <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                            <i class="si si-close"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="block-content">
+                    <div class="row no-gutters items-push checkboxdisplay"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-alt-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-alt-success" data-dismiss="modal">
+                    <i class="fa fa-check"></i> Perfect
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?= $this->include('layout/footer'); ?>

@@ -32,12 +32,10 @@
 
         <!-- Page JS Code -->
         <script src="<?= base_url('assets/assets/js/pages/be_pages_dashboard.min.js'); ?>"></script>
+        <script src="<?= base_url('assets/assets/js/pages/be_tables_datatables.min.js'); ?>"></script>
 
         <!-- Sync from old template -->
-        <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-        <script>
-          $.widget.bridge('uibutton', $.ui.button);
-        </script>
+
         <!-- Bootstrap -->
         <!-- <script src="<?//= base_url('plugin/adminlte/bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script> -->
         <!-- <script src="<?//= base_url('plugin/adminlte/bower_components/select2/dist/js/select2.full.min.js') ?>"></script> -->

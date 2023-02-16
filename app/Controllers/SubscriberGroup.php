@@ -17,6 +17,8 @@ class SubscriberGroup extends BaseController
     public function index()
     {
         $baseUrl = $this->getBaseUrl();
+        // $modal = view('util/modal');
+        // $modalPreview = view('util/modal-image-preview');
 
         $mainview = "subscriber_group/index";
         $primary = 'group_id';

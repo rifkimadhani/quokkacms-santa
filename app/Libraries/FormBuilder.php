@@ -75,19 +75,34 @@ HTML;
         $inputElement = $this->renderBody($dialogTitle, $formId, $form, $action, $data);
 
         return <<< HTML
-<div class="modal-dialog modal-lg flipInX animated" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{$dialogTitle}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>      
-      {$inputElement}
-    </div>
-</div>
-</div>
-HTML;
+        <!-- <div class="modal-dialog modal-lg flipInX animated" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{$dialogTitle}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>      
+                {$inputElement}
+            </div>
+        </div>
+        </div> -->
+        <div class="modal-dialog flipInX animated" role="document">
+            <div class="modal-content">
+                <div class="block block-themed block-transparent mb-0">
+                    <div class="block-header bg-primary-dark">
+                        <h3 class="block-title">{$dialogTitle}</h3>
+                        <div class="block-options">
+                            <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                <i class="si si-close"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {$inputElement}
+            </div>
+        </div>
+        HTML;
     }
 
     /**
@@ -160,16 +175,18 @@ HTML;
         }
 
         return <<< HTML
-      <div class="modal-body">
         <form id="{$formId}" action="{$action}" method="post" enctype="multipart/form-data">
-            {$inputElement}
+            <div class="block-content">
+                {$inputElement}
+            </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-success btn-newformsubmit">Submit</button>
+                <button type="button" class="btn btn-alt-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-alt-success">
+                    <i class="fa fa-check"></i> Submit
+                </button>
             </div>
         </form>
-      </div>
-HTML;
+        HTML;
     }
 
     function renderVarchar($item, &$value) {

@@ -35,7 +35,7 @@
         <link rel="stylesheet" href="<?= base_url('assets/assets/js/plugins/select2/css/select2.min.css') ?>">
         
         <!-- <link rel="stylesheet" href="<?//= base_url('plugin/adminlte/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') ?>"> -->
-        <link rel="stylesheet" href="<?= base_url('assets/assets/js/plugins/datatables/dataTables.bootstrap4.min.css') ?>">
+        <link rel="stylesheet" href="<?= base_url('assets/assets/js/plugins/datatables/dataTables.bootstrap4.css') ?>">
         <link rel="stylesheet" href="<?= base_url('plugin/RowReorder-1.2.6/css/rowReorder.dataTables.min.css') ?>">
         <!-- <link rel="stylesheet" href="<?//= base_url('plugin/bootstrap-colorpicker-2.5.3/dist/css/bootstrap-colorpicker.min.css')?>"> -->
         <link rel="stylesheet" href="<?= base_url('assets/assets/js/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css')?>">
