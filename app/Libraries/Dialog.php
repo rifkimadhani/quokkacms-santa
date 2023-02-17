@@ -33,7 +33,7 @@ class Dialog
       </div> -->
 
       <div class="modal fade dialog{$formId}" tabindex="-1" role="dialog" aria-hidden="true">
-          <div class="modal-dialog flipInX animated" role="document">
+          <div class="modal-dialog modal-dialog-popout" role="document">
               <div class="modal-content">
                   <div class="block block-themed block-transparent mb-0">
                       <div class="block-header bg-primary-dark">
