@@ -282,6 +282,18 @@
                 <li>
                     <a href="<?= base_url('statistic'); ?>"><i class="si si-bar-chart"></i> <span class="sidebar-mini-hide">Statistic (Live TV)</span></a>
                 </li>
+
+<!--                Admin Menu -->
+                <li class="nav-main-heading">
+                    <span class="sidebar-mini-visible">ADM</span><span class="sidebar-mini-hidden">Administrator</span>
+                </li>
+                <li>
+                    <a href="<?= base_url('admin'); ?>"><i class="si si-home"></i> <span class="sidebar-mini-hide">User</span></a>
+                </li>
+                <li>
+                    <a href="<?= base_url('role'); ?>"><i class="si si-home"></i> <span class="sidebar-mini-hide">Role</span></a>
+                </li>
+
             </ul>
         </div>
         <!-- END Side Navigation -->
