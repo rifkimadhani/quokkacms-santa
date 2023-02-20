@@ -46,6 +46,7 @@ class Login extends BaseController
             //check apakah password yg di entry benar ?
             if ($hash==$user['hash_password']){
                 //apabila benar maka masuk ke home
+                session()->set('username', $username);
                 session()->set('admin_id', $adminId);
                 session()->set('role_id', $roleId);
                 return redirect()->to('/home');
