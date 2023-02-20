@@ -13,10 +13,10 @@ class TableBuilder
     /**
      * @param $data
      * @param array $extraCol
-     * @param null $callback default null, tapi ini membuat error pada editor (function name must be callable)
+     * @param $callback = function callback
      * @return string
      */
-    static public function renderRow($data, $extraCol=[], $callback=null)
+    static public function renderRow($data, $extraCol=[], $callback='')
     {
         $html = '';
         foreach ($data as $row){
@@ -29,8 +29,7 @@ class TableBuilder
 
             //render extra col
             foreach ($extraCol as $col){
-                if ($callback!=null){
-                    //abaikan error editor
+                if (empty($callback)==false){
                     $value = $callback($row);
                 } else {
                     $value = '';

@@ -21,6 +21,8 @@
 <!--scripts.php-->
 <script>
 
+    //call ini apabila ada multi select, spt room pada subscriber
+    //
     function initSelectMultiple() {
         //handle select-multiple
         //https://select2.org/
