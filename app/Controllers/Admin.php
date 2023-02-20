@@ -53,19 +53,66 @@ class Admin extends BaseController
 
     public function insert(){
 
+        $roleId = $_POST['role_id'];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $password2 = $_POST['password2'];
+
+
+        if (empty($password)){
+            $this->setErrorMessage('Password must not empty');
+            return redirect()->to($this->baseUrl);
+        }
+
+        if ($password!=$password2){
+            $this->setErrorMessage('Password not matched');
+            return redirect()->to($this->baseUrl);
+        }
+
+        require_once __DIR__ . '/../../library/Security.php';
+        $hash = \Security::genHash($username, $password);
+
         $model = new AdminModel();
-        $messageId = $model->add($_POST);
+        $messageId = $model->add(['role_id'=>$roleId, 'username'=>$username, 'hash_password'=>$hash]);
 
         $this->setSuccessMessage('New admin user create success');
 
         return redirect()->to($this->baseUrl);
     }
 
+    /**
+     * 1. Username bisa di rubah tetapi password juga harus di masukkan
+     * 2. Password bisa di rubah
+     *
+     * @return $this
+     */
     public function update(){
+        require_once __DIR__ . '/../../library/Security.php';
+
         $adminId = $_POST['admin_id'];
 
+        //username bisa di update, tapi passwrod juga harus di rubah
+        $username = $_POST['username'];
+
+        //password bisa di rubah tanpa merubah username
+        $password = $_POST['password'];
+        $password2 = $_POST['password2'];
+
+        if (empty($password)){
+            $this->setSuccessMessage('Nothing change');
+            return redirect()->to($this->baseUrl);
+        }
+
+        if ($password!=$password2){
+            $this->setErrorMessage('Password not matched');
+            return redirect()->to($this->baseUrl);
+        }
+
+        $hash = \Security::genHash($username, $password);
+
         $model = new AdminModel();
-        $r = $model->update($adminId, $_POST);
+        $r = $model->modify($adminId, $_POST);
+        $r = $model->modifyPassword($adminId, $hash);
 
         if ($r>0){
             $this->setSuccessMessage('Update success');

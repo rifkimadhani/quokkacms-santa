@@ -12,10 +12,11 @@ class AdminModel extends BaseModel
 {
     const SQL_GET_ALL = 'SELECT admin_id, username, trole.role_name, tadmin.create_date, tadmin.update_date FROM tadmin INNER JOIN trole ON tadmin.role_id = trole.role_id';
     const SQL_MODIFY = 'UPDATE tadmin SET username=?, role_id=? WHERE admin_id=?';
+//    const SQL_MODIFY_PASSWORD = 'UPDATE tadmin SET hash_password=? WHERE admin_id=?';
 
     protected $table      = 'tadmin';
     protected $primaryKey = 'admin_id';
-    protected $allowedFields = ['role_id', 'username'];
+    protected $allowedFields = ['role_id', 'username', 'hash_password'];
 
     public function getFieldList(){
         return ['admin_id', 'Username', 'Role', 'Create', 'Update'];
@@ -46,7 +47,7 @@ class AdminModel extends BaseModel
         //xss
         $value['username'] = htmlentities($value['username'], ENT_QUOTES, 'UTF-8');
 
-        parent::insert($value);
+        $this->insert($value);
         return $this->getInsertID();
     }
 
@@ -73,6 +74,10 @@ class AdminModel extends BaseModel
             $this->errMessage = $e->getMessage();
             return -1;
         }
+    }
+
+    public function modifyPassword($id, $newPassword){
+        return $this->update($id, ['hash_password'=>$newPassword]);
     }
 
     public function remove($id){
