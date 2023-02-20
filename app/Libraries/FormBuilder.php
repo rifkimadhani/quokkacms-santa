@@ -18,32 +18,9 @@ use CodeIgniter\Model;
  */
 class FormBuilder
 {
-//    function __construct()
-//    {
-//
-//    }
-
     function renderDialog($dialogTitle, $formId, $form, $action, $data=[]){
         $htmlForm = $this->render($dialogTitle, $formId, $form, $action, $data);
         return $this->renderPlainDialog($formId, $htmlForm);
-
-//        return <<< HTML
-//<div class="modal fade dialog{$formId}" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
-//<div class="modal-dialog modal-lg flipInX animated" role="document">
-//    <div class="modal-content">
-//      <div class="modal-header">
-//        <h5 class="modal-title" id="exampleModalLabel">{$dialogTitle}</h5>
-//        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-//          <span aria-hidden="true">&times;</span>
-//        </button>
-//      </div>
-//      <div class="modal-body">
-//            {$htmlForm}
-//      </div>
-//    </div>
-//</div>
-//</div>
-//HTML;
     }
 
     /**
@@ -74,19 +51,7 @@ HTML;
 
         $inputElement = $this->renderBody($dialogTitle, $formId, $form, $action, $data);
 
-        return <<< HTML
-        <!-- <div class="modal-dialog modal-lg flipInX animated" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">{$dialogTitle}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>      
-                {$inputElement}
-            </div>
-        </div>
-        </div> -->
+        return <<<HTML
         <div class="modal-dialog modal-dialog-popout" role="document">
             <div class="modal-content">
                 <div class="block block-themed block-transparent mb-0">
@@ -102,7 +67,7 @@ HTML;
                 {$inputElement}
             </div>
         </div>
-        HTML;
+HTML;
     }
 
     /**
@@ -186,7 +151,7 @@ HTML;
                 </button>
             </div>
         </form>
-        HTML;
+HTML;
     }
 
     function renderVarchar($item, &$value) {
@@ -358,40 +323,6 @@ HTML;
     </div>
 </div>
 HTML;
-
-
-        ////////////////////////////////////////////////
-        ///
-
-        if($item['type'] == 'filemanager' && ($parentkey == $key))
-        {
-            $imagefile = urldecode($value);
-            $viewimage = explode(",",$imagefile);
-            $imageurl  = urldecode($value);
-            if (strpos($value,base_url()) === false)
-            {
-                $imagefile = base_url($value);
-            }
-
-            echo'<div class="form-group">';
-            if($item['label']!='')echo"<label class='col-form-label'><b>{$item['label']}</b></label>";
-            echo"<div class='input-group' style='width:100%'>
-                <input type='text' value='{$imageurl}' name='{$key}'  id='{$key}' class='form-control' placeholder='Klik Browse Untuk Upload Gambar'  readonly autocomplete='off' >
-                <div class='input-group-addon' style='cursor:pointer' data-id='{$key}'>Browse</div>
-            </div>";
-            foreach($viewimage as $imagetoshow)
-            {
-                echo "<img src='{$imagetoshow}' class='displayimagefilemanager'>";
-            }
-            echo "</div>";
-        }
-
-
-
-
-        ///
-        /// //////////////////////////////////////////
-
     }
 
 
