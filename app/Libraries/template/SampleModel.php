@@ -1,30 +1,17 @@
 <?php
-
 /**
  * Created by PageBuilder
- * Date: __DATE__
- * Time: __TIME__
+ * Date: __TODAY__
  */
 namespace App\Models;
 
-class RoleModel extends BaseModel
+class __Model__ extends BaseModel
 {
-    const SQL_MODIFY = 'UPDATE trole SET role_name=? WHERE role_id=?';
-    const SQL_GET_ALL_FOR_SELECT = 'SELECT role_id AS id, role_name AS value FROM trole';
+    const SQL_MODIFY = 'UPDATE __table__ SET __sql_update_fields__ WHERE __pk__=?';
 
-    public function getAllForSelect(){
-        $result = $this->db->query(self::SQL_GET_ALL_FOR_SELECT)->getResult('array');
-        if(sizeof($result) > 0)
-        {
-            return $result;
-        }
-        return [];
-    }
-
-
-    protected $table      = 'trole';
-    protected $primaryKey = 'role_id';
-    protected $allowedFields = ['role_id', 'role_name'];
+    protected $table      = '__table__';
+    protected $primaryKey = '__pk__';
+    protected $allowedFields = [__allowedFields__];
 
     public $errCode;
     public $errMessage;
@@ -39,7 +26,7 @@ class RoleModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['role_id','role_name'];
+        return [__fieldList__];
     }
 
     /**
@@ -50,7 +37,7 @@ class RoleModel extends BaseModel
      * @param $status
      * @return \PDOException|\Exception|int => 0/1 = count update, -1 = pdo exception
      */
-    public function modify($id, $roleName){
+    public function modify($id, $__modify_fields__){
 //        $name = htmlentities($name, ENT_QUOTES, 'UTF-8');//$_POST['name'];
         $this->errCode = '';
         $this->errMessage = '';
@@ -58,7 +45,7 @@ class RoleModel extends BaseModel
         try{
             $pdo = $this->openPdo();
             $stmt = $pdo->prepare(self::SQL_MODIFY);
-            $stmt->execute( [$roleName, $id] );
+            $stmt->execute( [$__modify_fields__, $id] );
 
             return $stmt->rowCount();
 

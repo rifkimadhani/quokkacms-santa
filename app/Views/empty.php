@@ -6,3 +6,5 @@
  * Time: 1:54 PM
  */
 ?>
+
+<a href="builder/build">Build</a>

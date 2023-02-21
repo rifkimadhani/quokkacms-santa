@@ -1,0 +1,25 @@
+{
+  "controller": {
+    "name": "Role",
+    "title": "Role"
+  },
+  "model": {
+    "name": "RoleModel",
+    "table": "trole",
+    "pk": "role_id",
+    "updateFields": ["role_id", "role_name"],
+    "fieldList": "'role_id','role_name'"
+  },
+  "form": {
+    "name": "RoleForm",
+    "fields" : [
+      { "name": "role_id", "type": "varchar"},
+      { "name": "role_name", "type": "varchar"}
+    ]
+  },
+  "view": {
+    "folder": "role",
+    "name": "index",
+    "dialogTitle": "role"
+  }
+}
