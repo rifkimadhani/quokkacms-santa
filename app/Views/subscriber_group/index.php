@@ -16,30 +16,28 @@ $htmlDelete = Dialog::renderDelete('Delete Group', 'CONFIRM DELETE');
 <!--    <h1>Guest group</h1>-->
 <!--</section>-->
 
-    <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
-    <div>
-    </div>
-        <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformNew')">
-            <i class="fa fa-plus text-primary mr-5 "></i> Create Group
+<div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
+    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformNew')">
+        <i class="fa fa-plus text-primary mr-5 "></i> Create Group
+    </a>
+    <div class="btn-group float-right">
+        <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
+            Options <i class="fa fa-th-large text-primary ml-5"></i>
         </a>
-        <div class="btn-group float-right">
-            <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
-                Options <i class="fa fa-th-large text-primary ml-5"></i>
-            </a>
-        </div>
     </div>
-    <div class="block-content block-content-full table-responsive">
-        <table id="datalist" class="table table-bordered table-hover table-striped table-vcenter">
-            <thead>
-                <tr> 
-                    <?php foreach ($fieldList as $field): ?>
-                        <th><?=$field?></th>
-                    <?php endforeach;?>
-                    <th style="width: 5%;">Action</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
+</div>
+<div class="block-content block-content-full table-responsive">
+    <table id="datalist" class="table table-bordered table-hover table-striped table-vcenter">
+        <thead>
+            <tr> 
+                <?php foreach ($fieldList as $field): ?>
+                    <th><?=$field?></th>
+                <?php endforeach;?>
+                <th style="width: 5%;">Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>
 
 
 <script>
@@ -63,6 +61,16 @@ $htmlDelete = Dialog::renderDelete('Delete Group', 'CONFIRM DELETE');
                 columnDefs: [
                     {
                         targets: [],visible: false,searchable: false
+                    },
+                    {
+                        targets:[3,4],render: function(data) 
+                        {
+                        if(data)
+                        {
+                            return datetostring.datetimetoindonesia(data)
+                        }
+                        return '';
+                        }
                     },
                     {
                         // action column

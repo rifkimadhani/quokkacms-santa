@@ -1,3 +1,10 @@
+<?php
+    //  defined('BASEPATH') OR exit('No direct script access allowed');
+    $username  = session('username');//$this->session->userdata('username');
+
+    $username = 'admin';
+    $isEmergency = false;
+?>
 <!-- Main Container -->
 <main id="main-container"> 
     <!-- Page Content -->

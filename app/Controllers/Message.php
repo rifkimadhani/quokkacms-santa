@@ -130,6 +130,9 @@ class Message extends BaseController
         //convert URL --> {BASE-HOST}
         $urlImage = str_replace($this->baseHost, '{BASE-HOST}', $urlImage);
 
+        // define value room_id
+        $_POST['room_id'] = null;
+
         $model = new MessageModel();
         $r = $model->modify($id, $_POST);
 
