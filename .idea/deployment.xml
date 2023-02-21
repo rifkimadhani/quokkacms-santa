@@ -5,7 +5,7 @@
       <paths name="NUC i5">
         <serverdata>
           <mappings>
-            <mapping deploy="/data/website/alpha_cms2" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/data/website/alpha_cms2a" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

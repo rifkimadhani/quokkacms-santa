@@ -46,6 +46,18 @@ $routes->post('/login/login', 'Login::login');
 $routes->get('/login/login', 'Login::login');
 $routes->get('/login/logout', 'Login::logout');
 
+//admin
+$routes->get('/admin', 'Admin::index');
+$routes->get('/admin/ssp', 'Admin::ssp');
+$routes->get('/admin/detail/(:num)', 'Admin::detail/$1');
+$routes->post('/admin/insert', 'Admin::insert');
+$routes->post('/admin/update', 'Admin::update');
+$routes->get('/admin/delete/(:num)', 'Admin::delete/$1');
+
+//admin-profile
+$routes->get('/adminprofile', 'AdminProfile::index');
+$routes->post('/adminprofile/change_password', 'AdminProfile::changePassword');
+
 //dashboard
 $routes->get('/dashboard', 'Dashboard::index');
 
