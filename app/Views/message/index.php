@@ -32,6 +32,8 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 <?=$htmlNew?>
 <?=$htmlDelete?>
 
+<?=view('util/scripts.php')?>
+
 <script>
     var dataTable;
     const primaryKey = "<?=$primaryKey?>";
@@ -102,31 +104,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
             });
         });
 
-        // Show and Hide table column 
-        // trigger: button Options
-        var arraycolumndisplay = dataTable.columns().visible();
-        var arraycolumnname = dataTable.columns().header().toArray().map((x) => x.innerText);
-        for (var i = 0; i < arraycolumndisplay.length - 1; i++) {
-            var checked = '';
-            if (arraycolumndisplay[i]) checked = 'checked';
-            jQuery('.checkboxdisplay').append(
-            '<div class="col-6"><label class="css-control css-control-primary css-switch">' +
-                '<input type="checkbox" ' +
-                checked +
-                ' data-column="' +
-                i +
-                '" class="css-control-input toggle-vis"><span class="css-control-indicator"></span>'+ arraycolumnname[i] +'</label></div>'
-            );
-        }
-
-        jQuery('.toggle-vis').change(function () {
-            var column = dataTable.column($(this).attr('data-column'));
-            column.visible(!column.visible());
-        });
-
-        jQuery('.showOptionsModal').click(function () {
-            jQuery('#modal-checkbox').modal();
-        });
+        initDataTableOptions(dataTable);
 
     }
 
@@ -145,4 +123,3 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 
 </script>
 <?= $this->include('util/filemanager') ?>
-<?= $this->include('util/scripts') ?>

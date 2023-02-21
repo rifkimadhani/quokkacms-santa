@@ -103,7 +103,7 @@ class Subscriber extends BaseController
         $form = new SubscriberForm([], $groupData);
         unset($form->room_id); //di remove krm room tdk bisa di rubah2 setelah di create
 
-        return view('template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'subscriberId', 'subscriberData', 'form'));
+        return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'subscriberId', 'subscriberData', 'form'));
     }
 
 //    public function edit($messageId)

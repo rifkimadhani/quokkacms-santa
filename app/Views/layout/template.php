@@ -28,7 +28,8 @@
 
     </div>
     
-    <!-- Modal Options (show & hide column) -->
+    <!-- Modal Options -->
+    <!-- A modal for showing and hiding columns in the table. */ -->
     <div class="modal fade" id="modal-checkbox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-popout" role="document">
             <div class="modal-content">

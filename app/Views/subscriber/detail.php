@@ -27,45 +27,48 @@ function renderTable($subscriberId, $fields){
 HTML;
 }
 ?>
-<div class="box">
-    <div class="box">
-    <div class="box-header">
-        <div class="row">
-            <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 col-4">
-                    <a href="javascript:;" role="button" class="btn btn-danger showNewModal" onclick="onCheckoutAll()">
-                        CHECKOUT
-                    </a>
-            </div>
-            <div class="col-xl-8 col-lg-6 col-md-5 col-sm-4 col-8">
-            </div>
-            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12 text-right">
-<!--                <a href="javascript:;" role="button" class="btn btn-success showOptionsModal">-->
-<!--                    OPTIONS-->
-<!--                </a>-->
-            </div>
-        </div>
+<!-- <div class="block-content"> -->
+    <!-- <div class="box-header"> -->
+        <!-- <div class="row"> -->
+            <!-- <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 col-4"> -->
+                    <!-- <a href="javascript:;" role="button" class="btn btn-danger showNewModal" onclick="onCheckoutAll()"> -->
+                        <!-- CHECKOUT -->
+                    <!-- </a> -->
+            <!-- </div> -->
+            <!-- <div class="col-xl-8 col-lg-6 col-md-5 col-sm-4 col-8"> -->
+            <!-- </div> -->
+            <!-- <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12 text-right"> -->
+                <!-- <a href="javascript:;" role="button" class="btn btn-success showOptionsModal"> -->
+                   <!-- OPTIONS -->
+                <!-- </a> -->
+            <!-- </div> -->
+        <!-- </div> -->
+    <!-- </div> -->
+    <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
+        <a class="btn btn-danger showNewModal" href="javascript:;" role="button" onclick="onCheckoutAll()">
+            CHECKOUT
+        </a>
     </div>
     <div class="row">
         <div class="col-lg-6">
             <?=$htmlEdit?>
         </div>
         <div class="col-lg-6">
-            <div class="box-body table-responsive padding">
-                <table id="datalist" class="table table-bordered table-hover table-striped" style="width:100%">
+            <div class="block-content block-content-full table-responsive">
+                <table id="datalist" class="table table-bordered table-hover table-striped table-vcenter">
                     <thead>
-                    <tr>
-                        <?php foreach ($fieldList as $field): ?>
-                            <th><?=$field?></th>
-                        <?php endforeach;?>
-                        <th>Actions</th>
-                    </tr>
+                        <tr> 
+                            <?php foreach ($fieldList as $field): ?>
+                                <th><?=$field?></th>
+                            <?php endforeach;?>
+                            <th style="width: 5%;">Action</th>
+                        </tr>
                     </thead>
                 </table>
             </div>
         </div>
     </div>
-</div>
-</div>
+<!-- </div> -->
 
 <?//=$htmlNew?>
 <?=$htmlDelete?>
@@ -91,6 +94,10 @@ HTML;
             {
                 ajax: urlSsp,
                 pageLength: 100,
+                oLanguage: {
+                    sLengthMenu: ""
+                },
+                searching: false,
                 order: [['0','desc']],
                 columnDefs: [
                     {

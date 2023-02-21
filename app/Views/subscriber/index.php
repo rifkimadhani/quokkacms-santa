@@ -5,44 +5,35 @@ $htmlEdit = '';//$form->renderPlainDialog('formEdit');
 $htmlNew = $form->renderDialog('NEW', 'formNew', "{$baseUrl}/insert");
 $htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
 ?>
-<div class="box">
-    <div class="box">
-    <div class="box-header">
-        <div class="row">
-            <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 col-4">
-                    <a href="javascript:;" role="button" class="btn btn-primary showNewModal" onclick="showDialog('.dialogformNew')">
-                        CREATE
-                    </a>
-            </div>
-            <div class="col-xl-8 col-lg-6 col-md-5 col-sm-4 col-8">
-            </div>
-            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12 text-right">
-                <a href="javascript:;" role="button" class="btn btn-success showOptionsModal">
-                    OPTIONS
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="box-body table-responsive padding">
-            <table id="datalist" class="table table-bordered table-hover table-striped" style="width:100%">
-                <thead>
-                <tr>
-                    <?php foreach ($fieldList as $field): ?>
-                        <th><?=$field?></th>
-                    <?php endforeach;?>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-            </table>
+
+<div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
+    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformNew')">
+        <i class="fa fa-plus text-primary mr-5 "></i> Add Guest
+    </a>
+    <div class="btn-group float-right">
+        <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
+            Options <i class="fa fa-th-large text-primary ml-5"></i>
+        </a>
     </div>
 </div>
+<div class="block-content block-content-full table-responsive">
+    <table id="datalist" class="table table-bordered table-hover table-striped table-vcenter">
+        <thead>
+            <tr> 
+                <?php foreach ($fieldList as $field): ?>
+                    <th><?=$field?></th>
+                <?php endforeach;?>
+                <th style="width: 5%;">Action</th>
+            </tr>
+        </thead>
+    </table>
 </div>
 
 <?=$htmlEdit?>
 <?=$htmlNew?>
 <?=$htmlDelete?>
 
-<?= view('util/scripts') ?>
+<?=view('util/scripts.php')?>
 
 <script>
     var dataTable;
@@ -63,6 +54,8 @@ $htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
             .DataTable(
             {
                 ajax: urlSsp,
+                responsive: true,
+                "scrollX":true,
                 pageLength: 100,
                 order: [['0','desc']],
                 columnDefs: [
@@ -73,17 +66,17 @@ $htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
                     {
                         //action column
                         targets: lastCol,
-                        className: "center",
+                        className: "text-center",
                         defaultContent: '<a onclick="onClickCheckout(event, this);" href="javascript:;"><span class="label label-danger">CHECKOUT</span></a>'
                     },
                     {
                         //rooms
-                        targets:[4],render: function(data)
+                        targets:[4], render: function(data)
                         {
                             const room = data.split(",");
                             var html = '';
                             room.forEach(function(value){
-                                html += "<button class='btn btn-block btn-info btn-xs'>"+value+"</button>";
+                                html += "<button class='btn btn-block btn-primary btn-xs'>"+value+"</button>";
                             });
                             return html;
                         }
@@ -102,6 +95,8 @@ $htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
 
             window.location.href = "<?=$baseUrl?>/detail/" + value;
         });
+
+        initDataTableOptions(dataTable);
 
     }
 
