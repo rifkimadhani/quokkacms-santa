@@ -15,6 +15,7 @@
 <!-- Page JS Plugins CSS -->
 <link rel="stylesheet" href="<?= base_url('plugin/codebaseadmin/js/plugins/slick/slick.css') ?>">
 <link rel="stylesheet" href="<?= base_url('plugin/codebaseadmin/js/plugins/slick/slick-theme.css') ?>">
+<link rel="stylesheet" href="<?= base_url('plugin/codebaseadmin/js/plugins/sweetalert2/sweetalert2.min.css') ?>">
 
 <!-- Fonts and Codebase framework -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300,400,400i,600,700">

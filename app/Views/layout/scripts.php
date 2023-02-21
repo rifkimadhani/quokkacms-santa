@@ -11,10 +11,15 @@
 <!-- Page JS Plugins -->
 <script src="<?= base_url('plugin/codebaseadmin/js/plugins/chartjs/Chart.bundle.min.js'); ?>"></script>
 <script src="<?= base_url('plugin/codebaseadmin/js/plugins/slick/slick.min.js'); ?>"></script>
+<script src="<?= base_url('plugin/codebaseadmin/js/plugins/bootstrap-notify/bootstrap-notify.min.js'); ?>"></script>
+<script src="<?= base_url('plugin/codebaseadmin/js/plugins/es6-promise/es6-promise.auto.min.js'); ?>"></script>
+<script src="<?= base_url('plugin/codebaseadmin/js/plugins/sweetalert2/sweetalert2.min.js'); ?>"></script>
 
 <!-- Page JS Code -->
 <script src="<?= base_url('plugin/codebaseadmin/js/pages/be_pages_dashboard.min.js'); ?>"></script>
 <script src="<?= base_url('plugin/codebaseadmin/js/pages/be_tables_datatables.min.js'); ?>"></script>
+<script src="<?= base_url('plugin/codebaseadmin/js/pages/be_ui_activity.min.js'); ?>"></script>
+
 
 <!-- Sync from old template -->
 

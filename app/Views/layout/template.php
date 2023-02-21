@@ -1,5 +1,8 @@
 <?php
     //  defined('BASEPATH') OR exit('No direct script access allowed');
+
+    $session = session();
+
     $username  = session('username');//$this->session->userdata('username');
 
     $username = 'admin';
@@ -57,5 +60,21 @@
     </div>
 
     <?= view('layout/scripts'); ?>
+    
+    <!-- Alert Notification -->
+    <?php if ($session->getFlashdata('type')) : ?>
+        <script>
+            jQuery(function(){ 
+                Codebase.helpers('notify',{
+                    align: 'right',             
+                    from: 'top',                
+                    type: '<?php echo $session->getFlashdata('type'); ?>',
+                    icon: '<?php echo ($session->getFlashdata('type') == 'success') ? "fa fa-check mr-5" : "fa fa-exclamation-triangle mr-5"; ?>',
+                    message: '<?php echo $session->getFlashdata('message'); ?>'
+                }); 
+            });
+        </script>
+    <?php endif; ?>
+    <!-- End Alert Notification -->    
 </body>
 </html>
