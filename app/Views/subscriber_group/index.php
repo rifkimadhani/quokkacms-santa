@@ -9,13 +9,6 @@ $htmlNew = $form->renderDialog('New Group', 'formNew', "{$baseUrl}/insert");
 $htmlDelete = Dialog::renderDelete('Delete Group', 'CONFIRM DELETE');
 ?>
 
-<?=$htmlEdit?>
-<?=$htmlNew?>
-<?=$htmlDelete?>
-<!--<section class="content-header">-->
-<!--    <h1>Guest group</h1>-->
-<!--</section>-->
-
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
     <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformNew')">
         <i class="fa fa-plus text-primary mr-5 "></i> Create Group
@@ -39,6 +32,11 @@ $htmlDelete = Dialog::renderDelete('Delete Group', 'CONFIRM DELETE');
     </table>
 </div>
 
+<?=$htmlEdit?>
+<?=$htmlNew?>
+<?=$htmlDelete?>
+
+<?=view('util/scripts.php')?>
 
 <script>
     var dataTable;
@@ -104,53 +102,8 @@ $htmlDelete = Dialog::renderDelete('Delete Group', 'CONFIRM DELETE');
             });
         });
 
-        // Show and Hide table column 
-        // trigger: button Options
-        var arraycolumndisplay = dataTable.columns().visible();
-        var arraycolumnname = dataTable.columns().header().toArray().map((x) => x.innerText);
-        for (var i = 0; i < arraycolumndisplay.length - 1; i++) {
-            var checked = '';
-            if (arraycolumndisplay[i]) checked = 'checked';
-            jQuery('.checkboxdisplay').append(
-            '<div class="col-6"><label class="css-control css-control-primary css-switch">' +
-                '<input type="checkbox" ' +
-                checked +
-                ' data-column="' +
-                i +
-                '" class="css-control-input toggle-vis"><span class="css-control-indicator"></span>'+ arraycolumnname[i] +'</label></div>'
-            );
-        }
-
-        jQuery('.toggle-vis').change(function () {
-            var column = dataTable.column($(this).attr('data-column'));
-            column.visible(!column.visible());
-        });
-
-        jQuery('.showOptionsModal').click(function () {
-            jQuery('#modal-checkbox').modal();
-        });
-
+        initDataTableOptions(dataTable);
     }
-
-    //attach submit pada form
-    //    function initDialog() {
-    //        $('#formEdit').on('submit', function() {
-    //
-    //            //ambila value dari child of form
-    //            const v = $('#password').val();
-    //            console.log(v);
-    //
-    //            return true;
-    //        });
-    //
-    //        $('#formNew').on('submit', function() {
-    //
-    //            const v = $('#formNew #password').val();
-    //            console.log(v);
-    //
-    //            return false;
-    //        });
-    //    }
 
     //
     //
@@ -164,22 +117,5 @@ $htmlDelete = Dialog::renderDelete('Delete Group', 'CONFIRM DELETE');
         showDialogDelete('formDelete', 'Are you sure to delete group ' + name, function () {
             window.location.href = "<?=$baseUrl?>/delete/" + groupId;
         })
-    }
-
-    //
-    //
-    function showDialog(dialogName) {
-        $(dialogName).modal();
-    }
-    //    function hideDialog(dialogName) {
-    //        $(dialogName).modal('hide');
-    //    }
-
-    function showDialogDelete(formId, message, callback) {
-        $('.dialog'+formId).modal();
-        $('.dialog'+formId + ' #message'+formId).text(message);
-        $('.dialog'+formId + ' #btnDelete'+formId).on('click', function() {
-            callback();
-        });
     }
 </script>

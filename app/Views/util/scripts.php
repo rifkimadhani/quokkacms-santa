@@ -21,6 +21,35 @@
 <!--scripts.php-->
 <script>
 
+    function initDataTableOptions(object) {
+        // Show and Hide table column
+        // trigger: button Options
+        var arraycolumndisplay = object.columns().visible();
+        var arraycolumnname = object.columns().header().toArray().map((x) => x.innerText);
+        for (var i = 0; i < arraycolumndisplay.length - 1; i++) {
+            var checked = '';
+            if (arraycolumndisplay[i]) checked = 'checked';
+            jQuery('.checkboxdisplay').append(
+                '<div class="col-6"><label class="css-control css-control-primary css-switch">' +
+                '<input type="checkbox" ' +
+                checked +
+                ' data-column="' +
+                i +
+                '" class="css-control-input toggle-vis"><span class="css-control-indicator"></span>'+ arraycolumnname[i] +'</label></div>'
+            );
+        }
+
+        jQuery('.toggle-vis').change(function () {
+            var column = object.column($(this).attr('data-column'));
+            column.visible(!column.visible());
+        });
+
+        jQuery('.showOptionsModal').click(function () {
+            jQuery('#modal-checkbox').modal();
+        });
+    }
+
+
     //call ini apabila ada multi select, spt room pada subscriber
     //
     function initSelectMultiple() {
