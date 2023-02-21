@@ -34,8 +34,8 @@
 <script src="<?= base_url('plugin/codebaseadmin/js/plugins/jquery-slimscroll/jquery.slimscroll.js') ?>"></script>
 <script src="<?= base_url('plugin/js/datetostring.js'); ?>"></script>
 <script src="<?= base_url('plugin/js/uriquerystring.js'); ?>"></script>
-<script src="<?= base_url('plugin/js/modalutil.js'); ?>"></script>
-<script src="<?= base_url('plugin/js/videohls.js'); ?>" type="text/javascript"></script>
+<!--<script src="--><?//= base_url('plugin/js/modalutil.js'); ?><!--"></script>-->
+<!--<script src="--><?//= base_url('plugin/js/videohls.js'); ?><!--" type="text/javascript"></script>-->
 
 <!-- menu active -->
 <script>
