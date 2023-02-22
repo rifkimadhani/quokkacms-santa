@@ -59,7 +59,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
                 order: [['0','desc']],
                 columnDefs: [
                     {
-                        targets: [0,1,10],visible: false,searchable: false
+                        targets: [0,1,3,4,10],visible: false,searchable: false
                     },
                     {
                         targets:[9,10],render: function(data) 
