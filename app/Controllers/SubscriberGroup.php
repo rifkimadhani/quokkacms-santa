@@ -34,7 +34,7 @@ class SubscriberGroup extends BaseController
     {
         $group = new SubscriberGroupModel();
 
-        header('Content-Type: application/json');
+        $this->response->setContentType("application/json");
         echo json_encode($group->getSsp());
     }
 

@@ -44,15 +44,15 @@ class Message extends BaseController
     {
         $group = new MessageModel();
 
-        header('Content-Type: application/json');
+        $this->response->setContentType("application/json");
         echo json_encode($group->getSsp());
     }
 
     public function insert(){
-        $subscriberId = $_POST['subscriber_id'];
-        $title = $_POST['title'];
-        $message = $_POST['message'];
-        $status = $_POST['status'];
+//        $subscriberId = $_POST['subscriber_id'];
+//        $title = $_POST['title'];
+//        $message = $_POST['message'];
+//        $status = $_POST['status'];
         $urlImage = $_POST['url_image'];
 
         $model = new MessageModel();

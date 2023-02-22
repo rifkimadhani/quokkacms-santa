@@ -46,7 +46,7 @@ class Subscriber extends BaseController
     {
         $model = new SubscriberModel();
 
-        header('Content-Type: application/json');
+        $this->response->setContentType("application/json");
         echo json_encode($model->getSsp());
     }
 
@@ -54,15 +54,15 @@ class Subscriber extends BaseController
     {
         $model = new SubscriberRoomModel();
 
-        header('Content-Type: application/json');
+        $this->response->setContentType("application/json");
         echo json_encode($model->getssp($subscriberId));
     }
 
     public function insert(){
 
-        log_message('error', json_encode($_POST));
+//        log_message('error', json_encode($_POST));
 
-        $rooms = $_POST['room_id'];
+//        $rooms = $_POST['room_id'];
 
         $model = new SubscriberModel();
         $count = $model->checkin($_POST);
@@ -105,61 +105,6 @@ class Subscriber extends BaseController
 
         return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'subscriberId', 'subscriberData', 'form'));
     }
-
-//    public function edit($messageId)
-//    {
-//        $model = new MessageModel();
-//        $data = $model->get($messageId);
-//
-//        //ambil image dari table
-//        $media = new MessageMediaModel();
-//        $ar = $media->getAll($messageId);
-//
-//        //rubah array ke string
-//        $urlImage = '';
-//        foreach ($ar as $row){
-//            if (strlen($urlImage)==0){
-//                $urlImage = $row['url_image'];
-//            } else {
-//                $urlImage .= ',' . $row['url_image'];
-//            }
-//        }
-//
-//        //convert {BASE-HOST} --> URL
-//        $urlImage = str_replace('{BASE-HOST}', $this->baseHost, $urlImage);
-//
-//        $data['url_image'] = $urlImage; //simpan hasil conversi ke dalam url_image
-//
-//        //cari subscriber
-//        $subscriber = new SubscriberModel();
-//        $subscriberData = $subscriber->getCheckinForSelect();
-//
-//        $subscriberId = $data['subscriber_id'];
-//
-//        //cari apakah subscriber pada message ada di daftar subscriber ??
-//        $found = false;
-//        foreach ($subscriberData as $item){
-//            if ($item['id']==$subscriberId){
-//                $found = true;
-//                break;
-//            }
-//        }
-//
-//        //apabila subscriber tdk ada, ambil dari db dan tambahkan ke dalam dafar subscriber
-//        if ($found==false){
-//            //cari pada db
-//            $subscriberCurrent = $subscriber->get($subscriberId);
-//
-//            //tambahkan subscriber ke dalam daftar
-//            $value = $subscriberCurrent['name'] . ' ' . $subscriberCurrent['last_name'];
-//            $subscriberData[] = ['id'=>$subscriberId, 'value'=>$value];
-//        }
-//
-//        $form = new MessageForm($subscriberData);
-//
-//        $urlAction = $this->baseUrl . '/update';
-//        return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
-//    }
 
     public function update(){
         $id = $_POST['subscriber_id'];
