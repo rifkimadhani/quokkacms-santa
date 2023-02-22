@@ -30,10 +30,8 @@ class PageBuilder
         self::mkdir($pathOut);
 
         //read template model file
-        $filename = self::PATH_TEMPLATE . '/SampleModel.php';
-        $file = fopen($filename, "r");
-        $code = fread($file, filesize($filename));
-        fclose($file);
+        $filename = self::PATH_TEMPLATE . '/TemplateModel.php';
+        $code = self::readFile($filename);
 
         $modelName = $obj->model->name;
         $table = $obj->model->table;
@@ -68,10 +66,8 @@ class PageBuilder
         self::mkdir($pathOut);
 
         //read template model file
-        $filename = self::PATH_TEMPLATE . '/SampleForm.php';
-        $file = fopen($filename, "r");
-        $code = fread($file, filesize($filename));
-        fclose($file);
+        $filename = self::PATH_TEMPLATE . '/TemplateForm.php';
+        $code = self::readFile($filename);
 
         $formName= $obj->form->name;
         $fields = $obj->form->fields;
@@ -96,8 +92,8 @@ class PageBuilder
         //write to code
         $code = str_replace('__TODAY__', self::today(), $code);
         $code = str_replace('__Form__', $formName, $code);
-        $code = str_replace('__member__', $member, $code);
-        $code = str_replace('__attr__', $attr, $code);
+        $code = str_replace('//__member__', $member, $code);
+        $code = str_replace('//__attr__', $attr, $code);
 
 
         //write code yg sdh di rubah ke folder output
@@ -112,10 +108,8 @@ class PageBuilder
         self::mkdir($pathOut);
 
         //read template model file
-        $filename = self::PATH_TEMPLATE . '/sample-index.php';
-        $file = fopen($filename, "r");
-        $code = fread($file, filesize($filename));
-        fclose($file);
+        $filename = self::PATH_TEMPLATE . '/template-index.php';
+        $code = self::readFile($filename);
 
         $viewName = $obj->view->name;
         $title = $obj->view->dialogTitle;
@@ -142,10 +136,8 @@ class PageBuilder
         self::mkdir($pathOut);
 
         //read template model file
-        $filename = self::PATH_TEMPLATE . '/Sample.php';
-        $file = fopen($filename, "r");
-        $code = fread($file, filesize($filename));
-        fclose($file);
+        $filename = self::PATH_TEMPLATE . '/Template.php';
+        $code = self::readFile($filename);
 
         $controllerName = $obj->controller->name;
         $title = $obj->controller->title;
@@ -230,6 +222,13 @@ PHP;
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    static protected function readFile($filename){
+        $file = fopen($filename, "r");
+        $code = fread($file, filesize($filename));
+        fclose($file);
+        return $code;
+    }
 
     static protected function mkdir($path){
         if (!file_exists($path)) {

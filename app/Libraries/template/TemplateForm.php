@@ -8,10 +8,10 @@ namespace App\Models;
 
 class __Form__ extends BaseForm
 {
-__member__
+//__member__
 
     function __construct()
 	{
-__attr__;
+//__attr__
     }
 }
