@@ -1,4 +1,4 @@
-<script src="<?= base_url('plugin/codebaseadmin/js/codebase.core.min.js'); ?>"></script>
+<!-- <script src="<?//= base_url('plugin/codebaseadmin/js/codebase.core.min.js'); ?>"></script> -->
 
 <!--
     Codebase JS
