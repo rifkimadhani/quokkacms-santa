@@ -122,4 +122,5 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
     }
 
 </script>
-<?= $this->include('util/filemanager') ?>
+<?= view('util/filemanager.php') ?>
+<?= view('util/scripts.php')?>

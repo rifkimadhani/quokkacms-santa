@@ -59,7 +59,7 @@ HTML;
                         <h3 class="block-title">{$dialogTitle}</h3>
                         <div class="block-options">
                             <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
-                                <i class="si si-close"></i>
+                                <i class="si si-close" aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>
@@ -146,7 +146,7 @@ HTML;
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-alt-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-alt-success">
+                <button type="submit" class="btn btn-alt-primary">
                     <i class="fa fa-check"></i> Submit
                 </button>
             </div>
@@ -316,7 +316,7 @@ HTML;
     <div class="input-group" style="width: 100%;">
         <input type="hidden" id="{$formId}_{$item}">
         <input type="text" name="{$item}" id="{$item}" class="form-control" autocomplete="off" {$readonly} {$required} {$attr}/>
-        <div class="input-group-addon" style="cursor: pointer;" form-id="{$formId}" input-id="{$item}">Browse</div>
+        <button class="btn btn-alt-primary input-group-addon" style="cursor: pointer;" form-id="{$formId}" input-id="{$item}">Browse</button>
     </div>
     <div id="images-preview-{$formId}-{$item}" class="images-preview" form-id="{$formId}" input-id="{$item}">
         {$htmlImagePreview}

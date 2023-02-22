@@ -5,9 +5,10 @@
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 <!-- Icons -->
 <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-<link rel="shortcut icon" href="<?= base_url('plugin/codebaseadmin/media/favicons/favicon.png') ?>">
-<link rel="icon" type="image/png" sizes="192x192" href="<?= base_url('plugin/codebaseadmin/media/favicons/favicon-192x192.png') ?>">
-<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('plugin/codebaseadmin/media/favicons/apple-touch-icon-180x180.png') ?>">
+<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('plugin/codebaseadmin/favicons/apple-touch-icon.png') ?>">
+<link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('plugin/codebaseadmin/favicons/favicon-32x32.png') ?>">
+<link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('plugin/codebaseadmin/favicons/favicon-16x16.png') ?>">
+<link rel="manifest" href="<?= base_url('plugin/codebaseadmin/favicons/site.webmanifest') ?>">
 <!-- END Icons -->
 
 <!-- Stylesheets -->
@@ -44,8 +45,8 @@
 <link rel="stylesheet" href="<?= base_url('plugin/codebaseadmin/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.css')?>">
 
 <!-- jQuery -->
+<script src="<?= base_url('plugin/codebaseadmin/js/codebase.core.min.js'); ?>"></script>
 <!-- <script src="<?//= base_url('plugin/adminlte/bower_components/jquery/dist/jquery.min.js') ?>"></script> -->
-<script src="<?= base_url('plugin/codebaseadmin/js/core/jquery.min.js') ?>"></script>
 <script src="<?= base_url('plugin/jstree/dist/jstree.min.js') ?>"></script>
 <!-- <script src="<?//= base_url('plugin/jquery.validate-1.11.1/jquery.validate.js') ?>"></script> -->
 <script src="<?= base_url('plugin/codebaseadmin/js/plugins/jquery-validation/jquery.validate.js') ?>"></script>
