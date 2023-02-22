@@ -6,3 +6,4 @@ CMS ini mempergunakan Code igniter 4.3.
 ## Changes database
 - trole, rubah role_id dari auto increment --> not auto increment
 
+test squass
