@@ -34,10 +34,10 @@ class FormBuilder
      */
     function renderPlainDialog($formId, $htmlContent=''){
         return <<< HTML
-<div class="modal fade dialog{$formId}" tabindex="-1" role="dialog" aria-hidden="true">
-    {$htmlContent}
-</div>
-HTML;
+        <div class="modal fade dialog{$formId}" tabindex="-1" role="dialog" aria-hidden="true">
+            {$htmlContent}
+        </div>
+        HTML;
     }
 
     /**
@@ -67,7 +67,7 @@ HTML;
                 {$inputElement}
             </div>
         </div>
-HTML;
+        HTML;
     }
 
     /**
@@ -151,7 +151,7 @@ HTML;
                 </button>
             </div>
         </form>
-HTML;
+        HTML;
     }
 
     function renderVarchar($item, &$value) {
@@ -165,11 +165,11 @@ HTML;
         $attr = $this->buildAttribute($value);
 
         return <<< HTML
-    <div class="form-group">
-        <label class='col-form-label'><b>{$label}</b></label>
-        <input name='{$item}' type='text' id='{$item}' class=form-control {$attr} {$required} {$readonly}>
-    </div>
-HTML;
+        <div class="form-group">
+            <label class='col-form-label'><b>{$label}</b></label>
+            <input name='{$item}' type='text' id='{$item}' class=form-control {$attr} {$required} {$readonly}>
+        </div>
+        HTML;
     }
 
     function renderTextarea($item, $value){
@@ -184,18 +184,18 @@ HTML;
         $attr = $this->buildAttribute($value);
 
         return <<< HTML
-    <div class="form-group">
-        <label class='col-form-label'><b>{$label}</b></label>
-        <textarea name='{$item}' id='{$item}' class=form-control {$attr} {$required} {$readonly}>{$message}</textarea>
-    </div>
-HTML;
+        <div class="form-group">
+            <label class='col-form-label'><b>{$label}</b></label>
+            <textarea name='{$item}' id='{$item}' class=form-control {$attr} {$required} {$readonly}>{$message}</textarea>
+        </div>
+        HTML;
     }
 
     function renderHidden($item, $value){
         $value = $this->getAndUnset($value, 'value');
         return <<< HTML
         <input name='{$item}' id='{$item}' type='hidden' value='{$value}'>
-HTML;
+        HTML;
     }
 
     function renderPassword($item, $value){
@@ -210,7 +210,7 @@ HTML;
                 <input name="{$item}" id='{$item}' type='password' class="form-control" {$attr} {$required}>
                 <span toggle='#{$item}' class='fa fa-fw fa-eye-slash field-icon toggle-password'></span>
         </div>
-HTML;
+        HTML;
     }
 
     function renderSelect($item, $data){
@@ -250,7 +250,7 @@ HTML;
                 {$htmlOptions}
             </select>
         </div>
-HTML;
+        HTML;
     }
 
     function renderSelectMultiple($item, $data){
@@ -290,7 +290,7 @@ HTML;
                 {$htmlOptions}
             </select>
         </div>
-HTML;
+        HTML;
     }
 
     function renderFilemanager($formId, $item, $data){
@@ -311,18 +311,18 @@ HTML;
         }
 
         return <<< HTML
-<div class="form-group">
-    <label class="col-form-label"><b>{$label}</b></label>
-    <div class="input-group" style="width: 100%;">
-        <input type="hidden" id="{$formId}_{$item}">
-        <input type="text" name="{$item}" id="{$item}" class="form-control" autocomplete="off" {$readonly} {$required} {$attr}/>
-        <button class="btn btn-alt-primary input-group-addon" style="cursor: pointer;" form-id="{$formId}" input-id="{$item}">Browse</button>
-    </div>
-    <div id="images-preview-{$formId}-{$item}" class="images-preview" form-id="{$formId}" input-id="{$item}">
-        {$htmlImagePreview}
-    </div>
-</div>
-HTML;
+        <div class="form-group">
+            <label class="col-form-label"><b>{$label}</b></label>
+            <div class="input-group" style="width: 100%;">
+                <input type="hidden" id="{$formId}_{$item}">
+                <input type="text" name="{$item}" id="{$item}" class="form-control" autocomplete="off" {$readonly} {$required} {$attr}/>
+                <div class="btn btn-alt-primary input-group-addon" style="cursor: pointer;" form-id="{$formId}" input-id="{$item}">Browse</div>
+            </div>
+            <div id="images-preview-{$formId}-{$item}" class="images-preview" form-id="{$formId}" input-id="{$item}">
+                {$htmlImagePreview}
+            </div>
+        </div>
+        HTML;
     }
 
 
