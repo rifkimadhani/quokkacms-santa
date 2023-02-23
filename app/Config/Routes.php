@@ -36,9 +36,6 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 
-require_once 'Routes_Role.php';
-
-
 $routes->get('/builder', 'Builder::index');
 $routes->post('/builder/build', 'Builder::build');
 
