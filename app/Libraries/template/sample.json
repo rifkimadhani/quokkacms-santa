@@ -1,4 +1,5 @@
 {
+  "folder": "role",
   "controller": {
     "name": "Role",
     "title": "Role"
