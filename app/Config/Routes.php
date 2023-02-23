@@ -90,6 +90,14 @@ $routes->get('/message/delete/(:num)', 'Message::delete/$1');
 $routes->post('/message/insert', 'Message::insert');
 $routes->post('/message/update', 'Message::update');
 
+//Role
+$routes->get('/role', 'Role::index');
+$routes->get('/role/ssp', 'Role::ssp');
+$routes->get('/role/edit/(:num)', 'Role::edit/$1');
+$routes->get('/role/delete/(:num)', 'Role::delete/$1');
+$routes->post('/role/update', 'Role::update');
+$routes->post('/role/insert', 'Role::insert');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
