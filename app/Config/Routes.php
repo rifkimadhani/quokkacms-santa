@@ -39,8 +39,8 @@ $routes->set404Override();
 require_once 'Routes_Role.php';
 
 
-$routes->get('/builder', 'PageBuilder::index');
-$routes->get('/builder/build', 'PageBuilder::build');
+$routes->get('/builder', 'Builder::index');
+$routes->post('/builder/build', 'Builder::build');
 
 //home
 $routes->get('/', 'Home::index');
