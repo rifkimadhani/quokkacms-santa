@@ -38,6 +38,7 @@ $routes->set404Override();
 
 $routes->get('/builder', 'Builder::index');
 $routes->post('/builder/build', 'Builder::build');
+$routes->get('/builder/ajaxGetFields/(:any)', 'Builder::ajaxGetFields/$1');
 
 //home
 $routes->get('/', 'Home::index');

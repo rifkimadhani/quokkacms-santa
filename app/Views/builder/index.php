@@ -5,44 +5,252 @@
  * Date: 2/23/2023
  * Time: 9:23 AM
  */
+
+use App\Libraries\HtmlBuilder;
+
+$htmlListTable = HtmlBuilder::renderOption($tables)
+
 ?>
 
-<!-- <form method="post" action="<?//=$baseUrl?>/build">
-    <textarea name="json" rows="25" cols="50"><?//=$sample?></textarea>
-    <br/>
-    <button type="submit">Build</button>
-</form> -->
-
-<!-- JSON Editor -->
 <form method="post" action="<?=$baseUrl?>/build">
-    <div class="row" style="margin-bottom:1em;">
-        <div class="col-md-8">
-            <div id="jsoneditor" style="height: fit-content;"></div>
-            <button class="btn btn-dark mb-2 mt-2 pull-right" type="button" onclick="convertToJson()"><i class="fa fa-code fa-fw"></i> Convert</button>
-        </div>
-        <div class="col-md-4">
-            <textarea class="pull-right form-control" rows="11" name="json" id="jsoninput" style="width: 100%; margin-bottom:0.35rem;"></textarea>
-            <button class="btn btn-dark mb-2 mt-2 pull-right" type="submit"><i class="fa fa-check fa-fw"></i> Build</button>
-        </div>    
-        <br>
-    </div>
+
+    <table>
+        <thead>
+            <tr><td></td><td></td></tr>
+        </thead>
+        <tbody>
+            <tr><td>CRUD Table</td><td><select id='table' onchange="onChangeTable(this)"><?=$htmlListTable?></select></td></tr>
+            <tr><td>CRUD allowedFields</td>
+                <td>
+                    <table id="tableCrudFields" border="1">
+                        <thead><tr><td>&nbsp;</td><td>Field</td><td>pk</td><td>type</td></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr><td>View</td><td><select id='view' onchange="onChangeView(this)"><?=$htmlListTable?></select></td></tr>
+        </tbody>
+    </table>
+
+
+    <br/><br/>
+
+    <textarea id="json" name="json" rows="25" cols="50"><?=$sample?></textarea>
+    <br/>
+
+    <button type="submit">Build</button>
+
 </form>
 
-<!-- JSON Editor -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.10.0/jsoneditor.min.js"></script>
 <script>
-    var container = document.getElementById("jsoneditor");
-    var options = {};
-    var editor = new JSONEditor(container, options);
+    const tbody = document.getElementById('tableCrudFields').getElementsByTagName('tbody')[0];
+    const json = document.getElementById("json");
 
-    // Set the initial value
-    var initialJson = <?=$sample?>;
-    editor.set(initialJson);
+    var modelData = null;
+    var fieldsSelected = [];
 
-    // Convert JSON to textarea value
-    function convertToJson() {
-        var jsonValue = editor.get();
-        var jsonTextarea = document.getElementById("jsoninput");
-        jsonTextarea.value = JSON.stringify(jsonValue);
+//    var fieldsPick = []; //field yg di pilih
+//    var fieldsType = []; //field type
+//    var fieldsAutoInc = []; //field auto inc
+
+    var modelTable = '';
+    var modelPk = [];
+    var modelUpdateFields = [];
+    var modelView = '';
+    var modelFieldList = '';
+
+    /**
+     * event saat table crud di pilih
+     * @param that
+     */
+    function onChangeTable(that) {
+        const options = that.selectedOptions;
+        onFetchFields(options[0].value);
+    }
+
+    function onChangeView(that) {
+        const options = that.selectedOptions;
+        onFetchViewFields(options[0].value);
+    }
+
+
+    /**
+     * ambil fields dari tablename
+     * @param name string
+     */
+    function onFetchFields(name) {
+        const url = "<?=$baseUrl?>/ajaxGetFields/" + name;
+
+        modelTable = name;
+
+        $.ajax({
+            url: url,
+        }).done(function(data) {
+            modelData = data;
+            removeAllRows();
+            renderFields(data);
+        });
+    }
+
+    function onFetchViewFields(name) {
+        const url = "<?=$baseUrl?>/ajaxGetFields/" + name;
+
+        modelView = name;
+
+        $.ajax({
+            url: url,
+        }).done(function(data) {
+            buildFieldList(data);
+        });
+    }
+
+    /**
+     * hapus semua rows
+     */
+    function removeAllRows() {
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+    }
+
+    /**
+     * render fields utk table crud
+     */
+    function renderFields(data) {
+
+        //reset
+        modelPk = [];
+        fieldsSelected = [];
+
+        //buat row utk setiap field
+        data.forEach(function (value, idx) {
+            const field = value.Field;
+            const key = value.Key;
+            const type = value.Type;
+            const extra = value.Extra;
+
+            const isAutoInc = extra.localeCompare('auto_increment')==0 ? true : false;
+            const isPk = key.localeCompare('PRI')==0 ? true : false; //primary key
+
+            //converikan type mysql ke type internal
+            newType = convertType(type);
+
+            //insert field ke array
+//            fieldsPick.push(field);
+//            fieldsAutoInc.push(isAutoInc);
+
+            const o = {}; //empty object
+            fieldsSelected.push(o);
+            o.field = field;
+            o.type = newType;
+            o.typeOri = type; //original type
+            o.autoInc = isAutoInc;
+            o.extra = extra;
+
+            const row = tbody.insertRow();
+
+            //col1 = checkbox
+            //setiap kali pilih table, otomatis di select semua field
+            const col1 = document.createElement("td");
+
+            //apabila pk maka tdk bisa di uncheck
+            if (isPk) disabled = 'disabled'; else disabled='';
+            col1.innerHTML = "<input id='cb"+idx+"' type='checkbox' value='"+idx+"' checked "+disabled+"/>";
+            row.appendChild(col1);
+
+            //col2 = field name
+            const col2 = document.createElement("td");
+            col2.textContent = field;
+            row.appendChild(col2);
+
+            //colr3 = primary key
+            const col3 = document.createElement("td");
+            if (isPk){
+                //set pk, pk hanya bisa di set 1 saja
+                modelPk.push(field);
+                col3.innerHTML = '<i class="fa fa-key" aria-hidden="true"></i>';
+            } else {
+                col3.innerHTML = '';
+            }
+            row.appendChild(col3);
+
+            const col4 = document.createElement("td");
+            col4.innerHTML = buildSelectType(newType, idx);
+            row.appendChild(col4);
+
+            modelUpdateFields.push(field);
+        });
+
+        updateJson();
+    }
+
+    /**
+     * field list di pakai utk table view
+     *
+     * @param data
+     */
+    function buildFieldList(data) {
+
+        modelFieldList = '';
+
+        //buat row utk setiap field
+        data.forEach(function (value, idx) {
+            const field = value.Field;
+
+            if (modelFieldList.length==0){
+                modelFieldList = "'"+field+"'";
+            } else {
+                modelFieldList += ",'"+field+"'";
+            }
+        });
+
+        updateJson();
+    }
+
+    /**
+     * buat select utk data type
+     *
+     *
+     * @param idx
+     */
+    function buildSelectType(type, idx) {
+        return "<select id='sel"+idx+"' index='"+idx+"'><option value='varchar'>varchar</option><option value='numeric'>numeric</option><option value='filemanager'>filemanager</option><option value='hidden'>hidden</option></select>"
+    }
+
+    function convertType(actualType) {
+        if (actualType.includes('varchar')) return 'varchar';
+        if (actualType.includes('int')) return 'numeric';
+        if (actualType.includes('smallint')) return 'numeric';
+        return 'varchar';
+    }
+
+    function updateJson() {
+
+        const obj = JSON.parse(json.value);
+
+        obj.model.table = modelTable;
+        obj.model.pk = modelPk;
+        obj.model.updateFields = modelUpdateFields;
+
+        obj.model.view = modelView;
+        obj.model.fieldList = modelFieldList;
+
+        //update form
+        const fields = [];
+        for(idx=0; idx<fieldsSelected.length; idx++){
+            const field = fieldsSelected[idx];
+
+            //skip apabila field kosong
+            if (field==null) continue;
+
+
+            //insert ke dalam object
+            fields.push(field);
+        }
+
+        obj.form.fields = fields;
+
+
+        json.value = JSON.stringify(obj, null, 4);
     }
 </script>

@@ -9,6 +9,7 @@
     "table": "trole",
     "pk": "role_id",
     "updateFields": ["role_id", "role_name"],
+    "view": "trole",
     "fieldList": "'role_id','role_name'"
   },
   "form": {

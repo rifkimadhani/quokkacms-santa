@@ -11,8 +11,14 @@ namespace App\Models;
 class BuilderModel extends BaseModel
 {
     const SQL_GET_TABLE = 'SHOW TABLES';
+    const SQL_GET_FIELD = 'DESCRIBE ';
 
-    public function getTableList(){
+    /**
+     * Ambil semua list table dari db
+     *
+     * @return array|int
+     */
+    public function getTables(){
 
         try{
             $pdo = $this->openPdo();
@@ -25,7 +31,8 @@ class BuilderModel extends BaseModel
             foreach ($rows as $key=>$item){
                 //nama table ada pada array item,
                 //hanya bagian value saja yg di butuhkan
-                $ar[] = array_values($item)[0]; //add nama table ke $ar
+                $tableName = array_values($item)[0];
+                $ar[] = ['id'=>$tableName, 'value'=>$tableName]; //add nama table ke $ar
             }
 
             return $ar;
@@ -36,6 +43,33 @@ class BuilderModel extends BaseModel
             $this->errMessage = $e->getMessage();
             return -1;
         }
+    }
+
+    public function getFields($tableName){
+        try{
+            $pdo = $this->openPdo();
+            $stmt = $pdo->prepare(self::SQL_GET_FIELD . $tableName);
+            $stmt->execute( [] );
+            $rows = $stmt->fetchAll();
+
+            //buat list baru yg berisikan hanya nama table saja
+//            $ar = [];
+//            foreach ($rows as $key=>$item){
+//                //nama table ada pada array item,
+//                //hanya bagian value saja yg di butuhkan
+//                $tableName = array_values($item)[0];
+//                $ar[] = ['id'=>$tableName, 'value'=>$tableName]; //add nama table ke $ar
+//            }
+
+            return $rows;
+
+        }catch (\PDOException $e){
+            log_message('error', json_encode($e));
+            $this->errCode = $e->getCode();
+            $this->errMessage = $e->getMessage();
+            return -1;
+        }
+
     }
 
 }

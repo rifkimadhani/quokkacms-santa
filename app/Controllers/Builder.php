@@ -9,6 +9,7 @@
 namespace App\Controllers;
 
 use App\Libraries\PageBuilder;
+use App\Models\BuilderModel;
 
 class Builder extends BaseController
 {
@@ -22,7 +23,18 @@ class Builder extends BaseController
         $filename = __DIR__ . '/../Libraries/template/sample.json';
         $sample = PageBuilder::readFile($filename);
 
-        return view('layout/template', compact('mainview', 'pageTitle', 'baseUrl', 'sample'));
+        $model = new BuilderModel();
+        $tables = $model->getTables();
+
+        return view('layout/template', compact('mainview', 'pageTitle', 'baseUrl', 'sample', 'tables'));
+    }
+
+    public function ajaxGetFields($tableName){
+        $model = new BuilderModel();
+        $fields = $model->getFields($tableName);
+
+        $this->response->setContentType("application/json");
+        echo json_encode($fields);
     }
 
     public function build(){
@@ -39,4 +51,5 @@ class Builder extends BaseController
 
         return 'SUCCESS';
     }
+
 }
