@@ -52,7 +52,7 @@ class FormBuilder
         $inputElement = $this->renderBody($dialogTitle, $formId, $form, $action, $data);
 
         return <<<HTML
-        <div class="modal-dialog modal-dialog-popout" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-popout" role="document">
             <div class="modal-content">
                 <div class="block block-themed block-transparent mb-0">
                     <div class="block-header bg-primary-dark">

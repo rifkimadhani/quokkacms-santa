@@ -55,3 +55,40 @@
 <!-- <script src="<?//= base_url('plugin/bootstrap-colorpicker-2.5.3/dist/js/bootstrap-colorpicker.min.js')?>"></script> -->
 <script src="<?= base_url('plugin/codebaseadmin/js/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js')?>"></script>
 <script src="<?= base_url('plugin/hls-js/hls.js')?>"></script>
+
+<!-- JSON Editor -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.10.0/jsoneditor.min.css" />
+<style>
+    /* Customize header color of JSON editor */
+    .jsoneditor {
+        border: thin solid #424242;
+    }
+    .jsoneditor-menu {
+        background-color: #424242;
+    }
+    .jsoneditor-menu .jsoneditor-label {
+        color: #ffffff;
+    }
+
+    /* Customize Scrollbar */
+    /* width */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 30px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+</style>

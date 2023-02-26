@@ -26,27 +26,27 @@
                             </a>
                         </div>
                         <div class="col-2 mb-5">
-                            <a class="text-elegance" data-toggle="theme" data-theme="<?= base_url('assets/assets/css/themes/elegance.min.css'); ?>" href="javascript:void(0)">
+                            <a class="text-elegance" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/elegance.min.css'); ?>" href="javascript:void(0)">
                                 <i class="fa fa-2x fa-circle"></i>
                             </a>
                         </div>
                         <div class="col-2 mb-5">
-                            <a class="text-pulse" data-toggle="theme" data-theme="<?= base_url('assets/assets/css/themes/pulse.min.css'); ?>" href="javascript:void(0)">
+                            <a class="text-pulse" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/pulse.min.css'); ?>" href="javascript:void(0)">
                                 <i class="fa fa-2x fa-circle"></i>
                             </a>
                         </div>
                         <div class="col-2 mb-5">
-                            <a class="text-flat" data-toggle="theme" data-theme="<?= base_url('assets/assets/css/themes/flat.min.css'); ?>" href="javascript:void(0)">
+                            <a class="text-flat" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/flat.min.css'); ?>" href="javascript:void(0)">
                                 <i class="fa fa-2x fa-circle"></i>
                             </a>
                         </div>
                         <div class="col-2 mb-5">
-                            <a class="text-corporate" data-toggle="theme" data-theme="<?= base_url('assets/assets/css/themes/corporate.min.css'); ?>" href="javascript:void(0)">
+                            <a class="text-corporate" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/corporate.min.css'); ?>" href="javascript:void(0)">
                                 <i class="fa fa-2x fa-circle"></i>
                             </a>
                         </div>
                         <div class="col-2 mb-5">
-                            <a class="text-earth" data-toggle="theme" data-theme="<?= base_url('assets/assets/css/themes/earth.min.css'); ?>" href="javascript:void(0)">
+                            <a class="text-earth" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/earth.min.css'); ?>" href="javascript:void(0)">
                                 <i class="fa fa-2x fa-circle"></i>
                             </a>
                         </div>

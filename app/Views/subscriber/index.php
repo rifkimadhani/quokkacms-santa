@@ -17,7 +17,7 @@ $htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
     </div>
 </div>
 <div class="block-content block-content-full table-responsive">
-    <table id="datalist" class="table table-bordered table-hover table-striped table-vcenter">
+    <table id="datalist" class="table table-bordered table-hover table-striped table-vcenter" style="width: 100%;">
         <thead>
             <tr> 
                 <?php foreach ($fieldList as $field): ?>
@@ -26,6 +26,8 @@ $htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
                 <th style="width: 5%;">Action</th>
             </tr>
         </thead>
+        <tbody>
+        </tbody>
     </table>
 </div>
 
@@ -65,6 +67,7 @@ $htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
                     },
                     {
                         //action column
+                        orderable: false,
                         targets: lastCol,
                         className: "text-center",
                         defaultContent: '<a onclick="onClickCheckout(event, this);" href="javascript:;"><span class="label label-danger">CHECKOUT</span></a>'
@@ -83,6 +86,7 @@ $htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
                     }
 
                 ]
+                
             });
 
         //handle click on row
