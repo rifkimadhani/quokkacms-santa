@@ -47,15 +47,15 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
     const json = document.getElementById("json");
 
     var modelData = null;
-    var fieldsSelected = [];
+    var fieldsSelected = []; //daftar semua field pada table
 
 //    var fieldsPick = []; //field yg di pilih
 //    var fieldsType = []; //field type
 //    var fieldsAutoInc = []; //field auto inc
 
-    var modelTable = '';
-    var modelPk = [];
-    var modelUpdateFields = [];
+    var modelTable = ''; //json table
+    var modelPk = []; //json pk
+//    var modelUpdateFields = []; //upadateFields berisikan nama2 field yg boleh di update
     var modelView = '';
     var modelFieldList = '';
 
@@ -66,6 +66,19 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
     function onChangeTable(that) {
         const options = that.selectedOptions;
         onFetchFields(options[0].value);
+    }
+
+    /**
+     * di call saat user click checkbox pada field table
+     */
+    function onChangeField(that, idx) {
+        fieldsSelected[idx].selected = that.checked;
+        updateJson();
+    }
+
+    function onChangeType(that, idx) {
+        fieldsSelected[idx].type = that.value;
+        updateJson();
     }
 
     function onChangeView(that) {
@@ -121,6 +134,7 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
         //reset
         modelPk = [];
         fieldsSelected = [];
+        modelUpdateFields = [];
 
         //buat row utk setiap field
         data.forEach(function (value, idx) {
@@ -146,6 +160,8 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
             o.typeOri = type; //original type
             o.autoInc = isAutoInc;
             o.extra = extra;
+            o.selected = true;
+            o.isNull = value.Null;
 
             const row = tbody.insertRow();
 
@@ -155,7 +171,7 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
 
             //apabila pk maka tdk bisa di uncheck
             if (isPk) disabled = 'disabled'; else disabled='';
-            col1.innerHTML = "<input id='cb"+idx+"' type='checkbox' value='"+idx+"' checked "+disabled+"/>";
+            col1.innerHTML = "<input id='cb"+idx+"' type='checkbox' value='"+idx+"' onchange='onChangeField(this, "+idx+")' checked "+disabled+"/>";
             row.appendChild(col1);
 
             //col2 = field name
@@ -174,11 +190,12 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
             }
             row.appendChild(col3);
 
+            //type
             const col4 = document.createElement("td");
             col4.innerHTML = buildSelectType(newType, idx);
             row.appendChild(col4);
 
-            modelUpdateFields.push(field);
+//            modelUpdateFields.push(field);
         });
 
         updateJson();
@@ -213,10 +230,25 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
      *
      * @param idx
      */
+    const arType = ['varchar', 'numeric', 'filemanager', 'hidden'];
     function buildSelectType(type, idx) {
-        return "<select id='sel"+idx+"' index='"+idx+"'><option value='varchar'>varchar</option><option value='numeric'>numeric</option><option value='filemanager'>filemanager</option><option value='hidden'>hidden</option></select>"
+
+        var option = '';
+        arType.forEach(function(value, idx){
+//            if (value==type) selected = 'selected'; else selected = '';
+            selected = (value == type) ? 'selected' : '';
+            option += "<option value='"+value+"' "+selected+">"+value+"</option>";
+        });
+
+        return "<select id='sel"+idx+"' index='"+idx+"' onchange='onChangeType(this, "+idx+")'>" + option + "</select>"
     }
 
+    /**
+     * conversikan type dari db ke type internal formBuilder
+     *
+     * @param actualType
+     * @returns {*}
+     */
     function convertType(actualType) {
         if (actualType.includes('varchar')) return 'varchar';
         if (actualType.includes('int')) return 'numeric';
@@ -228,29 +260,42 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
 
         const obj = JSON.parse(json.value);
 
-        obj.model.table = modelTable;
-        obj.model.pk = modelPk;
-        obj.model.updateFields = modelUpdateFields;
-
-        obj.model.view = modelView;
-        obj.model.fieldList = modelFieldList;
-
         //update form
+        const updateFields = []; //reset
         const fields = [];
+
         for(idx=0; idx<fieldsSelected.length; idx++){
             const field = fieldsSelected[idx];
 
             //skip apabila field kosong
-            if (field==null) continue;
+            if (field.selected==false) continue;
 
+            const o = {};
+            o.field = field.field;
+            o.type = field.type;
+            o.autoInc = field.autoInc;
+
+            //apabila field tdk boleh null dan autoInc==false, maka required harus di set
+            if (field.isNull.includes('NO') && o.autoInc==false) o.required = 'required';
 
             //insert ke dalam object
-            fields.push(field);
+            fields.push(o);
+
+            //apabila autoinc == true, maka tdk boleh di masukkan pada updateFields
+            if (o.autoInc==false){
+                updateFields.push(o.field);
+            }
         }
 
+        //pindahkan semua value ke obj
+        obj.model.table = modelTable;
+        obj.model.pk = modelPk;
+        obj.model.updateFields = updateFields;
+        obj.model.view = modelView;
+        obj.model.fieldList = modelFieldList;
         obj.form.fields = fields;
 
-
+        //replace json dari obj
         json.value = JSON.stringify(obj, null, 4);
     }
 </script>
