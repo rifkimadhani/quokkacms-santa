@@ -29,6 +29,11 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
                 </td>
             </tr>
             <tr><td>View</td><td><select id='view' onchange="onChangeView(this)"><?=$htmlListTable?></select></td></tr>
+            <tr><td colspan="2">&nbsp;</td></tr>
+            <tr><td>Controller name</td><td><input id='controllerName' name='controllerName' onchange="onChangeController(this)" /></td></tr>
+            <tr><td>Model name</td><td><input id='modelName' name='modelName' onchange="onChangeModel(this)" /></td></tr>
+            <tr><td>Form name</td><td><input id='formName' name='formName' onchange="onChangeForm(this)" /></td></tr>
+            <tr><td>view name</td><td><input id='viewName' name='viewName' onchange="onChangeViewName(this)" /></td></tr>
         </tbody>
     </table>
 
@@ -45,6 +50,10 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
 <script>
     const tbody = document.getElementById('tableCrudFields').getElementsByTagName('tbody')[0];
     const json = document.getElementById("json");
+    const oController = document.getElementById('controllerName');
+    const oModel = document.getElementById('modelName');
+    const oForm = document.getElementById('formName');
+    const oView = document.getElementById('viewName');
 
     var modelData = null;
     var fieldsSelected = []; //daftar semua field pada table
@@ -57,7 +66,7 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
     var modelPk = []; //json pk
 //    var modelUpdateFields = []; //upadateFields berisikan nama2 field yg boleh di update
     var modelView = '';
-    var modelFieldList = '';
+    var modelFieldList = [];
 
     /**
      * event saat table crud di pilih
@@ -86,6 +95,28 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
         onFetchViewFields(options[0].value);
     }
 
+    function onChangeController(that) {
+//        console.log("controller " + that.value);
+        oModel.value = that.value + "Model";
+        oForm.value = that.value + "Form";
+        oView.value = that.value.toLowerCase();
+        updateJson();
+    }
+
+    function onChangeModel(that) {
+//        console.log("model " + that.value);
+        updateJson();
+    }
+
+    function onChangeForm(that) {
+//        console.log("form " + that.value);
+        updateJson();
+    }
+
+    function onChangeViewName(that) {
+//        console.log("view " + that.value);
+        updateJson();
+    }
 
     /**
      * ambil fields dari tablename
@@ -208,17 +239,17 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
      */
     function buildFieldList(data) {
 
-        modelFieldList = '';
+        modelFieldList = [];
 
         //buat row utk setiap field
         data.forEach(function (value, idx) {
             const field = value.Field;
-
-            if (modelFieldList.length==0){
-                modelFieldList = "'"+field+"'";
-            } else {
-                modelFieldList += ",'"+field+"'";
-            }
+            modelFieldList.push(field);
+//            if (modelFieldList.length==0){
+//                modelFieldList = "'"+field+"'";
+//            } else {
+//                modelFieldList += ",'"+field+"'";
+//            }
         });
 
         updateJson();
@@ -294,6 +325,14 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
         obj.model.view = modelView;
         obj.model.fieldList = modelFieldList;
         obj.form.fields = fields;
+
+        obj.folder = oView.value;
+        obj.controller.name = oController.value;
+        obj.controller.title = oController.value;
+        obj.model.name = oModel.value;
+        obj.form.name = oForm.value;
+        obj.view.folder = oView.value;
+        obj.view.dialogTitle = oView.value;
 
         //replace json dari obj
         json.value = JSON.stringify(obj, null, 4);
