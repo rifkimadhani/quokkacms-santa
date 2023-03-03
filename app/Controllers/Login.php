@@ -62,7 +62,8 @@ class Login extends BaseController
 
     public function logout()
     {
-        session()->set('admin_id', false);
+        //hapus semua session
+        session()->destroy();
 
         return redirect()->to('login');
     }
