@@ -138,6 +138,10 @@ HTML;
                     $element = $this->renderApkFile($item, $attr);
                     break;
 
+                case 'datetime':
+                    $element = $this->renderDatetime($formId, $item, $attr);
+                    break;
+
                 default:
                     $element = '';
                     break;
@@ -363,8 +367,33 @@ HTML;
         return <<< HTML
         <div class="form-group">
             <label class='col-form-label'><b>{$label}</b></label>
-            <input name='{$item}' id='{$item}' type='number' class=form-control  {$attr} {$required} {$readonly}>
+            <input name='{$item}' id='{$item}' type='number' class=form-control {$attr} {$required} {$readonly}>
         </div>
+HTML;
+    }
+
+    function renderDatetime($formId, $item, $data){
+        $label = $this->getAndUnset($data, 'label');
+        $required = $this->getAndUnset($data, 'required');
+        $readonly = $this->getAndUnset($data, 'readonly');
+
+        //conversikan value
+        if(isset($data['value']))
+        {
+            $value = date('Y-m-d\TH:i',strtotime($data['value']));
+        }
+        else
+        {
+            $value = '';
+        }
+
+        $attr = $this->buildAttribute($data);
+
+        return <<< HTML
+            <div class="form-group">
+            <label class='col-form-label'><b>{$label}</b></label>
+            <input name='{$item}' id='{$item}' type=datetime-local class=form-control {$attr} {$required} {$readonly}>
+            </div>
 HTML;
     }
 
