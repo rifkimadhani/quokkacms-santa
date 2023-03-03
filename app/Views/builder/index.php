@@ -12,40 +12,63 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
 
 ?>
 
-<form method="post" action="<?=$baseUrl?>/build">
+<?php
+/**
+ * Created by PhpStorm.
+ * User: erick
+ * Date: 2/23/2023
+ * Time: 9:23 AM
+ */
+?>
 
-    <table>
-        <thead>
-            <tr><td></td><td></td></tr>
-        </thead>
-        <tbody>
-            <tr><td>CRUD Table</td><td><select id='table' onchange="onChangeTable(this)"><?=$htmlListTable?></select></td></tr>
-            <tr><td>CRUD allowedFields</td>
-                <td>
-                    <table id="tableCrudFields" border="1">
-                        <thead><tr><td>&nbsp;</td><td>Field</td><td>pk</td><td>type</td></tr></thead>
-                        <tbody></tbody>
-                    </table>
-                </td>
-            </tr>
-            <tr><td>View</td><td><select id='view' onchange="onChangeView(this)"><?=$htmlListTable?></select></td></tr>
-            <tr><td colspan="2">&nbsp;</td></tr>
-            <tr><td>Controller name</td><td><input id='controllerName' name='controllerName' onchange="onChangeController(this)" /></td></tr>
-            <tr><td>Model name</td><td><input id='modelName' name='modelName' onchange="onChangeModel(this)" /></td></tr>
-            <tr><td>Form name</td><td><input id='formName' name='formName' onchange="onChangeForm(this)" /></td></tr>
-            <tr><td>view name</td><td><input id='viewName' name='viewName' onchange="onChangeViewName(this)" /></td></tr>
-        </tbody>
-    </table>
-
-
-    <br/><br/>
-
-    <textarea id="json" name="json" rows="25" cols="50"><?=$sample?></textarea>
-    <br/>
-
-    <button type="submit">Build</button>
-
+<!-- JSON Editor -->
+<form method="post" action="<?=$baseUrl?>/build" onsubmit="return onSubmit();">
+    <input type="hidden" name="json" id="json">
+    <div class="row">
+        <div class="col-md-4">
+            <table>
+                <thead>
+                <tr><td></td><td></td></tr>
+                </thead>
+                <tbody>
+                <tr><td>CRUD Table</td><td><select id='table' onchange="onChangeTable(this)"><?=$htmlListTable?></select></td></tr>
+                <tr><td>CRUD allowedFields</td>
+                    <td>
+                        <table id="tableCrudFields" border="1">
+                            <thead><tr><td>&nbsp;</td><td>Field</td><td>pk</td><td>type</td></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr><td>View</td><td><select id='view' onchange="onChangeView(this)"><?=$htmlListTable?></select></td></tr>
+                <tr><td colspan="2">&nbsp;</td></tr>
+                <tr><td>Controller name</td><td><input id='controllerName' name='controllerName' onchange="onChangeController(this)" /></td></tr>
+                <tr><td>Model name</td><td><input id='modelName' name='modelName' onchange="onChangeModel(this)" /></td></tr>
+                <tr><td>Form name</td><td><input id='formName' name='formName' onchange="onChangeForm(this)" /></td></tr>
+                <tr><td>view name</td><td><input id='viewName' name='viewName' onchange="onChangeViewName(this)" /></td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-8">
+            <div id="jsoneditor" style="height: fit-content;"></div>
+            <button class="btn btn-dark mb-2 mt-2 pull-right" type="submit"><i class="fa fa-check fa-fw"></i> Build</button>
+<!--            <button class="btn btn-dark mb-2 mt-2 pull-right" type="button" onclick="convertToJson()"><i class="fa fa-code fa-fw"></i> Convert</button>-->
+        </div>
+        <br/>
+    </div>
 </form>
+
+<!-- JSON Editor -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.10.0/jsoneditor.min.js"></script>
+<script>
+    const container = document.getElementById("jsoneditor");
+    var options = {};
+    const editor = new JSONEditor(container, options);
+
+    // Set the initial value
+    const initialJson = <?=$sample?>;
+    editor.set(initialJson);
+</script>
 
 <script>
     const tbody = document.getElementById('tableCrudFields').getElementsByTagName('tbody')[0];
@@ -58,16 +81,20 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
     var modelData = null;
     var fieldsSelected = []; //daftar semua field pada table
 
-//    var fieldsPick = []; //field yg di pilih
-//    var fieldsType = []; //field type
-//    var fieldsAutoInc = []; //field auto inc
-
     var modelTable = ''; //json table
     var modelPk = []; //json pk
-//    var modelUpdateFields = []; //upadateFields berisikan nama2 field yg boleh di update
     var modelView = '';
     var modelFieldList = [];
 
+    function onSubmit() {
+
+        //pindahkan dari editor ke input json
+        var obj = document.getElementById("json");
+        obj.value = JSON.stringify(editor.get());
+
+        return true;
+    }
+    
     /**
      * event saat table crud di pilih
      * @param that
@@ -289,7 +316,7 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
 
     function updateJson() {
 
-        const obj = JSON.parse(json.value);
+        const obj = editor.get();
 
         //update form
         const updateFields = []; //reset
@@ -335,6 +362,6 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
         obj.view.dialogTitle = oView.value;
 
         //replace json dari obj
-        json.value = JSON.stringify(obj, null, 4);
+        editor.set(obj);
     }
 </script>
