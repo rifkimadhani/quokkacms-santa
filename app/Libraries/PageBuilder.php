@@ -135,6 +135,7 @@ class PageBuilder
         $attr = '';
         foreach ($fields as $item){
             $name = $item->field;
+            $properName = self::convertProperName($name);
             $type = $item->type;
             $req = $item->required;
 
@@ -144,7 +145,7 @@ class PageBuilder
                 //type=hidden tdk perlu title dan placeholder
                 $attr .= "        \$this->{$name} = ['type'=>'{$type}'];\n";
             } else {
-                $attr .= "        \$this->{$name} = ['type'=>'{$type}', 'label'=>'{$name}', 'placeholder'=>'', 'required'=>'{$req}'];\n";
+                $attr .= "        \$this->{$name} = ['type'=>'{$type}', 'label'=>'{$properName}', 'placeholder'=>'', 'required'=>'{$req}'];\n";
             }
         }
 
@@ -423,5 +424,25 @@ PHP;
             $idx++;
         }
         return null;
+    }
+
+    /**
+     * convert string "admin_id -> Admin id"
+     * @param $string
+     * @return string
+     */
+    static protected function convertProperName($string) {
+        // Split the string by underscores
+        $words = explode('_', $string);
+
+        // Capitalize the first letter of each word
+        $words = array_map(function($word) {
+            return ucfirst($word);
+        }, $words);
+
+        // Join the words with spaces
+        $result = implode(' ', $words);
+
+        return $result;
     }
 }
