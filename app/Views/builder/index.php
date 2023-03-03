@@ -52,7 +52,7 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
         <div class="col-md-8">
             <div id="jsoneditor" style="height: fit-content;"></div>
             <button class="btn btn-dark mb-2 mt-2 pull-right" type="submit"><i class="fa fa-check fa-fw"></i> Build</button>
-<!--            <button class="btn btn-dark mb-2 mt-2 pull-right" type="button" onclick="convertToJson()"><i class="fa fa-code fa-fw"></i> Convert</button>-->
+            <button class="btn btn-dark mb-2 mt-2 pull-right" type="button" onclick="onClickCopy()"><i class="fa fa-code fa-fw"></i> Copy</button>
         </div>
         <br/>
     </div>
@@ -65,12 +65,6 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
     var options = {};
     const editor = new JSONEditor(container, options);
 
-    // Set the initial value
-    const initialJson = <?=$sample?>;
-    editor.set(initialJson);
-</script>
-
-<script>
     const tbody = document.getElementById('tableCrudFields').getElementsByTagName('tbody')[0];
     const json = document.getElementById("json");
     const oController = document.getElementById('controllerName');
@@ -85,12 +79,28 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
     var modelPk = []; //json pk
     var modelView = '';
     var modelFieldList = [];
+    // Set the initial value
+    const initialJson = <?=$sample?>;
+    editor.set(initialJson);
+    
+    function onClickCopy() {
+        const textToCopy = JSON.stringify(editor.get(), null, 2);
 
+        //perform copy to clipboard
+        const copyInput = document.createElement("input");
+        copyInput.setAttribute("type", "text");
+        copyInput.setAttribute("value", textToCopy);
+        document.body.appendChild(copyInput);
+        copyInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(copyInput);
+    }
+    
     function onSubmit() {
 
         //pindahkan dari editor ke input json
-        var obj = document.getElementById("json");
-        obj.value = JSON.stringify(editor.get());
+//        var obj = document.getElementById("json");
+        json.value = JSON.stringify(editor.get());
 
         return true;
     }
@@ -288,7 +298,7 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
      *
      * @param idx
      */
-    const arType = ['varchar', 'numeric', 'filemanager', 'hidden'];
+    const arType = ['varchar', 'numeric', 'datetime', 'filemanager', 'hidden'];
     function buildSelectType(type, idx) {
 
         var option = '';
@@ -311,6 +321,7 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
         if (actualType.includes('varchar')) return 'varchar';
         if (actualType.includes('int')) return 'numeric';
         if (actualType.includes('smallint')) return 'numeric';
+        if (actualType.includes('datetime')) return 'datetime';
         return 'varchar';
     }
 
