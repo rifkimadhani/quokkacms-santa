@@ -27,11 +27,11 @@
         //hasil pilihan akan masuk ke input formId_inputId
         const returnId = formId + "_" + inputId; //filemanager akan fill input ini
 
-        const filemanagerurl    = $('#modal-galery').find('iframe').attr('src');
+        const filemanagerurl = $('#modal-galery').find('iframe').attr('src');
 
         //filemanager akan otomatis fill returnId
-        const filemanagerurlnew = uriquerystring.updateQueryStringParameter(filemanagerurl,'field_id', returnId);
-        $('#modal-galery').find('iframe').attr('src',filemanagerurlnew);
+        const filemanagerurlnew = uriquerystring.updateQueryStringParameter(filemanagerurl, 'field_id', returnId);
+        $('#modal-galery').find('iframe').attr('src', filemanagerurlnew);
 
         //simpan formId dan inputId
         localStorage.setItem('formId', formId);
@@ -44,15 +44,15 @@
         const inputId = localStorage.getItem('inputId');
         const formId = localStorage.getItem('formId');
         const returnId = formId + "_" + inputId;
-        const newurlvalue = $("#"+returnId).val();
+        const newurlvalue = $("#" + returnId).val();
 
-//        newurlvalue = returnValue;
+        // newurlvalue = returnValue;
 
         if(newurlvalue.length > 0)
         {
             const imagetoupload  = newurlvalue.replace(/[\[\]["]+/g,'').split(",");
 
-//            console.log(imagetoupload);
+            // console.log(imagetoupload);
 
             $.each(imagetoupload,function(index,value)
             {
@@ -63,18 +63,24 @@
             const arUrl = getUrlImagePreview(formId, inputId);
             $("#" + formId + " input[name="+inputId+"]").val(arUrl.toString());
         }
+
+        // kembalikan scroll focus ke modal dialog 
+        $('body').addClass('modal-open');
+
+        // padding-right: 0px; to correctly sized and positioned 'body' element saat modal di close
+        $('body').css('padding-right', '0px');
     });
 
     //ambil semua url dari img
     //
     function getUrlImagePreview(formId, inputId) {
-        const elementimages = $('#' + formId + " input[name="+inputId+"]").parent().next().children();
-        var newarrayimage = [];
+        const elementimages = $('#' + formId + " input[name=" + inputId + "]").parent().next().children();
+        var newarrayimage   = [];
 
         $.each(elementimages,function(idx, val)
         {
             const imagestoupload = $(this).css("background-image");
-            const stringimageulr = imagestoupload.replace('url(','').replace(')','').replace(/\"/gi, "");
+            const stringimageulr = imagestoupload.replace('url(', '').replace(')', '').replace(/\"/gi, "");
             newarrayimage.push(stringimageulr);
         });
 
@@ -102,7 +108,7 @@
                 newurl.push(value);
             }
         });
-        $("#"+formId+" input[name="+inputId+"]").val(newurl.toString());
+        $("#" + formId + " input[name=" + inputId + "]").val(newurl.toString());
         $(this).remove();
     });
 </script>

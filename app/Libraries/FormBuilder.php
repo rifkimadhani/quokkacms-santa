@@ -131,6 +131,10 @@ HTML;
                     $element = $this->renderFilemanager($formId, $item, $attr);
                     break;
 
+                case 'apkfile':
+                    $element = $this->renderApkFile($item, $attr);
+                    break;
+
                 default:
                     $element = '';
                     break;
@@ -324,6 +328,27 @@ HTML;
         </div>
 HTML;
     }
+
+    // function renderApkFile($item, $attr) {
+    //     $label = isset($attr['label']) ? "<label class='col-form-label'><b>{$attr['label']}</b></label>" : "";
+    //     $required = isset($attr['required']) ? $attr['required'] : "";
+    //     $input = "<input type='file' accept='.apk' class='form-control-file' name='{$item}' {$required}>";
+    
+    //     return $label . $input;
+    // }
+    function renderApkFile($item, $data){
+        $label = $this->getAndUnset($data, 'label');
+        $required = $this->getAndUnset($data, 'required');
+    
+        $attr = $this->buildAttribute($data);
+    
+        return <<< HTML
+        <div class="form-group">
+            <label class="col-form-label"><b>{$label}</b></label>
+            <input type="file" name="{$item}" id="{$item}" accept=".apk" {$required} {$attr}>
+        </div>
+        HTML;
+    }    
 
 
 

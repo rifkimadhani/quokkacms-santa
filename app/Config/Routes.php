@@ -98,6 +98,14 @@ $routes->get('/role/delete/(:num)', 'Role::delete/$1');
 $routes->post('/role/update', 'Role::update');
 $routes->post('/role/insert', 'Role::insert');
 
+// App
+$routes->get('/app', 'App::index');
+$routes->get('/app/ssp', 'App::ssp');
+$routes->get('/app/edit/(:num)', 'App::edit/$1');
+$routes->get('/app/delete/(:num)', 'App::delete/$1');
+$routes->post('/app/update', 'App::update');
+$routes->post('/app/insert', 'App::insert');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
