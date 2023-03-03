@@ -37,7 +37,7 @@ class FormBuilder
         <div class="modal fade dialog{$formId}" tabindex="-1" role="dialog" aria-hidden="true">
             {$htmlContent}
         </div>
-        HTML;
+HTML;
     }
 
     /**
@@ -67,7 +67,7 @@ class FormBuilder
                 {$inputElement}
             </div>
         </div>
-        HTML;
+HTML;
     }
 
     /**
@@ -151,7 +151,7 @@ class FormBuilder
                 </button>
             </div>
         </form>
-        HTML;
+HTML;
     }
 
     function renderVarchar($item, &$value) {
@@ -169,7 +169,7 @@ class FormBuilder
             <label class='col-form-label'><b>{$label}</b></label>
             <input name='{$item}' type='text' id='{$item}' class=form-control {$attr} {$required} {$readonly}>
         </div>
-        HTML;
+HTML;
     }
 
     function renderTextarea($item, $value){
@@ -188,14 +188,14 @@ class FormBuilder
             <label class='col-form-label'><b>{$label}</b></label>
             <textarea name='{$item}' id='{$item}' class=form-control {$attr} {$required} {$readonly}>{$message}</textarea>
         </div>
-        HTML;
+HTML;
     }
 
     function renderHidden($item, $value){
         $value = $this->getAndUnset($value, 'value');
         return <<< HTML
         <input name='{$item}' id='{$item}' type='hidden' value='{$value}'>
-        HTML;
+HTML;
     }
 
     function renderPassword($item, $value){
@@ -210,7 +210,7 @@ class FormBuilder
                 <input name="{$item}" id='{$item}' type='password' class="form-control" {$attr} {$required}>
                 <span toggle='#{$item}' class='fa fa-fw fa-eye-slash field-icon toggle-password'></span>
         </div>
-        HTML;
+HTML;
     }
 
     function renderSelect($item, $data){
@@ -250,7 +250,7 @@ class FormBuilder
                 {$htmlOptions}
             </select>
         </div>
-        HTML;
+HTML;
     }
 
     function renderSelectMultiple($item, $data){
@@ -290,7 +290,7 @@ class FormBuilder
                 {$htmlOptions}
             </select>
         </div>
-        HTML;
+HTML;
     }
 
     function renderFilemanager($formId, $item, $data){
@@ -322,7 +322,7 @@ class FormBuilder
                 {$htmlImagePreview}
             </div>
         </div>
-        HTML;
+HTML;
     }
 
 
