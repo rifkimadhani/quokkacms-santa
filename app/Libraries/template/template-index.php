@@ -39,24 +39,21 @@ $htmlDelete = Dialog::renderDelete('Delete __TITLE__', 'CONFIRM DELETE');
 <?=$htmlDelete?>
 
 <?=view('util/scripts.php')?>
-
-<!--activekan script ini apabila, dialog memerllukan filemanager-->
-<?//= view('util/filemanager.php') ?>
+<?//= view('util/filemanager.php') ?> <!--activekan script ini apabila, dialog memerllukan filemanager-->
 
 <script>
-    var dataTable;
     const urlSsp = "<?= $baseUrl ?>/ssp";
     const lastCol = <?= count($fieldList) ?>;
+    const dataList = $('#datalist');
+    var dataTable;
 
     //exec when ready
     $('document').ready(function () {
         initDataTable();
-        // initDialog();
     });
 
     function initDataTable() {
-        dataTable = $('#datalist')
-            .DataTable(
+        $dataTable = dataList.DataTable(
             {
                 ajax: urlSsp,
                 responsive: true,
@@ -82,7 +79,7 @@ $htmlDelete = Dialog::renderDelete('Delete __TITLE__', 'CONFIRM DELETE');
         //  1. ambil dialog yg sdh di isikan dgn data dari server
         //  2. kemudian dialog tsb akan di tampilkan
         //
-        $('#datalist tbody').on( 'click', 'tr', function (event)
+        dataList.find('tbody').on( 'click', 'tr', function (event)
         {
             event.stopPropagation();
             const data = dataTable.row( $(this)).data();
@@ -105,7 +102,7 @@ __pk_value__
             });
         });
 
-        initDataTableOptions(dataTable);
+        initDataTableOptions($dataTable);
     }
 
     //
