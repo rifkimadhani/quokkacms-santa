@@ -137,7 +137,8 @@ class PageBuilder
             $name = $item->field;
             $properName = self::convertProperName($name);
             $type = $item->type;
-            $req = $item->required;
+
+            if (isset($item->required)) $req = $item->required; else $req = '';
 
             $member .= "    public \${$name};\n";
 
