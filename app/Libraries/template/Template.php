@@ -42,23 +42,25 @@ class __Controller__ extends BaseController
         return redirect()->to($this->baseUrl);
     }
 
-    public function edit($id)
+    /**
+     * function ini di call saat user click row pada table
+     *
+     * @return mixed html dialog
+     */
+    public function edit(__pk_param__)
     {
         $model = new __Model__();
-        $data = $model->get($id);
+        $data = $model->get(__pk_param__);
 
         $form = new __Form__();
 
-        $urlAction = $this->baseUrl . '/update';//base_url('/subscribergroup/update');
+        $urlAction = $this->baseUrl . '/update';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
     }
 
     public function update(){
-        $id = $_POST['__pk__'];
-__update_field__;
-
         $model = new __Model__();
-        $r = $model->modify($id, __modify_field__);
+        $r = $model->modify($_POST);
 
         if ($r>0){
             $this->setSuccessMessage('UPDATE success');
@@ -69,9 +71,9 @@ __update_field__;
         return redirect()->to($this->baseUrl);
     }
 
-    public function delete($id){
+    public function delete(__pk_param__){
         $model = new __Model__();
-        $r = $model->remove($id);
+        $r = $model->remove(__pk_param__);
 
         return redirect()->to($this->baseUrl);
     }

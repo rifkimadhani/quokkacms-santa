@@ -60,6 +60,7 @@ $htmlDelete = Dialog::renderDelete('Delete __TITLE__', 'CONFIRM DELETE');
                 order: [['0','desc']],
                 columnDefs: [
                     {
+                        //hide your cols here, enter index of col into targets array
                         targets: [],visible: false,searchable: false
                     },
                     {
@@ -72,13 +73,18 @@ $htmlDelete = Dialog::renderDelete('Delete __TITLE__', 'CONFIRM DELETE');
                 ]
             });
 
-        // handle click on row
+        // handle click on row,
+        //  1. ambil dialog yg sdh di isikan dgn data dari server
+        //  2. kemudian dialog tsb akan di tampilkan
+        //
         $('#datalist tbody').on( 'click', 'tr', function (event)
         {
             event.stopPropagation();
             const data = dataTable.row( $(this)).data();
-            const value = data[0];
-            const url = "<?=$baseUrl?>/edit/" + value;
+
+            //get pk from data
+__pk_value__
+            const url = "<?=$baseUrl?>/edit/" + __url_edit__;
 
             // show hourglass
             jQuery('#overlay-loader-indicator').show();
@@ -103,11 +109,13 @@ $htmlDelete = Dialog::renderDelete('Delete __TITLE__', 'CONFIRM DELETE');
         event.stopPropagation();
 
         const data = dataTable.row( $(that).parents('tr') ).data();
-        const id = data[0];
-        const name = data[1];
+__pk_value__
+
+        //please correct the index for name variable, sehingga message delete akan terlihat benar
+        const name = data[0];
 
         showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
-            window.location.href = "<?=$baseUrl?>/delete/" + id;
+            window.location.href = "<?=$baseUrl?>/delete/" + __url_edit__;
         })
     }
 </script>

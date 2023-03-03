@@ -11,7 +11,7 @@ class __Form__ extends BaseForm
 //__member__
 
     function __construct()
-	{
+    {
 //__attr__
     }
 }

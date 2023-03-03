@@ -1,20 +1,18 @@
 {
-  "folder": "sample",
+  "folder": "ads",
   "controller": {
-    "name": "Sample",
-    "title": "Sample"
+    "name": "Ads",
+    "title": "Ads"
   },
   "model": {
-    "name": "SampleModel",
-    "table": "_tsample",
+    "name": "AdsModel",
+    "table": "tads",
     "pk": [
-      "ads_id",
-      "spot_id"
+      "ads_id"
     ],
     "updateFields": [
-      "ads_id",
-      "spot_id",
       "name",
+      "spot_id",
       "path",
       "url_image",
       "show_counter",
@@ -23,11 +21,11 @@
       "create_date",
       "update_date"
     ],
-    "view": "_tsample",
+    "view": "tads",
     "fieldList": [
       "ads_id",
-      "spot_id",
       "name",
+      "spot_id",
       "path",
       "url_image",
       "show_counter",
@@ -38,23 +36,21 @@
     ]
   },
   "form": {
-    "name": "SampleForm",
+    "name": "AdsForm",
     "fields": [
       {
         "field": "ads_id",
         "type": "numeric",
-        "autoInc": false,
-        "required": "required"
-      },
-      {
-        "field": "spot_id",
-        "type": "numeric",
-        "autoInc": false,
-        "required": "required"
+        "autoInc": true
       },
       {
         "field": "name",
         "type": "varchar",
+        "autoInc": false
+      },
+      {
+        "field": "spot_id",
+        "type": "numeric",
         "autoInc": false
       },
       {
@@ -95,8 +91,8 @@
     ]
   },
   "view": {
-    "folder": "sample",
+    "folder": "ads",
     "name": "index",
-    "dialogTitle": "sample"
+    "dialogTitle": "ads"
   }
 }

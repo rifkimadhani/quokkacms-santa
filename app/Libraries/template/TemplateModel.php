@@ -7,7 +7,8 @@ namespace App\Models;
 
 class __Model__ extends BaseModel
 {
-    const SQL_MODIFY = 'UPDATE __table__ SET __sql_update_fields__ WHERE __pk__=?';
+    const SQL_GET = 'SELECT * FROM __table__ WHERE __pk_where__';
+    const SQL_MODIFY = 'UPDATE __table__ SET __sql_update_fields__ WHERE __pk_where__';
 
     protected $table      = '__table__';
     protected $primaryKey = '__pk__';
@@ -16,9 +17,23 @@ class __Model__ extends BaseModel
     public $errCode;
     public $errMessage;
 
-    public function get($id)
+//    public function get2($adminId, $username){
+//        $r = $this
+//            ->where('admin_id', $adminId)
+//            ->where('username', $username)
+//            ->find();
+//        if ($r!=null) return $r[0];
+//        return null;
+//    }
+
+    public function get($__pk_parameter__)
     {
-        return $this->find($id);
+        $r = $this
+            //__get_cmd__
+            ->find();
+        if ($r!=null) return $r[0];
+
+        return null;
     }
 
     public function getAll(){
@@ -37,15 +52,20 @@ class __Model__ extends BaseModel
      * @param $status
      * @return \PDOException|\Exception|int => 0/1 = count update, -1 = pdo exception
      */
-    public function modify($id, $__modify_fields__){
-//        $name = htmlentities($name, ENT_QUOTES, 'UTF-8');//$_POST['name'];
+    public function modify($value){
+
+//        $name = htmlentities($name, ENT_QUOTES, 'UTF-8');
+        //__XSS__
+
         $this->errCode = '';
         $this->errMessage = '';
+
+        //__field_declare__
 
         try{
             $pdo = $this->openPdo();
             $stmt = $pdo->prepare(self::SQL_MODIFY);
-            $stmt->execute( [$__modify_fields__, $id] );
+            $stmt->execute( [$__modify_fields__, $__pk_field__] );
 
             return $stmt->rowCount();
 
@@ -61,8 +81,10 @@ class __Model__ extends BaseModel
         return parent::insert($value);
     }
 
-    public function remove($id){
-        return $this->delete($id);
+    public function remove($__pk_parameter__){
+        $r = $this
+            //__get_cmd__
+            ->delete();
     }
 
     /**

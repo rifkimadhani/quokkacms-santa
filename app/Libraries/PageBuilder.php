@@ -35,23 +35,64 @@ class PageBuilder
 
         $modelName = $obj->model->name;
         $table = $obj->model->table;
-        $pk = $obj->model->pk;
+        $pks = $obj->model->pk;
+
         $updateFields = $obj->model->updateFields; //di pakai saat operasi insert/update
-        $fieldList = $obj->model->fieldList; //di pakai saat operasi ssp
+        $arFieldList = $obj->model->fieldList; //di pakai saat operasi ssp
+
+        $fieldList = '';
+        foreach ($arFieldList as $item){
+            if (strlen($fieldList)==0) $fieldList = "'{$item}'"; else $fieldList .= ", '{$item}'";
+        }
+
+        $pk = ''; //primary key yg pertama, apabila ada lbh dari 1
+        $pkWhere = ''; //di pakai utk update & get
+        $pkParameter = ''; //di pakai utk parameter saat get dan delete
+        $pkCmd = ''; //di pakai pembuatan cmd where saat get dan delete
+
+        $fieldDeclare = '';
+
+        //split pk apabila ada lbh dari 1
+        foreach ($pks as $item){
+
+            //convert nama field jadi nama variable
+            $name = self::rename($item);
+
+            if (strlen($pk)==0) $pk = $item;
+            if (strlen($pkWhere)==0) $pkWhere = "($item=?)"; else $pkWhere .= " AND ($item=?)";
+            if (strlen($pkParameter)==0) $pkParameter = "\$$name"; else $pkParameter .= ", \$$name";
+            if (strlen($pkCmd)==0) $pkCmd = "->where('{$item}', \${$name})"; else $pkCmd .= "\n            ->where('{$item}', \${$name})";
+            if (strlen($fieldDeclare)==0) $fieldDeclare = "\${$name} = \$value['{$item}'];\n"; else $fieldDeclare .= "        \${$name} = \$value['{$item}'];\n";
+        }
+
+        foreach ($updateFields as $item){
+            $name = self::rename($item);
+            if (in_array($item, $pks)==false){
+                //filter out apabila ada fields pk
+                if (strlen($fieldDeclare)==0) $fieldDeclare = "\${$name} = \$value['{$item}'];\n"; else $fieldDeclare .= "        \${$name} = \$value['{$item}'];\n";
+            }
+        }
 
         $allowedFields = self::genAllowedFields($updateFields);
-        $sqlUpdateFields = self::genUpdateFields($pk, $updateFields);
-        $modifyFields = self::genModifyFields($pk, $updateFields);
+        $sqlUpdateFields = self::genUpdateFields($pks, $updateFields);
+        $modifyFields = self::genModifyFields($pks, $updateFields);
 
         //lakukan replace di sini
         $code = str_replace('__TODAY__', self::today(), $code);
         $code = str_replace('__Model__', $modelName, $code);
         $code = str_replace('__table__', $table, $code);
+
         $code = str_replace('__pk__', $pk, $code);
-        $code = str_replace('__allowedFields__', $allowedFields, $code);
-        $code = str_replace('__fieldList__', $fieldList, $code);
+        $code = str_replace('__pk_where__', $pkWhere, $code);
 
         $code = str_replace('__sql_update_fields__', $sqlUpdateFields, $code);
+        $code = str_replace('__allowedFields__', $allowedFields, $code);
+        $code = str_replace('$__pk_parameter__', $pkParameter, $code);
+        $code = str_replace('$__pk_field__', $pkParameter, $code);
+        $code = str_replace('//__get_cmd__', $pkCmd, $code);
+
+        $code = str_replace('//__field_declare__', $fieldDeclare, $code);
+        $code = str_replace('__fieldList__', $fieldList, $code);
         $code = str_replace('$__modify_fields__', $modifyFields, $code);
 
         //write code yg sdh di rubah ke folder output
@@ -76,8 +117,9 @@ class PageBuilder
         $member = '';
         $attr = '';
         foreach ($fields as $item){
-            $name = $item->name;
+            $name = $item->field;
             $type = $item->type;
+            $req = $item->required;
 
             $member .= "    public \${$name};\n";
 
@@ -85,7 +127,7 @@ class PageBuilder
                 //type=hidden tdk perlu title dan placeholder
                 $attr .= "        \$this->{$name} = ['type'=>'{$type}'];\n";
             } else {
-                $attr .= "        \$this->{$name} = ['type'=>'{$type}', 'label'=>'{$name}', 'placeholder'=>'', 'required'=>'required'];\n";
+                $attr .= "        \$this->{$name} = ['type'=>'{$type}', 'label'=>'{$name}', 'placeholder'=>'', 'required'=>'{$req}'];\n";
             }
         }
 
@@ -115,13 +157,35 @@ class PageBuilder
         $title = $obj->view->dialogTitle;
         $formName = $obj->form->name;
 
-        //build member & attribute
+        //field2 yg muncul pada datatable
+        $fieldList = $obj->model->fieldList;
+        $pks = $obj->model->pk;
 
+        $pkValue = '';
+        $urlEdit = '';
+
+        //build cmd utk ambil pk dari data
+        foreach ($pks as $pk){
+            //cari field pk dari daftar fields
+            $idx = self::findField($pk, $fieldList);
+
+            $name = self::rename($pk);
+            $pkValue .= "            const {$name} = data[{$idx}];\n";
+
+            if (strlen($urlEdit)==0){
+                $urlEdit = "{$name}";
+            } else {
+                $urlEdit .= " + '/' + {$name}";
+            }
+        }
 
         //write to code
         $code = str_replace('__TODAY__', self::today(), $code);
         $code = str_replace('__Form__', $formName, $code);
         $code = str_replace('__TITLE__', $title, $code);
+
+        $code = str_replace('__pk_value__', $pkValue, $code);
+        $code = str_replace('__url_edit__', $urlEdit, $code);
 
 
         //write code yg sdh di rubah ke folder output
@@ -143,30 +207,24 @@ class PageBuilder
         $title = $obj->controller->title;
 
         $modelName = $obj->model->name;
-        $pk = $obj->model->pk;
+        $pks = $obj->model->pk;
 
         $formName = $obj->form->name;
-        $fields = $obj->form->fields;
+//        $fields = $obj->form->fields;
 
         $viewName = $obj->view->name;
         $viewFolder = $obj->view->folder;
         $view = "$viewFolder/$viewName";
 
         //
-        $updateField  = '';
-        $modifyField = '';
-        foreach ($fields as $item){
-            $name = $item->name;
-            $varname = self::rename($item->name);
-            $type = $item->type;
+//        $updateField  = '';
+//        $modifyField = '';
 
-            //hanya render, apabila ini bukan pk
-            if ($name!=$pk) {
-                $updateField .= "        \${$varname} = \$_POST['{$name}'];\n";
-                if (strlen($modifyField)==0) $modifyField = "\${$varname}"; else $modifyField .= ", ${$varname}";
-            }
+        $pkParameter = '';
+        foreach ($pks as $pk){
+            $name = self::rename($pk);
+            if (strlen($pkParameter)==0) $pkParameter = "\$$name"; else $pkParameter .= ", \$$name";
         }
-
 
         //write to code
         $code = str_replace('__TODAY__', self::today(), $code);
@@ -175,10 +233,10 @@ class PageBuilder
         $code = str_replace('__title__', $title, $code);
         $code = str_replace('__Model__', $modelName, $code);
         $code = str_replace('__Form__', $formName, $code);
-        $code = str_replace('__pk__', $pk, $code);
+        $code = str_replace('__pk_param__', $pkParameter, $code);
 
-        $code = str_replace('__update_field__;', $updateField, $code);
-        $code = str_replace('__modify_field__', $modifyField, $code);
+//        $code = str_replace('__update_field__;', $updateField, $code);
+//        $code = str_replace('__modify_field__', $modifyField, $code);
 
 
         //write code yg sdh di rubah ke folder output
@@ -193,8 +251,20 @@ class PageBuilder
         self::mkdir($pathOut);
 
         $name = $obj->controller->name;
+        $pks = $obj->model->pk;
         $nameLower = strtolower($name);
         $date = self::today();
+
+        $urlParameter = '';
+        $urlFunction = '';
+
+        $idx = 0;
+        //build cmd utk ambil pk dari data
+        foreach ($pks as $pk){
+            $idx++;
+            if (strlen($urlParameter)==0) $urlParameter = '(:any)'; else $urlParameter .= '/(:any)';
+            if (strlen($urlFunction)==0) $urlFunction = "\${$idx}"; else $urlFunction .= "/\${$idx}";
+        }
 
         //
         $output = <<<PHP
@@ -206,8 +276,8 @@ class PageBuilder
  
     \$routes->get('/$nameLower', '$name::index');
     \$routes->get('/$nameLower/ssp', '$name::ssp');
-    \$routes->get('/$nameLower/edit/(:num)', '$name::edit/$1');
-    \$routes->get('/$nameLower/delete/(:num)', '$name::delete/$1');
+    \$routes->get('/$nameLower/edit/{$urlParameter}', '$name::edit/{$urlFunction}');
+    \$routes->get('/$nameLower/delete/{$urlParameter}', '$name::delete/{$urlFunction}');
     \$routes->post('/$nameLower/update', '$name::update');
     \$routes->post('/$nameLower/insert', '$name::insert');
 ?>
@@ -260,11 +330,11 @@ PHP;
      * @param $fields array, daftar column yg boleh di update, field pk otomatis di exclude
      * @return string
      */
-    static protected function genUpdateFields($pk, $fields){
+    static protected function genUpdateFields($pks, $fields){
         $output = '';
         foreach ($fields as $item){
             //pk tdk boleh include dalam update
-            if ($item==$pk) continue;
+            if (in_array($item, $pks)) continue;
             if (strlen($output)>0) $output .= ", {$item}=?"; else $output .= "{$item}=?";
         }
         return $output;
@@ -277,12 +347,12 @@ PHP;
      * @param $fields array
      * @return string
      */
-    static protected function genModifyFields($pk, $fields){
+    static protected function genModifyFields($pks, $fields){
         $output = '';
         foreach ($fields as $item){
             //untuk modify pk (primaru key), tdk boleh di include
             //krn akan error di sql nya
-            if ($item!=$pk){
+            if (in_array($item, $pks)==false){
                 $item = self::rename($item);
                 if (strlen($output)>0) $output .= ", \${$item}"; else $output .= "\${$item}";
             }
@@ -307,5 +377,22 @@ PHP;
         }
 
         return $str;
+    }
+
+    /**
+     * cari field dari daftar field
+     * @param $needle
+     * @param $list
+     */
+    static protected function findField($needle, $list){
+        $idx = 0;
+        foreach ($list as $item){
+            if ($item==$needle) {
+//                $item->idx = $idx; //tambahkan index pada item
+                return $idx;
+            }
+            $idx++;
+        }
+        return null;
     }
 }

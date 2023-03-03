@@ -1,0 +1,24 @@
+{
+  "folder": "",
+  "controller": {
+    "name": "",
+    "title": ""
+  },
+  "model": {
+    "name": "",
+    "table": "",
+    "pk": "",
+    "updateFields": [],
+    "view": "",
+    "fieldList": []
+  },
+  "form": {
+    "name": "",
+    "fields" : []
+  },
+  "view": {
+    "folder": "",
+    "name": "index",
+    "dialogTitle": ""
+  }
+}
