@@ -60,8 +60,8 @@ class __Model__ extends BaseModel
         $this->errCode = '';
         $this->errMessage = '';
 
-        //__field_declare__
-
+//__field_declare__
+//__field_extra__
         try{
             $pdo = $this->openPdo();
             $stmt = $pdo->prepare(self::SQL_MODIFY);

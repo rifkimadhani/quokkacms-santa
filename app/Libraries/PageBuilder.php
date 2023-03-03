@@ -39,6 +39,7 @@ class PageBuilder
 
         $updateFields = $obj->model->updateFields; //di pakai saat operasi insert/update
         $arFieldList = $obj->model->fieldList; //di pakai saat operasi ssp
+        $fields  = $obj->form->fields; //di pakai saat operasi ssp
 
         $fieldList = '';
         foreach ($arFieldList as $item){
@@ -62,14 +63,29 @@ class PageBuilder
             if (strlen($pkWhere)==0) $pkWhere = "($item=?)"; else $pkWhere .= " AND ($item=?)";
             if (strlen($pkParameter)==0) $pkParameter = "\$$name"; else $pkParameter .= ", \$$name";
             if (strlen($pkCmd)==0) $pkCmd = "->where('{$item}', \${$name})"; else $pkCmd .= "\n            ->where('{$item}', \${$name})";
-            if (strlen($fieldDeclare)==0) $fieldDeclare = "\${$name} = \$value['{$item}'];\n"; else $fieldDeclare .= "        \${$name} = \$value['{$item}'];\n";
+
+            $fieldDeclare .= "        \${$name} = \$value['{$item}'];\n";
+//            if (strlen($fieldDeclare)==0) $fieldDeclare = "\${$name} = \$value['{$item}'];\n"; else $fieldDeclare .= "        \${$name} = \$value['{$item}'];\n";
         }
 
+        $fieldDeclare .= "\n"; //tambahkan new line, shg ada pemisah antara deklarasi field pk dan field lainnya
+        $fieldExtra = '';
         foreach ($updateFields as $item){
             $name = self::rename($item);
             if (in_array($item, $pks)==false){
                 //filter out apabila ada fields pk
-                if (strlen($fieldDeclare)==0) $fieldDeclare = "\${$name} = \$value['{$item}'];\n"; else $fieldDeclare .= "        \${$name} = \$value['{$item}'];\n";
+                $fieldDeclare .= "        \${$name} = \$value['{$item}'];\n";
+//                if (strlen($fieldDeclare)==0) $fieldDeclare = "\${$name} = \$value['{$item}'];\n"; else $fieldDeclare .= "        \${$name} = \$value['{$item}'];\n";
+            }
+
+            //tambahkan field extre, untuk datetime
+            // apabila value=='' maka set jadi null
+            // ini dilakukan utk menghindari error dari mysql
+            $field = self::findField($item, $fields);
+            if ($field!=null){
+                if ($field->type=='datetime'){
+                    $fieldExtra .= "        if (strlen(\${$name})==0) \${$name} = null;\n";
+                }
             }
         }
 
@@ -92,6 +108,7 @@ class PageBuilder
         $code = str_replace('//__get_cmd__', $pkCmd, $code);
 
         $code = str_replace('//__field_declare__', $fieldDeclare, $code);
+        $code = str_replace('//__field_extra__', $fieldExtra, $code);
         $code = str_replace('__fieldList__', $fieldList, $code);
         $code = str_replace('$__modify_fields__', $modifyFields, $code);
 
@@ -167,7 +184,7 @@ class PageBuilder
         //build cmd utk ambil pk dari data
         foreach ($pks as $pk){
             //cari field pk dari daftar fields
-            $idx = self::findField($pk, $fieldList);
+            $idx = self::findFieldIndex($pk, $fieldList);
 
             $name = self::rename($pk);
             $pkValue .= "            const {$name} = data[{$idx}];\n";
@@ -384,12 +401,24 @@ PHP;
      * @param $needle
      * @param $list
      */
-    static protected function findField($needle, $list){
+    static protected function findFieldIndex($needle, $list){
         $idx = 0;
         foreach ($list as $item){
             if ($item==$needle) {
 //                $item->idx = $idx; //tambahkan index pada item
                 return $idx;
+            }
+            $idx++;
+        }
+        return null;
+    }
+
+    static protected function findField($needle, $list){
+        $idx = 0;
+        foreach ($list as $item){
+            if ($item->field==$needle) {
+                $item->idx = $idx;
+                return $item;
             }
             $idx++;
         }
