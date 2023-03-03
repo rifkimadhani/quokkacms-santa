@@ -131,6 +131,9 @@ HTML;
                     $element = $this->renderFilemanager($formId, $item, $attr);
                     break;
 
+                case 'numeric':
+                    $element = $this->renderNumeric($formId, $item, $attr);
+                    break;
                 case 'apkfile':
                     $element = $this->renderApkFile($item, $attr);
                     break;
@@ -333,15 +336,15 @@ HTML;
     //     $label = isset($attr['label']) ? "<label class='col-form-label'><b>{$attr['label']}</b></label>" : "";
     //     $required = isset($attr['required']) ? $attr['required'] : "";
     //     $input = "<input type='file' accept='.apk' class='form-control-file' name='{$item}' {$required}>";
-    
+
     //     return $label . $input;
     // }
     function renderApkFile($item, $data){
         $label = $this->getAndUnset($data, 'label');
         $required = $this->getAndUnset($data, 'required');
-    
+
         $attr = $this->buildAttribute($data);
-    
+
         return <<< HTML
         <div class="form-group">
             <label class="col-form-label"><b>{$label}</b></label>
@@ -350,7 +353,20 @@ HTML;
         HTML;
     }    
 
+    function renderNumeric($formId, $item, $data){
+        $label = $this->getAndUnset($data, 'label');
+        $required = $this->getAndUnset($data, 'required');
+        $readonly = $this->getAndUnset($data, 'readonly');
 
+        $attr = $this->buildAttribute($data);
+
+        return <<< HTML
+        <div class="form-group">
+            <label class='col-form-label'><b>{$label}</b></label>
+            <input name='{$item}' id='{$item}' type='number' class=form-control  {$attr} {$required} {$readonly}>
+        </div>
+HTML;
+    }
 
     /**
      * Ambil value dari array kemudian unset.
