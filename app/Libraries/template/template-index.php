@@ -40,6 +40,9 @@ $htmlDelete = Dialog::renderDelete('Delete __TITLE__', 'CONFIRM DELETE');
 
 <?=view('util/scripts.php')?>
 
+<!--activekan script ini apabila, dialog memerllukan filemanager-->
+<?//= view('util/filemanager.php') ?>
+
 <script>
     var dataTable;
     const urlSsp = "<?= $baseUrl ?>/ssp";
@@ -56,6 +59,8 @@ $htmlDelete = Dialog::renderDelete('Delete __TITLE__', 'CONFIRM DELETE');
             .DataTable(
             {
                 ajax: urlSsp,
+                responsive: true,
+                scrollX: true,
                 pageLength: 100,
                 order: [['0','desc']],
                 columnDefs: [
