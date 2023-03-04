@@ -53,7 +53,7 @@ $htmlDelete = Dialog::renderDelete('Delete __TITLE__', 'CONFIRM DELETE');
     });
 
     function initDataTable() {
-        $dataTable = dataList.DataTable(
+        dataTable = dataList.DataTable(
             {
                 ajax: urlSsp,
                 responsive: true,
