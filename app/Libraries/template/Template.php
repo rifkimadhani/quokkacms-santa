@@ -32,7 +32,12 @@ class __Controller__ extends BaseController
         $model = new __Model__();
 
         header('Content-Type: application/json');
-        echo json_encode($model->getSsp());
+
+        $data = $model->getSsp();
+
+        self::sspDataConversion($data);
+
+        echo json_encode($data);
     }
 
     public function insert(){
@@ -105,5 +110,16 @@ class __Controller__ extends BaseController
      */
     protected function normalizeData(&$data, $isInsert=false){
 //__convert_basehost__
+    }
+
+    /**
+     * melakukan conversi data ke asalnya, misalnya utk url balik dari BASE-HOST -> http://
+     * @param $data
+     */
+    protected function sspDataConversion(&$data){
+//__sspDataConversion_return__
+        foreach($data['data'] as &$row){
+//__sspDataConversion__
+        }
     }
 }

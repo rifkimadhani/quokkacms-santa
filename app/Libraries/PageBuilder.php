@@ -253,6 +253,7 @@ class PageBuilder
 
         $modelName = $obj->model->name;
         $updateFields = $obj->model->updateFields;
+        $fieldList = $obj->model->fieldList;
         $pks = $obj->model->pk;
 
         $formName = $obj->form->name;
@@ -270,6 +271,9 @@ class PageBuilder
 
         $convertToBaseHost = '';
         $convertToBaseUrl = '';
+        $sspDataConversion = '';
+        $sspDataConversionReturn = "        return;\n";
+
         foreach ($updateFields as $item){
             $field = self::findField($item, $fields);
             if ($field == null) continue;
@@ -278,6 +282,11 @@ class PageBuilder
                 case 'filemanager':
                     $convertToBaseHost .= "        \$data['{$item}'] = str_replace(\$this->baseHost, '{BASE-HOST}', \$data['{$item}']);\n";
                     $convertToBaseUrl .= "        \$data['{$item}'] = str_replace('{BASE-HOST}', \$this->baseHost, \$data['{$item}']);\n";
+
+                    //conversi pada function sspDataConversion
+                    $idx = self::findFieldIndex($item, $fieldList);
+                    $sspDataConversion .= "            \$row[{$idx}] = str_replace('{BASE-HOST}', \$this->baseHost, \$row[{$idx}]); //{$item}\n";
+                    $sspDataConversionReturn = ''; //hapus cmd return
                     break;
             }
         }
@@ -293,6 +302,9 @@ class PageBuilder
 
         $code = str_replace('//__convert_basehost__', $convertToBaseHost, $code);
         $code = str_replace('//__convert_baseurl__', $convertToBaseUrl, $code);
+
+        $code = str_replace('//__sspDataConversion_return__', $sspDataConversionReturn, $code);
+        $code = str_replace('//__sspDataConversion__', $sspDataConversion, $code);
 
 //        $code = str_replace('__update_field__;', $updateField, $code);
 //        $code = str_replace('__modify_field__', $modifyField, $code);
