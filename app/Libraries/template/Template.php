@@ -37,6 +37,9 @@ class __Controller__ extends BaseController
 
     public function insert(){
         $model = new __Model__();
+
+        $this->normalizeData($_POST, true);
+
         $r = $model->add($_POST);
 
         if ($r>0){
@@ -58,6 +61,7 @@ class __Controller__ extends BaseController
         $model = new __Model__();
         $data = $model->get(__pk_param__);
 
+//__convert_baseurl__
         $form = new __Form__();
 
         $urlAction = $this->baseUrl . '/update';
@@ -66,6 +70,9 @@ class __Controller__ extends BaseController
 
     public function update(){
         $model = new __Model__();
+
+        $this->normalizeData($_POST);
+
         $r = $model->modify($_POST);
 
         if ($r>0){
@@ -88,5 +95,15 @@ class __Controller__ extends BaseController
         }
 
         return redirect()->to($this->baseUrl);
+    }
+
+    /**
+     * melaukan proses normalisasi data apabila di butuhkan
+     *
+     * @param $data array, sbg in dan out
+     * @param bool $isInsert
+     */
+    protected function normalizeData(&$data, $isInsert=false){
+//__convert_basehost__
     }
 }

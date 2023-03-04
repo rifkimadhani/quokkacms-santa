@@ -252,23 +252,34 @@ class PageBuilder
         $title = $obj->controller->title;
 
         $modelName = $obj->model->name;
+        $updateFields = $obj->model->updateFields;
         $pks = $obj->model->pk;
 
         $formName = $obj->form->name;
-//        $fields = $obj->form->fields;
+        $fields = $obj->form->fields;
 
         $viewName = $obj->view->name;
         $viewFolder = $obj->view->folder;
         $view = "$viewFolder/$viewName";
 
-        //
-//        $updateField  = '';
-//        $modifyField = '';
-
         $pkParameter = '';
         foreach ($pks as $pk){
             $name = self::rename($pk);
             if (strlen($pkParameter)==0) $pkParameter = "\$$name"; else $pkParameter .= ", \$$name";
+        }
+
+        $convertToBaseHost = '';
+        $convertToBaseUrl = '';
+        foreach ($updateFields as $item){
+            $field = self::findField($item, $fields);
+            if ($field == null) continue;
+
+            switch ($field->type){
+                case 'filemanager':
+                    $convertToBaseHost .= "        \$data['{$item}'] = str_replace(\$this->baseHost, '{BASE-HOST}', \$data['{$item}']);\n";
+                    $convertToBaseUrl .= "        \$data['{$item}'] = str_replace('{BASE-HOST}', \$this->baseHost, \$data['{$item}']);\n";
+                    break;
+            }
         }
 
         //write to code
@@ -279,6 +290,9 @@ class PageBuilder
         $code = str_replace('__Model__', $modelName, $code);
         $code = str_replace('__Form__', $formName, $code);
         $code = str_replace('__pk_param__', $pkParameter, $code);
+
+        $code = str_replace('//__convert_basehost__', $convertToBaseHost, $code);
+        $code = str_replace('//__convert_baseurl__', $convertToBaseUrl, $code);
 
 //        $code = str_replace('__update_field__;', $updateField, $code);
 //        $code = str_replace('__modify_field__', $modifyField, $code);
