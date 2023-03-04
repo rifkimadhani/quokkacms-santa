@@ -39,6 +39,12 @@ class __Controller__ extends BaseController
         $model = new __Model__();
         $r = $model->add($_POST);
 
+        if ($r>0){
+            $this->setSuccessMessage('Insert success');
+        } else {
+            $this->setErrorMessage('Insert fail ' . $model->errMessage);
+        }
+
         return redirect()->to($this->baseUrl);
     }
 

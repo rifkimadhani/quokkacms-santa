@@ -44,6 +44,24 @@ class __Model__ extends BaseModel
         return [__fieldList__];
     }
 
+    public function add($value)  {
+
+        try
+        {
+//__field_declare_add__
+            parent::insert($value);
+
+        }
+        catch (\Exception $e){
+            $this->errCode = $e->getCode();
+            $this->errMessage = $e->getMessage();
+
+            return 0;
+        }
+
+        return $this->db->affectedRows();
+    }
+
     /**
      * update dgn cara PDO, karena dgn cara ci4 tdk ada rowCount, shg tdk tahu apakah update berhasil atau tdk
      *
@@ -74,11 +92,6 @@ class __Model__ extends BaseModel
         }
     }
 
-    public function add($value)  {
-
-//__field_declare_add__
-        return parent::insert($value);
-    }
 
     public function remove($__pk_parameter__){
         $r = $this

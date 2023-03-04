@@ -88,7 +88,7 @@ class PageBuilder
                 case 'varchar':
                     //xss
                     $fieldDeclare .= "        \${$name} = htmlentities(\$value['{$item}'], ENT_QUOTES, 'UTF-8');\n";
-                    $fieldDeclareAdd .= "        \$value['{$item}'] = htmlentities(\$value['{$item}'], ENT_QUOTES, 'UTF-8');\n";
+                    $fieldDeclareAdd .= "            \$value['{$item}'] = htmlentities(\$value['{$item}'], ENT_QUOTES, 'UTF-8');\n";
                     break;
                 case 'datetime':
                     $fieldDeclare .= "        \${$name} = \$value['{$item}'];\n";
