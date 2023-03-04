@@ -63,9 +63,9 @@ class __Controller__ extends BaseController
         $r = $model->modify($_POST);
 
         if ($r>0){
-            $this->setSuccessMessage('UPDATE success');
+            $this->setSuccessMessage('Update success');
         } else {
-            $this->setErrorMessage('UPDATE fail ' . $model->errMessage);
+            $this->setErrorMessage('Update fail ' . $model->errMessage);
         }
 
         return redirect()->to($this->baseUrl);
@@ -74,6 +74,12 @@ class __Controller__ extends BaseController
     public function delete(__pk_param__){
         $model = new __Model__();
         $r = $model->remove(__pk_param__);
+
+        if ($r>0){
+            $this->setSuccessMessage('Delete success');
+        } else {
+            $this->setErrorMessage('Delete fail');
+        }
 
         return redirect()->to($this->baseUrl);
     }

@@ -84,6 +84,8 @@ class __Model__ extends BaseModel
         $r = $this
             //__get_cmd__
             ->delete();
+
+        return $this->db->affectedRows();
     }
 
     /**
