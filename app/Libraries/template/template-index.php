@@ -39,7 +39,7 @@ $htmlDelete = Dialog::renderDelete('Delete __TITLE__', 'CONFIRM DELETE');
 <?=$htmlDelete?>
 
 <?=view('util/scripts.php')?>
-<?//= view('util/filemanager.php') ?> <!--activekan script ini apabila, dialog memerllukan filemanager-->
+<!--__filemanager_php__-->
 
 <script>
     const urlSsp = "<?= $baseUrl ?>/ssp";

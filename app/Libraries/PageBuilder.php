@@ -187,6 +187,7 @@ class PageBuilder
         $viewName = $obj->view->name;
         $title = $obj->view->dialogTitle;
         $formName = $obj->form->name;
+        $fields = $obj->form->fields;
 
         //field2 yg muncul pada datatable
         $fieldList = $obj->model->fieldList;
@@ -210,6 +211,17 @@ class PageBuilder
             }
         }
 
+        //check apakah ada field type == filemanager ?
+        //apabila ada maka activekan include filemanager.php
+        $filemanagerPhp = '';
+        foreach ($fields as $field){
+            if ($field->type=='filemanager'){
+                //exit apabila ada type filemanager
+                $filemanagerPhp = "<?= view('util/filemanager.php') ?>";
+                break;
+            }
+        }
+
         //write to code
         $code = str_replace('__TODAY__', self::today(), $code);
         $code = str_replace('__Form__', $formName, $code);
@@ -217,6 +229,8 @@ class PageBuilder
 
         $code = str_replace('__pk_value__', $pkValue, $code);
         $code = str_replace('__url_edit__', $urlEdit, $code);
+
+        $code = str_replace('<!--__filemanager_php__-->', $filemanagerPhp, $code);
 
 
         //write code yg sdh di rubah ke folder output
