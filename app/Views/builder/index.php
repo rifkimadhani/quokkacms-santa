@@ -52,7 +52,7 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
         <div class="col-md-8">
             <div id="jsoneditor" style="height: fit-content;"></div>
             <button class="btn btn-dark mb-2 mt-2 pull-right" type="submit"><i class="fa fa-check fa-fw"></i> Build</button>
-            <button class="btn btn-dark mb-2 mt-2 pull-right" type="button" onclick="onClickCopy()"><i class="fa fa-code fa-fw"></i> Copy</button>
+            <button class="btn btn-dark mb-2 mt-2 pull-right" type="button" onclick="onClickCopy()"><i class="fa fa-clipboard fa-fw"></i> Copy</button>
         </div>
         <br/>
     </div>
