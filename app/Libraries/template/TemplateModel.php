@@ -54,9 +54,6 @@ class __Model__ extends BaseModel
      */
     public function modify($value){
 
-//        $name = htmlentities($name, ENT_QUOTES, 'UTF-8');
-        //__XSS__
-
         $this->errCode = '';
         $this->errMessage = '';
 
@@ -78,6 +75,8 @@ class __Model__ extends BaseModel
     }
 
     public function add($value)  {
+
+//__field_declare_add__
         return parent::insert($value);
     }
 

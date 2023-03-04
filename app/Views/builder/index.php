@@ -98,11 +98,21 @@ $htmlListTable = HtmlBuilder::renderOption($tables)
     
     function onSubmit() {
 
-        //pindahkan dari editor ke input json
-//        var obj = document.getElementById("json");
-        json.value = JSON.stringify(editor.get());
+        const json = JSON.stringify(editor.get());
 
-        return true;
+        console.log(json);
+
+        $.ajax({
+            type: 'POST',
+            url: "<?=$baseUrl?>/build",
+            dataType: "json",
+            data: { json: json },
+            success: function (data) {
+                alert(data.status);
+            }
+        });
+
+        return false;
     }
     
     /**

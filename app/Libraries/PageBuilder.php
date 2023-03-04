@@ -69,23 +69,34 @@ class PageBuilder
         }
 
         $fieldDeclare .= "\n"; //tambahkan new line, shg ada pemisah antara deklarasi field pk dan field lainnya
-        $fieldExtra = '';
-        foreach ($updateFields as $item){
-            $name = self::rename($item);
-            if (in_array($item, $pks)==false){
-                //filter out apabila ada fields pk
-                $fieldDeclare .= "        \${$name} = \$value['{$item}'];\n";
-//                if (strlen($fieldDeclare)==0) $fieldDeclare = "\${$name} = \$value['{$item}'];\n"; else $fieldDeclare .= "        \${$name} = \$value['{$item}'];\n";
-            }
 
-            //tambahkan field extre, untuk datetime
-            // apabila value=='' maka set jadi null
-            // ini dilakukan utk menghindari error dari mysql
+        $fieldExtra = '';
+        $fieldDeclareAdd = '';
+        foreach ($updateFields as $item){
+
+            //skip apabila item adalah pk
+            if (in_array($item, $pks)) continue;
+
+            $name = self::rename($item);
             $field = self::findField($item, $fields);
-            if ($field!=null){
-                if ($field->type=='datetime'){
+
+            //skip apabila field tdk ketemu
+            if ($field==null) continue;
+
+            //check type feld
+            switch ($field->type){
+                case 'varchar':
+                    //xss
+                    $fieldDeclare .= "        \${$name} = htmlentities(\$value['{$item}'], ENT_QUOTES, 'UTF-8');\n";
+                    $fieldDeclareAdd .= "        \$value['{$item}'] = htmlentities(\$value['{$item}'], ENT_QUOTES, 'UTF-8');\n";
+                    break;
+                case 'datetime':
+                    $fieldDeclare .= "        \${$name} = \$value['{$item}'];\n";
                     $fieldExtra .= "        if (strlen(\${$name})==0) \${$name} = null;\n";
-                }
+                    break;
+                default:
+                    $fieldDeclare .= "        \${$name} = \$value['{$item}'];\n";
+                    break;
             }
         }
 
@@ -108,6 +119,7 @@ class PageBuilder
         $code = str_replace('//__get_cmd__', $pkCmd, $code);
 
         $code = str_replace('//__field_declare__', $fieldDeclare, $code);
+        $code = str_replace('//__field_declare_add__', $fieldDeclareAdd, $code);
         $code = str_replace('//__field_extra__', $fieldExtra, $code);
         $code = str_replace('__fieldList__', $fieldList, $code);
         $code = str_replace('$__modify_fields__', $modifyFields, $code);

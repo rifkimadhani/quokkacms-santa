@@ -19,13 +19,8 @@ class Builder extends BaseController
         $pageTitle = "Builder";
         $baseUrl = $this->baseUrl;
 
-        //ambil json pada session
-        $sample = session()->get('json');
-
-        //apabila json tdk ada pada session, maka load dari file
-        if ($sample==null){
-            $sample = PageBuilder::readFile(__DIR__ . '/../Libraries/template/blank.json');
-        }
+        //pakai sample sebagai awal json
+        $sample = PageBuilder::readFile(__DIR__ . '/../Libraries/template/blank.json');
 
         $model = new BuilderModel();
         $tables = $model->getTables();
@@ -43,9 +38,6 @@ class Builder extends BaseController
 
     public function build(){
 
-        //simpan json pada session
-        session()->set('json', $_POST['json']);
-
         //convert json string ke obj.
         //utk mencheck apakah json string yg di input valid atau tdk
         $obj = json_decode($_POST['json']);
@@ -57,7 +49,7 @@ class Builder extends BaseController
 
         PageBuilder::buildAll($obj);
 
-        return redirect()->to($this->baseUrl);
+        return json_encode(['status'=>'SUCCESS, please check output folder']);
     }
 
 }
