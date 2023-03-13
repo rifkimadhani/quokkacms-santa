@@ -107,6 +107,14 @@ $routes->get('/app/delete/(:num)', 'App::delete/$1');
 $routes->post('/app/update', 'App::update');
 $routes->post('/app/insert', 'App::insert');
 
+// Inbox
+$routes->get('/inbox', 'Inbox::index');
+$routes->get('/inbox/ssp', 'Inbox::ssp');
+$routes->get('/inbox/edit/(:any)', 'Inbox::edit/$1');
+$routes->get('/inbox/delete/(:any)', 'Inbox::delete/$1');
+$routes->post('/inbox/update', 'Inbox::update');
+$routes->post('/inbox/insert', 'Inbox::insert');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
