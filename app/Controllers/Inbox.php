@@ -17,6 +17,7 @@ class Inbox extends BaseController
         $baseUrl = $this->getBaseUrl();
 
         $mainview = 'inbox/index';
+        $primaryKey = 'inbox_id';
         $pageTitle = 'Inbox';
 
         $model = new InboxModel();
@@ -24,7 +25,7 @@ class Inbox extends BaseController
 
         $form = new InboxForm();
 
-        return view('layout/template', compact('mainview', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
+        return view('layout/template', compact('mainview', 'primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
     }
 
     public function ssp()

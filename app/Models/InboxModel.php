@@ -31,11 +31,12 @@ class InboxModel extends BaseModel
                         ';
 
     const SQL_GET = 'SELECT * FROM tinbox WHERE (inbox_id=?)';
-    const SQL_MODIFY = 'UPDATE tinbox SET user_id=?, title=?, content=?, url_image=?, path_image=?, status=?, exp_date=?, create_date=?, update_date=? WHERE (inbox_id=?)';
+    const SQL_MODIFY = 'UPDATE tinbox SET user_id=?, title=?, content=?, url_image=?, status=?, exp_date=? WHERE (inbox_id=?)';
 
     protected $table      = 'tinbox';
     protected $primaryKey = 'inbox_id';
-    protected $allowedFields = ['user_id', 'title', 'content', 'url_image', 'path_image', 'status', 'exp_date', 'create_date', 'update_date'];
+    // protected $allowedFields = ['user_id', 'title', 'content', 'url_image', 'path_image', 'status', 'exp_date', 'create_date', 'update_date'];
+    protected $allowedFields = ['user_id', 'title', 'content', 'url_image', 'status', 'exp_date'];
 
     public $errCode;
     public $errMessage;
@@ -67,7 +68,7 @@ class InboxModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['inbox_id', 'user_id', 'title', 'content', 'url_image', 'path_image', 'status', 'exp_date', 'create_date', 'update_date', 'name', 'username', 'email', 'msisdn'];
+        return ['inbox_id', 'user_id', 'title', 'content', 'url_image', 'status', 'exp_date', 'create_date', 'update_date', 'name', 'username', 'email', 'msisdn'];
     }
 
     public function add($value)  {
@@ -77,7 +78,7 @@ class InboxModel extends BaseModel
             $value['title'] = htmlentities($value['title'], ENT_QUOTES, 'UTF-8');
             $value['content'] = htmlentities($value['content'], ENT_QUOTES, 'UTF-8');
             $value['url_image'] = htmlentities($value['url_image'], ENT_QUOTES, 'UTF-8');
-            $value['path_image'] = htmlentities($value['path_image'], ENT_QUOTES, 'UTF-8');
+            // $value['path_image'] = htmlentities($value['path_image'], ENT_QUOTES, 'UTF-8');
             $value['status'] = htmlentities($value['status'], ENT_QUOTES, 'UTF-8');
 
             parent::insert($value);
@@ -112,20 +113,21 @@ class InboxModel extends BaseModel
         $title = htmlentities($value['title'], ENT_QUOTES, 'UTF-8');
         $content = htmlentities($value['content'], ENT_QUOTES, 'UTF-8');
         $urlImage = htmlentities($value['url_image'], ENT_QUOTES, 'UTF-8');
-        $pathImage = htmlentities($value['path_image'], ENT_QUOTES, 'UTF-8');
+        // $pathImage = htmlentities($value['path_image'], ENT_QUOTES, 'UTF-8');
         $status = htmlentities($value['status'], ENT_QUOTES, 'UTF-8');
         $expDate = $value['exp_date'];
-        $createDate = $value['create_date'];
-        $updateDate = $value['update_date'];
+        // $createDate = $value['create_date'];
+        // $updateDate = $value['update_date'];
 
         if (strlen($expDate)==0) $expDate = null;
-        if (strlen($createDate)==0) $createDate = null;
-        if (strlen($updateDate)==0) $updateDate = null;
+        // if (strlen($createDate)==0) $createDate = null;
+        // if (strlen($updateDate)==0) $updateDate = null;
 
         try{
             $pdo = $this->openPdo();
             $stmt = $pdo->prepare(self::SQL_MODIFY);
-            $stmt->execute( [$userId, $title, $content, $urlImage, $pathImage, $status, $expDate, $createDate, $updateDate, $inboxId] );
+            // $stmt->execute( [$userId, $title, $content, $urlImage, $pathImage, $status, $expDate, $createDate, $updateDate, $inboxId] );
+            $stmt->execute( [$userId, $title, $content, $urlImage, $status, $expDate, $inboxId] );
 
             return $stmt->rowCount();
 

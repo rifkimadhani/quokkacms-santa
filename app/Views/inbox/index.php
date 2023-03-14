@@ -39,7 +39,7 @@ $htmlDelete = Dialog::renderDelete('Delete inbox', 'CONFIRM DELETE');
 <?=$htmlDelete?>
 
 <?=view('util/scripts.php')?>
-
+<?= view('util/filemanager.php') ?>
 
 <script>
     var dataTable;
