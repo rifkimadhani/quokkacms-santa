@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="<?= base_url('plugin/codebaseadmin/js/plugins/sweetalert2/sweetalert2.min.css') ?>">
 
 <!-- Fonts and Codebase framework -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300,400,400i,600,700">
+<link rel="stylesheet" href="<?= base_url('plugin/codebaseadmin/css/muli.css') ?>">
 <link rel="stylesheet" id="css-main" href="<?= base_url('plugin/codebaseadmin/css/codebase.min.css') ?>">
 
 <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
@@ -57,7 +57,7 @@
 <script src="<?= base_url('plugin/hls-js/hls.js')?>"></script>
 
 <!-- JSON Editor -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.10.0/jsoneditor.min.css" />
+<link rel="stylesheet" href="<?= base_url('plugin/codebaseadmin/css/jsoneditor.min.css');?>" />
 <style>
     /* Customize header color of JSON editor */
     .jsoneditor {
