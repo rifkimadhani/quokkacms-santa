@@ -68,7 +68,8 @@ class InboxModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['inbox_id', 'user_id', 'title', 'content', 'url_image', 'status', 'exp_date', 'create_date', 'update_date', 'name', 'username', 'email', 'msisdn'];
+        return ['inbox_id', 'user_id', 'title', 'status', 'exp_date', 'name', 'username', 'email', 'msisdn'];
+//        return ['inbox_id', 'user_id', 'title', 'content', 'url_image', 'status', 'exp_date', 'create_date', 'update_date', 'name', 'username', 'email', 'msisdn'];
     }
 
     public function add($value)  {
