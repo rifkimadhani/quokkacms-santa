@@ -1,5 +1,5 @@
 <?php
-define("LOGFILE", __DIR__."/../logs/".date("Ymd").".log");
+define("LOGFILE", __DIR__."/../writable/logs/".date("Ymd").".log");
 
 error_reporting(E_ALL);
 ini_set("log_errors", 1);

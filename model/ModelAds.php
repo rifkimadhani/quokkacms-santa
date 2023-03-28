@@ -6,8 +6,8 @@
  * Date: 5/16/2019
  * Time: 11:30 AM
  */
-require_once __DIR__ . '/../../config/Koneksi.php';
-require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../config/Koneksi.php';
+require_once __DIR__ . '/../library/Log.php';
 
 class ModelAds
 {

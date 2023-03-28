@@ -7,7 +7,7 @@
  * Time: 3:41 PM
  */
 
-require_once __DIR__ . '/../../config/Koneksi.php';
+require_once __DIR__ . '/../config/Koneksi.php';
 
 class ModelLivetv
 {

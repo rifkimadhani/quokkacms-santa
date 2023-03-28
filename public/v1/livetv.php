@@ -6,10 +6,10 @@
  * Time: 10:14 AM
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
-require_once __DIR__ . '/model/ModelStb.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
+require_once __DIR__ . '/../../model/ModelStb.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();
@@ -53,10 +53,10 @@ die();
  */
 function doGetList($stbId)
 {
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelLivetv.php';
-	require_once 'model/ModelSubscriber.php';
-	require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelLivetv.php';
+	require_once '../../model/ModelSubscriber.php';
+	require_once '../../model/ModelSetting.php';
 
 	//1. Ambil room dari stbId
 	//
@@ -157,7 +157,7 @@ function doGetList($stbId)
  *
  */
 function doGetBanner(){
-	require_once 'model/ModelLivetv.php';
+	require_once '../../model/ModelLivetv.php';
 
 	$list = ModelLivetv::getMarketingBanner();
 
@@ -168,8 +168,8 @@ function doGetBanner(){
  * Untuk melihat channel apa saja yg ada di dalam package
  */
 function doGetChannelList(){
-	require_once 'model/ModelSetting.php';
-	require_once 'model/ModelLivetv.php';
+	require_once '../../model/ModelSetting.php';
+	require_once '../../model/ModelLivetv.php';
 
 	$packageId = (empty($_GET['packageId']) ? 0 : $_GET['packageId']);
 
@@ -185,7 +185,7 @@ function doGetChannelList(){
 }
 
 function doPurchase($stbId){
-	require_once 'model/ModelLivetv.php';
+	require_once '../../model/ModelLivetv.php';
 
 	$packageId = (empty($_GET['packageId']) ? 0 : $_GET['packageId']);
 
@@ -236,7 +236,7 @@ function doPurchase($stbId){
 }
 
 function doGetRunningText(){
-    require_once 'model/ModelLivetv.php';
+    require_once '../../model/ModelLivetv.php';
 
     $name = (empty($_GET['name']) ? '' : $_GET['name']);
 

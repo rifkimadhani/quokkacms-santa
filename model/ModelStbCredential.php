@@ -7,8 +7,8 @@
  * Time: 10:18 AM
  */
 
-require_once __DIR__ . '/../../library/Log.php';
-require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../library/Log.php';
+require_once __DIR__ . '/../config/ErrorAPI.php';
 require_once __DIR__ . '/../model/ModelStb.php';
 
 class ModelStbCredential

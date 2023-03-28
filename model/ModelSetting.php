@@ -295,7 +295,7 @@ class ModelSetting
      * @return null
      */
     static public function getBaseHost($path){
-        require_once __DIR__ . '/../../library/Util.php';
+        require_once __DIR__ . '/../library/Util.php';
 
 //        if (is_null(ModelSetting::$baseUrl)) {
 //            ModelSetting::$baseUrl = Util::baseUrl($path);
