@@ -7,8 +7,8 @@
  * Time: 1:27 PM
  */
 
-require_once __DIR__ . '/../../config/Koneksi.php';
-require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../config/Koneksi.php';
+require_once __DIR__ . '/../library/Log.php';
 
 const STATUS_ACTIVE_KARAOKE_RENT = 'ACTIVE';
 

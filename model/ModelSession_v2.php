@@ -7,9 +7,9 @@
  * Time: 10:17
  */
 
-require_once __DIR__ .'/../../config/Koneksi.php';
-require_once __DIR__ .'/../../library/Security.php';
-require_once __DIR__ .'/../../library/Log.php';
+require_once __DIR__ .'/../config/Koneksi.php';
+require_once __DIR__ .'/../library/Security.php';
+require_once __DIR__ .'/../library/Log.php';
 
 
 class ModelSession_v2

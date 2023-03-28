@@ -7,8 +7,8 @@
  * Time: 11:58 AM
  */
 
-require_once __DIR__ . '/../../config/Koneksi.php';
-require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../config/Koneksi.php';
+require_once __DIR__ . '/../library/Log.php';
 
 class ModelAdmin
 {

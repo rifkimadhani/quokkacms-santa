@@ -6,7 +6,7 @@
  * Date: 3/5/2019
  * Time: 10:55 AM
  */
-require_once __DIR__ . '/../../config/Koneksi.php';
+require_once __DIR__ . '/../config/Koneksi.php';
 
 class ModelMovie
 {

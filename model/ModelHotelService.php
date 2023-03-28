@@ -6,8 +6,8 @@
  * Date: 18/08/2021
  * Time: 11:50
  */
-require_once __DIR__ . '/../../config/Koneksi.php';
-require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../config/Koneksi.php';
+require_once __DIR__ . '/../library/Log.php';
 
 class ModelHotelService
 {

@@ -6,8 +6,8 @@
  * Date: 4/9/2019
  * Time: 12:57 PM
  */
-require_once __DIR__ . '/../../config/Koneksi.php';
-require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../config/Koneksi.php';
+require_once __DIR__ . '/../library/Log.php';
 
 class ModelLocality
 {

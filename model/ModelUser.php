@@ -4,7 +4,7 @@
  * implementasi model disini ada 2 type, type lama yg masih mempergunakan cara2 kuno
  * dan cara baru yg mempergunakan Connection.php
  */
-require_once __DIR__ . '/../../config/Koneksi.php';
+require_once __DIR__ . '/../config/Koneksi.php';
 
 class ModelUser
 {

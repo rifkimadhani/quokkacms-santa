@@ -6,7 +6,7 @@
  * Date: 26/10/2022
  * Time: 13:45
  */
-require_once __DIR__ . '/../../config/Koneksi.php';
+require_once __DIR__ . '/../config/Koneksi.php';
 
 ///////////////////////////////////////////////////////
 /// class ini hanya di pakai utk old design ModelProfile

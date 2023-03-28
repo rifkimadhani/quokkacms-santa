@@ -8,8 +8,8 @@
  */
 define('RATING_MAX', 100);
 
-require_once __DIR__ . '/../../library/Log.php';
-require_once __DIR__ . '/../../config/Koneksi.php';
+require_once __DIR__ . '/../library/Log.php';
+require_once __DIR__ . '/../config/Koneksi.php';
 
 class ModelMovieRating
 {

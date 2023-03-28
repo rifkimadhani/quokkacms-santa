@@ -12,8 +12,8 @@ const PAYMENT_TYPE_CASH = 'CASH';
 
 const ROOMSERVICE_STATUS_CANCEL = 'CANCEL';
 
-require_once __DIR__ . '/../../config/Koneksi.php';
-require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../config/Koneksi.php';
+require_once __DIR__ . '/../library/Log.php';
 
 class ModelRoomservice
 {

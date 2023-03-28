@@ -6,8 +6,8 @@
  * Time: 10:13 AM
  */
 
-require_once __DIR__ . '/../../config/Koneksi.php';
-require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../config/Koneksi.php';
+require_once __DIR__ . '/../library/Log.php';
 
 
 class ModelFacility {

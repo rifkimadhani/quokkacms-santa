@@ -6,8 +6,8 @@
  * Date: 09/03/2022
  * Time: 9:17
  */
-require_once __DIR__ . '/../../config/Koneksi.php';
-require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../config/Koneksi.php';
+require_once __DIR__ . '/../library/Log.php';
 
 class ModelLog
 {

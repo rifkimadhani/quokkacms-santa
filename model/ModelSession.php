@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/ModelLog.php';
-require_once __DIR__ . '/../../config/Koneksi.php';
+require_once __DIR__ . '/../config/Koneksi.php';
 
 class ModelSession {
     const SQL_CREATE = 'INSERT INTO tsession (session_id,user_id,salt,exp_date, device_type, login_type) VALUES (?, ?, ?, DATE_ADD(now(),INTERVAL 36500 DAY), ?, ?)';

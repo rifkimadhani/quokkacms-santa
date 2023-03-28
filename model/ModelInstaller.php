@@ -6,9 +6,9 @@
  * Date: 5/29/2019
  * Time: 11:47 AM
  */
-require_once __DIR__ . '/../../config/Koneksi.php';
-require_once __DIR__ . '/../../library/Log.php';
-require_once __DIR__ . '/../../library/Adb.php';
+require_once __DIR__ . '/../config/Koneksi.php';
+require_once __DIR__ . '/../library/Log.php';
+require_once __DIR__ . '/../library/Adb.php';
 
 class ModelInstaller
 {
