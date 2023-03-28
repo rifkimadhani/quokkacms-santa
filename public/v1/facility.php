@@ -6,9 +6,9 @@
  * Time: 10:13 AM
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();
@@ -29,8 +29,8 @@ die();
 
 function doGetList(){
 
-	require_once 'model/ModelFacility.php';
-	require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelFacility.php';
+	require_once '../../model/ModelSetting.php';
 
 	$facility = ModelFacility::getAll();
 	$images = ModelFacility::getAllImage();

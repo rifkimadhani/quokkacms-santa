@@ -6,9 +6,9 @@
  * Time: 12:56 PM
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();
@@ -28,8 +28,8 @@ switch ($action){
 die();
 
 function doGetList(){
-	require_once 'model/ModelLocality.php';
-	require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelLocality.php';
+	require_once '../../model/ModelSetting.php';
 
 	$list = ModelLocality::getAll();
 	$medias = ModelLocality::getAllImage();
