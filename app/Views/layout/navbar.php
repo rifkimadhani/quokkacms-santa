@@ -222,7 +222,7 @@
                             <a href="<?= base_url('currency'); ?>">Currency</a>
                         </li>
                         <li>
-                            <a href="<?= base_url('facility'); ?>">Hotel Service</a>
+                            <a href="<?= base_url('facility'); ?>">Hotel Facility</a>
                         </li>
                         <li>
                             <a href="<?= base_url('locality'); ?>">Tourist Info</a>
