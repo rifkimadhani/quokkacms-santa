@@ -9,9 +9,9 @@
 const RENT_TYPE_PAYPERVIEW = 'PAYPERVIEW';
 const RENT_TYPE_FREE = 'FREE';
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();
@@ -56,10 +56,10 @@ exit();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function doGetList(){
-	require_once '../config/Const.php';
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelMovie.php';
-	require_once 'model/ModelSetting.php';
+	require_once '../../config/Const.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelMovie.php';
+	require_once '../../model/ModelSetting.php';
 
 	$genreId = (int) (empty($_GET['genre_id']) ? 0 : $_GET['genre_id']);
 	$offset = (int) (empty($_GET['offset']) ? 0 : $_GET['offset']);
@@ -102,10 +102,10 @@ function doGetList(){
 }
 
 function doGetInfo(){
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelMovie.php';
-	require_once 'model/ModelGenre.php';
-	require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelMovie.php';
+	require_once '../../model/ModelGenre.php';
+	require_once '../../model/ModelSetting.php';
 
 	$movieId = (empty($_GET['movieId']) ? '' : $_GET['movieId']);
 
@@ -134,7 +134,7 @@ function doGetInfo(){
 }
 
 function doGetGenreList(){
-	require_once 'model/ModelGenre.php';
+	require_once '../../model/ModelGenre.php';
 
 	$list = ModelGenre::getAll();
 
@@ -142,10 +142,10 @@ function doGetGenreList(){
 }
 
 function doPurchaseOne($stbId){
-	require_once 'model/ModelRoom.php';
-	require_once 'model/ModelMovie.php';
-	require_once 'model/ModelSetting.php';
-	require_once '../library/DateUtil.php';
+	require_once '../../model/ModelRoom.php';
+	require_once '../../model/ModelMovie.php';
+	require_once '../../model/ModelSetting.php';
+	require_once '../../library/DateUtil.php';
 
 	$pin = (empty($_GET['pin']) ? '' : $_GET['pin']);
 	$vodId = (empty($_GET['vod_id']) ? 0 : $_GET['vod_id']);
@@ -219,8 +219,8 @@ function doPurchaseOne($stbId){
 }
 
 function doPurchaseFree(){
-    require_once 'model/ModelMovie.php';
-    require_once 'model/ModelSetting.php';
+    require_once '../../model/ModelMovie.php';
+    require_once '../../model/ModelSetting.php';
 
     $vodId = (empty($_GET['vod_id']) ? 0 : $_GET['vod_id']);
 
@@ -250,10 +250,10 @@ function doPurchaseFree(){
 
 function doCheckRent($stbId){
 
-    require_once 'model/ModelRoom.php';
-    require_once 'model/ModelSubscriber.php';
-    require_once 'model/ModelMovie.php';
-    require_once 'model/ModelSetting.php';
+    require_once '../../model/ModelRoom.php';
+    require_once '../../model/ModelSubscriber.php';
+    require_once '../../model/ModelMovie.php';
+    require_once '../../model/ModelSetting.php';
 
     $vodId= (empty($_GET['vod_id']) ? 0 : $_GET['vod_id']);
 
