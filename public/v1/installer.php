@@ -20,9 +20,9 @@
  * auth di lakukan dgn mempergunakan username & password spt login di console
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 Log::writeLn('==========================================================================================================');
 Log::writeRequestUri();
@@ -53,8 +53,8 @@ switch ($action){
 die();
 
 function doLogin(){
-	require_once 'model/ModelAdmin.php';
-	require_once '../library/Security.php';
+	require_once '../../model/ModelAdmin.php';
+	require_once '../../library/Security.php';
 
 	$username = (empty($_GET['username']) ? '' : $_GET['username']);
 	$hash = (empty($_GET['hash']) ? '' : $_GET['hash']);
@@ -88,10 +88,10 @@ function doLogin(){
 }
 
 function doRegisterMacaddress(){
-	require_once 'model/ModelAdmin.php';
-	require_once 'model/ModelStb.php';
-	require_once '../library/Util.php';
-	require_once '../library/Security.php';
+	require_once '../../model/ModelAdmin.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../library/Util.php';
+	require_once '../../library/Security.php';
 
 	$sessionId = (empty($_GET['sessionId']) ? '' : $_GET['sessionId']);
 	$stbId = (empty($_GET['stbId']) ? '' : $_GET['stbId']);
@@ -148,10 +148,10 @@ function doRegisterMacaddress(){
 }
 
 function doCreateSession(){
-	require_once 'model/ModelAdmin.php';
-	require_once 'model/ModelStb.php';
-	require_once '../library/Util.php';
-	require_once '../library/Security.php';
+	require_once '../../model/ModelAdmin.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../library/Util.php';
+	require_once '../../library/Security.php';
 
 	$sessionId = (empty($_GET['sessionId']) ? '' : $_GET['sessionId']);
 	$stbId = (empty($_GET['stbId']) ? '' : $_GET['stbId']);
@@ -200,9 +200,9 @@ function doCreateSession(){
 }
 
 function doGetStbList(){
-	require_once '../library/Security.php';
-	require_once 'model/ModelAdmin.php';
-	require_once 'model/ModelStb.php';
+	require_once '../../library/Security.php';
+	require_once '../../model/ModelAdmin.php';
+	require_once '../../model/ModelStb.php';
 
 	$sessionId = (empty($_GET['sessionId']) ? '' : $_GET['sessionId']);
 	$sig = (empty($_GET['sig']) ? '' : $_GET['sig']);
@@ -243,7 +243,7 @@ function doGetStbList(){
 }
 
 function doInstall(){
-	require_once 'model/ModelApp.php';
+	require_once '../../model/ModelApp.php';
 
 	$appId = (empty($_GET['app_id']) ? '' : $_GET['app_id']);
 	$ip = (empty($_GET['ip']) ? '192.168.0.120' : $_GET['ip']);

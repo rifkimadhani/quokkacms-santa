@@ -6,10 +6,10 @@
  * Time: 9:33
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
 
-require_once __DIR__ . '/model/ModelUser.php';
+require_once __DIR__ . '/../../model/ModelUser.php';
 
 define('LOGIN_EMAIL', 'EMAIL');
 define('LOGIN_MSISDN', 'MSISDN');
@@ -89,7 +89,7 @@ function doLoginMsisdn(){
     $hash = $user['hash'];
     $salt = $user['salt'];
 
-    require_once __DIR__ . '/../library/Security.php';
+    require_once __DIR__ . '/../../library/Security.php';
     $xor = Security::xor64($password, $salt);
     $sha = hash('sha512', $xor, true);
     $hash2 = base64_encode($sha);
@@ -103,7 +103,7 @@ function doLoginMsisdn(){
     }
 
     //create session utk mobile user
-    require_once __DIR__ . '/model/ModelSession.php';
+    require_once __DIR__ . '/../../model/ModelSession.php';
     $userId = $user['user_id'];
     $id = ModelSession::create($userId, $device, LOGIN_MSISDN);
     $session = ModelSession::get($id);
@@ -145,7 +145,7 @@ function doLoginEmail(){
     $hash = $user['hash'];
     $salt = $user['salt'];
 
-    require_once __DIR__ . '/../library/Security.php';
+    require_once __DIR__ . '/../../library/Security.php';
     $xor = Security::xor64($password, $salt);
     $sha = hash('sha512', $xor, true);
     $hash2 = base64_encode($sha);
@@ -159,7 +159,7 @@ function doLoginEmail(){
     }
 
     //create session utk mobile user
-    require_once __DIR__ . '/model/ModelSession.php';
+    require_once __DIR__ . '/../../model/ModelSession.php';
     $userId = $user['user_id'];
     $id = ModelSession::create($userId, $device, LOGIN_EMAIL);
     $session = ModelSession::get($id);
@@ -221,7 +221,7 @@ function doLoginFacebook()
     }
 
     if ($user==null){
-        require_once __DIR__ . '/model/ModelProfile.php';
+        require_once __DIR__ . '/../../model/ModelProfile.php';
 
         //1. create user baru
         $userId = ModelUser::create();
@@ -243,7 +243,7 @@ function doLoginFacebook()
         }
     }
 
-    require_once __DIR__ . '/model/ModelSession.php';
+    require_once __DIR__ . '/../../model/ModelSession.php';
     $id = ModelSession::create($userId, $device, LOGIN_FACEBOOK);
     $session = ModelSession::get($id);
 
@@ -281,7 +281,7 @@ function doLoginGoogle()
 
     if ($user==null){
         //user blm ada, maka buat
-        require_once __DIR__ . '/model/ModelProfile.php';
+        require_once __DIR__ . '/../../model/ModelProfile.php';
 
         //1. create user baru
         $userId = ModelUser::create();
@@ -303,7 +303,7 @@ function doLoginGoogle()
         }
     }
 
-    require_once __DIR__ . '/model/ModelSession.php';
+    require_once __DIR__ . '/../../model/ModelSession.php';
     $id = ModelSession::create($userId, $device, LOGIN_GOOGLE);
     $session = ModelSession::get($id);
 
@@ -312,7 +312,7 @@ function doLoginGoogle()
 
 //TODO: perlu di test
 function doLoginInstagram(){
-    require_once __DIR__ . '/../library/Instagram.php';
+    require_once __DIR__ . '/../../library/Instagram.php';
 
     $code = isset($_GET['code']) ? $_GET['code'] : '';
     $device = isset($_GET['device']) ? $_GET['device'] : '';
@@ -352,7 +352,7 @@ function doLoginInstagram(){
 //    ModelUser::updateInstagramToken($userId, $token);
 
     //3. buat session
-    require_once __DIR__ . '/model/ModelSession.php';
+    require_once __DIR__ . '/../../model/ModelSession.php';
 
     $session = ModelSession::create($userId, $device, LOGIN_INSTAGRAM);
 

@@ -5,11 +5,11 @@
  * Date: 21/09/2022
  * Time: 16:07
  */
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../library/Security.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/../library/http_errorcodes.php';
-require_once __DIR__ . '/model/ModelUser.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../library/Security.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../library/http_errorcodes.php';
+require_once __DIR__ . '/../../model/ModelUser.php';
 
 define('EXP_CODE', '+3600 seconds'); //second, code expired
 define('EXP_RESEND_CODE', '+30 seconds'); //second, resend code
@@ -95,7 +95,7 @@ function doSignupMsisdn(){
 }
 
 function doReqMsisdnCode(){
-    require_once __DIR__ . '/../library/Security.php';
+    require_once __DIR__ . '/../../library/Security.php';
 
     $msisdn = isset($_GET['msisdn']) ? $_GET['msisdn'] : '';
 
@@ -142,7 +142,7 @@ function doReqMsisdnCode(){
 }
 
 function doCheckMsisdnCode(){
-    require_once __DIR__ . '/model/ModelSession.php';
+    require_once __DIR__ . '/../../model/ModelSession.php';
 
     $msisdn = isset($_GET['msisdn']) ? $_GET['msisdn'] : '';
     $code = isset($_GET['code']) ? $_GET['code'] : '';
@@ -239,9 +239,9 @@ function doSignupEmail(){
 }
 
 function doReqEmailCode(){
-    require_once __DIR__ . '/../library/Security.php';
-    require_once __DIR__ . '/../library/Mailgun.php';
-    require_once __DIR__ . '/model/ModelSetting.php';
+    require_once __DIR__ . '/../../library/Security.php';
+    require_once __DIR__ . '/../../library/Mailgun.php';
+    require_once __DIR__ . '/../../model/ModelSetting.php';
 
     $email = isset($_GET['email']) ? $_GET['email'] : '';
 
@@ -301,7 +301,7 @@ function doReqEmailCode(){
 }
 
 function doCheckEmailCode(){
-    require_once __DIR__ . '/model/ModelSession.php';
+    require_once __DIR__ . '/../../model/ModelSession.php';
 
     $email = isset($_GET['email']) ? $_GET['email'] : '';
     $code = isset($_GET['code']) ? $_GET['code'] : '';

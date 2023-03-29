@@ -10,9 +10,9 @@
 //
 //const PAYMENT_TYPE_BILL_TO_ROOM = 'BILL-TO-ROOM';
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();
@@ -47,9 +47,9 @@ switch ($action){
 die();
 
 function doGetList($stbId){
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelSetting.php';
-	require_once 'model/ModelRoomservice.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelSetting.php';
+	require_once '../../model/ModelRoomservice.php';
 
 	$menuId = (empty($_GET['menuId']) ? '' : $_GET['menuId']);
 	$qty = (empty($_GET['qty']) ? '' : $_GET['qty']);
@@ -85,9 +85,9 @@ function doGetList($stbId){
  * @param $stbId
  */
 function doSetOrder($stbId){
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelSetting.php';
-	require_once 'model/ModelRoomservice.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelSetting.php';
+	require_once '../../model/ModelRoomservice.php';
 
 	$menuId = (empty($_GET['menuId']) ? 0 : $_GET['menuId']);
 	$qty = (empty($_GET['qty']) ? 0 : $_GET['qty']);
@@ -122,9 +122,9 @@ function doSetOrder($stbId){
 }
 
 function doRemoveOrder($stbId){
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelSetting.php';
-	require_once 'model/ModelRoomservice.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelSetting.php';
+	require_once '../../model/ModelRoomservice.php';
 
 	$menuId = (empty($_GET['menuId']) ? 0 : $_GET['menuId']);
 	$qty = (empty($_GET['qty']) ? 0 : $_GET['qty']);
@@ -161,10 +161,10 @@ function doRemoveOrder($stbId){
 function doCheckout($stbId){
 	$secPin = (empty($_GET['secPin']) ? '' : $_GET['secPin']);
 
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelSetting.php';
-	require_once 'model/ModelRoomservice.php';
-	require_once 'model/ModelKitchen.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelSetting.php';
+	require_once '../../model/ModelRoomservice.php';
+	require_once '../../model/ModelKitchen.php';
 
 	//ambil room
 	$room = ModelStb::get($stbId);
@@ -220,7 +220,7 @@ function doCheckout($stbId){
 }
 
 function doGetPurchasedList($stbId){
-	require_once 'model/ModelRoomservice.php';
+	require_once '../../model/ModelRoomservice.php';
 
 	//ambil room
 	$room = ModelStb::get($stbId);
@@ -251,9 +251,9 @@ function doGetPurchasedList($stbId){
 }
 
 function doClearOrder($stbId){
-    require_once 'model/ModelStb.php';
-    require_once 'model/ModelSetting.php';
-    require_once 'model/ModelRoomservice.php';
+    require_once '../../model/ModelStb.php';
+    require_once '../../model/ModelSetting.php';
+    require_once '../../model/ModelRoomservice.php';
 
     //ambil room
     $room = ModelStb::get($stbId);

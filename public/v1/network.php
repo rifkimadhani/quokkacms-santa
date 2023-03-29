@@ -10,7 +10,7 @@
  *
  */
 
-require_once __DIR__ . '/../library/NetworkUtil.php';
+require_once __DIR__ . '/../../library/NetworkUtil.php';
 
 error_reporting(0);
 ini_set('display_errors', false);
@@ -157,7 +157,7 @@ function sendGameUpdateToAll(){
  */
 function sendToStb($stbId, $json) {
 
-	require_once __DIR__ . '/model/ModelStb.php';
+	require_once __DIR__ . '/../../model/ModelStb.php';
 
 	$stb = ModelStb::get($stbId);
 
@@ -173,7 +173,7 @@ function sendToStb($stbId, $json) {
 }
 
 function sendToRoom($roomId, $json){
-	require_once 'model/ModelStb.php';
+	require_once '../../model/ModelStb.php';
 
 	$ar = ModelStb::getByRoom($roomId);
 
@@ -190,7 +190,7 @@ function sendToRoom($roomId, $json){
 }
 
 function sendToSubscriber($subscriberId, $json){
-	require_once 'model/ModelSubscriber.php';
+	require_once '../../model/ModelSubscriber.php';
 
 	$ar = ModelSubscriber::getStb($subscriberId);
 
@@ -208,7 +208,7 @@ function sendToSubscriber($subscriberId, $json){
 }
 
 function sendToAll($json){
-	require_once 'model/ModelStb.php';
+	require_once '../../model/ModelStb.php';
 
 	$ar = ModelStb::getAll();
 

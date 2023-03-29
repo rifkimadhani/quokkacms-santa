@@ -6,12 +6,12 @@
  * Time: 10:04
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../library/http_errorcodes.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
-require_once __DIR__ . '/model/ModelApp.php';
-require_once __DIR__ . '/model/ModelSetting.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../library/http_errorcodes.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
+require_once __DIR__ . '/../../model/ModelApp.php';
+require_once __DIR__ . '/../../model/ModelSetting.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();

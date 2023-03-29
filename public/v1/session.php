@@ -1,12 +1,12 @@
 <?php
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/../library/DateUtil.php';
-require_once __DIR__ . '/../library/Security.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../library/DateUtil.php';
+require_once __DIR__ . '/../../library/Security.php';
 
-require_once __DIR__ . '/model/ModelSession.php';
-require_once __DIR__ . '/model/ModelUser.php';
-require_once __DIR__ . '/model/ModelProfile.php';
+require_once __DIR__ . '/../../model/ModelSession.php';
+require_once __DIR__ . '/../../model/ModelUser.php';
+require_once __DIR__ . '/../../model/ModelProfile.php';
 
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
@@ -101,8 +101,8 @@ function regToken()
  */
 function doUpdateDeviceInfo()
 {
-    require_once __DIR__ . '/../library/IP2Location.php';
-    require_once __DIR__ . '/model/ModelSession_v2.php';
+    require_once __DIR__ . '/../../library/IP2Location.php';
+    require_once __DIR__ . '/../../model/ModelSession_v2.php';
 
     // todo update device info
     $ip = $_SERVER['REMOTE_ADDR'];
@@ -141,7 +141,7 @@ function doUpdateDeviceInfo()
     $dateTime = $date->format('Y-m-d H:i:s');
 
     if (strtolower($deviceType) == "stb") {
-        require_once __DIR__ . '/model/ModelApp.php';
+        require_once __DIR__ . '/../../model/ModelApp.php';
         $appId = (empty($_GET['appId']) ? '' : $_GET['appId']);
         $app = ModelApp::getLatest($appId, $versionCode);
 //        $newTimeZone = str_replace(":","",$timezone);

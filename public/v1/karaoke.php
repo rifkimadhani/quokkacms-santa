@@ -12,10 +12,10 @@ const JUKEBOX_SONG_BY_GENRE = 'https://homeconnectserver.com/jukebox/v1/song.php
 const JUKEBOX_SONG_BY_KEYWORD = 'https://homeconnectserver.com/jukebox/v1/song.php?type&keyword=_keyword&offset=_offset&limit=_limit';
 const JUKEBOX_SONG_PLAYBACK_URL = 'https://homeconnectserver.com/jukebox/v1/song.php?type=playbackUrl&songId=_songId';
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
-require_once __DIR__ . '/model/ModelStb.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
+require_once __DIR__ . '/../../model/ModelStb.php';
 
 Log::writeLn('==========================================================================================================');
 Log::writeRequestUri();
@@ -96,7 +96,7 @@ function doGetSongByKeyword(){
 }
 
 function doGetPlaybackUrl($stbId){
-	require_once 'model/ModelKaraoke.php';
+	require_once '../../model/ModelKaraoke.php';
 
 	//check apakah room ini masuk dalam daftar sewa karaoke ??
 
@@ -136,8 +136,8 @@ function doGetPlaybackUrl($stbId){
 }
 
 function doPurchase($stbId){
-	require_once 'model/ModelKaraoke.php';
-	require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelKaraoke.php';
+	require_once '../../model/ModelSetting.php';
 
 	$marketingId = (empty($_GET['marketingId']) ? 0 : $_GET['marketingId']);
 	$secPin = (empty($_GET['secPin']) ? '' : $_GET['secPin']);
@@ -195,7 +195,7 @@ function doPurchase($stbId){
 }
 
 function doGetRentList($stbId){
-	require_once 'model/ModelKaraoke.php';
+	require_once '../../model/ModelKaraoke.php';
 
 	//check apakah room ini masuk dalam daftar sewa karaoke ??
 
@@ -224,7 +224,7 @@ function doGetRentList($stbId){
 }
 
 function doGetBanner(){
-	require_once 'model/ModelKaraoke.php';
+	require_once '../../model/ModelKaraoke.php';
 
 	$list = ModelKaraoke::getMarketingBanner();
 

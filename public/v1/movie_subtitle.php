@@ -2,9 +2,9 @@
 
 require_once '../library/Log.php';
 
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/../library/http_errorcodes.php';
-require_once __DIR__ . '/model/ModelVodSubtitle.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../library/http_errorcodes.php';
+require_once __DIR__ . '/../../model/ModelVodSubtitle.php';
 
 //no cache
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");

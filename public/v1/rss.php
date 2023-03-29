@@ -6,9 +6,9 @@
  * Time: 9:17 AM
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 Log::writeLn('==========================================================================================================');
 Log::writeRequestUri();
@@ -31,7 +31,7 @@ switch ($action){
 die();
 
 function doGetCategory(){
-	require_once 'model/ModelRss.php';
+	require_once '../../model/ModelRss.php';
 
 	$categories = ModelRss::getAllCategory();
 
@@ -40,7 +40,7 @@ function doGetCategory(){
 
 
 function doGetSource(){
-	require_once 'model/ModelRss.php';
+	require_once '../../model/ModelRss.php';
 
 	$categoryId = (empty($_GET['category_id']) ? 0 : $_GET['category_id']);
 

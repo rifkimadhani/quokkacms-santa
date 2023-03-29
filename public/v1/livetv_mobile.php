@@ -7,10 +7,10 @@
  * Time: 14:25
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/../v1/model/ModelSetting.php';
-require_once __DIR__ . '/../v1/model/ModelLivetv.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelSetting.php';
+require_once __DIR__ . '/../../model/ModelLivetv.php';
 
 header('Content-type: application/json; charset=utf-8');
 

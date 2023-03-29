@@ -12,9 +12,9 @@
  *
  */
 
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelSetting.php';
-require_once __DIR__ . '/model/ModelMovie.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelSetting.php';
+require_once __DIR__ . '/../../model/ModelMovie.php';
 
 $vodId = (empty($_GET['vod_id']) ? 0 : $_GET['vod_id']);
 

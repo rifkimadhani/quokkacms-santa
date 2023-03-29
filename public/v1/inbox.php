@@ -6,15 +6,15 @@
  * Time: 12:44 PM
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 
-require_once __DIR__ . '/model/ModelSession.php';
-require_once __DIR__ . '/model/ModelUser.php';
-require_once __DIR__ . '/model/ModelInbox.php';
-require_once __DIR__ . '/model/ModelSetting.php';
+require_once __DIR__ . '/../../model/ModelSession.php';
+require_once __DIR__ . '/../../model/ModelUser.php';
+require_once __DIR__ . '/../../model/ModelInbox.php';
+require_once __DIR__ . '/../../model/ModelSetting.php';
 
 //Log::writeLn("=====================================================================");
 //Log::writeRequestUri();
@@ -178,9 +178,9 @@ function doSend(string $sessionId, string $userId, string $salt)
     });
 
     //5. Kirim notifikasi toUserId
-    require_once "../config/C.php";
-    require_once "../model/ModelProfile.php";
-    require_once "../library/FirebaseMessage.php";
+    require_once "../../config/Const.php";
+    require_once "../../model/ModelProfile.php";
+    require_once "../../library/FirebaseMessage.php";
 
     $profile = new ModelProfile();
     $profileItem = $profile->get($userId);
@@ -266,8 +266,8 @@ function doDelete(string $userId)
     $otherUserId = isset($_GET['otherUserId']) ? $_GET['otherUserId'] : null;
 
     $error = new ErrorAPI();
-    require_once "../config/C.php";
-    require_once "../library/FirebaseMessage.php";
+    require_once "../../config/Const.php";
+    require_once "../../library/FirebaseMessage.php";
 
     //1. check all parameter $inboxId & $otherUserId tdk boleh kosong
     if (is_null($inboxId) || is_null($otherUserId)) {
@@ -323,7 +323,7 @@ function doGetList(){
 
     //cari userId dari session
     if (isset($sessionId)){
-        require_once __DIR__ . '/model/ModelSession.php';
+        require_once __DIR__ . '/../../model/ModelSession.php';
         $ses = ModelSession::get($sessionId);
         if (isset($ses)) $userId = $ses['user_id'];
     }

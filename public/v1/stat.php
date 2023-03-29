@@ -7,8 +7,8 @@
  */
 
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 if (defined('HTTP_BAD_REQUEST')==false) define('HTTP_BAD_REQUEST', 400);
 if (defined('HTTP_NOT_FOUND')==false) define('HTTP_NOT_FOUND', 404);
@@ -65,9 +65,9 @@ function doQuick($stbId){
     $group3 = (empty($_GET['group3']) ? null : $_GET['group3']);
     $group4 = (empty($_GET['group4']) ? null : $_GET['group4']);
 
-    require_once '../config/ErrorAPI.php';
-    require_once 'model/ModelStat.php';
-    require_once 'model/ModelStb.php';
+    require_once '../../config/ErrorAPI.php';
+    require_once '../../model/ModelStat.php';
+    require_once '../../model/ModelStb.php';
 
     //cari subscriberId utk stb ini
     $subscriberId = 0;
@@ -87,9 +87,9 @@ function doQuick($stbId){
 
 function doCreate($stbId){
 
-	require_once '../config/ErrorAPI.php';
-	require_once 'model/ModelStat.php';
-	require_once 'model/ModelStb.php';
+	require_once '../../config/ErrorAPI.php';
+	require_once '../../model/ModelStat.php';
+	require_once '../../model/ModelStb.php';
 
 //	$statDefId = (empty($_GET['stat_def_id']) ? 0 : $_GET['stat_def_id']);
 	$type = (empty($_GET['type']) ? null : $_GET['type']);
@@ -126,7 +126,7 @@ function doCreate($stbId){
 
 function doUpdateValue(){
 
-	require_once 'model/ModelStat.php';
+	require_once '../../model/ModelStat.php';
 
 	$statId = (empty($_GET['stat_id']) ? 0 : $_GET['stat_id']);
 //	$value = (empty($_GET['value']) ? 0 : $_GET['value']);

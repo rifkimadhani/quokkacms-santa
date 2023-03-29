@@ -9,9 +9,9 @@
 
 const MESSAGE_STATUS_READ = 'READ';
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();
@@ -35,9 +35,9 @@ die();
 
 function doGetList($stbId){
 
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelMessage.php';
-	require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelMessage.php';
+	require_once '../../model/ModelSetting.php';
 
 	$stb = ModelStb::get($stbId);
 
@@ -56,8 +56,8 @@ function doGetList($stbId){
 }
 
 function doSetStatusRead($stbId){
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelMessage.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelMessage.php';
 
 	$messageId = (empty($_GET['messageId']) ? 0 : $_GET['messageId']);
 

@@ -7,10 +7,10 @@
  */
 
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelSession.php';
-require_once __DIR__ . '/model/ModelMovieRating.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelSession.php';
+require_once __DIR__ . '/../../model/ModelMovieRating.php';
 
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
@@ -88,7 +88,7 @@ function doToggle($userId){
  * @param $userId
  */
 function doSubmit($userId){
-    require_once __DIR__ . '/model/ModelMovie.php';
+    require_once __DIR__ . '/../../model/ModelMovie.php';
 
     $vodId = isset($_GET['vod_id']) ? $_GET['vod_id'] : 0;
     $rating = isset($_GET['rating']) ? $_GET['rating'] : 0; //value 0 - 100
@@ -128,7 +128,7 @@ function doSubmit($userId){
             return;
         }
 
-        require_once __DIR__ . '/model/ModelMovie.php';
+        require_once __DIR__ . '/../../model/ModelMovie.php';
 
         $data = updateRating($vodId);
         $rating = $data['rating'];
@@ -143,7 +143,7 @@ function doSubmit($userId){
 }
 
 function doDelete($userId){
-    require_once __DIR__ . '/model/ModelMovie.php';
+    require_once __DIR__ . '/../../model/ModelMovie.php';
 
     $vodId = isset($_GET['vod_id']) ? $_GET['vod_id'] : 0;
 

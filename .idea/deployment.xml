@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="NUC i5">
+  <component name="PublishConfigData" serverName="NUC i5" uploadOnCheckin="31ff9e34-a766-443e-a6b0-b2bde1baa9db">
     <serverData>
       <paths name="NUC i5">
         <serverdata>
@@ -10,5 +10,6 @@
         </serverdata>
       </paths>
     </serverData>
+    <option name="myUploadOnCheckinName" value="NUC i5" />
   </component>
 </project>

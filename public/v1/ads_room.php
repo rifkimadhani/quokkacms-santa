@@ -8,8 +8,8 @@
 
 const SYSTEM_TYPE = 'TARGETADS';
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 
 Log::writeLn('==========================================================================================================');
@@ -30,18 +30,18 @@ switch ($action){
 exit();
 
 function doGetList($stbId){
-    require_once 'model/ModelStb.php';
+    require_once '../../model/ModelStb.php';
 
     $stb = ModelStb::get($stbId);
 
     $spotId = (empty($_GET['spot_id']) ? 0 : $_GET['spot_id']);
     $roomId = $stb['room_id'];
 
-    require_once 'model/ModelAds.php';
+    require_once '../../model/ModelAds.php';
 
     $list = ModelAds::getByRoomId($spotId, $roomId);
 
-    require_once 'model/ModelSetting.php';
+    require_once '../../model/ModelSetting.php';
 
     $urlHost = ModelSetting::getHostApi();
     $baseHost = ModelSetting::getBaseHost('../'); //turun 1 level dari posisi api ini

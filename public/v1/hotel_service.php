@@ -15,10 +15,10 @@ define('STATUS_ACK', 'ACK');
 define('STATUS_CANCEL', 'CANCEL');
 define('STATUS_FINISH', 'FINISH');
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
-require_once __DIR__ . '/model/ModelHotelService.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
+require_once __DIR__ . '/../../model/ModelHotelService.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();

@@ -6,9 +6,9 @@
  * Time: 14:15
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();
@@ -28,7 +28,7 @@ switch ($action){
 exit();
 
 function doGetList(){
-    require_once __DIR__ . '/model/ModelSetting.php';
+    require_once __DIR__ . '/../../model/ModelSetting.php';
 
     $menuList = ModelSetting::getFeatureAppMenuList();
     $appList= ModelSetting::getFeatureMoreAppList();

@@ -1,12 +1,12 @@
 <?php
 
-require_once '../library/Log.php';
-require_once '../library/http_errorcodes.php';
+require_once '../../library/Log.php';
+require_once '../../library/http_errorcodes.php';
 
-require_once '../config/ErrorAPI.php';
+require_once '../../config/ErrorAPI.php';
 
-require_once __DIR__ . '/model/ModelLivetv.php';
-require_once __DIR__ . '/model/ModelLiveTvEpg.php';
+require_once __DIR__ . '/../../model/ModelLivetv.php';
+require_once __DIR__ . '/../../model/ModelLiveTvEpg.php';
 
 //Log::writeLn("=====================================================================");
 //Log::writeRequestUri();
@@ -103,8 +103,8 @@ function doGetAllList(){
  */
 function doParseXml(){
 
-    require_once '../model/ModelLiveTv.php';
-    require_once '../model/ModelLiveTvEpg.php';
+    require_once '../../model/ModelLiveTv.php';
+    require_once '../../model/ModelLiveTvEpg.php';
 
 
     $xmlString = $_POST['xml'];

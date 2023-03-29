@@ -11,9 +11,9 @@ if (defined('STATUS_AVAILABLE')==false) define('STATUS_AVAILABLE', 'AVAILABLE');
 //di pakai apabila ada api error
 if (defined('HTTP_BAD_REQUEST')==false) define('HTTP_BAD_REQUEST', 400);
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 Log::writeLn('==========================================================================================================');
 Log::writeRequestUri();
@@ -42,7 +42,7 @@ switch ($action){
 exit();
 
 function doGetList(){
-    require_once __DIR__ . '/model/ModelShop.php';
+    require_once __DIR__ . '/../../model/ModelShop.php';
 
 //    $offset = (empty($_GET['offset']) ? 0 : $_GET['offset']);
 
@@ -53,9 +53,9 @@ function doGetList(){
 }
 
 function doCheckOut($stbId){
-    require_once __DIR__ . '/model/ModelShop.php';
-    require_once __DIR__ . '/model/ModelStb.php';
-    require_once __DIR__ . '/model/ModelSetting.php';
+    require_once __DIR__ . '/../../model/ModelShop.php';
+    require_once __DIR__ . '/../../model/ModelStb.php';
+    require_once __DIR__ . '/../../model/ModelSetting.php';
 
     $pin = (empty($_GET['pin']) ? '' : $_GET['pin']);
     $payment = (empty($_GET['payment']) ? '' : $_GET['payment']);
@@ -134,9 +134,9 @@ function doCheckOut($stbId){
 }
 
 function doGetOrderList($stbId){
-    require_once __DIR__ . '/model/ModelShop.php';
-    require_once __DIR__ . '/model/ModelStb.php';
-    require_once __DIR__ . '/model/ModelSetting.php';
+    require_once __DIR__ . '/../../model/ModelShop.php';
+    require_once __DIR__ . '/../../model/ModelStb.php';
+    require_once __DIR__ . '/../../model/ModelSetting.php';
 
     //ambil room
     $room = ModelStb::get($stbId);

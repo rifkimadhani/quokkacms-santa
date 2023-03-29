@@ -5,7 +5,7 @@
  * Date: 09/03/2022
  * Time: 9:13
  */
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 //check stb sessionId
 $stbId = ModelStbCredential::check();

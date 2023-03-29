@@ -1,12 +1,12 @@
 <?php
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
 
-require_once __DIR__ . '/model/ModelSession.php';
-require_once __DIR__ . '/model/ModelProfile.php';
-require_once __DIR__ . '/../library/DateUtil.php';
-require_once __DIR__ . '/../library/http_errorcodes.php';
+require_once __DIR__ . '/../../model/ModelSession.php';
+require_once __DIR__ . '/../../model/ModelProfile.php';
+require_once __DIR__ . '/../../library/DateUtil.php';
+require_once __DIR__ . '/../../library/http_errorcodes.php';
 
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
@@ -63,7 +63,7 @@ exit();
  * @param $userId
  */
 function doGetMyProfile(string $userId){
-    require_once __DIR__ . '/model/ModelSession_v2.php';
+    require_once __DIR__ . '/../../model/ModelSession_v2.php';
 
     $profile = ModelProfile::get($userId);
 
@@ -149,7 +149,7 @@ function doGetOther($userId){
 }
 
 function doUploadPP(string $userId){
-    require_once '../model/ModelSetting.php';
+    require_once '../../model/ModelSetting.php';
 
     $profilePP = isset($_FILES['filename']) ? $_FILES['filename'] : null;
 

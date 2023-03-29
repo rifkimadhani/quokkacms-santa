@@ -12,9 +12,9 @@
 
 
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 Log::writeLn('==========================================================================================================');
 Log::writeRequestUri();
@@ -44,7 +44,7 @@ switch ($action){
 die();
 
 function doGetList(){
-	require_once 'model/ModelKitchen.php';
+	require_once '../../model/ModelKitchen.php';
 
 	$list = ModelKitchen::getAll();
 
@@ -52,8 +52,8 @@ function doGetList(){
 }
 
 function doGetMenuGroup(){
-	require_once 'model/ModelKitchen.php';
-	require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelKitchen.php';
+	require_once '../../model/ModelSetting.php';
 
 //	$kitchenId = (empty($_GET['kitchenId']) ? 0 : $_GET['kitchenId']);
 	$kitchenId = ModelSetting::getDefaultKitchenId();
@@ -69,8 +69,8 @@ function doGetMenuGroup(){
 }
 
 function doGetMenu(){
-	require_once 'model/ModelKitchen.php';
-    require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelKitchen.php';
+    require_once '../../model/ModelSetting.php';
 
 	$groupId = (empty($_GET['groupId']) ? 0 : $_GET['groupId']);
 
@@ -87,8 +87,8 @@ function doGetMenu(){
 }
 
 function doGetKitchen(){
-    require_once 'model/ModelKitchen.php';
-    require_once 'model/ModelSetting.php';
+    require_once '../../model/ModelKitchen.php';
+    require_once '../../model/ModelSetting.php';
 
 //	$kitchenId = (empty($_GET['kitchenId']) ? 0 : $_GET['kitchenId']);
     $kitchenId = ModelSetting::getDefaultKitchenId();

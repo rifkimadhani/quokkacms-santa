@@ -5,8 +5,8 @@
  * Date: 5/15/2019
  * Time: 2:01 PM
  */
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 
 Log::writeLn('==========================================================================================================');
@@ -68,7 +68,7 @@ function doGetList(){
 }
 JSON;
 
-	require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelSetting.php';
 
 //	$urlHost = ModelSetting::getHostApi();
 //	$json= str_replace('{HOST}', $urlHost, $json);

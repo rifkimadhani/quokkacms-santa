@@ -6,9 +6,9 @@
  * Time: 3:30 PM
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();
@@ -29,8 +29,8 @@ die();
 
 
 function doAddLog($stbId) {
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelDebug.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelDebug.php';
 
 	$ip = $_SERVER['REMOTE_ADDR'];
 

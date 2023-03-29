@@ -6,10 +6,10 @@
  * Time: 10:13 AM
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
-require_once __DIR__ . '/model/ModelStb.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
+require_once __DIR__ . '/../../model/ModelStb.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();
@@ -34,10 +34,10 @@ die();
  *
  */
 function doGetList($stbId){
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelTheme.php';
-	require_once 'model/ModelSubscriber.php';
-	require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelTheme.php';
+	require_once '../../model/ModelSubscriber.php';
+	require_once '../../model/ModelSetting.php';
 
 	$room = ModelStb::get($stbId);
 	if(empty($room)){

@@ -6,9 +6,9 @@
  * Time: 10:57 AM
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();
@@ -29,8 +29,8 @@ die();
 
 
 function doGetState(){
-	require_once 'model/ModelSetting.php';
-	require_once 'model/ModelEmegencyState.php';
+	require_once '../../model/ModelSetting.php';
+	require_once '../../model/ModelEmegencyState.php';
 
 	//emergency state
 	$emergencyState = ModelSetting::getEmergencyState();

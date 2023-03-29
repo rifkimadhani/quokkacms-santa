@@ -21,8 +21,8 @@ if ($action=='ping'){
     disconnect(json_encode(['success'=>1]));
 
     //proses di bawah di lakukan setelah disconnect, shg tdk reponse akan lbh cepat
-    require_once 'model/ModelStb.php';
-    require_once __DIR__ . '/model/ModelStbCredential.php';
+    require_once '../../model/ModelStb.php';
+    require_once __DIR__ . '/../../model/ModelStbCredential.php';
     $stbId = ModelStbCredential::check();
     $ip = $_SERVER['REMOTE_ADDR'];
     ModelStb::updateIpaddress($stbId, $ip);
@@ -31,9 +31,9 @@ if ($action=='ping'){
 }
 
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();
@@ -59,11 +59,11 @@ switch ($action){
 die();
 
 function doUpdateInfo($stbId){
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelApp.php';
-	require_once 'model/ModelSubscriber.php';
-	require_once 'model/ModelSetting.php';
-	require_once 'model/ModelEmegencyState.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelApp.php';
+	require_once '../../model/ModelSubscriber.php';
+	require_once '../../model/ModelSetting.php';
+	require_once '../../model/ModelEmegencyState.php';
 
 	$ip = $_SERVER['REMOTE_ADDR'];
 	$appId = (empty($_GET['appId']) ? '' : $_GET['appId']);
@@ -124,9 +124,9 @@ function doUpdateInfo($stbId){
 }
 
 function doGetInfo($stbId){
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelSubscriber.php';
-	require_once 'model/ModelApp.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelSubscriber.php';
+	require_once '../../model/ModelApp.php';
 
 	$stb = ModelStb::get($stbId);
 
@@ -152,7 +152,7 @@ function doGetInfo($stbId){
 	$app = ModelApp::getLatest($appId, $versionCode);
 
 	if ($app!=null){
-        require_once 'model/ModelSetting.php';
+        require_once '../../model/ModelSetting.php';
         $baseHost = ModelSetting::getBaseHost('../'); //turun 1 level dari posisi api ini
         $app['urlDownload'] = str_replace('{BASE_HOST}', $baseHost, $app['urlDownload']);
     }

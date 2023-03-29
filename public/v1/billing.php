@@ -6,9 +6,9 @@
  * Time: 2:47 PM
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();
@@ -32,9 +32,9 @@ die();
 
 
 function doGetList($stbId){
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelRoomservice.php';
-	require_once 'model/ModelSubscriber.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelRoomservice.php';
+	require_once '../../model/ModelSubscriber.php';
 
 	//ambil room
 	$room = ModelStb::get($stbId);
@@ -89,9 +89,9 @@ function doGetList($stbId){
 }
 
 function doGetDetailRoomservice($stbId){
-	require_once 'model/ModelStb.php';
-	require_once 'model/ModelRoomservice.php';
-	require_once 'model/ModelSubscriber.php';
+	require_once '../../model/ModelStb.php';
+	require_once '../../model/ModelRoomservice.php';
+	require_once '../../model/ModelSubscriber.php';
 
 	$orderCode = (empty($_GET['orderCode']) ? '' : $_GET['orderCode']); //dipakai utk roomservice
 

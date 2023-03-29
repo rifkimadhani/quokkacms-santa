@@ -6,8 +6,8 @@
  * Time: 11:26 AM
  */
 
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 
 Log::writeLn('==========================================================================================================');
@@ -29,14 +29,14 @@ die();
 
 
 function doGetList(){
-	require_once 'model/ModelAds.php';
+	require_once '../../model/ModelAds.php';
 
 
 	$systemType = (empty($_GET['systemType']) ? '' : $_GET['systemType']);
 
 	$list = ModelAds::getBySystemType($systemType);
 
-	require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelSetting.php';
 
 	$urlHost = ModelSetting::getHostApi();
     $baseHost = ModelSetting::getBaseHost('../'); //turun 1 level dari posisi api ini

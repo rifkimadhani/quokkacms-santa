@@ -6,7 +6,7 @@
  * Time: 15:27
  */
 
-require_once 'model/ModelSetting.php';
+require_once '../../model/ModelSetting.php';
 
 /**
  * Saat skrg yg di pakai hanya simple on/off saja dgn 1 account email & password,

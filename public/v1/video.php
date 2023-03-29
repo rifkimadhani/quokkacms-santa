@@ -20,9 +20,9 @@
  *
  *
  */
-require_once __DIR__ . '/../library/Log.php';
-require_once __DIR__ . '/../config/ErrorAPI.php';
-require_once __DIR__ . '/model/ModelStbCredential.php';
+require_once __DIR__ . '/../../library/Log.php';
+require_once __DIR__ . '/../../config/ErrorAPI.php';
+require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 define('FILENAME', 'filename');
 define('MAX_SIZE', 500000000);
@@ -68,7 +68,7 @@ die();
 
 function doUpload(){
 
-	require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelSetting.php';
 
 	$type = empty($_GET['type']) ? '' : $_GET['type'];
 	$id = (int) (empty($_GET['id']) ? 0 : $_GET['id']);
@@ -105,9 +105,9 @@ function doUpload(){
  */
 function processUpload(string $jobType, string $type, int $id, string $paramId, string $pathResult){
 
-	require_once '../library/Security.php';
-	require_once 'model/ModelSetting.php';
-	require_once 'model/ModelJob.php';
+	require_once '../../library/Security.php';
+	require_once '../../model/ModelSetting.php';
+	require_once '../../model/ModelJob.php';
 
 	$pathSh = __DIR__ . '/../sh/';
 	$path = ModelSetting::getPathUploadVideo() . '/';//__DIR__ . '/../sh/upload/';
@@ -214,9 +214,9 @@ function receive(string $filename){
  * Terima proses callback, setelah video selesai di proses oleh ffmpeg
  */
 function doCallback(){
-	require_once 'model/ModelSetting.php';
-	require_once 'model/ModelJob.php';
-	require_once 'model/ModelVideo.php';
+	require_once '../../model/ModelSetting.php';
+	require_once '../../model/ModelJob.php';
+	require_once '../../model/ModelVideo.php';
 
 	$jobId = (empty($_GET['job_id']) ? 0 : $_GET['job_id']);
 	$duration = (int) (empty($_GET['duration']) ? 0 : $_GET['duration']);
@@ -255,8 +255,8 @@ function doCallback(){
 }
 
 function processLocality($jobId, $localityMediaId, $duration, $bitrates, $pathVideos, $pathThumb){
-	require_once 'model/ModelLocality.php';
-	require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelLocality.php';
+	require_once '../../model/ModelSetting.php';
 
 	$bitrate1 = $bitrates[0];
 
@@ -281,8 +281,8 @@ function processLocality($jobId, $localityMediaId, $duration, $bitrates, $pathVi
 }
 
 function processVod($jobId, $paramIn, $duration, $bitrates, $pathVideos, $pathThumb){
-	require_once 'model/ModelMovie.php';
-	require_once 'model/ModelSetting.php';
+	require_once '../../model/ModelMovie.php';
+	require_once '../../model/ModelSetting.php';
 
 	$bitrate1 = $bitrates[0];
 
