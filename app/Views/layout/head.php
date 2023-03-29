@@ -57,7 +57,8 @@
 <script src="<?= base_url('plugin/hls-js/hls.js')?>"></script>
 
 <!-- JSON Editor -->
-<link rel="stylesheet" href="<?= base_url('plugin/codebaseadmin/css/jsoneditor.min.css');?>" />
+<!-- <link rel="stylesheet" href="<?//= base_url('plugin/codebaseadmin/css/jsoneditor.min.css');?>" /> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.10.0/jsoneditor.min.css" />
 <style>
     /* Customize header color of JSON editor */
     .jsoneditor {
