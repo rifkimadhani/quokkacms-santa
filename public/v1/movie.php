@@ -89,8 +89,8 @@ function doGetList(){
     $baseHost = ModelSetting::getBaseHost('../'); //turun 1 level dari posisi api ini
 
 	foreach ($list as &$item){
-        unset($item['url_trailer']);
-        unset($item['url_stream1']);
+//        unset($item['url_trailer']);
+//        unset($item['url_stream1']);
         unset($item['path_trailer']);
         unset($item['path_stream1']);
         unset($item['currency']);
