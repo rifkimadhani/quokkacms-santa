@@ -123,6 +123,14 @@ $routes->get('/locality/delete/(:any)', 'Locality::delete/$1');
 $routes->post('/locality/update', 'Locality::update');
 $routes->post('/locality/insert', 'Locality::insert');
 
+// Hotel Facility
+$routes->get('/facility', 'Facility::index');
+$routes->get('/facility/ssp', 'Facility::ssp');
+$routes->get('/facility/edit/(:any)', 'Facility::edit/$1');
+$routes->get('/facility/delete/(:any)', 'Facility::delete/$1');
+$routes->post('/facility/update', 'Facility::update');
+$routes->post('/facility/insert', 'Facility::insert');
+
 /*  
  * --------------------------------------------------------------------
  * Additional Routing
