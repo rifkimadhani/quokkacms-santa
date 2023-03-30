@@ -1,0 +1,25 @@
+<?php
+/**
+ * Created by PageBuilder.
+ * Date: 2023-03-28 12:20:30
+ */
+
+namespace App\Models;
+
+class LocalityForm extends BaseForm
+{
+    public $locality_id;
+    public $title;
+    public $description;
+    public $url_image;
+    public $ord;
+
+    function __construct()
+    {
+        $this->locality_id = ['type'=>'varchar', 'label'=>'Locality Id', 'readonly'=>'readonly' ];
+        $this->title = ['type'=>'varchar', 'label'=>'Title', 'placeholder'=>'', 'required'=>''];
+        $this->description = ['type'=>'varchar', 'label'=>'Description', 'placeholder'=>'', 'required'=>''];
+        $this->url_image     = ['type'=>'filemanager','label'=>'Image','placeholder'=>''];
+        $this->ord = ['type'=>'numeric', 'label'=>'Ord', 'placeholder'=>'', 'required'=>''];
+    }
+}

@@ -115,7 +115,15 @@ $routes->get('/inbox/delete/(:any)', 'Inbox::delete/$1');
 $routes->post('/inbox/update', 'Inbox::update');
 $routes->post('/inbox/insert', 'Inbox::insert');
 
-/*
+// Locality (tourist info)
+$routes->get('/locality', 'Locality::index');
+$routes->get('/locality/ssp', 'Locality::ssp');
+$routes->get('/locality/edit/(:any)', 'Locality::edit/$1');
+$routes->get('/locality/delete/(:any)', 'Locality::delete/$1');
+$routes->post('/locality/update', 'Locality::update');
+$routes->post('/locality/insert', 'Locality::insert');
+
+/*  
  * --------------------------------------------------------------------
  * Additional Routing
  * --------------------------------------------------------------------
