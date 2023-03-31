@@ -113,9 +113,9 @@ class LocalityModel extends BaseModel
             $rowCount = $stmt->rowCount();
 
             // update tlocality_media
-            $stmt = $pdo->prepare('UPDATE tlocality_media SET url_image=? WHERE locality_id=?');
+            $stmt = $pdo->prepare(self::SQL_UPDATE_MEDIA);
             $stmt->execute([$urlImage, $localityId]);
-            $rowCount += $stmt->rowCount();
+            $rowCount = $stmt->rowCount();
 
             $pdo->commit();
 
