@@ -131,6 +131,14 @@ $routes->get('/facility/delete/(:any)', 'Facility::delete/$1');
 $routes->post('/facility/update', 'Facility::update');
 $routes->post('/facility/insert', 'Facility::insert');
 
+// Element
+$routes->get('/element', 'Element::index');
+$routes->get('/element/ssp', 'Element::ssp');
+$routes->get('/element/edit/(:any)', 'Element::edit/$1');
+$routes->get('/element/delete/(:any)', 'Element::delete/$1');
+$routes->post('/element/update', 'Element::update');
+$routes->post('/element/insert', 'Element::insert');
+
 /*  
  * --------------------------------------------------------------------
  * Additional Routing
