@@ -139,6 +139,24 @@ $routes->get('/element/delete/(:any)', 'Element::delete/$1');
 $routes->post('/element/update', 'Element::update');
 $routes->post('/element/insert', 'Element::insert');
 
+// Theme
+$routes->get('/theme', 'Theme::index');
+$routes->get('/theme/ssp', 'Theme::ssp');
+$routes->get('/theme/edit/(:any)/(:any)', 'Theme::edit/$1/$2');
+$routes->get('/theme/delete/(:any)/(:any)', 'Theme::delete/$1/$2');
+$routes->post('/theme/update', 'Theme::update');
+$routes->post('/theme/insert', 'Theme::insert');
+
+// EPG
+$routes->get('/livetv_epg', 'Livetv_EPG::index');
+$routes->get('/livetv_epg/ssp', 'Livetv_EPG::ssp');
+$routes->get('/livetv_epg/edit/(:any)', 'Livetv_EPG::edit/$1');
+$routes->get('/livetv_epg/delete/(:any)', 'Livetv_EPG::delete/$1');
+$routes->post('/livetv_epg/update', 'Livetv_EPG::update');
+$routes->post('/livetv_epg/insert', 'Livetv_EPG::insert');
+$routes->post('/livetv_epg/export', 'Livetv_EPG::export');
+
+
 /*  
  * --------------------------------------------------------------------
  * Additional Routing

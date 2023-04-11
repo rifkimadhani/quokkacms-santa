@@ -49,6 +49,11 @@
         });
     }
 
+    // options for export to xml
+    jQuery('.showExportModal').click(function () {
+            jQuery('#modal-export').modal();
+        });
+
 
     //call ini apabila ada multi select, spt room pada subscriber
     //
