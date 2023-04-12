@@ -22,7 +22,8 @@ $htmlDelete = Dialog::renderDelete('Delete livetv_epg', 'CONFIRM DELETE');
     </div>
 </div>
 <div class="block-content block-content-full">
-    <a href="javascript:;" class="btn btn-primary float-right showExportModal" role="button" data-target="#modal-export">
+    <!-- <a href="javascript:;" class="btn btn-primary float-right showExportModal" role="button" data-target="#modal-export"> -->
+    <a href="javascript:;" class="btn btn-primary float-right" role="button" onclick="$('#modal-export').modal('show')" >
         Export to XML <i class="fa fa-code text-light ml-5"></i>
     </a>
 </div>
@@ -41,7 +42,7 @@ $htmlDelete = Dialog::renderDelete('Delete livetv_epg', 'CONFIRM DELETE');
 
 <!-- Modal Options -->
 <!-- A modal for Export Options */ -->
-<div class="modal fade" id="modal-export" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-export" tabindex="-1" role="dialog" aria-labelledby="modal-export-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-popout" role="document">
         <div class="modal-content">
             <form action="<?= $baseUrl ?>/export" method="post">
@@ -55,6 +56,16 @@ $htmlDelete = Dialog::renderDelete('Delete livetv_epg', 'CONFIRM DELETE');
                         </div>
                     </div>
                     <div class="block-content">
+                        <div class="form-group row">
+                            <label class="col-12" for="livetv-id">Channel</label>
+                            <div class="col-md-12">
+                                <select class="form-control" id="livetv-id" name="livetv_id">
+                                    <?php foreach ($livetvData as $item): ?>
+                                        <option value="<?= $item['value']; ?>"><?= $item['value']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label class="col-12" for="start-date">Date Range</label>
                             <div class="col-lg-12">
@@ -118,7 +129,7 @@ $htmlDelete = Dialog::renderDelete('Delete livetv_epg', 'CONFIRM DELETE');
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [],visible: false,searchable: false
+                        targets: [1,8,9,10],visible: false,searchable: false
                     },
                     {
                         // action column

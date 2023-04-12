@@ -34,11 +34,13 @@ class Livetv_EPGModel extends BaseModel
         return null;
     }
 
-    public function getAll( $startDate = null, $endDate = null){
+    public function getAll($livetvId, $startDate = null, $endDate = null){
         // $db = db_connect();
         // return $db->query(self::SQL_GET)->getResult();
         $db = db_connect();
         $builder = $db->table(self::VIEW);
+
+        $livetvId = $builder->where('channel =', $livetvId);
 
         if ($startDate != null) {
             $builder->where('start_date >=', $startDate);
@@ -52,7 +54,7 @@ class Livetv_EPGModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['epg_id', 'livetv_id', 'start_date', 'end_date', 'duration', 'name', 'sinopsis', 'create_date', 'update_date', 'channel', 'url_station_logo'];
+        return ['epg_id', 'livetv_id', 'channel', 'start_date', 'end_date', 'duration', 'name', 'sinopsis', 'create_date', 'update_date', 'url_station_logo'];
     }
 
     public function getChannelForSelect(){

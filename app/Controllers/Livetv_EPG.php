@@ -26,7 +26,7 @@ class Livetv_EPG extends BaseController
 
         $form = new Livetv_EPGForm($livetvData);
 
-        return view('layout/template', compact('mainview', 'primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
+        return view('layout/template', compact('mainview', 'primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form', 'livetvData'));
     }
 
     public function ssp()
@@ -130,27 +130,33 @@ class Livetv_EPG extends BaseController
 
     /**
      * Exports EPG data as an XML file for a specified date range and offset.
+     * @param $livetvId
+     * @param $startDate
+     * @param $endDate
+     * @param $offset
+     * 
      */
     public function export()
     {
+        $livetvId = $this->request->getPost('livetv_id');
         $startDate = $this->request->getPost('start_date');
         $endDate = $this->request->getPost('end_date');
         $offset = intval($this->request->getPost('offset'));
 
         // for Filename
-        $startDateTime = new \DateTime($startDate);
-        $startDate = $startDateTime->format('Ymd');
+        // $startDateTime = new \DateTime($startDate);
+        // $startDate = $startDateTime->format('Ymd');
 
         // $endDateTime = new \DateTime($endDate);
         // $endDate = $endDateTime->format('Ymd');
     
         $model = new Livetv_EPGModel();
-        $data = $model->getAll($startDate, $endDate);
+        $data = $model->getAll($livetvId, $startDate, $endDate);
     
         $epgXml = $model->generateEpgXml($data, $offset);
         
         // Set the filename for the exported file
-        $filename = 'epg-'.$startDate.'.xml';
+        $filename = strtolower($livetvId.'.xml');
 
         // Set the headers for the XML file download
         header('Content-Type: application/xml');
@@ -160,6 +166,4 @@ class Livetv_EPG extends BaseController
         // Output the XML file
         echo $epgXml;
     }
-        
-    
 }
