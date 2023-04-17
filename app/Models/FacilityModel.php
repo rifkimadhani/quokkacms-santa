@@ -14,6 +14,8 @@ class FacilityModel extends BaseModel
     const SQL_MODIFY = 'UPDATE tfacility SET name=?, description=? WHERE (facility_id=?)';
 //    const SQL_INSERT = 'INSERT INTO tfacility (title, description, create_date, update_date, ord) VALUES (?, ?, ?, ?, ?)';
     const SQL_INSERT_MEDIA = 'INSERT INTO tfacility_image (facility_id, url_image, url_video) VALUES (?, ?, ?)';
+
+    const SQL_REMOVE = 'DELETE FROM tfacility WHERE facility_id=?';
     const SQL_REMOVE_MEDIA = 'DELETE FROM tfacility_image WHERE facility_id=?';
 
     protected $table      = 'tfacility';
@@ -113,8 +115,9 @@ class FacilityModel extends BaseModel
 
         $value['url_image'] = htmlentities($value['url_image'], ENT_QUOTES, 'UTF-8');
 
+        $pdo = $this->openPdo();
+
         try{
-            $pdo = $this->openPdo();
             $pdo->beginTransaction();
 
             // update tfacility
@@ -160,13 +163,31 @@ class FacilityModel extends BaseModel
         }
     }
 
-
     public function remove($facilityId){
-        $r = $this
-            ->where('facility_id', $facilityId)
-            ->delete();
 
-        return $this->db->affectedRows();
+        $rowCount = 0;
+        $pdo = $this->openPdo();
+
+        try
+        {
+            $pdo->beginTransaction();
+
+            $stmt = $pdo->prepare(self::SQL_REMOVE_MEDIA);
+            $stmt->execute( [$facilityId] );
+
+            $stmt = $pdo->prepare(self::SQL_REMOVE);
+            $stmt->execute( [$facilityId] );
+            $rowCount = $stmt->rowCount();
+
+            $pdo->commit();
+        }
+        catch (\Exception $e){
+            $pdo->rollBack();
+            $this->errCode = $e->getCode();
+            $this->errMessage = $e->getMessage();
+        }
+
+        return $rowCount;
     }
 
     /**
