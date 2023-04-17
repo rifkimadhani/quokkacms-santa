@@ -5,15 +5,15 @@
  */
 namespace App\Models;
 
-use App\Libraries\SSP;
+use App\Libraries\StringUtil;
 
 class FacilityModel extends BaseModel
 {
+    const SQL_INSERT = 'INSERT INTO tfacility (name, description) VALUES (?, ?)';
     const SQL_GET = 'SELECT * FROM tfacility WHERE (facility_id=?)';
     const SQL_MODIFY = 'UPDATE tfacility SET name=?, description=? WHERE (facility_id=?)';
-    const SQL_INSERT = 'INSERT INTO tfacility (title, description, create_date, update_date, ord) VALUES (?, ?, ?, ?, ?)';
-    const SQL_INSERT_MEDIA = 'INSERT INTO tfacility_image (facility_id, url_image) VALUES (?, ?)';
-    const SQL_UPDATE_MEDIA_A = 'UPDATE tfacility_image SET url_image=? WHERE facility_id=?';
+//    const SQL_INSERT = 'INSERT INTO tfacility (title, description, create_date, update_date, ord) VALUES (?, ?, ?, ?, ?)';
+    const SQL_INSERT_MEDIA = 'INSERT INTO tfacility_image (facility_id, url_image, url_video) VALUES (?, ?, ?)';
     const SQL_REMOVE_MEDIA = 'DELETE FROM tfacility_image WHERE facility_id=?';
 
     protected $table      = 'tfacility';
@@ -45,30 +45,44 @@ class FacilityModel extends BaseModel
 
     public function add($value)  {
 
+        $rowCount = 0;
+        $pdo = $this->openPdo();
+
         try
         {
-            $value['name'] = htmlentities($value['name'], ENT_QUOTES, 'UTF-8');
-            $value['description'] = htmlentities($value['description'], ENT_QUOTES, 'UTF-8');
+            $name = htmlentities($value['name'], ENT_QUOTES, 'UTF-8');
+            $description = htmlentities($value['description'], ENT_QUOTES, 'UTF-8');
 
-            $this->db->transBegin();
+            $pdo->beginTransaction();
 
-            // insert into tfacility
-            parent::insert($value);
+            $stmt = $pdo->prepare(self::SQL_INSERT);
+            $stmt->execute([$name, $description]);
+
+            $rowCount = $stmt->rowCount();
 
             // insert into tfacility_image
-            $facilityId = $this->db->insertID();
+            $facilityId = $pdo->lastInsertId();
 
             //url image bisa beberapa image
             //split
             $arUrl= explode(',', $value['url_image']);
             foreach ($arUrl as $url){
-                $this->db->query(self::SQL_INSERT_MEDIA, [$facilityId, $url]);
+                //check apakah file .mp4 ??
+                if (StringUtil::endsWith(strtolower($url), '.mp4')){
+                    //file is mp4
+                    $stmt = $pdo->prepare(self::SQL_INSERT_MEDIA);
+                    $stmt->execute([$facilityId, null, $url]);
+                } else {
+                    //file is other
+                    $stmt = $pdo->prepare(self::SQL_INSERT_MEDIA);
+                    $stmt->execute([$facilityId, $url, null]);
+                }
             }
 
-            $this->db->transCommit();
+            $pdo->commit();
         }
         catch (\Exception $e){
-            $this->db->transRollback();
+            $pdo->rollBack();
 
             $this->errCode = $e->getCode();
             $this->errMessage = "Insert failed: ".$e->getMessage();
@@ -76,7 +90,7 @@ class FacilityModel extends BaseModel
             return $this->errMessage;
         }
 
-        return $this->db->affectedRows();
+        return $rowCount;
     }
 
     /**
@@ -117,8 +131,16 @@ class FacilityModel extends BaseModel
             if (strlen($value['url_image'])>0){
                 $arUrl= explode(',', $value['url_image']);
                 foreach ($arUrl as $url){
-                    $stmt = $pdo->prepare(self::SQL_INSERT_MEDIA);
-                    $stmt->execute([$facilityId, $url]);
+                    //check apakah file .mp4 ??
+                    if (StringUtil::endsWith(strtolower($url), '.mp4')){
+                        //file is mp4
+                        $stmt = $pdo->prepare(self::SQL_INSERT_MEDIA);
+                        $stmt->execute([$facilityId, null, $url]);
+                    } else {
+                        //file is other
+                        $stmt = $pdo->prepare(self::SQL_INSERT_MEDIA);
+                        $stmt->execute([$facilityId, $url, null]);
+                    }
                 }
             }
 
