@@ -86,4 +86,27 @@ class BaseModel extends Model
 
         return SSP::complex($_GET, $con, $table, $pk, $columns, $where);
     }
+
+    /**
+     * Vardump var --> log info
+     *
+     * @param $var
+     */
+    function varDump($var){
+        $dump = $this->dump_to_var($var);
+        log_message('error', $dump);
+    }
+
+    /**
+     * Vardump data -> string
+     *
+     * @param $data
+     * @return string
+     */
+    function dump_to_var($data) {
+        ob_start();
+        var_dump($data);
+        $output = ob_get_clean();
+        return $output;
+    }
 }

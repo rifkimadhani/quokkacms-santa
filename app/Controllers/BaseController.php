@@ -64,6 +64,10 @@ abstract class BaseController extends Controller
         // E.g.: $this->session = \Config\Services::session();
     }
 
+    protected function getBaseHost(){
+        return $this->baseHost;
+    }
+
     protected function getBaseUrl(){
         return $this->baseUrl;
 //        $router = service('router');
@@ -83,5 +87,29 @@ abstract class BaseController extends Controller
         $session = session();
         $session->setFlashdata('type', 'error');
         $session->setFlashdata('message', $message);
+    }
+
+    /**
+     * Vardump var --> log info
+     *
+     * @param $var
+     */
+    function varDump($var){
+        $dump = $this->dump_to_var($var);
+
+        log_message('error', $dump);
+    }
+
+    /**
+     * Vardump data -> string
+     *
+     * @param $data
+     * @return string
+     */
+    function dump_to_var($data) {
+        ob_start();
+        var_dump($data);
+        $output = ob_get_clean();
+        return $output;
     }
 }

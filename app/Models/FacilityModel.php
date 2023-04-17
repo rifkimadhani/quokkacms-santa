@@ -13,7 +13,8 @@ class FacilityModel extends BaseModel
     const SQL_MODIFY = 'UPDATE tfacility SET name=?, description=? WHERE (facility_id=?)';
     const SQL_INSERT = 'INSERT INTO tfacility (title, description, create_date, update_date, ord) VALUES (?, ?, ?, ?, ?)';
     const SQL_INSERT_MEDIA = 'INSERT INTO tfacility_image (facility_id, url_image) VALUES (?, ?)';
-    const SQL_UPDATE_MEDIA = 'UPDATE tfacility_image SET url_image=? WHERE facility_id=?';
+    const SQL_UPDATE_MEDIA_A = 'UPDATE tfacility_image SET url_image=? WHERE facility_id=?';
+    const SQL_REMOVE_MEDIA = 'DELETE FROM tfacility_image WHERE facility_id=?';
 
     protected $table      = 'tfacility';
     protected $primaryKey = 'facility_id';
@@ -56,9 +57,13 @@ class FacilityModel extends BaseModel
 
             // insert into tfacility_image
             $facilityId = $this->db->insertID();
-            $urlImage = $value['url_image'];
 
-            $this->db->query(self::SQL_INSERT_MEDIA, [$facilityId, $urlImage]);
+            //url image bisa beberapa image
+            //split
+            $arUrl= explode(',', $value['url_image']);
+            foreach ($arUrl as $url){
+                $this->db->query(self::SQL_INSERT_MEDIA, [$facilityId, $url]);
+            }
 
             $this->db->transCommit();
         }
@@ -91,8 +96,8 @@ class FacilityModel extends BaseModel
 
         $name = htmlentities($value['name'], ENT_QUOTES, 'UTF-8');
         $description = htmlentities($value['description'], ENT_QUOTES, 'UTF-8');
-        
-        $urlImage = htmlentities($value['url_image'], ENT_QUOTES, 'UTF-8');
+
+        $value['url_image'] = htmlentities($value['url_image'], ENT_QUOTES, 'UTF-8');
 
         try{
             $pdo = $this->openPdo();
@@ -103,10 +108,19 @@ class FacilityModel extends BaseModel
             $stmt->execute( [$name, $description, $facilityId] );
             $rowCount = $stmt->rowCount();
 
+            // delete semua image
+            $stmt = $pdo->prepare(self::SQL_REMOVE_MEDIA);
+            $stmt->execute([$facilityId]);
+
             // update tfacility_image
-            $stmt = $pdo->prepare(self::SQL_UPDATE_MEDIA);
-            $stmt->execute([$urlImage, $facilityId]);
-            $rowCount = $stmt->rowCount();
+            //hanya update bila ada media
+            if (strlen($value['url_image'])>0){
+                $arUrl= explode(',', $value['url_image']);
+                foreach ($arUrl as $url){
+                    $stmt = $pdo->prepare(self::SQL_INSERT_MEDIA);
+                    $stmt->execute([$facilityId, $url]);
+                }
+            }
 
             $pdo->commit();
 

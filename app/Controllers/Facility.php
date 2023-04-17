@@ -7,6 +7,7 @@
 
 namespace App\Controllers;
 
+use App\Models\FacilityMediaModel;
 use App\Models\FacilityModel;
 use App\Models\FacilityForm;
 
@@ -67,6 +68,26 @@ class Facility extends BaseController
         $model = new FacilityModel();
         $data = $model->get($facilityId);
 
+        //ambil data gambar dari FacilityMedia
+        $media = new FacilityMediaModel();
+        $medias = $media->getAll($facilityId);
+
+        //merge semua media dalam 1 string, di split dgn ,
+        $url_media = '';
+        foreach ($medias as $item){
+            //ambil url dari image atau video
+            $url = ($item['url_image']!=null) ? $item['url_image'] : $item['url_video'];
+
+            if (strlen($url_media)==0){
+                $url_media = $url;
+            } else {
+                $url_media .= ',' . $url;
+            }
+        }
+
+        //assign hasil merge ke dalam url_image, shg bisa di tampilkan pada form
+        $baseHost = $this->getBaseHost();
+        $data['url_image'] = str_replace('{BASE-HOST}', $baseHost, $url_media);
 
         $form = new FacilityForm();
 
@@ -110,7 +131,9 @@ class Facility extends BaseController
      * @param bool $isInsert
      */
     protected function normalizeData(&$data, $isInsert=false){
-
+        //convert http://localhost/assets --> {BASE-HOST}/assets
+        $baseHost = $this->getBaseHost();
+        $data['url_image'] = str_replace($baseHost, '{BASE-HOST}', $data['url_image']);
     }
 
     /**
