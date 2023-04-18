@@ -117,7 +117,7 @@ $htmlDelete = Dialog::renderDelete('Delete locality', 'CONFIRM DELETE');
 
 
         //please correct the index for name variable, sehingga message delete akan terlihat benar
-        const name = data[0];
+        const name = data[1];
 
         showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
             window.location.href = "<?=$baseUrl?>/delete/" + localityId;
