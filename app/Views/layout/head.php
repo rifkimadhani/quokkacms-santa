@@ -92,4 +92,30 @@
     ::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
+
+    /* FOR THEME PAGE UI */
+    .grid-item {
+        display: inline-block;
+        width: 48%;
+        margin: 1%;
+        border: 1px solid #ccc;
+        padding: 10px;
+        box-sizing: border-box;
+        vertical-align: top;
+    }
+
+    .grid-item-name {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .grid-item-image {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .urlimage {
+        max-width: 100%;
+        max-height: 100%;
+    }
 </style>

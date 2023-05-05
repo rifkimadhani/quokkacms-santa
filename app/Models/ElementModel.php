@@ -9,8 +9,10 @@ use App\Libraries\SSP;
 
 class ElementModel extends BaseModel
 {
-    const SQL_GET = 'SELECT * FROM telement WHERE (element_id=?)';
+    const SQL_GET = "SELECT * FROM telement WHERE (element_id=?)";
     const SQL_MODIFY = "UPDATE telement SET `name`=?, `group`=?, `type`=? WHERE (element_id=?)";
+
+    const SQL_GET_ALL_FOR_SELECT = 'SELECT element_id as id, `name` as value FROM telement ORDER BY element_id';
 
     protected $table      = 'telement';
     protected $primaryKey = 'element_id';
@@ -18,15 +20,6 @@ class ElementModel extends BaseModel
 
     public $errCode;
     public $errMessage;
-
-//    public function get2($adminId, $username){
-//        $r = $this
-//            ->where('admin_id', $adminId)
-//            ->where('username', $username)
-//            ->find();
-//        if ($r!=null) return $r[0];
-//        return null;
-//    }
 
     public function get($elementId)
     {
@@ -39,11 +32,23 @@ class ElementModel extends BaseModel
     }
 
     public function getAll(){
-        return $this->findAll();
+        // return $this->findAll();
+
+        $db = db_connect();
+        return $db->query(self::SQL_GET)->getResult();
     }
 
     public function getFieldList(){
         return ['element_id', 'name', 'group', 'type', 'width', 'height', 'create_date', 'update_date'];
+    }
+
+    public function getAllForSelect(){
+        $result = $this->db->query(self::SQL_GET_ALL_FOR_SELECT)->getResult('array');
+        if(sizeof($result) > 0)
+        {
+            return $result;
+        }
+        return [];
     }
 
     public function add($value)  {
