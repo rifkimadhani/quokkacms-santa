@@ -48,14 +48,12 @@ class Theme extends BaseController
     public function insert(){
         $model = new ThemeModel();
         $urlimage = $_POST['url_image'];
-        // dd($urlimage);
 
         $this->normalizeData($_POST, true);
         
         // get image dimensions
         $element = new ElementModel();
         $elementId = $_POST['element_id'];
-        // dd($elementId);
         $telement = $element->find($elementId);
 
         // check if element with the submitted ID exists
@@ -67,16 +65,14 @@ class Theme extends BaseController
         // get width and height from telement
         $width = intval($telement['width']);
         $height = intval($telement['height']);
-        // dd($width,$height);
     
         // check if file is uploaded
         if (!empty($urlimage)) {  
             // check image dimensions
             $r = $this->checkImageDimensions($urlimage, $width, $height);
-            // dd($r);
 
             if ($r !== true) {
-                $this->setErrorMessage('Insert fail: Maximum image size is '.$width.' x '. $height . $model->errMessage);
+                $this->setErrorMessage($r);
                 
                 return redirect()->back();
             }
@@ -88,9 +84,9 @@ class Theme extends BaseController
         $r = $model->add($_POST);
     
         if ($r > 0){
-            $this->setSuccessMessage('Insert success');
+            $this->setSuccessMessage('Insert success!');
         } else {
-            $this->setErrorMessage('Insert fail ' . $model->errMessage);
+            $this->setErrorMessage('Insert failed ' . $model->errMessage);
         }
     
         return redirect()->to($this->baseUrl);
@@ -113,7 +109,7 @@ class Theme extends BaseController
         list($uploadedWidth, $uploadedHeight) = getimagesize($urlimage);
 
         if ($uploadedWidth !== $width || $uploadedHeight !== $height) {
-            return "ERROR: Maximum image size is {$width} x {$height}";
+            return "Insert failed: Image dimensions should be {$width} x {$height} Pixels!";
         }
     
         return true;
