@@ -156,6 +156,14 @@ $routes->post('/livetv_epg/update', 'Livetv_EPG::update');
 $routes->post('/livetv_epg/insert', 'Livetv_EPG::insert');
 $routes->post('/livetv_epg/export', 'Livetv_EPG::export');
 
+// Room
+$routes->get('/room', 'Room::index');
+$routes->get('/room/ssp', 'Room::ssp');
+$routes->get('/room/edit/(:any)', 'Room::edit/$1');
+$routes->get('/room/delete/(:any)', 'Room::delete/$1');
+$routes->post('/room/update', 'Room::update');
+$routes->post('/room/insert', 'Room::insert');
+
 
 /*  
  * --------------------------------------------------------------------
