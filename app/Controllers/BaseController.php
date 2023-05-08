@@ -85,7 +85,7 @@ abstract class BaseController extends Controller
     }
     protected function setErrorMessage($message){
         $session = session();
-        $session->setFlashdata('type', 'error');
+        $session->setFlashdata('type', 'danger');
         $session->setFlashdata('message', $message);
     }
 
