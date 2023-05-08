@@ -64,7 +64,7 @@ $htmlDelete = Dialog::renderDelete('Delete element', 'CONFIRM DELETE');
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [4,5],visible: false,searchable: false
+                        targets: [6],visible: false,searchable: false
                     },
                     {
                         targets:[6,7],render: function(data) 

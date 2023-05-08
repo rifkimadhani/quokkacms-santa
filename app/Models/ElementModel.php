@@ -10,7 +10,7 @@ use App\Libraries\SSP;
 class ElementModel extends BaseModel
 {
     const SQL_GET = "SELECT * FROM telement WHERE (element_id=?)";
-    const SQL_MODIFY = "UPDATE telement SET `name`=?, `group`=?, `type`=? WHERE (element_id=?)";
+    const SQL_MODIFY = "UPDATE telement SET `name`=?, `group`=?, `type`=?, `width`=?, `height`=? WHERE (element_id=?)";
 
     const SQL_GET_ALL_FOR_SELECT = 'SELECT element_id as id, `name` as value FROM telement ORDER BY element_id';
 
@@ -32,8 +32,6 @@ class ElementModel extends BaseModel
     }
 
     public function getAll(){
-        // return $this->findAll();
-
         $db = db_connect();
         return $db->query(self::SQL_GET)->getResult();
     }
@@ -58,6 +56,8 @@ class ElementModel extends BaseModel
             $value['name'] = htmlentities($value['name'], ENT_QUOTES, 'UTF-8');
             $value['group'] = htmlentities($value['group'], ENT_QUOTES, 'UTF-8');
             $value['type'] = htmlentities($value['type'], ENT_QUOTES, 'UTF-8');
+            $value['width'] = htmlentities($value['width'], ENT_QUOTES, 'UTF-8');
+            $value['height'] = htmlentities($value['height'], ENT_QUOTES, 'UTF-8');
 
             parent::insert($value);
 
@@ -90,11 +90,13 @@ class ElementModel extends BaseModel
         $name = htmlentities($value['name'], ENT_QUOTES, 'UTF-8');
         $group = htmlentities($value['group'], ENT_QUOTES, 'UTF-8');
         $type = htmlentities($value['type'], ENT_QUOTES, 'UTF-8');
+        $width = htmlentities($value['width'], ENT_QUOTES, 'UTF-8');
+        $height = htmlentities($value['height'], ENT_QUOTES, 'UTF-8');
 
         try{
             $pdo = $this->openPdo();
             $stmt = $pdo->prepare(self::SQL_MODIFY);
-            $stmt->execute( [$name, $group, $type, $elementId] );
+            $stmt->execute( [$name, $group, $type, $width, $height, $elementId] );
 
             return $stmt->rowCount();
 
