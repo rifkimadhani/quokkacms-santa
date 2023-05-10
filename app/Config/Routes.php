@@ -164,6 +164,21 @@ $routes->get('/room/delete/(:any)', 'Room::delete/$1');
 $routes->post('/room/update', 'Room::update');
 $routes->post('/room/insert', 'Room::insert');
 
+// Room Type
+$routes->get('/roomtype', 'RoomType::index');
+$routes->get('/roomtype/ssp', 'RoomType::ssp');
+$routes->get('/roomtype/edit/(:any)', 'RoomType::edit/$1');
+$routes->get('/roomtype/delete/(:any)', 'RoomType::delete/$1');
+$routes->post('/roomtype/update', 'RoomType::update');
+$routes->post('/roomtype/insert', 'RoomType::insert');
+
+// VOD
+$routes->get('/vod', 'VOD::index');
+$routes->get('/vod/ssp', 'VOD::ssp');
+$routes->get('/vod/edit/(:any)', 'VOD::edit/$1');
+$routes->get('/vod/delete/(:any)', 'VOD::delete/$1');
+$routes->post('/vod/update', 'VOD::update');
+$routes->post('/vod/insert', 'VOD::insert');
 
 /*  
  * --------------------------------------------------------------------
