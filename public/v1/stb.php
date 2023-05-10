@@ -9,8 +9,11 @@
 //const HOTEL_NAME = 'Hotel Pop';
 //const HOTEL_ADDRESS = 'JAKARTA';
 
-
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 header('Content-type: application/json; charset=utf-8');
+
 $action = (empty($_GET['action']) ? '' : $_GET['action']);
 
 //special treament utk ping, utk memberikan response tercepat saat di call
@@ -54,9 +57,12 @@ switch ($action){
     case 'get_time':
         doGetTime();
         break;
+    default:
+        http_response_code(HTTP_NOT_FOUND);
+        break;
 }
 
-die();
+exit();
 
 function doUpdateInfo($stbId){
 	require_once '../../model/ModelStb.php';
