@@ -1,14 +1,14 @@
 <?php
 /**
  * Created by PageBuilder.
- * Date: 2023-03-31 13:21:41
+ * Date: 2023-04-04 14:18:55
  */
 
 use App\Libraries\Dialog;
 
 $htmlEdit = $form->renderPlainDialog('formEdit');
-$htmlNew = $form->renderDialog('New element', 'formNew', "{$baseUrl}/insert");
-$htmlDelete = Dialog::renderDelete('Delete element', 'CONFIRM DELETE');
+$htmlNew = $form->renderDialog('New theme', 'formNew', "{$baseUrl}/insert");
+$htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
@@ -34,12 +34,37 @@ $htmlDelete = Dialog::renderDelete('Delete element', 'CONFIRM DELETE');
     </table>
 </div>
 
+
+<!-- <div class="row row-deck">
+<?//php foreach ($themeElementData as $items): ?>
+    <?//php
+        // replace "{BASE-HOST}" to actual URL
+        //$imageUrl = str_replace("{BASE-HOST}", base_url(), $items['url_image']);
+    ?>
+    <div class="col-sm-4">
+        <div class="block">
+            <div class="block-header block-header-default">
+                <h3 class="block-title"><?//= $items['element_name']; ?></h3>
+                <div class="block-options">
+                    <button type="button" class="btn-block-option">
+                        <i class="si si-wrench"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="block-content">
+                <img src="<?//= $imageUrl; ?>" style="max-width: 300px;" alt="">
+            </div>
+        </div>
+    </div>
+<?//php endforeach;?>
+</div> -->
+
 <?=$htmlEdit?>
 <?=$htmlNew?>
 <?=$htmlDelete?>
 
 <?=view('util/scripts.php')?>
-
+<?= view('util/filemanager.php') ?>
 
 <script>
     const urlSsp = "<?= $baseUrl ?>/ssp";
@@ -64,17 +89,22 @@ $htmlDelete = Dialog::renderDelete('Delete element', 'CONFIRM DELETE');
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [6],visible: false,searchable: false
+                        targets: [0,2,5],visible: false,searchable: false
                     },
                     {
-                        targets:[6,7],render: function(data) 
-                        {
-                        if(data)
-                        {
-                            return datetostring.datetimetoindonesia(data)
-                        }
-                        return '';
-                        }
+                        targets:[6],className: "popupimage",
+                        className: "text-center",
+                        render: function(data) 
+                        {        
+                            if(data)
+                            {
+                                data = data.replace('{BASE-HOST}', '<?= base_url(); ?>');
+
+                                return '<img src="'+data+'" width="100%" height="100%;" class="urlimage">';
+                            }
+                            return '<img src="<?= base_url("assets/notfound.png") ?>" width="50px" height="50px;" class="urlimage">';
+                        },
+                        width:100
                     },
                     {
                         // action column
@@ -84,7 +114,8 @@ $htmlDelete = Dialog::renderDelete('Delete element', 'CONFIRM DELETE');
                     }
 
                 ]
-            });
+            }
+        );
 
         // handle click on row,
         //  1. ambil dialog yg sdh di isikan dgn data dari server
@@ -96,9 +127,10 @@ $htmlDelete = Dialog::renderDelete('Delete element', 'CONFIRM DELETE');
             const data = dataTable.row( $(this)).data();
 
             //get pk from data
-            const elementId = data[0];
+            const themeId = data[0];
+            const elementId = data[2];
 
-            const url = "<?=$baseUrl?>/edit/" + elementId;
+            const url = "<?=$baseUrl?>/edit/" + themeId + '/' + elementId;
 
             // show hourglass
             jQuery('#overlay-loader-indicator').show();
@@ -123,14 +155,15 @@ $htmlDelete = Dialog::renderDelete('Delete element', 'CONFIRM DELETE');
         event.stopPropagation();
 
         const data = dataTable.row( $(that).parents('tr') ).data();
-            const elementId = data[0];
+            const themeId = data[0];
+            const elementId = data[2];
 
 
         //please correct the index for name variable, sehingga message delete akan terlihat benar
         const name = data[0];
 
         showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
-            window.location.href = "<?=$baseUrl?>/delete/" + elementId;
+            window.location.href = "<?=$baseUrl?>/delete/" + themeId + '/' + elementId;
         })
     }
 </script>

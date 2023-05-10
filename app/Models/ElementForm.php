@@ -12,8 +12,8 @@ class ElementForm extends BaseForm
     public $name;
     public $group;
     public $type;
-    // public $width;
-    // public $height;
+    public $width;
+    public $height;
     // public $create_date;
     // public $update_date;
 
@@ -37,8 +37,8 @@ class ElementForm extends BaseForm
         $this->group = ['type'=>'select','label'=>'Grup Element', 'default'=>'HOTELIPTV3', 'options'=>self::GROUP,'placeholder'=>'Pilih Group Element Disini', 'required'=>'',];
         $this->type = ['type'=>'select', 'label'=>'Element Type', 'options'=>self::TYPE, 'placeholder'=>'Pilih Type Element Disini', 'required'=>''];
 
-        // $this->width = ['type'=>'numeric', 'label'=>'Width', 'placeholder'=>'', 'required'=>''];
-        // $this->height = ['type'=>'numeric', 'label'=>'Height', 'placeholder'=>'', 'required'=>''];
+        $this->width = ['type'=>'numeric', 'label'=>'Width', 'placeholder'=>'', 'required'=>''];
+        $this->height = ['type'=>'numeric', 'label'=>'Height', 'placeholder'=>'', 'required'=>''];
         // $this->create_date = ['type'=>'datetime', 'label'=>'Create Date', 'placeholder'=>'', 'required'=>''];
         // $this->update_date = ['type'=>'datetime', 'label'=>'Update Date', 'placeholder'=>'', 'required'=>''];
 

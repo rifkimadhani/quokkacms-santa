@@ -1,14 +1,14 @@
 <?php
 /**
  * Created by PageBuilder.
- * Date: 2023-03-31 13:21:41
+ * Date: 2023-05-08 15:14:15
  */
 
 use App\Libraries\Dialog;
 
 $htmlEdit = $form->renderPlainDialog('formEdit');
-$htmlNew = $form->renderDialog('New element', 'formNew', "{$baseUrl}/insert");
-$htmlDelete = Dialog::renderDelete('Delete element', 'CONFIRM DELETE');
+$htmlNew = $form->renderDialog('New room', 'formNew', "{$baseUrl}/insert");
+$htmlDelete = Dialog::renderDelete('Delete room', 'CONFIRM DELETE');
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
@@ -42,11 +42,11 @@ $htmlDelete = Dialog::renderDelete('Delete element', 'CONFIRM DELETE');
 
 
 <script>
+    var dataTable;
+    const primaryKey = "<?=$primaryKey?>";
     const urlSsp = "<?= $baseUrl ?>/ssp";
     const lastCol = <?= count($fieldList) ?>;
     const dataList = $('#datalist');
-    const primaryKey = "<?=$primaryKey?>";
-    var dataTable;
 
     //exec when ready
     $('document').ready(function () {
@@ -64,17 +64,7 @@ $htmlDelete = Dialog::renderDelete('Delete element', 'CONFIRM DELETE');
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [6],visible: false,searchable: false
-                    },
-                    {
-                        targets:[6,7],render: function(data) 
-                        {
-                        if(data)
-                        {
-                            return datetostring.datetimetoindonesia(data)
-                        }
-                        return '';
-                        }
+                        targets: [],visible: false,searchable: false
                     },
                     {
                         // action column
@@ -96,9 +86,9 @@ $htmlDelete = Dialog::renderDelete('Delete element', 'CONFIRM DELETE');
             const data = dataTable.row( $(this)).data();
 
             //get pk from data
-            const elementId = data[0];
+            const roomId = data[0];
 
-            const url = "<?=$baseUrl?>/edit/" + elementId;
+            const url = "<?=$baseUrl?>/edit/" + roomId;
 
             // show hourglass
             jQuery('#overlay-loader-indicator').show();
@@ -114,7 +104,7 @@ $htmlDelete = Dialog::renderDelete('Delete element', 'CONFIRM DELETE');
             });
         });
 
-        initDataTableOptions(dataTable);
+        initDataTableOptions($dataTable);
     }
 
     //
@@ -123,14 +113,14 @@ $htmlDelete = Dialog::renderDelete('Delete element', 'CONFIRM DELETE');
         event.stopPropagation();
 
         const data = dataTable.row( $(that).parents('tr') ).data();
-            const elementId = data[0];
+            const roomId = data[0];
 
 
         //please correct the index for name variable, sehingga message delete akan terlihat benar
-        const name = data[0];
+        const name = data[1];
 
         showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
-            window.location.href = "<?=$baseUrl?>/delete/" + elementId;
+            window.location.href = "<?=$baseUrl?>/delete/" + roomId;
         })
     }
 </script>
