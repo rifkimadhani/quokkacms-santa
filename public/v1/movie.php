@@ -21,7 +21,7 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 header('Content-type: application/json; charset=utf-8');
 
-//$stbId = ModelStbCredential::check();
+$stbId = ModelStbCredential::check();
 
 $action = (empty($_GET['action']) ? '' : $_GET['action']);
 
