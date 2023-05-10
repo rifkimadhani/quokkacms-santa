@@ -13,20 +13,8 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 header('Content-type: application/json; charset=utf-8');
 
-if(isset($_GET['action'])){
-    $action = $_GET['action'];
-}elseif(isset($_POST['action'])){
-    $action = $_POST['action'];
-}else{
-    $action = null;
-}
-if(isset($_GET['sessionId'])){
-    $sessionId = $_GET['sessionId'];
-}elseif(isset($_POST['sessionId'])){
-    $sessionId = $_POST['sessionId'];
-}else{
-    $sessionId = null;
-}
+$action = (empty($_GET['action']) ? '' : $_GET['action']);
+$sessionId = (empty($_GET['sessionId']) ? '' : $_GET['sessionId']);
 
 $sesObj = new ModelSession();
 $userId = $sesObj->validate($sessionId);
