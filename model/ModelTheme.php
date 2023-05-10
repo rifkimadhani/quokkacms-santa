@@ -42,7 +42,7 @@ class ModelTheme
 
 		try{
 			$pdo = Koneksi::create();
-			$stmt = $pdo->prepare(ModelTheme::SQL_GET_ONE);
+			$stmt = $pdo->prepare(ModelTheme::SQL_GET_ELEMENT);
 			$stmt->execute( [ $themeId, $elementId] );
 
 			$rows = $stmt->fetchAll();
