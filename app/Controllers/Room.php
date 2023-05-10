@@ -9,6 +9,7 @@ namespace App\Controllers;
 
 use App\Models\RoomModel;
 use App\Models\RoomForm;
+use App\Models\ThemeModel;
 
 class Room extends BaseController
 {
@@ -22,8 +23,12 @@ class Room extends BaseController
 
         $model = new RoomModel();
         $fieldList = $model->getFieldList();
+        $roomtypeData = $model->getTypeForSelect();
 
-        $form = new RoomForm();
+        $themeModel= new ThemeModel();
+        $themeData = $themeModel->getThemeForSelect();
+
+        $form = new RoomForm($roomtypeData, $themeData);
 
         return view('layout/template', compact('mainview', 'primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
     }
@@ -67,8 +72,11 @@ class Room extends BaseController
         $model = new RoomModel();
         $data = $model->get($roomId);
 
+        $roomtypeData = $model->getTypeForSelect();
+        $themeModel= new ThemeModel();
+        $themeData = $themeModel->getThemeForSelect();
 
-        $form = new RoomForm();
+        $form = new RoomForm($roomtypeData, $themeData);
 
         $urlAction = $this->baseUrl . '/update';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);

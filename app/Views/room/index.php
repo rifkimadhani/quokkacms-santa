@@ -42,11 +42,11 @@ $htmlDelete = Dialog::renderDelete('Delete room', 'CONFIRM DELETE');
 
 
 <script>
-    var dataTable;
-    const primaryKey = "<?=$primaryKey?>";
     const urlSsp = "<?= $baseUrl ?>/ssp";
     const lastCol = <?= count($fieldList) ?>;
     const dataList = $('#datalist');
+    const primaryKey = "<?=$primaryKey?>";
+    var dataTable;
 
     //exec when ready
     $('document').ready(function () {
@@ -60,11 +60,21 @@ $htmlDelete = Dialog::renderDelete('Delete room', 'CONFIRM DELETE');
                 responsive: true,
                 scrollX: true,
                 pageLength: 100,
-                order: [['0','desc']],
+                order: [['3','desc']],
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [],visible: false,searchable: false
+                        targets: [0,3,5,7,11,13],visible: false,searchable: false
+                    },
+                    {
+                        targets:[13,14],render: function(data) 
+                        {
+                        if(data)
+                        {
+                            return datetostring.datetimetoindonesia(data)
+                        }
+                        return '';
+                        }
                     },
                     {
                         // action column
@@ -104,7 +114,7 @@ $htmlDelete = Dialog::renderDelete('Delete room', 'CONFIRM DELETE');
             });
         });
 
-        initDataTableOptions($dataTable);
+        initDataTableOptions(dataTable);
     }
 
     //

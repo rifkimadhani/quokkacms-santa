@@ -12,12 +12,15 @@ use App\Libraries\SSP;
 
 class RoomModel extends BaseModel
 {
+    const VIEW = 'vroom';
+
     const SQL_GET_BY_SUBSCRIBER = 'SELECT room_id AS id, name AS value FROM troom WHERE subscriber_id=?';
     const SQL_GET_FOR_SELECT = 'SELECT room_id AS id, name AS value FROM troom ORDER BY name';
     const SQL_GET_VACANT_FOR_SELECT = 'SELECT room_id AS id, name AS value FROM troom WHERE status=\'VACANT\' ORDER BY name';
+    const SQL_GET_TYPE_FOR_SELECT = 'SELECT `room_type_id` AS id, `type` AS `value` FROM troom_type ORDER BY room_type_id';
     const SQL_GET = "SELECT troom.room_id, troom.name, troom.location, troom.room_type_id, troom_type.type AS `type`, troom.theme_id, ttheme.name AS `theme`, troom.package_id, tpackage.name AS `package`, troom.security_pin, troom.status, troom.subscriber_id, CONCAT(tsubscriber.salutation, tsubscriber.name, tsubscriber.last_name) AS `guest`, troom.create_date, troom.update_date FROM troom LEFT JOIN troom_type ON troom.room_type_id = troom_type.room_type_id LEFT JOIN ttheme ON troom.theme_id = ttheme.theme_id LEFT JOIN tpackage ON troom.package_id = tpackage.package_id LEFT JOIN tsubscriber ON troom.subscriber_id = tsubscriber.subscriber_id";
     
-    const SQL_MODIFY = 'UPDATE troom SET name=?, location=?, room_type_id=?, theme_id=?, package_id=?, subscriber_id=?, create_date=?, update_date=?, status=?, security_pin=? WHERE (room_id=?)';
+    const SQL_MODIFY = 'UPDATE troom SET name=?, location=?, room_type_id=?, theme_id=?, status=?, security_pin=? WHERE (room_id=?)';
 
     protected $table      = 'troom';
     protected $primaryKey = 'room_id';
@@ -35,7 +38,8 @@ class RoomModel extends BaseModel
     }
 
     public function getAll(){
-        return $this->findAll();
+        $db = db_connect();
+        return $db->query(self::SQL_GET)->getResult('array');
     }
 
     public function getForSelect(){
@@ -48,9 +52,18 @@ class RoomModel extends BaseModel
         return $db->query(self::SQL_GET_VACANT_FOR_SELECT)->getResult('array');
     }
 
+    public function getTypeForSelect(){
+        $result= $this->db->query(self::SQL_GET_TYPE_FOR_SELECT)->getResult('array');
+        if(sizeof($result) > 0)
+        {
+            return $result;
+        }
+        return [];
+    }
+
     public function getFieldList(){
-        // return ['room_id', 'name', 'location', 'room_type_id', 'type', 'theme_id', 'theme', 'package_id', 'package', 'security_pin', 'status', 'subscriber_id', 'guest',  'create_date', 'update_date'];
-        return ['room_id', 'name', 'location', 'room_type_id', 'theme_id', 'package_id', 'security_pin', 'status', 'subscriber_id',  'create_date', 'update_date'];
+        return ['room_id', 'name', 'location', 'room_type_id', 'type', 'theme_id', 'theme', 'package_id', 'package', 'security_pin', 'status', 'subscriber_id', 'guest',  'create_date', 'update_date'];
+        // return ['room_id', 'name', 'location', 'room_type_id', 'theme_id', 'package_id', 'security_pin', 'status', 'subscriber_id',  'create_date', 'update_date'];
     }
 
     public function add($value)  {
@@ -94,20 +107,15 @@ class RoomModel extends BaseModel
         $location = htmlentities($value['location'], ENT_QUOTES, 'UTF-8');
         $roomTypeId = $value['room_type_id'];
         $themeId = $value['theme_id'];
-        $packageId = $value['package_id'];
-        $subscriberId = $value['subscriber_id'];
-        // $createDate = $value['create_date'];
-        $updateDate = $value['update_date'];
+        // $packageId = $value['package_id'];
+        // $subscriberId = $value['subscriber_id'];
         $status = htmlentities($value['status'], ENT_QUOTES, 'UTF-8');
         $securityPin = htmlentities($value['security_pin'], ENT_QUOTES, 'UTF-8');
-
-        // if (strlen($createDate)==0) $createDate = null;
-        // if (strlen($updateDate)==0) $updateDate = null;
 
         try{
             $pdo = $this->openPdo();
             $stmt = $pdo->prepare(self::SQL_MODIFY);
-            $stmt->execute( [$name, $location, $roomTypeId, $themeId, $packageId, $subscriberId, $status, $securityPin, $roomId] );
+            $stmt->execute( [$name, $location, $roomTypeId, $themeId, $status, $securityPin, $roomId] );
 
             return $stmt->rowCount();
 
@@ -134,6 +142,6 @@ class RoomModel extends BaseModel
      */
     public function getSsp()
     {
-        return $this->_getSsp($this->table, $this->primaryKey, $this->getFieldList());
+        return $this->_getSsp(self::VIEW, $this->primaryKey, $this->getFieldList());
     }
 }
