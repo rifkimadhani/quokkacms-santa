@@ -8,12 +8,16 @@
 
 class PdoUtil {
 
-    static public function update($conn, $table, $keys, $data){
+    static public function update(PDO $conn, $table, $keys, $data){
 
         $where = self::_buildQuery($keys, ' AND');
         $set = self::_buildQuery($data, ',');
 
         $sql = "UPDATE `$table` SET $set WHERE $where";
+
+
+        var_dump($sql);
+
 
         $statement = $conn->prepare($sql);
         self::_buildBindValue($statement, $data);

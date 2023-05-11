@@ -79,7 +79,7 @@ class ModelProfile
 
 
     static function update(int $userId, $data){
-        require_once __DIR__ . '/../../library/pdo.php';
+        require_once __DIR__ . '/../library/pdo.php';
 
         try{
             $pdo = Koneksi::create();

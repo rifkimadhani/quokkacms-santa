@@ -9,7 +9,7 @@ class ModelSession {
 
     static public function create($userId, $deviceType, $loginType)
     {
-        require_once __DIR__ . '/../../library/Security.php';
+        require_once __DIR__ . '/../library/Security.php';
 
         //Keep create until user is created;
         do {
