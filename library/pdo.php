@@ -15,10 +15,6 @@ class PdoUtil {
 
         $sql = "UPDATE $table SET $set WHERE $where";
 
-
-        var_dump($sql);
-
-
         $statement = $conn->prepare($sql);
         self::_buildBindValue($statement, $data);
         self::_buildBindValue($statement, $keys);
