@@ -13,7 +13,7 @@ class PdoUtil {
         $where = self::_buildQuery($keys, ' AND');
         $set = self::_buildQuery($data, ',');
 
-        $sql = "UPDATE `$table` SET $set WHERE $where";
+        $sql = "UPDATE $table SET $set WHERE $where";
 
 
         var_dump($sql);

@@ -153,7 +153,7 @@ class ModelProfile
 
     function __construct()
     {
-        require_once '../config/Koneksi.php';
+        require_once __DIR__ . '/../config/Koneksi.php';
     }
 
 //    public function update(string $userId, $name, $birthdate, $gender, $aboutMe, $hobby, $location, $from, $education, $urlPP = NULL): bool

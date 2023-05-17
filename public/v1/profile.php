@@ -82,7 +82,7 @@ function doUpdate(string $userId){
     if ($ar['error_count']>0) $birthdate = null;
 
     $profile =  new ModelProfile();
-    $profile->update($userId, $name, $birthdate, $gender, $aboutMe, $hobby, $location, $from, $education);
+    $profile->update($userId, ['name'=>$name, 'birthdate'=>$birthdate, 'gender'=>$gender, 'aboutMe'=>$aboutMe, 'hobby'=>$hobby, 'location'=>$location, 'from'=>$from, 'education'=>$education]);
 
     $root = array(
         "success"=>1);
