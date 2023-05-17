@@ -81,11 +81,29 @@ function doUpdate(string $userId){
     $ar = date_parse($birthdate);
     if ($ar['error_count']>0) $birthdate = null;
 
+    switch ($gender){
+        case 'MALE':
+        case 'M':
+            $gender = 'M';
+            break;
+        case 'FEMALE':
+        case 'F':
+            $gender = 'F';
+            break;
+        default:
+            $gender = '';
+    }
+
     $profile =  new ModelProfile();
-    $profile->update($userId, ['name'=>$name, 'birthdate'=>$birthdate, 'gender'=>$gender, 'aboutMe'=>$aboutMe, 'hobby'=>$hobby, 'location'=>$location, 'from'=>$from, 'education'=>$education]);
+    $r = $profile->update($userId, ['name'=>$name, 'birthdate'=>$birthdate, 'gender'=>$gender, 'aboutMe'=>$aboutMe, 'hobby'=>$hobby, 'location'=>$location, 'from'=>$from, 'education'=>$education]);
+
+    if ($r instanceof PDOException){
+        echo errCompose($r);
+        exit();
+    }
 
     $root = array(
-        "success"=>1);
+        "success"=>$r);
 
     header('Content-type: application/json');
     echo json_encode($root);

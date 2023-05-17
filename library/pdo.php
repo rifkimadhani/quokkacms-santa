@@ -18,7 +18,8 @@ class PdoUtil {
         $statement = $conn->prepare($sql);
         self::_buildBindValue($statement, $data);
         self::_buildBindValue($statement, $keys);
-        $count = $statement->execute();
+        $statement->execute();
+        $count = $statement->rowCount();
 
         return $count;
     }
