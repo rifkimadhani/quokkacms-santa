@@ -180,6 +180,14 @@ $routes->get('/vod/delete/(:any)', 'VOD::delete/$1');
 $routes->post('/vod/update', 'VOD::update');
 $routes->post('/vod/insert', 'VOD::insert');
 
+// VOD Genre
+$routes->get('/vodgenre', 'VODGenre::index');
+$routes->get('/vodgenre/ssp', 'VODGenre::ssp');
+$routes->get('/vodgenre/edit/(:any)', 'VODGenre::edit/$1');
+$routes->get('/vodgenre/delete/(:any)', 'VODGenre::delete/$1');
+$routes->post('/vodgenre/update', 'VODGenre::update');
+$routes->post('/vodgenre/insert', 'VODGenre::insert');
+
 /*  
  * --------------------------------------------------------------------
  * Additional Routing
