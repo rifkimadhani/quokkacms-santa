@@ -295,13 +295,13 @@ HTML;
         }
 
         return <<< HTML
-        <div class="form-group">
-            <label class="col-form-label"><b>{$label}</b></label>
-            <select name='{$item}[]' id='{$item}' class='js-example-basic-multiple form-control' multiple="multiple" {$attr} {$required} {$readonly}>
-                {$htmlOptions}
-            </select>
-        </div>
-HTML;
+            <div class="form-group">
+                <label class="col-form-label"><b>{$label}</b></label>
+                <select name='{$item}[]' id='{$item}' class='js-example-basic-multiple form-control' multiple="multiple" {$attr} {$required} {$readonly}>
+                    {$htmlOptions}
+                </select>
+            </div>
+        HTML;
     }
 
     function renderFilemanager($formId, $item, $data){
@@ -313,27 +313,40 @@ HTML;
 
         $value = $this->getAndUnset($data, 'value');
 
-        $htmlImagePreview = '';
-        if (strlen($value)>0){
-            foreach(explode(',', $value) as $url)
-            {
-                $htmlImagePreview .= "<div class='img' style='background-image:url({$url});'><span>remove</span></div>";
+        // $htmlImagePreview = '';
+        // if (strlen($value)>0){
+        //     foreach(explode(',', $value) as $url)
+        //     {
+        //         $htmlImagePreview .= "<div class='img' style='background-image:url({$url});'><span>remove</span></div>";
+        //     }
+        // }
+        $htmlPreview = '';
+        if (strlen($value) > 0) {
+            foreach (explode(',', $value) as $url) {
+                $extension = pathinfo($url, PATHINFO_EXTENSION);
+                if (in_array($extension, ['mp4', 'flv', 'webm'])) {
+                    $htmlPreview .= "<div class='video'><video controls><source src='{$url}' type='video/{$extension}'></video><span>remove</span></div>";
+                } else if ($extension === 'm3u8') {
+                    $htmlPreview .= "<div class='video'><video controls><source src='{$url}' type='application/x-mpegURL'></video><span>remove</span></div>";
+                } else {
+                    $htmlPreview .= "<div class='img' style='background-image:url({$url});'><span>remove</span></div>";
+                }
             }
         }
 
         return <<< HTML
-        <div class="form-group">
-            <label class="col-form-label"><b>{$label}</b></label>
-            <div class="input-group" style="width: 100%;">
-                <input type="hidden" id="{$formId}_{$item}">
-                <input type="text" name="{$item}" id="{$item}" class="form-control" autocomplete="off" {$readonly} {$required} {$attr}/>
-                <div class="btn btn-alt-primary input-group-addon" style="cursor: pointer;" form-id="{$formId}" input-id="{$item}">Browse</div>
-            </div>
-            <div id="images-preview-{$formId}-{$item}" class="images-preview" form-id="{$formId}" input-id="{$item}">
-                {$htmlImagePreview}
-            </div>
-        </div>
-HTML;
+                <div class="form-group">
+                    <label class="col-form-label"><b>{$label}</b></label>
+                    <div class="input-group" style="width: 100%;">
+                        <input type="hidden" id="{$formId}_{$item}">
+                        <input type="text" name="{$item}" id="{$item}" class="form-control" autocomplete="off" {$readonly} {$required} {$attr}/>
+                        <div class="btn btn-alt-primary input-group-addon" style="cursor: pointer;" form-id="{$formId}" input-id="{$item}">Browse</div>
+                    </div>
+                    <div id="images-preview-{$formId}-{$item}" class="images-preview" form-id="{$formId}" input-id="{$item}">
+                        {$htmlPreview}
+                    </div>
+                </div>
+        HTML;
     }
 
     // function renderApkFile($item, $attr) {
