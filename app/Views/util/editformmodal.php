@@ -274,7 +274,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     echo "</div>";
                     break;
                   }
-                  if($item['type'] == 'select2multiple' && ($parentkey == $key))
+                  if($item['type'] == 'select-multiple' && ($parentkey == $key))
                   {
                     echo'<div class="form-group">';
                     if($item['label']!='')echo"<label class='col-form-label'><b>{$item['label']}</b></label>";

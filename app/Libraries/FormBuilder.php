@@ -274,10 +274,21 @@ HTML;
         $placeholder = $this->getAndUnset($data, 'placeholder');
 
         //ambil value dari default atau dari value
-        if (isset($data['value'])){
+        // if (isset($data['value'])){
+        //     $value = $this->getAndUnset($data, 'value');
+        // } else {
+        //     $value = $this->getAndUnset($data, 'default');
+        // }
+        if (isset($data['value'])) {
             $value = $this->getAndUnset($data, 'value');
+            if (!is_array($value)) {
+                $value = [$value]; // Convert to array if it's a single value
+            }
         } else {
             $value = $this->getAndUnset($data, 'default');
+            if (!is_array($value)) {
+                $value = [$value]; // Convert to array if it's a single value
+            }
         }
 
         $attr = $this->buildAttribute($data);
@@ -289,7 +300,13 @@ HTML;
             $text = $opt['value'];
 
             //apabila value adalah pilihan maka set selected
-            if ($id==$value) $selected = 'selected'; else $selected='';
+            // if ($id==$value) $selected = 'selected'; else $selected='';
+            $selected = '';
+            if (is_array($value) && in_array($id, $value)) {
+                $selected = 'selected';
+            } elseif ($id == $value) {
+                $selected = 'selected';
+            }
 
             $htmlOptions .= "<option value='{$id}' label='{$text}' {$selected}>{$text}</option>";
         }
@@ -313,24 +330,11 @@ HTML;
 
         $value = $this->getAndUnset($data, 'value');
 
-        // $htmlImagePreview = '';
-        // if (strlen($value)>0){
-        //     foreach(explode(',', $value) as $url)
-        //     {
-        //         $htmlImagePreview .= "<div class='img' style='background-image:url({$url});'><span>remove</span></div>";
-        //     }
-        // }
-        $htmlPreview = '';
-        if (strlen($value) > 0) {
-            foreach (explode(',', $value) as $url) {
-                $extension = pathinfo($url, PATHINFO_EXTENSION);
-                if (in_array($extension, ['mp4', 'flv', 'webm'])) {
-                    $htmlPreview .= "<div class='video'><video controls><source src='{$url}' type='video/{$extension}'></video><span>remove</span></div>";
-                } else if ($extension === 'm3u8') {
-                    $htmlPreview .= "<div class='video'><video controls><source src='{$url}' type='application/x-mpegURL'></video><span>remove</span></div>";
-                } else {
-                    $htmlPreview .= "<div class='img' style='background-image:url({$url});'><span>remove</span></div>";
-                }
+        $htmlImagePreview = '';
+        if (strlen($value)>0){
+            foreach(explode(',', $value) as $url)
+            {
+                $htmlImagePreview .= "<div class='img' style='background-image:url({$url});'><span>remove</span></div>";
             }
         }
 
@@ -343,7 +347,7 @@ HTML;
                         <div class="btn btn-alt-primary input-group-addon" style="cursor: pointer;" form-id="{$formId}" input-id="{$item}">Browse</div>
                     </div>
                     <div id="images-preview-{$formId}-{$item}" class="images-preview" form-id="{$formId}" input-id="{$item}">
-                        {$htmlPreview}
+                        {$htmlImagePreview}
                     </div>
                 </div>
         HTML;

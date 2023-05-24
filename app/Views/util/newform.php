@@ -215,7 +215,7 @@ width:100%!important;
                     }
                     echo'</select>';
                   }
-                  if($item['type'] == 'select2multiple')
+                  if($item['type'] == 'select-multiple')
                   {
                     echo"<label class='col-form-label'><b>{$item['label']}</b></label>";
                     echo"<select class='js-example-basic-multiple js-states form-control' id='{$key}' name='{$key}[]' multiple='multiple' {$item['required']}>";

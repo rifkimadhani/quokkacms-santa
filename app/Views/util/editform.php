@@ -226,7 +226,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             echo "</div>";
             break;
             }
-            if($item['type'] == 'select2multiple' && ($parentkey == $key))
+            if($item['type'] == 'select-multiple' && ($parentkey == $key))
             {
             echo'<div class="form-group">';
             if($item['label']!='')echo"<label class='col-form-label'><b>{$item['label']}</b></label>";
@@ -235,17 +235,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             {
                 if($item['placeholder'])
                 {
-                echo "<option></option>";
+                    echo "<option></option>";
                 }
                 foreach ($item['default'] as $key => $valueoption) 
                 {
-                $selected = false;
-                $inarray = in_array($valueoption['id'],$value);
-                if($inarray)  $selected='selected';
-                $disabled = '';
-                if($valueoption['id'] == $value)$selected='selected';
-                if(isset($valueoption['status_select']) && $valueoption['status_select'] == 'disabled' && $selected !='selected')$disabled='disabled=disabled';
-                echo "<option value='{$valueoption['id']}' {$selected} label='{$valueoption['value']}' {$disabled}>{$valueoption['value']}</option>";
+                    $selected = false;
+                    $inarray = in_array($valueoption['id'],$value);
+                    if($inarray)  $selected='selected';
+                    $disabled = '';
+                    if($valueoption['id'] == $value)$selected='selected';
+                    if(isset($valueoption['status_select']) && $valueoption['status_select'] == 'disabled' && $selected !='selected')$disabled='disabled=disabled';
+                    echo "<option value='{$valueoption['id']}' {$selected} label='{$valueoption['value']}' {$disabled}>{$valueoption['value']}</option>";
                 }
             }
             echo'</select>';
