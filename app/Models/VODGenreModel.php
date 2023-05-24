@@ -12,8 +12,6 @@ class VODGenreModel extends BaseModel
     const SQL_GET = 'SELECT * FROM tgenre WHERE (genre_id=?)';
     const SQL_MODIFY = 'UPDATE tgenre SET genre=? WHERE (genre_id=?)';
     const SQL_GET_FOR_SELECT = 'SELECT genre_id AS id, genre AS value FROM tgenre ORDER BY genre';
-    const SQL_GET_BY_VOD = 'SELECT genre_id AS id, genre AS value FROM vvod_genre WHERE (vod_id=?)';
-
 
     protected $table      = 'tgenre';
     protected $primaryKey = 'genre_id';
@@ -22,20 +20,9 @@ class VODGenreModel extends BaseModel
     public $errCode;
     public $errMessage;
 
-//    public function get2($adminId, $username){
-//        $r = $this
-//            ->where('admin_id', $adminId)
-//            ->where('username', $username)
-//            ->find();
-//        if ($r!=null) return $r[0];
-//        return null;
-//    }
-
     public function get($genreId)
     {
-        $r = $this
-            ->where('genre_id', $genreId)
-            ->find();
+        $r = $this->where('genre_id', $genreId)->find();
         if ($r!=null) return $r[0];
 
         return null;
@@ -54,17 +41,25 @@ class VODGenreModel extends BaseModel
             return $result;
         }
         return [];
-        dd($result);
+        
     }
 
-    public function getByVod($vodId){
-        $result = $this->db->query(self::SQL_GET_BY_VOD, [$vodId])->getResult('array');
-        if(sizeof($result) > 0)
-        {
-            return $result;
-        }
-        return [];
+    public function getGenresForVOD($vodId)
+    {
+        $genreIds = $this->db->table('tvod_genre')
+            ->select('genre_id')
+            ->where('vod_id', $vodId)
+            ->get()
+            ->getResultArray();
+    
+        $genreIds = array_column($genreIds, 'genre_id');
+
+        // Convert genre IDs to integers
+        $genreIds = array_map('intval', $genreIds);
+    
+        return $genreIds;
     }
+    
 
     public function getFieldList(){
         return ['genre_id', 'genre', 'create_date', 'update_date'];
