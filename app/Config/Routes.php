@@ -188,6 +188,14 @@ $routes->get('/vodgenre/delete/(:any)', 'VODGenre::delete/$1');
 $routes->post('/vodgenre/update', 'VODGenre::update');
 $routes->post('/vodgenre/insert', 'VODGenre::insert');
 
+// Live TV
+$routes->get('/livetv', 'LiveTV::index');
+$routes->get('/livetv/ssp', 'LiveTV::ssp');
+$routes->get('/livetv/edit/(:any)', 'LiveTV::edit/$1');
+$routes->get('/livetv/delete/(:any)', 'LiveTV::delete/$1');
+$routes->post('/livetv/update', 'LiveTV::update');
+$routes->post('/livetv/insert', 'LiveTV::insert');
+
 /*  
  * --------------------------------------------------------------------
  * Additional Routing
