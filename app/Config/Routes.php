@@ -196,6 +196,16 @@ $routes->get('/livetv/delete/(:any)', 'LiveTV::delete/$1');
 $routes->post('/livetv/update', 'LiveTV::update');
 $routes->post('/livetv/insert', 'LiveTV::insert');
 
+//live tv category
+$routes->get('/livetvcategory', 'LiveTvCategory::index');
+$routes->get('/livetvcategory/ssp', 'LiveTvCategory::ssp');
+$routes->get('/livetvcategory/edit/(:any)', 'LiveTvCategory::edit/$1');
+$routes->get('/livetvcategory/delete/(:any)', 'LiveTvCategory::delete/$1');
+$routes->post('/livetvcategory/update', 'LiveTvCategory::update');
+$routes->post('/livetvcategory/insert', 'LiveTvCategory::insert');
+
+
+
 /*  
  * --------------------------------------------------------------------
  * Additional Routing
