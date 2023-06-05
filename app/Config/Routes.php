@@ -204,6 +204,13 @@ $routes->get('/livetvcategory/delete/(:any)', 'LiveTvCategory::delete/$1');
 $routes->post('/livetvcategory/update', 'LiveTvCategory::update');
 $routes->post('/livetvcategory/insert', 'LiveTvCategory::insert');
 
+//livetv package
+$routes->get('/livetvpackage', 'LiveTvPackage::index');
+$routes->get('/livetvpackage/ssp', 'LiveTvPackage::ssp');
+$routes->get('/livetvpackage/edit/(:any)', 'LiveTvPackage::edit/$1');
+$routes->get('/livetvpackage/delete/(:any)', 'LiveTvPackage::delete/$1');
+$routes->post('/livetvpackage/update', 'LiveTvPackage::update');
+$routes->post('/livetvpackage/insert', 'LiveTvPackage::insert');
 
 
 /*  
