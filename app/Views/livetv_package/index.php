@@ -6,9 +6,10 @@
 
 use App\Libraries\Dialog;
 
+$htmlAssoc = $form->renderPlainDialog('formAssoc');
 $htmlEdit = $form->renderPlainDialog('formEdit');
-$htmlNew = $form->renderDialog('New livetvpackage', 'formNew', "{$baseUrl}/insert");
-$htmlDelete = Dialog::renderDelete('Delete livetvpackage', 'CONFIRM DELETE');
+$htmlNew = $form->renderDialog('New package', 'formNew', "{$baseUrl}/insert");
+$htmlDelete = Dialog::renderDelete('Delete package', 'CONFIRM DELETE');
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
@@ -34,6 +35,7 @@ $htmlDelete = Dialog::renderDelete('Delete livetvpackage', 'CONFIRM DELETE');
     </table>
 </div>
 
+<?=$htmlAssoc?>
 <?=$htmlEdit?>
 <?=$htmlNew?>
 <?=$htmlDelete?>
@@ -69,7 +71,7 @@ $htmlDelete = Dialog::renderDelete('Delete livetvpackage', 'CONFIRM DELETE');
                         // action column
                         targets: lastCol,
                         className: "text-center",
-                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
+                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a> <a onclick="onShowDialogAssoc(event, this);" href="javascript:;"> <i class="fa fa-dot-circle-o fa-2x"></i></a>'
                     }
 
                 ]
@@ -103,7 +105,7 @@ $htmlDelete = Dialog::renderDelete('Delete livetvpackage', 'CONFIRM DELETE');
             });
         });
 
-        initDataTableOptions($dataTable);
+        initDataTableOptions(dataTable);
     }
 
     //
@@ -112,14 +114,35 @@ $htmlDelete = Dialog::renderDelete('Delete livetvpackage', 'CONFIRM DELETE');
         event.stopPropagation();
 
         const data = dataTable.row( $(that).parents('tr') ).data();
-            const packageId = data[13];
+        const packageId = data[0];
 
 
         //please correct the index for name variable, sehingga message delete akan terlihat benar
-        const name = data[0];
+        const name = data[1];
 
         showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
             window.location.href = "<?=$baseUrl?>/delete/" + packageId;
         })
+    }
+
+    function onShowDialogAssoc(event, that) {
+        event.stopPropagation();
+
+        const data = dataTable.row( $(that).parents('tr') ).data();
+        const packageId = data[0];
+
+        const url = "<?=$baseUrl?>/assoc/" + packageId;
+
+        console.log(url);
+
+        $.ajax({url: url}).done(function(result)
+        {
+            $('.dialogformAssoc').html(result);
+            $('.dialogformAssoc').modal();
+        })
+            .always(function()
+            {
+                jQuery('#overlay-loader-indicator').hide();
+            });
     }
 </script>

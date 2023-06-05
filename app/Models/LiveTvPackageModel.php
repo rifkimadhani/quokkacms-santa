@@ -9,6 +9,11 @@ class LiveTvPackageModel extends BaseModel
 {
     const SQL_GET = 'SELECT * FROM tpackage WHERE (package_id=?)';
     const SQL_MODIFY = 'UPDATE tpackage SET name=?, description=? WHERE (package_id=?)';
+    const SQL_GET_ALL_BY_PACKAGEID = "SELECT package_id, livetv_id, name, url_station_logo FROM vpackage_livetv WHERE package_id=?";
+    const SQL_GET_ALL_BY_PACKAGEID_REVERSE = "SELECT livetv_id, name, url_station_logo FROM tlivetv WHERE livetv_id NOT IN (SELECT livetv_id FROM tpackage_livetv WHERE package_id=?)";
+
+    const SQL_DELETE_LIVETV = "DELETE FROM tpackage_livetv WHERE package_id=?";
+    const SQL_INSERT_LIVETV = "INSERT INTO tpackage_livetv (package_id, livetv_id) VALUES (?, ?)";
 
     protected $table      = 'tpackage';
     protected $primaryKey = 'package_id';
@@ -43,6 +48,39 @@ class LiveTvPackageModel extends BaseModel
     public function getFieldList(){
         return ['package_id', 'name', 'description'];
 //        return ['package_id', 'name', 'description', 'url_package_logo', 'price', 'currency', 'currency_sign', 'rent_duration', 'percent_tax', 'url_image', 'create_date', 'update_date'];
+    }
+
+    public function getAllByPackageId($packageId){
+        $db = db_connect();
+        return $db->query(self::SQL_GET_ALL_BY_PACKAGEID, [$packageId])->getResult('array');
+    }
+
+    public function getAllByPackageIdReverse($packageId){
+        $db = db_connect();
+        return $db->query(self::SQL_GET_ALL_BY_PACKAGEID_REVERSE, [$packageId])->getResult('array');
+    }
+
+    public function updateLiveTv($packageId, $ar){
+
+        $db = db_connect();
+        try{
+            $db->transBegin();
+
+            $db->query(self::SQL_DELETE_LIVETV, [$packageId]);
+
+            foreach ($ar as $livetvId){
+                $db->query(self::SQL_INSERT_LIVETV, [$packageId, $livetvId]);
+            }
+
+            $db->transCommit();
+
+            return 1;
+
+        }catch (\Exception $e){
+            $db->transRollback();
+        }
+
+        return 0;
     }
 
     public function add($value)  {

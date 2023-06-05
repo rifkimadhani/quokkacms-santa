@@ -32,7 +32,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 <?=$htmlNew?>
 <?=$htmlDelete?>
 
-<?=view('util/scripts.php')?>
+<?//=view('util/scripts.php')?>
 
 <script>
     var dataTable;

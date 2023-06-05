@@ -7,6 +7,7 @@
 
 namespace App\Controllers;
 
+use App\Models\LiveTVModel;
 use App\Models\LiveTvPackageModel;
 use App\Models\LiveTvPackageForm;
 
@@ -17,7 +18,7 @@ class LiveTvPackage extends BaseController
         $baseUrl = $this->getBaseUrl();
 
         $mainview = 'livetv_package/index';
-        $pageTitle = 'LiveTvPackage';
+        $pageTitle = 'Package';
 
         $model = new LiveTvPackageModel();
         $fieldList = $model->getFieldList();
@@ -98,6 +99,79 @@ class LiveTvPackage extends BaseController
         } else {
             $this->setErrorMessage('Delete fail');
         }
+
+        return redirect()->to($this->baseUrl);
+    }
+
+    public function assoc($packageId){
+        $livetv = new LiveTvPackageModel();
+
+        $data = $livetv->getAllByPackageId($packageId);
+        $htmlBody = '';
+        foreach ($data as $item){
+            $htmlBody .= <<<HTML
+<div>
+    <input type="checkbox" name="livetv_id[]" value="{$item['livetv_id']}" checked/>
+    <label for="{$item['livetv_id']}">{$item['name']}</label>
+</div>
+HTML;
+        }
+
+        $htmlBodyReverse = '';
+        $data = $livetv->getAllByPackageIdReverse($packageId);
+        foreach ($data as $item){
+            $htmlBodyReverse .= <<<HTML
+<div>
+    <input type="checkbox" name="livetv_id[]" value="{$item['livetv_id']}" />
+    <label for="{$item['livetv_id']}">{$item['name']}</label>
+</div>
+HTML;
+        }
+
+        $html = <<<HTML
+        <div class="modal-dialog modal-lg modal-dialog-popout" role="document">
+            <div class="modal-content">
+                <div class="block block-themed block-transparent mb-0">
+                    <div class="block-header bg-primary-dark">
+                        <h3 class="block-title">Edit</h3>
+                        <div class="block-options">
+                            <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                <i class="si si-close" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                        <form id="formAssoc" action="{$this->baseUrl}/assoc_update" method="post" enctype="multipart/form-data">
+            <div class="block-content">
+        <div class="form-group">
+            <label class='col-form-label'><b>Package Id</b></label>
+            <input name='package_id' id='package_id' type='number' class=form-control placeholder='' value='6'   readonly>
+        </div>        
+            $htmlBody
+            $htmlBodyReverse
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-alt-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-alt-primary">
+                    <i class="fa fa-check"></i> Submit
+                </button>
+            </div>
+        </form>
+            </div>
+        </div>
+HTML;
+
+        return $html;
+    }
+
+    public function assoc_update(){
+        $this->varDump('=================================');
+
+        $packageId = $_POST['package_id'];
+        $ar = $_POST['livetv_id'];
+
+        $db = new LiveTvPackageModel();
+        $db->updateLiveTv($packageId, $ar);
 
         return redirect()->to($this->baseUrl);
     }

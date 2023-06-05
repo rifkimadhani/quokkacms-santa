@@ -211,6 +211,8 @@ $routes->get('/livetvpackage/edit/(:any)', 'LiveTvPackage::edit/$1');
 $routes->get('/livetvpackage/delete/(:any)', 'LiveTvPackage::delete/$1');
 $routes->post('/livetvpackage/update', 'LiveTvPackage::update');
 $routes->post('/livetvpackage/insert', 'LiveTvPackage::insert');
+$routes->get('/livetvpackage/assoc/(:any)', 'LiveTvPackage::assoc/$1');
+$routes->post('/livetvpackage/assoc_update', 'LiveTvPackage::assoc_update');
 
 
 /*  
