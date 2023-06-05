@@ -145,7 +145,7 @@ HTML;
             <div class="block-content">
         <div class="form-group">
             <label class='col-form-label'><b>Package Id</b></label>
-            <input name='package_id' id='package_id' type='number' class=form-control placeholder='' value='6'   readonly>
+            <input name='package_id' id='package_id' type='number' class=form-control placeholder='' value='{$packageId}'   readonly>
         </div>        
             $htmlBody
             $htmlBodyReverse
@@ -165,7 +165,7 @@ HTML;
     }
 
     public function assoc_update(){
-        $this->varDump('=================================');
+//        $this->varDump('=================================');
 
         $packageId = $_POST['package_id'];
         $ar = $_POST['livetv_id'];

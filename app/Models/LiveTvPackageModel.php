@@ -12,6 +12,7 @@ class LiveTvPackageModel extends BaseModel
     const SQL_GET_ALL_BY_PACKAGEID = "SELECT package_id, livetv_id, name, url_station_logo FROM vpackage_livetv WHERE package_id=?";
     const SQL_GET_ALL_BY_PACKAGEID_REVERSE = "SELECT livetv_id, name, url_station_logo FROM tlivetv WHERE livetv_id NOT IN (SELECT livetv_id FROM tpackage_livetv WHERE package_id=?)";
 
+    const SQL_DELETE_PACKAGE = "DELETE FROM tpackage WHERE package_id=?";
     const SQL_DELETE_LIVETV = "DELETE FROM tpackage_livetv WHERE package_id=?";
     const SQL_INSERT_LIVETV = "INSERT INTO tpackage_livetv (package_id, livetv_id) VALUES (?, ?)";
 
@@ -89,12 +90,12 @@ class LiveTvPackageModel extends BaseModel
         {
             $value['name'] = htmlentities($value['name'], ENT_QUOTES, 'UTF-8');
             $value['description'] = htmlentities($value['description'], ENT_QUOTES, 'UTF-8');
-            $value['url_package_logo'] = htmlentities($value['url_package_logo'], ENT_QUOTES, 'UTF-8');
-            $value['price'] = htmlentities($value['price'], ENT_QUOTES, 'UTF-8');
-            $value['currency'] = htmlentities($value['currency'], ENT_QUOTES, 'UTF-8');
-            $value['currency_sign'] = htmlentities($value['currency_sign'], ENT_QUOTES, 'UTF-8');
-            $value['percent_tax'] = htmlentities($value['percent_tax'], ENT_QUOTES, 'UTF-8');
-            $value['url_image'] = htmlentities($value['url_image'], ENT_QUOTES, 'UTF-8');
+//            $value['url_package_logo'] = htmlentities($value['url_package_logo'], ENT_QUOTES, 'UTF-8');
+//            $value['price'] = htmlentities($value['price'], ENT_QUOTES, 'UTF-8');
+//            $value['currency'] = htmlentities($value['currency'], ENT_QUOTES, 'UTF-8');
+//            $value['currency_sign'] = htmlentities($value['currency_sign'], ENT_QUOTES, 'UTF-8');
+//            $value['percent_tax'] = htmlentities($value['percent_tax'], ENT_QUOTES, 'UTF-8');
+//            $value['url_image'] = htmlentities($value['url_image'], ENT_QUOTES, 'UTF-8');
 
             parent::insert($value);
 
@@ -156,11 +157,22 @@ class LiveTvPackageModel extends BaseModel
 
 
     public function remove($packageId){
-        $r = $this
-            ->where('package_id', $packageId)
-            ->delete();
+        $db = db_connect();
+        try{
+            $db->transBegin();
 
-        return $this->db->affectedRows();
+            $db->query(self::SQL_DELETE_LIVETV, [$packageId]);
+            $db->query(self::SQL_DELETE_PACKAGE, [$packageId]);
+
+            $db->transCommit();
+
+            return 1;
+
+        }catch (\Exception $e){
+            $db->transRollback();
+        }
+
+        return 0;
     }
 
     /**
