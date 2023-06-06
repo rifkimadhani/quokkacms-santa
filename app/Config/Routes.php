@@ -214,6 +214,14 @@ $routes->post('/livetvpackage/insert', 'LiveTvPackage::insert');
 $routes->get('/livetvpackage/assoc/(:any)', 'LiveTvPackage::assoc/$1');
 $routes->post('/livetvpackage/assoc_update', 'LiveTvPackage::assoc_update');
 
+//language
+$routes->get('/language', 'Language::index');
+$routes->get('/language/ssp', 'Language::ssp');
+$routes->get('/language/edit/(:any)', 'Language::edit/$1');
+$routes->get('/language/delete/(:any)', 'Language::delete/$1');
+$routes->post('/language/update', 'Language::update');
+$routes->post('/language/insert', 'Language::insert');
+
 
 /*  
  * --------------------------------------------------------------------
