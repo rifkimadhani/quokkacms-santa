@@ -222,6 +222,13 @@ $routes->get('/language/delete/(:any)', 'Language::delete/$1');
 $routes->post('/language/update', 'Language::update');
 $routes->post('/language/insert', 'Language::insert');
 
+//currency
+$routes->get('/currency', 'Currency::index');
+$routes->get('/currency/ssp', 'Currency::ssp');
+$routes->get('/currency/edit/(:any)', 'Currency::edit/$1');
+$routes->get('/currency/delete/(:any)', 'Currency::delete/$1');
+$routes->post('/currency/update', 'Currency::update');
+$routes->post('/currency/insert', 'Currency::insert');
 
 /*  
  * --------------------------------------------------------------------
