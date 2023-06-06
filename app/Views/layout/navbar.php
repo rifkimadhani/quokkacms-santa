@@ -161,7 +161,7 @@
                                     <a href="<?= base_url('livetvcategory'); ?>">Category</a>
                                 </li>
                                 <li>
-                                    <a href="<?= base_url('package'); ?>">Package</a>
+                                    <a href="<?= base_url('livetvpackage'); ?>">Package</a>
                                 </li>
                                 <li>
                                     <a href="<?= base_url('livetv_epg'); ?>">EPG</a>
