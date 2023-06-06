@@ -230,6 +230,14 @@ $routes->get('/currency/delete/(:any)', 'Currency::delete/$1');
 $routes->post('/currency/update', 'Currency::update');
 $routes->post('/currency/insert', 'Currency::insert');
 
+//setting
+$routes->get('/setting', 'Setting::index');
+$routes->get('/setting/ssp', 'Setting::ssp');
+$routes->get('/setting/edit/(:any)', 'Setting::edit/$1');
+$routes->get('/setting/delete/(:any)', 'Setting::delete/$1');
+$routes->post('/setting/update', 'Setting::update');
+$routes->post('/setting/insert', 'Setting::insert');
+
 /*  
  * --------------------------------------------------------------------
  * Additional Routing
