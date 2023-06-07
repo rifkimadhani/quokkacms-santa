@@ -12,8 +12,8 @@ $htmlDelete = Dialog::renderDelete('Delete hotelservice', 'CONFIRM DELETE');
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
-    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showHistory()">
-        <i class="text-primary mr-5 "></i> Show history
+    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showNew()">
+        <i class="text-primary mr-5 "></i> Show new entry
     </a>
     <div class="btn-group float-right">
         <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
@@ -42,7 +42,7 @@ $htmlDelete = Dialog::renderDelete('Delete hotelservice', 'CONFIRM DELETE');
 
 
 <script>
-    const urlSsp = "<?= $baseUrl ?>/ssp";
+    const urlSsp = "<?= $baseUrl ?>/ssp_old";
     const lastCol = <?= count($fieldList) ?>;
     const dataList = $('#datalist');
     var dataTable;
@@ -123,7 +123,7 @@ $htmlDelete = Dialog::renderDelete('Delete hotelservice', 'CONFIRM DELETE');
         })
     }
 
-    function showHistory() {
-        window.location.href = "<?=$baseUrl?>/history";
+    function showNew() {
+        window.location.href = "<?=$baseUrl?>";
     }
 </script>

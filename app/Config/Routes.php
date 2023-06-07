@@ -240,7 +240,9 @@ $routes->post('/setting/insert', 'Setting::insert');
 
 //hotelservice
 $routes->get('/hotelservice', 'HotelService::index');
+$routes->get('/hotelservice/history', 'HotelService::history');
 $routes->get('/hotelservice/ssp', 'HotelService::ssp');
+$routes->get('/hotelservice/ssp_old', 'HotelService::sspOld');
 $routes->get('/hotelservice/edit/(:any)', 'HotelService::edit/$1');
 $routes->get('/hotelservice/delete/(:any)', 'HotelService::delete/$1');
 $routes->post('/hotelservice/update', 'HotelService::update');

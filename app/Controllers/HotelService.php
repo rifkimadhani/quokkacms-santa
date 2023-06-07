@@ -27,6 +27,21 @@ class HotelService extends BaseController
         return view('layout/template', compact('mainview', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
     }
 
+    public function history()
+    {
+        $baseUrl = $this->getBaseUrl();
+
+        $mainview = 'hotelservice/history';
+        $pageTitle = 'HotelService';
+
+        $model = new HotelServiceModel();
+        $fieldList = $model->getFieldList();
+
+        $form = new HotelServiceForm();
+
+        return view('layout/template', compact('mainview', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
+    }
+
     public function ssp()
     {
         $model = new HotelServiceModel();
@@ -34,6 +49,19 @@ class HotelService extends BaseController
         header('Content-Type: application/json');
 
         $data = $model->getSsp();
+
+        self::sspDataConversion($data);
+
+        echo json_encode($data);
+    }
+
+    public function sspOld()
+    {
+        $model = new HotelServiceModel();
+
+        header('Content-Type: application/json');
+
+        $data = $model->getSspOld();
 
         self::sspDataConversion($data);
 

@@ -117,4 +117,10 @@ class HotelServiceModel extends BaseModel
         $where = 'status IN (\'NEW\', \'ACK\')';
         return $this->_getSspComplex($this->view, $this->primaryKey, $this->getFieldList(), $where);
     }
+
+    public function getSspOld()
+    {
+        $where = 'status IN (\'FINISH\', \'CANCEL\')';
+        return $this->_getSspComplex($this->view, $this->primaryKey, $this->getFieldList(), $where);
+    }
 }
