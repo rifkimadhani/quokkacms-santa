@@ -238,6 +238,14 @@ $routes->get('/setting/delete/(:any)', 'Setting::delete/$1');
 $routes->post('/setting/update', 'Setting::update');
 $routes->post('/setting/insert', 'Setting::insert');
 
+//hotelservice
+$routes->get('/hotelservice', 'HotelService::index');
+$routes->get('/hotelservice/ssp', 'HotelService::ssp');
+$routes->get('/hotelservice/edit/(:any)', 'HotelService::edit/$1');
+$routes->get('/hotelservice/delete/(:any)', 'HotelService::delete/$1');
+$routes->post('/hotelservice/update', 'HotelService::update');
+$routes->post('/hotelservice/insert', 'HotelService::insert');
+
 /*  
  * --------------------------------------------------------------------
  * Additional Routing
