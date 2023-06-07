@@ -43,6 +43,7 @@ switch (strtoupper($status)){
     case STATUS_FINISH:
     case STATUS_CANCEL:
         $buttonStyle = 'display: none;';
+        $buttonSubmit = '';
         break;
 }
 
