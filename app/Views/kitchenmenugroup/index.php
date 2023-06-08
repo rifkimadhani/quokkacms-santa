@@ -9,6 +9,26 @@ use App\Libraries\Dialog;
 $htmlEdit = $form->renderPlainDialog('formEdit');
 $htmlNew = $form->renderDialog('New kitchenmenugroup', 'formNew', "{$baseUrl}/insert");
 $htmlDelete = Dialog::renderDelete('Delete kitchenmenugroup', 'CONFIRM DELETE');
+
+function convertToJavaScriptArray($phpArray) {
+    $jsArray = '[';
+    $elements = [];
+
+    foreach ($phpArray as $element) {
+        $properties = [];
+
+        foreach ($element as $key => $value) {
+            $properties[] = '' . $key . ': "' . $value . '"';
+        }
+
+        $elements[] = '{' . implode(', ', $properties) . '}';
+    }
+
+    $jsArray .= implode(', ', $elements);
+    $jsArray .= ']';
+
+    return $jsArray;
+}
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
@@ -42,6 +62,7 @@ $htmlDelete = Dialog::renderDelete('Delete kitchenmenugroup', 'CONFIRM DELETE');
 
 
 <script>
+    const arKitchen = <?= convertToJavaScriptArray($data) ?>;
     const urlSsp = "<?= $baseUrl ?>/ssp";
     const lastCol = <?= count($fieldList) ?>;
     const dataList = $('#datalist');
@@ -64,6 +85,13 @@ $htmlDelete = Dialog::renderDelete('Delete kitchenmenugroup', 'CONFIRM DELETE');
                     {
                         //hide your cols here, enter index of col into targets array
                         targets: [],visible: false,searchable: false
+                    },
+                    {
+                        //kitchen_id ==> kitchen name
+                        targets: 1, render: function ( data, type, row, meta ) {
+//                            console.log(data);
+                            return findValueById(arKitchen, data.toString());
+                        }
                     },
                     {
                         // action column
@@ -122,4 +150,16 @@ $htmlDelete = Dialog::renderDelete('Delete kitchenmenugroup', 'CONFIRM DELETE');
             window.location.href = "<?=$baseUrl?>/delete/" + menuGroupId;
         })
     }
+
+    /**
+     *
+     * @param array
+     * @param id harus dalam bentuk string
+     * @returns {null}
+     */
+    function findValueById(array, id) {
+        const foundItem = array.find(item => item.id === id);
+        return foundItem ? foundItem.value : null;
+    }
+
 </script>

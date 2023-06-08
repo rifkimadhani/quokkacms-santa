@@ -18,10 +18,10 @@ class KitchenMenuGroupForm extends BaseForm
     public $seq;
 
 
-    function __construct()
+    function __construct($kitchen=[])
     {
         $this->menu_group_id = ['type'=>'numeric', 'label'=>'Menu Group Id', 'placeholder'=>'', 'required'=>'', 'readonly'=>'readonly'];
-        $this->kitchen_id = ['type'=>'numeric', 'label'=>'Kitchen Id', 'placeholder'=>'', 'required'=>''];
+        $this->kitchen_id = ['type'=>'select', 'label'=>'Kitchen', 'placeholder'=>'Pilih kitchen', 'options'=>$kitchen];
         $this->group_name = ['type'=>'varchar', 'label'=>'Group Name', 'placeholder'=>'', 'required'=>''];
         $this->description = ['type'=>'varchar', 'label'=>'Description', 'placeholder'=>'', 'required'=>''];
         $this->url_thumb = ['type'=>'varchar', 'label'=>'Url Thumb', 'placeholder'=>'', 'required'=>''];

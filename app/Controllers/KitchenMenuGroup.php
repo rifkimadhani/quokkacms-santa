@@ -9,6 +9,7 @@ namespace App\Controllers;
 
 use App\Models\KitchenMenuGroupModel;
 use App\Models\KitchenMenuGroupForm;
+use App\Models\KitchenModel;
 
 class KitchenMenuGroup extends BaseController
 {
@@ -22,9 +23,12 @@ class KitchenMenuGroup extends BaseController
         $model = new KitchenMenuGroupModel();
         $fieldList = $model->getFieldList();
 
-        $form = new KitchenMenuGroupForm();
+        $kitchen = new KitchenModel();
+        $data = $kitchen->getAllForSelect();
 
-        return view('layout/template', compact('mainview', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
+        $form = new KitchenMenuGroupForm($data);
+
+        return view('layout/template', compact('mainview', 'pageTitle', 'baseUrl', 'form', 'fieldList', 'data'));
     }
 
     public function ssp()
@@ -66,8 +70,10 @@ class KitchenMenuGroup extends BaseController
         $model = new KitchenMenuGroupModel();
         $data = $model->get($menuGroupId);
 
+        $kitchen = new KitchenModel();
+        $ar = $kitchen->getAllForSelect();
 
-        $form = new KitchenMenuGroupForm();
+        $form = new KitchenMenuGroupForm($ar);
 
         $urlAction = $this->baseUrl . '/update';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);

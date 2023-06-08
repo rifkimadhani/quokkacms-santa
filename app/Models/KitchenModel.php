@@ -10,6 +10,8 @@ class KitchenModel extends BaseModel
     const SQL_GET = 'SELECT * FROM tkitchen WHERE (kitchen_id=?)';
     const SQL_MODIFY = 'UPDATE tkitchen SET name=?, opening_hours=?, food_type=?, url_image_background=?, delivery_fee=?, currency=?, currency_sign=?, percent_service_charge=?, percent_tax=? WHERE (kitchen_id=?)';
 
+    const SQL_GET_ALL_FOR_SELECT = 'SELECT kitchen_id AS id, name AS value FROM tkitchen ORDER BY name';
+
     protected $table      = 'tkitchen';
     protected $primaryKey = 'kitchen_id';
     protected $allowedFields = ['name', 'opening_hours', 'food_type', 'url_image_background', 'delivery_fee', 'currency', 'currency_sign', 'percent_service_charge', 'percent_tax'];
@@ -38,6 +40,12 @@ class KitchenModel extends BaseModel
 
     public function getAll(){
         return $this->findAll();
+    }
+
+    public function getAllForSelect(){
+        $db = db_connect();
+        return $db->query(self::SQL_GET_ALL_FOR_SELECT)->getResult('array');
+
     }
 
     public function getFieldList(){
