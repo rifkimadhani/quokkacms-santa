@@ -248,6 +248,22 @@ $routes->get('/hotelservice/delete/(:any)', 'HotelService::delete/$1');
 $routes->post('/hotelservice/update', 'HotelService::update');
 $routes->post('/hotelservice/insert', 'HotelService::insert');
 
+// STB Devices
+$routes->get('/stbdevices', 'STBDevices::index');
+$routes->get('/stbdevices/ssp', 'STBDevices::ssp');
+$routes->get('/stbdevices/edit/(:any)', 'STBDevices::edit/$1');
+$routes->get('/stbdevices/delete/(:any)', 'STBDevices::delete/$1');
+$routes->post('/stbdevices/update', 'STBDevices::update');
+$routes->post('/stbdevices/insert', 'STBDevices::insert');
+
+// Emergency Category
+$routes->get('/emergencycategory', 'EmergencyCategory::index');
+$routes->get('/emergencycategory/ssp', 'EmergencyCategory::ssp');
+$routes->get('/emergencycategory/edit/(:any)', 'EmergencyCategory::edit/$1');
+$routes->get('/emergencycategory/delete/(:any)', 'EmergencyCategory::delete/$1');
+$routes->post('/emergencycategory/update', 'EmergencyCategory::update');
+$routes->post('/emergencycategory/insert', 'EmergencyCategory::insert');
+
 //kitchen
 $routes->get('/kitchen', 'Kitchen::index');
 $routes->get('/kitchen/ssp', 'Kitchen::ssp');
@@ -256,7 +272,7 @@ $routes->get('/kitchen/delete/(:any)', 'Kitchen::delete/$1');
 $routes->post('/kitchen/update', 'Kitchen::update');
 $routes->post('/kitchen/insert', 'Kitchen::insert');
 
-/*  
+/*
  * --------------------------------------------------------------------
  * Additional Routing
  * --------------------------------------------------------------------
