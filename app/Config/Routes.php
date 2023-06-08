@@ -280,6 +280,14 @@ $routes->get('/kitchenmenugroup/delete/(:any)', 'KitchenMenuGroup::delete/$1');
 $routes->post('/kitchenmenugroup/update', 'KitchenMenuGroup::update');
 $routes->post('/kitchenmenugroup/insert', 'KitchenMenuGroup::insert');
 
+//kitchen menu
+$routes->get('/kitchenmenu', 'KitchenMenu::index');
+$routes->get('/kitchenmenu/ssp', 'KitchenMenu::ssp');
+$routes->get('/kitchenmenu/edit/(:any)', 'KitchenMenu::edit/$1');
+$routes->get('/kitchenmenu/delete/(:any)', 'KitchenMenu::delete/$1');
+$routes->post('/kitchenmenu/update', 'KitchenMenu::update');
+$routes->post('/kitchenmenu/insert', 'KitchenMenu::insert');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
