@@ -248,6 +248,14 @@ $routes->get('/hotelservice/delete/(:any)', 'HotelService::delete/$1');
 $routes->post('/hotelservice/update', 'HotelService::update');
 $routes->post('/hotelservice/insert', 'HotelService::insert');
 
+//kitchen
+$routes->get('/kitchen', 'Kitchen::index');
+$routes->get('/kitchen/ssp', 'Kitchen::ssp');
+$routes->get('/kitchen/edit/(:any)', 'Kitchen::edit/$1');
+$routes->get('/kitchen/delete/(:any)', 'Kitchen::delete/$1');
+$routes->post('/kitchen/update', 'Kitchen::update');
+$routes->post('/kitchen/insert', 'Kitchen::insert');
+
 /*  
  * --------------------------------------------------------------------
  * Additional Routing
