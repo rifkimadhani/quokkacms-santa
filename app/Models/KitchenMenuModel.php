@@ -41,7 +41,7 @@ class KitchenMenuModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['menu_id', 'kitchen_id', 'menu_group_id', 'name', 'description', 'price', 'currency', 'currency_sign', 'in_room_dining', 'url_image', 'create_date', 'update_date'];
+        return ['menu_id', 'kitchen_id', 'menu_group_id', 'name', 'description', 'price', 'currency', 'currency_sign', 'in_room_dining', 'url_image'];
     }
 
     public function add($value)  {

@@ -7,6 +7,7 @@
 
 namespace App\Controllers;
 
+use App\Models\KitchenMenuGroupModel;
 use App\Models\KitchenMenuModel;
 use App\Models\KitchenMenuForm;
 
@@ -22,9 +23,12 @@ class KitchenMenu extends BaseController
         $model = new KitchenMenuModel();
         $fieldList = $model->getFieldList();
 
-        $form = new KitchenMenuForm();
+        $group = new KitchenMenuGroupModel();
+        $data = $group->getAllForSelect();
 
-        return view('layout/template', compact('mainview', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
+        $form = new KitchenMenuForm($data);
+
+        return view('layout/template', compact('mainview', 'fieldList', 'pageTitle', 'baseUrl', 'form', 'data'));
     }
 
     public function ssp()
@@ -68,7 +72,9 @@ class KitchenMenu extends BaseController
 
         $data['url_image'] = str_replace('{BASE-HOST}', $this->baseHost, $data['url_image']);
 
-        $form = new KitchenMenuForm();
+        $group = new KitchenMenuGroupModel();
+
+        $form = new KitchenMenuForm($group->getAllForSelect());
 
         $urlAction = $this->baseUrl . '/update';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
@@ -78,15 +84,7 @@ class KitchenMenu extends BaseController
         $model = new KitchenMenuModel();
 
         $this->normalizeData($_POST);
-
-
-        $this->varDump($_POST);
-
-
-
         $r = $model->modify($_POST);
-
-
 
         if ($r>0){
             $this->setSuccessMessage('Update success');
@@ -119,6 +117,12 @@ class KitchenMenu extends BaseController
     protected function normalizeData(&$data, $isInsert=false){
         $data['url_image'] = str_replace($this->baseHost, '{BASE-HOST}', $data['url_image']);
 
+        //add kitchen_id ke data, yg di ambil dari group_id
+        $groupId = $data['menu_group_id'];
+        $group = new KitchenMenuGroupModel();
+        $item = $group->get($groupId);
+
+        $data['kitchen_id'] = $item['kitchen_id'];
     }
 
     /**

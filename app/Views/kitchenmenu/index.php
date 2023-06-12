@@ -9,6 +9,26 @@ use App\Libraries\Dialog;
 $htmlEdit = $form->renderPlainDialog('formEdit');
 $htmlNew = $form->renderDialog('New kitchenmenu', 'formNew', "{$baseUrl}/insert");
 $htmlDelete = Dialog::renderDelete('Delete kitchenmenu', 'CONFIRM DELETE');
+
+function convertToJavaScriptArray($phpArray) {
+    $jsArray = '[';
+    $elements = [];
+
+    foreach ($phpArray as $element) {
+        $properties = [];
+
+        foreach ($element as $key => $value) {
+            $properties[] = '' . $key . ': "' . $value . '"';
+        }
+
+        $elements[] = '{' . implode(', ', $properties) . '}';
+    }
+
+    $jsArray .= implode(', ', $elements);
+    $jsArray .= ']';
+
+    return $jsArray;
+}
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
@@ -42,6 +62,7 @@ $htmlDelete = Dialog::renderDelete('Delete kitchenmenu', 'CONFIRM DELETE');
 <?= view('util/filemanager.php') ?>
 
 <script>
+    const arGroup = <?= convertToJavaScriptArray($data) ?>;
     const urlSsp = "<?= $baseUrl ?>/ssp";
     const lastCol = <?= count($fieldList) ?>;
     const dataList = $('#datalist');
@@ -63,7 +84,14 @@ $htmlDelete = Dialog::renderDelete('Delete kitchenmenu', 'CONFIRM DELETE');
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [],visible: false,searchable: false
+                        targets: [1,4,6,7,8],visible: false,searchable: false
+                    },
+                    {
+                        //menu_group_id ==> kitchen name : group_name
+                        targets: 2, render: function ( data, type, row, meta ) {
+    //                            console.log(data);
+                            return findValueById(arGroup, data.toString());
+                        }
                     },
                     {
                         // action column
@@ -116,10 +144,15 @@ $htmlDelete = Dialog::renderDelete('Delete kitchenmenu', 'CONFIRM DELETE');
 
 
         //please correct the index for name variable, sehingga message delete akan terlihat benar
-        const name = data[0];
+        const name = data[3];
 
         showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
             window.location.href = "<?=$baseUrl?>/delete/" + menuId;
         })
+    }
+
+    function findValueById(array, id) {
+        const foundItem = array.find(item => item.id === id);
+        return foundItem ? foundItem.value : null;
     }
 </script>

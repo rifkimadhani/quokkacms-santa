@@ -9,6 +9,7 @@ class KitchenMenuGroupModel extends BaseModel
 {
     const SQL_GET = 'SELECT * FROM tkitchen_menu_group WHERE (menu_group_id=?)';
     const SQL_MODIFY = 'UPDATE tkitchen_menu_group SET kitchen_id=?, group_name=?, description=?, url_thumb=?, service_open=?, service_close=?, seq=? WHERE (menu_group_id=?)';
+    const SQL_GET_ALL_FOR_SELECT = 'SELECT tkitchen_menu_group.menu_group_id as id, CONCAT(tkitchen.`name`, \': \', tkitchen_menu_group.group_name) AS value FROM tkitchen INNER JOIN tkitchen_menu_group ON tkitchen.kitchen_id = tkitchen_menu_group.kitchen_id';
 
     protected $table      = 'tkitchen_menu_group';
     protected $primaryKey = 'menu_group_id';
@@ -38,6 +39,12 @@ class KitchenMenuGroupModel extends BaseModel
 
     public function getAll(){
         return $this->findAll();
+    }
+
+    public function getAllForSelect(){
+        $db = db_connect();
+        return $db->query(self::SQL_GET_ALL_FOR_SELECT)->getResult('array');
+
     }
 
     public function getFieldList(){
