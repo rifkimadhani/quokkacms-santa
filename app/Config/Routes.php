@@ -288,6 +288,16 @@ $routes->get('/kitchenmenu/delete/(:any)', 'KitchenMenu::delete/$1');
 $routes->post('/kitchenmenu/update', 'KitchenMenu::update');
 $routes->post('/kitchenmenu/insert', 'KitchenMenu::insert');
 
+//room service
+$routes->get('/roomservice', 'RoomService::index');
+$routes->get('/roomservice/history', 'RoomService::history');
+$routes->get('/roomservice/ssp', 'RoomService::ssp');
+$routes->get('/roomservice/sspHistory', 'RoomService::sspHistory');
+$routes->get('/roomservice/edit/(:any)', 'RoomService::edit/$1');
+$routes->get('/roomservice/delete/(:any)', 'RoomService::delete/$1');
+$routes->post('/roomservice/update', 'RoomService::update');
+$routes->post('/roomservice/insert', 'RoomService::insert');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
