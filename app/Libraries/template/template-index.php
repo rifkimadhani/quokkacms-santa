@@ -102,7 +102,7 @@ __pk_value__
             });
         });
 
-        initDataTableOptions($dataTable);
+        initDataTableOptions(dataTable);
     }
 
     //
