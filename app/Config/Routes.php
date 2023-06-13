@@ -298,6 +298,9 @@ $routes->get('/roomservice/delete/(:any)', 'RoomService::delete/$1');
 $routes->post('/roomservice/update', 'RoomService::update');
 $routes->post('/roomservice/insert', 'RoomService::insert');
 
+//statistic livetv
+$routes->get('/statistic', 'StatLiveTv::index');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

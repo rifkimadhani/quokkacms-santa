@@ -18,7 +18,7 @@ class BaseModel extends Model
      *
      * @return \PDO
      */
-    protected function openPdo(){
+    protected function openPdo($emulatePrepare=false){
         $username = $_ENV['database.default.username'];
         $password = $_ENV['database.default.password'];
         $hosting = $_ENV['database.default.hostname'];
@@ -28,7 +28,7 @@ class BaseModel extends Model
         $opt = [
             \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
             \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-            \PDO::ATTR_EMULATE_PREPARES   => false, //apabila ini false, maka semua field type akan muncul
+            \PDO::ATTR_EMULATE_PREPARES   => $emulatePrepare, //apabila ini false, maka semua field type akan muncul
             \PDO::MYSQL_ATTR_FOUND_ROWS => true //rowCount pada update tdk memberikan jumlah row yg di update apabila nilai yg mau di update sudh sama dgn yg ada pada table
         ];
 
