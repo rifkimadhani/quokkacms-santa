@@ -256,14 +256,6 @@ $routes->get('/stbdevices/delete/(:any)', 'STBDevices::delete/$1');
 $routes->post('/stbdevices/update', 'STBDevices::update');
 $routes->post('/stbdevices/insert', 'STBDevices::insert');
 
-// Emergency Category
-$routes->get('/emergencycategory', 'EmergencyCategory::index');
-$routes->get('/emergencycategory/ssp', 'EmergencyCategory::ssp');
-$routes->get('/emergencycategory/edit/(:any)', 'EmergencyCategory::edit/$1');
-$routes->get('/emergencycategory/delete/(:any)', 'EmergencyCategory::delete/$1');
-$routes->post('/emergencycategory/update', 'EmergencyCategory::update');
-$routes->post('/emergencycategory/insert', 'EmergencyCategory::insert');
-
 //kitchen
 $routes->get('/kitchen', 'Kitchen::index');
 $routes->get('/kitchen/ssp', 'Kitchen::ssp');
@@ -301,7 +293,27 @@ $routes->post('/roomservice/insert', 'RoomService::insert');
 //statistic livetv
 $routes->get('/statistic', 'StatLiveTv::index');
 
-/*
+// Emergency Category
+$routes->get('/emergencycategory', 'EmergencyCategory::index');
+$routes->get('/emergencycategory/ssp', 'EmergencyCategory::ssp');
+$routes->get('/emergencycategory/edit/(:any)', 'EmergencyCategory::edit/$1');
+$routes->get('/emergencycategory/delete/(:any)', 'EmergencyCategory::delete/$1');
+$routes->post('/emergencycategory/update', 'EmergencyCategory::update');
+$routes->post('/emergencycategory/insert', 'EmergencyCategory::insert');
+
+// Emergency HIstory
+$routes->get('/emergencyhistory', 'EmergencyHistory::index');
+$routes->get('/emergencyhistory/ssp', 'EmergencyHistory::ssp');
+$routes->get('/emergencyhistory/edit/(:any)', 'EmergencyHistory::edit/$1');
+$routes->get('/emergencyhistory/delete/(:any)', 'EmergencyHistory::delete/$1');
+$routes->post('/emergencyhistory/update', 'EmergencyHistory::update');
+$routes->post('/emergencyhistory/insert', 'EmergencyHistory::insert');
+
+// Emergency
+$routes->get('/emergency', 'Emergency::index');
+$routes->post('/emergency/turnemergency', 'Emergency::turnemergency');
+
+/*  
  * --------------------------------------------------------------------
  * Additional Routing
  * --------------------------------------------------------------------
