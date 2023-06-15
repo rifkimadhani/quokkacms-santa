@@ -87,7 +87,7 @@ HTML;
     return <<< HTML
                 <div class="form-group">
                     <label class='col-form-label'><b>Note</b></label>
-                    <input type=text value='{$note}' style='' class=form-control name='note' readonly>
+                    <input type=text value='{$note}' style='' class='form-control' name='note' readonly>
                 </div>
 
                 <div class="form-group">
@@ -119,80 +119,86 @@ function genCallTaxi($data){
 
                     <div class="col-md-3">
                         <label class='col-form-label'><b>Date</b></label>
-                        <input type=text value='{$date}' style='' class=form-control>
+                        <input type=text value='{$date}' style='' class='form-control'>
                     </div>
 
                     <!-- destionation -->
                     <div class="col-md-9">
                         <label class='col-form-label'><b>Destination </b></label>
-                        <input type=text value='{$dest}' style='' class=form-control>
+                        <input type=text value='{$dest}' style='' class='form-control'>
                     </div>
                 </div>
 HTML;
 }
 ?>
 
-<div class="modal-dialog modal-lg flipInX animated" role="document">
+
+<div class="modal-dialog modal-lg modal-dialog-popout" role="document">
     <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Process Service</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="editForm" class="p-3" action="<?= $urlPost ?>" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="task_id" value="<?=$data['task_id']?>">
-
-                <div class="row">
-
-                    <!--                    status-->
-                    <div class="col-md-3">
-                        <label class='col-form-label'><b>Status</b></label>
-                        <input type=text value='<?=$data['status']?>' style='' class=form-control readonly>
-                    </div>
-
-                    <!-- task id-->
-                    <div class="col-md-3">
-                        <label class='col-form-label'><b>Task Id</b></label>
-                        <input type=text value='<?=$data['task_id']?>' style='' class=form-control readonly>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class='col-form-label'><b>Type</b></label>
-                        <input type=text value='<?=$type?>' style='' class=form-control readonly>
-                    </div>
-
-                    <!--                    date-->
-                    <div class="col-md-3">
-                        <label class='col-form-label'><b>Create</b></label>
-                        <input type=text value='<?=$data['update_date']?>' style='' class=form-control readonly>
-                    </div>
-
+        <div class="block block-themed block-transparent mb-0">
+            <div class="block-header bg-primary-dark">
+                <h3 class="block-title"id="exampleModalLabel">Process Service</h3>
+                <div class="block-options">
+                    <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                        <i class="si si-close"></i>
+                    </button>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class='col-form-label'><b>Guest name</b></label>
-                        <input type=text value='<?=$data['salutation']?> <?=$data['name']?> <?=$data['last_name']?> [<?=$data['status_checkin']?>]' class=form-control name='subscriber_name' readonly>
-                    </div>
+            <form id="editForm" action="<?= $urlPost ?>" method="post" enctype="multipart/form-data">
 
-                    <div class="col-md-6">
-                        <label class='col-form-label'><b>Room</b></label>
-                        <input type=text value='<?=$data['room_name']?>' class=form-control name='subscriber_name' readonly>
-                    </div>
+                <div class="block-content mb-4">
+                    
+                        <input type="hidden" name="task_id" value="<?=$data['task_id']?>">
+
+                        <div class="row ">
+
+                            <!-- status-->
+                            <div class="col-md-3">
+                                <label class='col-form-label'><b>Status</b></label>
+                                <input type=text value='<?=$data['status']?>' style='' class='form-control' readonly>
+                            </div>
+
+                            <!-- task id-->
+                            <div class="col-md-3">
+                                <label class='col-form-label'><b>Task Id</b></label>
+                                <input type=text value='<?=$data['task_id']?>' style='' class='form-control' readonly>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class='col-form-label'><b>Type</b></label>
+                                <input type=text value='<?=$type?>' style='' class='form-control' readonly>
+                            </div>
+
+                            <!-- date-->
+                            <div class="col-md-3">
+                                <label class='col-form-label'><b>Create</b></label>
+                                <input type=text value='<?=$data['update_date']?>' style='' class='form-control' readonly>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class='col-form-label'><b>Guest name</b></label>
+                                <input type=text value='<?=$data['salutation']?> <?=$data['name']?> <?=$data['last_name']?> [<?=$data['status_checkin']?>]' class='form-control' name='subscriber_name' readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class='col-form-label'><b>Room</b></label>
+                                <input type=text value='<?=$data['room_name']?>' class='form-control' name='subscriber_name' readonly>
+                            </div>
+                        </div>
+
+                        <?=$output?>
                 </div>
-
-                <?=$output?>
-
-                <div class="form-group">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary pull-right" style="<?=$buttonStyle?>"><?=$buttonSubmit?></button>
-                    </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-alt-secondary pull-left" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-alt-primary pull-right" style="<?=$buttonStyle?>"><i class="fa fa-check"></i> <?=$buttonSubmit?></button>
+                </div>
             </form>
         </div>
-
     </div>
 </div>
 
