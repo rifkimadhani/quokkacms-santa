@@ -56,87 +56,92 @@ HTML;
 }
 ?>
 
-<div class="modal-dialog modal-lg flipInX animated" role="document">
+
+<div class="modal-dialog modal-lg modal-dialog-popout" role="document">
     <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">ORDER <?=$orderCode?></h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="editForm" class="p-3" action="<?= $urlPost ?>" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="order_code" value="<?=$orderCode?>" readonly>
-                <div class="row">
-<!--                                        status-->
-                    <div class="col-md-3">
-                        <label class='col-form-label'><b>Status</b></label>
-                        <input type=text value='<?=$status?>' style='' class=form-control readonly>
-                    </div>
-
-<!--                                        order code-->
-                    <div class="col-md-3">
-                        <label class='col-form-label'><b>Order code</b></label>
-                        <input type=text value='<?=$orderCode?>' style='' class=form-control readonly>
-                    </div>
-
-<!--                                        payment-->
-                    <div class="col-md-3">
-                        <label class='col-form-label'><b>Kitchen</b></label>
-                        <input type=text value='<?=$kitchen?>' style='' class=form-control readonly>
-                    </div>
-
-<!--                                        date-->
-                    <div class="col-md-3">
-                        <label class='col-form-label'><b>Create</b></label><input type=text value='<?=$orderDate?>' style='' class=form-control readonly>
-                    </div>
-
+        <div class="block block-themed block-transparent mb-0">
+            <div class="block-header bg-primary-dark">
+                <h3 class="block-title"id="exampleModalLabel">Process Service</h3>
+                <div class="block-options">
+                    <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                        <i class="si si-close"></i>
+                    </button>
                 </div>
+            </div>
 
-<!--                penerima-->
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class='col-form-label'><b>Guest</b></label>
-                        <input type=text value='<?=$guestName?>' class=form-control name='subscriber_name' readonly>
+            <form id="editForm" action="<?= $urlPost ?>" method="post" enctype="multipart/form-data">
+
+                <div class="block-content">
+                    
+                    <input type="hidden" name="order_code" value="<?=$orderCode?>" readonly>
+                    <div class="row">
+                        <!--status-->
+                        <div class="col-md-3">
+                            <label class='col-form-label'><b>Status</b></label>
+                            <input type=text value='<?=$status?>' style='' class=form-control readonly>
+                        </div>
+
+                        <!--order code-->
+                        <div class="col-md-3">
+                            <label class='col-form-label'><b>Order code</b></label>
+                            <input type=text value='<?=$orderCode?>' style='' class=form-control readonly>
+                        </div>
+
+                        <!--payment-->
+                        <div class="col-md-3">
+                            <label class='col-form-label'><b>Kitchen</b></label>
+                            <input type=text value='<?=$kitchen?>' style='' class=form-control readonly>
+                        </div>
+
+                        <!--date-->
+                        <div class="col-md-3">
+                            <label class='col-form-label'><b>Create</b></label><input type=text value='<?=$orderDate?>' style='' class=form-control readonly>
+                        </div>
+
                     </div>
 
-<!--                    room-->
-                    <div class="col-md-6">
-                        <label class='col-form-label'><b>Room</b></label>
-                        <input type=text value='<?=$location?>' class=form-control name='subscriber_name' readonly>
+                    <!--penerima-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class='col-form-label'><b>Guest</b></label>
+                            <input type=text value='<?=$guestName?>' class=form-control name='subscriber_name' readonly>
+                        </div>
+
+                        <!--room-->
+                        <div class="col-md-6">
+                            <label class='col-form-label'><b>Room</b></label>
+                            <input type=text value='<?=$location?>' class=form-control name='subscriber_name' readonly>
+                        </div>
+                    </div>
+
+                    <!--daftar order-->
+                    <div class="box-body table-responsive padding mt-3">
+                        <table id="datalist" class="table table-bordered table-hover" >
+                            <thead>
+                            <tr>
+                                <th><b>Name</b></th>
+                                <th class="text-center"><b>Qty</b></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <?=$order?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!--note-->
+                    <div class="form-group">
+                        <label class='col-form-label'><b>Note</b></label>
+                        <input type=text value='<?=$note?>' style='' class=form-control name='note' readonly>
                     </div>
                 </div>
-
-<!--                daftar order-->
-                <div class="box-body table-responsive padding">
-                    <table id="datalist" class="table table-bordered table-hover" >
-                        <thead>
-                        <tr>
-                            <th><b>Name</b></th>
-                            <th><b>Qty</b></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <?=$order?>
-                        </tbody>
-                    </table>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-alt-secondary pull-left" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-alt-primary pull-right" style="<?=$buttonStyle?>"><i class="fa fa-check"></i> <?=$btnName?></button>
                 </div>
-
-<!--                note-->
-                <div class="form-group">
-                    <label class='col-form-label'><b>Note</b></label>
-                    <input type=text value='<?=$note?>' style='' class=form-control name='note' readonly>
-                </div>
-
-<!--                tombol-->
-                <div class="form-group">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary pull-right" style="<?=$buttonStyle?>"><?=$btnName?></button>
-                    </div>
             </form>
         </div>
-
     </div>
 </div>
 
