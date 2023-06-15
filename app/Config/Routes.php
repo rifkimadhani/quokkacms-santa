@@ -301,6 +301,14 @@ $routes->post('/roomservice/insert', 'RoomService::insert');
 //statistic livetv
 $routes->get('/statistic', 'StatLiveTv::index');
 
+//user
+$routes->get('/user', 'User::index');
+$routes->get('/user/ssp', 'User::ssp');
+$routes->get('/user/edit/(:any)', 'User::edit/$1');
+$routes->get('/user/delete/(:any)', 'User::delete/$1');
+$routes->post('/user/update', 'User::update');
+$routes->post('/user/insert', 'User::insert');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
