@@ -17,7 +17,7 @@ if (is_file(SYSTEMPATH . 'Config/Routes.php')) {
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Home');
+$routes->setDefaultController('Dashboard');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
@@ -41,8 +41,8 @@ $routes->post('/builder/build', 'Builder::build');
 $routes->get('/builder/ajaxGetFields/(:any)', 'Builder::ajaxGetFields/$1');
 
 //home
-$routes->get('/', 'Home::index');
-$routes->get('/home', 'Home::index');
+//$routes->get('/', 'Home::index');
+//$routes->get('/home', 'Home::index');
 
 //login
 $routes->get('/login', 'Login::index');
@@ -63,6 +63,7 @@ $routes->get('/adminprofile', 'AdminProfile::index');
 $routes->post('/adminprofile/change_password', 'AdminProfile::changePassword');
 
 //dashboard
+$routes->get('/', 'Dashboard::index');
 $routes->get('/dashboard', 'Dashboard::index');
 
 //subscriber / guest
