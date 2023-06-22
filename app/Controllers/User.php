@@ -76,7 +76,8 @@ class User extends BaseController
     public function update(){
         $model = new UserModel();
 
-        $this->normalizeData($_POST);
+        //apabila is block di set maka value =1 else =0
+        if (isset($_POST['is_block'])) $_POST['is_block'] = 1; else $_POST['is_block'] = 0;
 
         $r = $model->modify($_POST);
 

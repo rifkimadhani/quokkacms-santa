@@ -142,6 +142,10 @@ HTML;
                     $element = $this->renderDatetime($formId, $item, $attr);
                     break;
 
+                case 'checkbox':
+                    $element = $this->renderCheckbox($formId, $item, $attr);
+                    break;
+
                 default:
                     $element = '';
                     break;
@@ -414,7 +418,35 @@ HTML;
 HTML;
     }
 
-    /**
+    function renderCheckbox($formId, $item, $data){
+        $label = $this->getAndUnset($data, 'label');
+        $required = $this->getAndUnset($data, 'required');
+        $readonly = $this->getAndUnset($data, 'readonly');
+        $attr = $this->buildAttribute($data);
+
+        //set nilai value
+        if (isset($data['value'])){
+            $value = $data['value'];
+        } else {
+            $value = 0;
+        }
+
+        //apabila value>0 maka checked di activekan
+        if ($value>0){
+            $checked = 'checked';
+        } else {
+            $checked = '';
+        }
+
+        return <<< HTML
+            <div class="form-group">
+            <label class='col-form-label'><b>{$label}</b></label>
+            <input name='{$item}' id='{$item}' type='checkbox' value='{$value}' {$checked} {$attr} {$required} {$readonly}><label class='form-check-label' for='inlineCheckbox1'></label>
+            </div>
+HTML;
+    }
+
+/**
      * Ambil value dari array kemudian unset.
      *
      * @param $data

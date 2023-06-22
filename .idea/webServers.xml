@@ -2,7 +2,7 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="31ff9e34-a766-443e-a6b0-b2bde1baa9db" name="NUC i5" url="http://192.168.2.7/alpha_cms2">
+      <webServer id="31ff9e34-a766-443e-a6b0-b2bde1baa9db" name="NUC i5" url="http://192.168.2.7/alpha_cms2a">
         <fileTransfer host="192.168.2.7" port="22" privateKey="X:\laptop-kantor\madeira\ssh-keys\developer-202109.key" accessType="SFTP" keyPair="true">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
