@@ -7,14 +7,14 @@
 use App\Libraries\Dialog;
 
 $htmlEdit = $form->renderPlainDialog('formEdit');
-$htmlNew = $form->renderDialog('New theme', 'formNew', "{$baseUrl}/insert");
+$htmlNew = $form->renderDialog('New theme', 'formNew', "{$baseUrl}/insert_theme");
 $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
-<!--    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformNew')">-->
-<!--        <i class="fa fa-plus text-primary mr-5 "></i> Create-->
-<!--    </a>-->
+    <a class="btn btn-secondary" href="javascript:" role="button" onclick="showDialog('.dialogformNew')">
+        <i class="fa fa-plus text-primary mr-5 "></i> Create
+    </a>
     <div class="btn-group float-right">
         <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
             Options <i class="fa fa-th-large text-primary ml-5"></i>
@@ -34,31 +34,6 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
     </table>
 </div>
 
-
-<!-- <div class="row row-deck">
-<?//php foreach ($themeElementData as $items): ?>
-    <?//php
-        // replace "{BASE-HOST}" to actual URL
-        //$imageUrl = str_replace("{BASE-HOST}", base_url(), $items['url_image']);
-    ?>
-    <div class="col-sm-4">
-        <div class="block">
-            <div class="block-header block-header-default">
-                <h3 class="block-title"><?//= $items['element_name']; ?></h3>
-                <div class="block-options">
-                    <button type="button" class="btn-block-option">
-                        <i class="si si-wrench"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="block-content">
-                <img src="<?//= $imageUrl; ?>" style="max-width: 300px;" alt="">
-            </div>
-        </div>
-    </div>
-<?//php endforeach;?>
-</div> -->
-
 <?=$htmlEdit?>
 <?=$htmlNew?>
 <?=$htmlDelete?>
@@ -67,7 +42,7 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
 <?= view('util/filemanager.php') ?>
 
 <script>
-    const urlSsp = "<?= $baseUrl ?>/ssp";
+    const urlSsp = "<?= $baseUrl ?>/ssp_theme";
     const lastCol = <?= count($fieldList) ?>;
     const dataList = $('#datalist');
     const primaryKey = "<?=$primaryKey?>";
@@ -89,45 +64,13 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [0,2,5,9],visible: false,searchable: false
-//                        targets: [0,2,5],visible: false,searchable: false
-                    },
-                    {
-                        targets:[6], render: function(value, type, row)
-                        {
-//                            console.log(row);
-                            const elementType = row[4];
-
-                            switch (elementType){
-                                case 'IMAGE':
-                                    return renderImage(value);
-
-                                case 'COLOR':
-                                    return renderColor(row[9]);
-
-                                case 'VIDEO':
-                                case 'STREAM':
-                                    return renderVideo(value);
-
-                                default:
-                                    return 'UNDEFINED TYPE'
-                            }
-
-//                            if(value)
-//                            {
-//                                value = value.replace('{BASE-HOST}', '<?//= base_url(); ?>//');
-//
-//                                return '<img src="'+value+'" width="100%" height="100%;" class="urlimage">';
-//                            }
-//                            return '<img src="<?//= base_url("assets/notfound.png") ?>//" width="50px" height="50px;" class="urlimage">';
-                        },
-                        width:100
+                        targets: [],visible: false,searchable: false
                     },
                     {
                         // action column
                         targets: lastCol,
                         className: "text-center",
-                        defaultContent: '---' //cannot delete theme
+                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
                     }
 
                 ]
@@ -145,10 +88,7 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
 
             //get pk from data
             const themeId = data[0];
-            const elementId = data[2];
-            const elementType = data[4];
-
-            const url = "<?=$baseUrl?>/edit/" + themeId + '/' + elementId;
+            const url = "<?=$baseUrl?>/edit_theme/" + themeId;
 
             // show hourglass
             jQuery('#overlay-loader-indicator').show();
@@ -174,64 +114,12 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
 
         const data = dataTable.row( $(that).parents('tr') ).data();
             const themeId = data[0];
-            const elementId = data[2];
-
 
         //please correct the index for name variable, sehingga message delete akan terlihat benar
-        const name = data[0];
+        const name = data[1];
 
         showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
-            window.location.href = "<?=$baseUrl?>/delete/" + themeId + '/' + elementId;
+            window.location.href = "<?=$baseUrl?>/delete_theme/" + themeId;
         })
-    }
-
-    function renderImage(value) {
-        if(value)
-        {
-            value = value.replace('{BASE-HOST}', '<?= base_url(); ?>');
-            return '<img src="'+value+'" class="urlimage" style="max-width: 300px;">';
-        }
-        return ''; //render blank apabila tdk ada value
-    }
-
-    function renderColor(value) {
-        if (value){
-            var html;
-            html = "<div style='background: #"+argbToRgba(value)+";'><br/><br/><br/></div>";
-            html += "<input type='text' value='"+value+"' style='width: 100%; border: hidden; text-align: center; position: relative;'>";
-            return html;
-        }
-        return 'COLOR NOT DEFINED';
-    }
-
-    function renderVideo(value) {
-        if (value){
-            value = value.replace('{BASE-HOST}', '<?= base_url(); ?>');
-            var html;
-            html = "<video width='300' controls><source src='"+value+"' type='video/mp4'></video>";
-            html += "<input type='text' value='"+value+"' style='width: 100%; border: hidden; text-align: center;'>";
-            return html;
-        }
-        return 'URL NOT DEFINED';
-    }
-
-    function argbToRgba(hexColor) {
-        const length = hexColor.length;
-        if (length!==8) return hexColor;
-
-        const alpha = hexColor.substring(0, 2);
-        const color = hexColor.substring(2, 8);
-
-        return color + alpha;
-    }
-
-    function rgbaToArgb(hexColor) {
-        const length = hexColor.length;
-        if (length!==8) return hexColor;
-
-        const alpha = hexColor.substring(6, 8);
-        const color = hexColor.substring(0, 6);
-
-        return alpha + color;
     }
 </script>

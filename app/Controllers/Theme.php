@@ -6,28 +6,52 @@
 
 namespace App\Controllers;
 
-use App\Models\ThemeModel;
 use App\Models\ThemeForm;
+use App\Models\ThemeModel;
+use App\Models\ThemeElementForm;
 use App\Models\ElementModel;
 
 class Theme extends BaseController
 {
-    public function index()
-    {
+    public function index(){
         $baseUrl = $this->getBaseUrl();
-        // $baseHost = $this->baseHost;
 
         $mainview = 'theme/index';
         $primaryKey = 'theme_id';
         $pageTitle = 'Theme';
 
         $model = new ThemeModel();
+        $form = new ThemeForm();
+
+        $fieldList = $model->getThemeFieldList();
+
+        return view('layout/template', compact('mainview', 'primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
+    }
+
+    public function detail($themeId)
+    {
+        $baseUrl = $this->getBaseUrl();
+
+        $mainview = 'theme/detail';
+        $primaryKey = 'theme_id';
+        $pageTitle = 'Theme';
+
+        $model = new ThemeModel();
+
+        $theme = $model->get($themeId);
+
+        if (is_null($theme)){
+            $pageTitle = 'Theme';
+        } else {
+            $pageTitle = 'Theme detail ' . $theme['name'];
+        }
+
         $themeElementData = $model->getAll();
         $fieldList = $model->getFieldList();
         $elementData = $model->getElementForSelect();
         $themeData = $model->getThemeForSelect();
 
-        $form = new ThemeForm($elementData, $themeData);
+        $form = new ThemeElementForm($elementData, $themeData);
 
         return view('layout/template', compact('mainview', 'primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form', 'themeElementData'));
     }
@@ -41,6 +65,17 @@ class Theme extends BaseController
         $data = $model->getSsp();
 
         self::sspDataConversion($data);
+
+        echo json_encode($data);
+    }
+
+    public function sspTheme()
+    {
+        $model = new ThemeModel();
+
+        header('Content-Type: application/json');
+
+        $data = $model->getThemeSsp();
 
         echo json_encode($data);
     }
@@ -68,28 +103,66 @@ class Theme extends BaseController
         return true;
     }
 
+    public function insertTheme(){
+        $model = new ThemeModel();
+
+        $r = $model->add($_POST);
+
+        if ($r>0){
+            $this->setSuccessMessage('Insert success');
+        } else {
+            $this->setErrorMessage('Insert fail ' . $model->errMessage);
+        }
+
+        return redirect()->to($this->baseUrl);
+    }
+
+
     /**
      * function ini di call saat user click row pada table
      *
      * @return mixed html dialog
      */
+    public function editTheme($themeId){
+        $model = new ThemeModel();
+        $data = $model->get($themeId);
+
+        $form = new ThemeForm();
+        $urlAction = $this->baseUrl . '/update_theme';
+        return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
+    }
+
     public function edit($themeId, $elementId)
     {
         $model = new ThemeModel();
-        $data = $model->get($themeId, $elementId);
+        $data = $model->getElement($themeId, $elementId);
 
         // convert {BASE-HOST} --> URL
         $data['url_image'] = str_replace('{BASE-HOST}', $this->baseHost, $data['url_image']);
 
-        $form = new ThemeForm();
+        $form = new ThemeElementForm();
 
         $urlAction = $this->baseUrl . '/update';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
     }
 
+    public function updateTheme(){
+        $model = new ThemeModel();
+        $r = $model->modifyTheme($_POST);
+
+        if ($r>0){
+            $this->setSuccessMessage('Update success');
+        } else {
+            $this->setErrorMessage('Update fail: ' . $model->errMessage);
+        }
+
+        return redirect()->to($this->baseUrl);
+    }
+
     public function update(){
         $model = new ThemeModel();
         $urlimage = $_POST['url_image'];
+        $themeId = $_POST['theme_id'];
 
         $this->normalizeData($_POST);
         
@@ -130,12 +203,12 @@ class Theme extends BaseController
             $this->setErrorMessage('Update fail ' . $model->errMessage);
         }
 
-        return redirect()->to($this->baseUrl);
+        return redirect()->to($this->baseUrl . "/detail/$themeId");
     }
 
-    public function delete($themeId, $elementId){
+    public function deleteTheme($themeId){
         $model = new ThemeModel();
-        $r = $model->remove($themeId, $elementId);
+        $r = $model->removeTheme($themeId);
 
         if ($r>0){
             $this->setSuccessMessage('Delete success');
@@ -145,6 +218,19 @@ class Theme extends BaseController
 
         return redirect()->to($this->baseUrl);
     }
+
+//    public function delete($themeId, $elementId){
+//        $model = new ThemeModel();
+//        $r = $model->remove($themeId, $elementId);
+//
+//        if ($r>0){
+//            $this->setSuccessMessage('Delete success');
+//        } else {
+//            $this->setErrorMessage('Delete fail');
+//        }
+//
+//        return redirect()->to($this->baseUrl);
+//    }
 
     /**
      * melaukan proses normalisasi data apabila di butuhkan

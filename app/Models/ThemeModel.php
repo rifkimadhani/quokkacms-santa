@@ -8,10 +8,13 @@ namespace App\Models;
 class ThemeModel extends BaseModel
 {
     const VIEW = 'vtheme_element';
+    const TABLE_THEME = 'ttheme';
 
-    const SQL_GET = 'SELECT * FROM vtheme_element WHERE (theme_id=?) AND (element_id=?)';
+    const SQL_GET = 'SELECT * FROM ttheme WHERE theme_id=?';
+    const SQL_GET_ELEMENT = 'SELECT * FROM vtheme_element WHERE (theme_id=?) AND (element_id=?)';
     const SQL_GET_ALL = 'SELECT ttheme.theme_id AS theme_id, ttheme.name AS theme_name, telement.element_id AS element_id,telement.name AS element_name, ttheme_element.update_date AS update_date, ttheme_element.url_image AS url_image, ttheme_element.color_value AS color_value, telement.width AS width, telement.height AS height, telement.type AS type from ((ttheme JOIN ttheme_element ON(ttheme_element.theme_id = ttheme.theme_id)) JOIN telement ON(ttheme_element.element_id = telement.element_id))';
     const SQL_MODIFY = 'UPDATE ttheme_element SET url_image=?, color_value=? WHERE (theme_id=?) AND (element_id=?)';
+    const SQL_MODIFY_THEME = 'UPDATE ttheme SET name=? WHERE theme_id=?';
     const SQL_GET_THEME_FOR_SELECT = 'SELECT theme_id as id, `name` as value FROM  ttheme ORDER BY theme_id';
     const SQL_GET_ELEMENT_FOR_SELECT = 'SELECT element_id as id, `name` as value FROM telement ORDER BY element_id';
 
@@ -22,10 +25,20 @@ class ThemeModel extends BaseModel
     public $errCode;
     public $errMessage;
 
-    public function get($themeId, $elementId)
+    public function get($themeId)
     {
         $db = db_connect();
-        $ar = $db->query(self::SQL_GET, [$themeId, $elementId])->getResult('array');
+        $ar = $db->query(self::SQL_GET, [$themeId])->getResult('array');
+
+        if (sizeof($ar)>0) return $ar[0];
+
+        return null;
+    }
+
+    public function getElement($themeId, $elementId)
+    {
+        $db = db_connect();
+        $ar = $db->query(self::SQL_GET_ELEMENT, [$themeId, $elementId])->getResult('array');
 
         if (sizeof($ar)>0) return $ar[0];
 
@@ -35,6 +48,10 @@ class ThemeModel extends BaseModel
     public function getAll(){
         $db = db_connect();
         return $db->query(self::SQL_GET_ALL)->getResult('array');
+    }
+
+    public function getThemeFieldList(){
+        return ['theme_id', 'name', 'create_date', 'update_date'];
     }
 
     public function getFieldList(){
@@ -62,12 +79,10 @@ class ThemeModel extends BaseModel
 
         try
         {
-            // $value['path'] = htmlentities($value['path'], ENT_QUOTES, 'UTF-8');
-            $value['url_image'] = htmlentities($value['url_image'], ENT_QUOTES, 'UTF-8');
-            $value['color_value'] = htmlentities($value['color_value'], ENT_QUOTES, 'UTF-8');
+            $value['name'] = htmlentities($value['name'], ENT_QUOTES, 'UTF-8');
 
-            parent::insert($value);
-
+            $this->db->table(self::TABLE_THEME)->insert($value);
+            return $this->db->insertID(); // Return the inserted record ID
         }
         catch (\Exception $e){
             $this->errCode = $e->getCode();
@@ -77,6 +92,32 @@ class ThemeModel extends BaseModel
         }
 
         return $this->db->affectedRows();
+    }
+
+    public function modifyTheme($value){
+
+        $this->errCode = '';
+        $this->errMessage = '';
+
+        $themeId = $value['theme_id'];
+         $name = $value['name'];
+
+        // $path = htmlentities($value['path'], ENT_QUOTES, 'UTF-8');
+        $name = htmlentities($name, ENT_QUOTES, 'UTF-8');
+
+        try{
+            $pdo = $this->openPdo();
+            $stmt = $pdo->prepare(self::SQL_MODIFY_THEME);
+            $stmt->execute( [$name, $themeId] );
+
+            return $stmt->rowCount();
+
+        }catch (\PDOException $e){
+            log_message('error', json_encode($e));
+            $this->errCode = $e->getCode();
+            $this->errMessage = $e->getMessage();
+            return -1;
+        }
     }
 
     /**
@@ -116,13 +157,18 @@ class ThemeModel extends BaseModel
     }
 
 
-    public function remove($themeId, $elementId){
-        $r = $this
-            ->where('theme_id', $themeId)
-            ->where('element_id', $elementId)
-            ->delete();
+    public function removeTheme($themeId){
+        try
+        {
+            $this->db->table(self::TABLE_THEME)->delete(['theme_id'=>$themeId]);
+            return $this->db->affectedRows();
+        }
+        catch (\Exception $e){
+            $this->errCode = $e->getCode();
+            $this->errMessage = $e->getMessage();
 
-        return $this->db->affectedRows();
+            return 0;
+        }
     }
 
     /**
@@ -130,6 +176,11 @@ class ThemeModel extends BaseModel
      *
      * @return mixed
      */
+    public function getThemeSsp()
+    {
+        return $this->_getSsp(self::TABLE_THEME, $this->primaryKey, $this->getThemeFieldList());
+    }
+
     public function getSsp()
     {
         return $this->_getSsp(self::VIEW, $this->primaryKey, $this->getFieldList());

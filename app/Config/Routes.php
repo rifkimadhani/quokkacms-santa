@@ -141,10 +141,16 @@ $routes->post('/element/update', 'Element::update');
 $routes->post('/element/insert', 'Element::insert');
 
 // Theme
+$routes->get('/theme/ssp_theme', 'Theme::sspTheme');
+$routes->get('/theme/edit_theme/(:any)', 'Theme::editTheme/$1');
+$routes->post('/theme/insert_theme', 'Theme::insertTheme');
+$routes->post('/theme/update_theme', 'Theme::updateTheme');
 $routes->get('/theme', 'Theme::index');
+$routes->get('/theme/detail', 'Theme::detail/0');
+$routes->get('/theme/detail/(:num)?', 'Theme::detail/$1');
 $routes->get('/theme/ssp', 'Theme::ssp');
 $routes->get('/theme/edit/(:any)/(:any)', 'Theme::edit/$1/$2');
-$routes->get('/theme/delete/(:any)/(:any)', 'Theme::delete/$1/$2');
+$routes->get('/theme/delete_theme/(:any)', 'Theme::deleteTheme/$1');
 $routes->post('/theme/update', 'Theme::update');
 $routes->post('/theme/insert', 'Theme::insert');
 

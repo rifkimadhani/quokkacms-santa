@@ -11,7 +11,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content" style="width:1000px;margin-left:-200px;">
             <div class="modal-body">
-                <iframe src="filemanager/filemanager/dialog.php" width="100%" height="600px;" style="border: 0"></iframe>
+                <iframe src="<?= base_url('filemanager/filemanager/dialog.php'); ?>" width="100%" height="600px;" style="border: 0"></iframe>
             </div>
         </div>
     </div>
