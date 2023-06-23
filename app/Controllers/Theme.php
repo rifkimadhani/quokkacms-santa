@@ -45,53 +45,6 @@ class Theme extends BaseController
         echo json_encode($data);
     }
 
-    public function insert(){
-        $model = new ThemeModel();
-        $urlimage = $_POST['url_image'];
-
-        $this->normalizeData($_POST, true);
-        
-        // get image dimensions
-        $element = new ElementModel();
-        $elementId = $_POST['element_id'];
-        $telement = $element->find($elementId);
-
-        // check if element with the submitted ID exists
-        if (!$telement) {
-            $this->session->setFlashdata('error_msg', 'Element with ID ' . $elementId . ' not found');
-            return redirect()->back();
-        }
-
-        // get width and height from telement
-        $width = intval($telement['width']);
-        $height = intval($telement['height']);
-    
-        // check if file is uploaded
-        if (!empty($urlimage)) {  
-            // check image dimensions
-            $r = $this->checkImageDimensions($urlimage, $width, $height);
-
-            if ($r !== true) {
-                $this->setErrorMessage($r);
-                
-                return redirect()->back();
-            }
-        }
-    
-        // convert url -> {BASE-HOST}
-        $_POST['url_image'] = str_replace($this->baseHost, '{BASE-HOST}', $_POST['url_image']);
-    
-        $r = $model->add($_POST);
-    
-        if ($r > 0){
-            $this->setSuccessMessage('Insert success!');
-        } else {
-            $this->setErrorMessage('Insert failed ' . $model->errMessage);
-        }
-    
-        return redirect()->to($this->baseUrl);
-    }
-    
     /**
      * Check if the uploaded file is an image and has the required dimensions
      * @param array $file The uploaded file data from $_FILES
@@ -114,7 +67,6 @@ class Theme extends BaseController
     
         return true;
     }
-    
 
     /**
      * function ini di call saat user click row pada table
@@ -129,10 +81,7 @@ class Theme extends BaseController
         // convert {BASE-HOST} --> URL
         $data['url_image'] = str_replace('{BASE-HOST}', $this->baseHost, $data['url_image']);
 
-        $elementData = $model->getElementForSelect();
-        $themeData = $model->getThemeForSelect();
-
-        $form = new ThemeForm($elementData, $themeData);
+        $form = new ThemeForm();
 
         $urlAction = $this->baseUrl . '/update';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);

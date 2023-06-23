@@ -5,14 +5,12 @@
  */
 namespace App\Models;
 
-use App\Libraries\SSP;
-
 class ThemeModel extends BaseModel
 {
     const VIEW = 'vtheme_element';
 
-    // const SQL_GET = 'SELECT * FROM ttheme_element WHERE (theme_id=?) AND (element_id=?)';
-    const SQL_GET = 'SELECT ttheme.theme_id AS theme_id, ttheme.name AS theme_name, telement.element_id AS element_id,telement.name AS element_name, ttheme_element.update_date AS update_date, ttheme_element.url_image AS url_image, ttheme_element.color_value AS color_value, telement.width AS width, telement.height AS height, telement.type AS type from ((ttheme JOIN ttheme_element ON(ttheme_element.theme_id = ttheme.theme_id)) JOIN telement ON(ttheme_element.element_id = telement.element_id))';
+    const SQL_GET = 'SELECT * FROM vtheme_element WHERE (theme_id=?) AND (element_id=?)';
+    const SQL_GET_ALL = 'SELECT ttheme.theme_id AS theme_id, ttheme.name AS theme_name, telement.element_id AS element_id,telement.name AS element_name, ttheme_element.update_date AS update_date, ttheme_element.url_image AS url_image, ttheme_element.color_value AS color_value, telement.width AS width, telement.height AS height, telement.type AS type from ((ttheme JOIN ttheme_element ON(ttheme_element.theme_id = ttheme.theme_id)) JOIN telement ON(ttheme_element.element_id = telement.element_id))';
     const SQL_MODIFY = 'UPDATE ttheme_element SET url_image=?, color_value=? WHERE (theme_id=?) AND (element_id=?)';
     const SQL_GET_THEME_FOR_SELECT = 'SELECT theme_id as id, `name` as value FROM  ttheme ORDER BY theme_id';
     const SQL_GET_ELEMENT_FOR_SELECT = 'SELECT element_id as id, `name` as value FROM telement ORDER BY element_id';
@@ -24,21 +22,19 @@ class ThemeModel extends BaseModel
     public $errCode;
     public $errMessage;
 
-
     public function get($themeId, $elementId)
     {
-        $r = $this
-            ->where('theme_id', $themeId)
-            ->where('element_id', $elementId)
-            ->find();
-        if ($r!=null) return $r[0];
+        $db = db_connect();
+        $ar = $db->query(self::SQL_GET, [$themeId, $elementId])->getResult('array');
+
+        if (sizeof($ar)>0) return $ar[0];
 
         return null;
     }
 
     public function getAll(){
         $db = db_connect();
-        return $db->query(self::SQL_GET)->getResult('array');
+        return $db->query(self::SQL_GET_ALL)->getResult('array');
     }
 
     public function getFieldList(){

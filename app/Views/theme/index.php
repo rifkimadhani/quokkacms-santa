@@ -12,9 +12,9 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
-    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformNew')">
-        <i class="fa fa-plus text-primary mr-5 "></i> Create
-    </a>
+<!--    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformNew')">-->
+<!--        <i class="fa fa-plus text-primary mr-5 "></i> Create-->
+<!--    </a>-->
     <div class="btn-group float-right">
         <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
             Options <i class="fa fa-th-large text-primary ml-5"></i>
@@ -89,20 +89,37 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [0,2,5],visible: false,searchable: false
+                        targets: [0,2,5,9],visible: false,searchable: false
+//                        targets: [0,2,5],visible: false,searchable: false
                     },
                     {
-                        targets:[6],className: "popupimage",
-                        className: "text-center",
-                        render: function(data) 
-                        {        
-                            if(data)
-                            {
-                                data = data.replace('{BASE-HOST}', '<?= base_url(); ?>');
+                        targets:[6], render: function(value, type, row)
+                        {
+//                            console.log(row);
+                            const elementType = row[4];
 
-                                return '<img src="'+data+'" width="100%" height="100%;" class="urlimage">';
+                            switch (elementType){
+                                case 'IMAGE':
+                                    return renderImage(value);
+
+                                case 'COLOR':
+                                    return renderColor(row[9]);
+
+                                case 'VIDEO':
+                                case 'STREAM':
+                                    return renderVideo(value);
+
+                                default:
+                                    return 'UNDEFINED TYPE'
                             }
-                            return '<img src="<?= base_url("assets/notfound.png") ?>" width="50px" height="50px;" class="urlimage">';
+
+//                            if(value)
+//                            {
+//                                value = value.replace('{BASE-HOST}', '<?//= base_url(); ?>//');
+//
+//                                return '<img src="'+value+'" width="100%" height="100%;" class="urlimage">';
+//                            }
+//                            return '<img src="<?//= base_url("assets/notfound.png") ?>//" width="50px" height="50px;" class="urlimage">';
                         },
                         width:100
                     },
@@ -110,7 +127,7 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
                         // action column
                         targets: lastCol,
                         className: "text-center",
-                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
+                        defaultContent: '---' //cannot delete theme
                     }
 
                 ]
@@ -129,6 +146,7 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
             //get pk from data
             const themeId = data[0];
             const elementId = data[2];
+            const elementType = data[4];
 
             const url = "<?=$baseUrl?>/edit/" + themeId + '/' + elementId;
 
@@ -165,5 +183,55 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
         showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
             window.location.href = "<?=$baseUrl?>/delete/" + themeId + '/' + elementId;
         })
+    }
+
+    function renderImage(value) {
+        if(value)
+        {
+            value = value.replace('{BASE-HOST}', '<?= base_url(); ?>');
+            return '<img src="'+value+'" class="urlimage" style="max-width: 300px;">';
+        }
+        return ''; //render blank apabila tdk ada value
+    }
+
+    function renderColor(value) {
+        if (value){
+            var html;
+            html = "<div style='background: #"+argbToRgba(value)+";'><br/><br/><br/></div>";
+            html += "<input type='text' value='"+value+"' style='width: 100%; border: hidden; text-align: center; position: relative;'>";
+            return html;
+        }
+        return 'COLOR NOT DEFINED';
+    }
+
+    function renderVideo(value) {
+        if (value){
+            value = value.replace('{BASE-HOST}', '<?= base_url(); ?>');
+            var html;
+            html = "<video width='300' controls><source src='"+value+"' type='video/mp4'></video>";
+            html += "<input type='text' value='"+value+"' style='width: 100%; border: hidden; text-align: center;'>";
+            return html;
+        }
+        return 'URL NOT DEFINED';
+    }
+
+    function argbToRgba(hexColor) {
+        const length = hexColor.length;
+        if (length!==8) return hexColor;
+
+        const alpha = hexColor.substring(0, 2);
+        const color = hexColor.substring(2, 8);
+
+        return color + alpha;
+    }
+
+    function rgbaToArgb(hexColor) {
+        const length = hexColor.length;
+        if (length!==8) return hexColor;
+
+        const alpha = hexColor.substring(6, 8);
+        const color = hexColor.substring(0, 6);
+
+        return alpha + color;
     }
 </script>
