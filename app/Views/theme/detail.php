@@ -12,7 +12,7 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
-    <a class="btn btn-secondary" href="javascript:" role="button" onclick="showDialog('.dialogformNew')">
+    <a class="btn btn-secondary" href="javascript:" role="button" onclick="onClickBack()">
         <i class="fa fa-backward text-primary mr-5 "></i> Back
     </a>
     <div class="btn-group float-right">
@@ -167,22 +167,9 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
         initDataTableOptions(dataTable);
     }
 
-    //
-    //
-    function onClickTrash(event, that) {
+    function onClickBack() {
         event.stopPropagation();
-
-        const data = dataTable.row( $(that).parents('tr') ).data();
-            const themeId = data[0];
-            const elementId = data[2];
-
-
-        //please correct the index for name variable, sehingga message delete akan terlihat benar
-        const name = data[0];
-
-        showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
-            window.location.href = "<?=$baseUrl?>/delete/" + themeId + '/' + elementId;
-        })
+        window.location.href = "<?=$baseUrl?>";
     }
 
     function renderImage(value) {

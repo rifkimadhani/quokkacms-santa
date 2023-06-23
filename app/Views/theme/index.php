@@ -70,7 +70,7 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
                         // action column
                         targets: lastCol,
                         className: "text-center",
-                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
+                        defaultContent: '<a onclick="onClickDetail(event, this);" href="javascript:;">DETAIL</a><a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
                     }
 
                 ]
@@ -113,7 +113,7 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
         event.stopPropagation();
 
         const data = dataTable.row( $(that).parents('tr') ).data();
-            const themeId = data[0];
+        const themeId = data[0];
 
         //please correct the index for name variable, sehingga message delete akan terlihat benar
         const name = data[1];
@@ -121,5 +121,14 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
         showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
             window.location.href = "<?=$baseUrl?>/delete_theme/" + themeId;
         })
+    }
+
+    function onClickDetail(event, that) {
+        event.stopPropagation();
+
+        const data = dataTable.row( $(that).parents('tr') ).data();
+        const themeId = data[0];
+
+        window.location.href = "<?=$baseUrl?>/detail/" + themeId;
     }
 </script>
