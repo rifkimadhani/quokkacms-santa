@@ -7,13 +7,13 @@
 use App\Libraries\Dialog;
 
 $htmlEdit = $form->renderPlainDialog('formEdit');
-$htmlNew = $form->renderDialog('New theme', 'formNew', "{$baseUrl}/insert_theme");
+$htmlNew = $form->renderDialog('New theme', 'formNew', "{$baseUrl}/clone_theme");
 $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
     <a class="btn btn-secondary" href="javascript:" role="button" onclick="showDialog('.dialogformNew')">
-        <i class="fa fa-plus text-primary mr-5 "></i> Create
+        <i class="fa fa-plus text-primary mr-5 "></i> Clone
     </a>
     <div class="btn-group float-right">
         <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">

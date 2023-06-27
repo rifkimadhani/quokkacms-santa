@@ -143,7 +143,7 @@ $routes->post('/element/insert', 'Element::insert');
 // Theme
 $routes->get('/theme/ssp_theme', 'Theme::sspTheme');
 $routes->get('/theme/edit_theme/(:any)', 'Theme::editTheme/$1');
-$routes->post('/theme/insert_theme', 'Theme::insertTheme');
+$routes->post('/theme/clone_theme', 'Theme::cloneTheme');
 $routes->post('/theme/update_theme', 'Theme::updateTheme');
 $routes->get('/theme', 'Theme::index');
 $routes->get('/theme/detail', 'Theme::detail/0');

@@ -8,12 +8,18 @@ namespace App\Models;
 
 class ThemeForm extends BaseForm
 {
+    public $clone_theme_id;
     public $theme_id;
     public $name;
 
-    function __construct()
+    function __construct($clone=[])
     {
+        $this->clone_theme_id = ['type'=>'select','label'=>'Clone from theme','options'=>$clone,'placeholder'=>'choose one'];
         $this->theme_id = ['type'=>'varchar', 'label'=>'Theme Id (autonumber', 'readonly'=>'readonly'];
         $this->name = ['type'=>'varchar', 'label'=>'Name', 'required'=>'required'];
+    }
+
+    public function removeCloneTheme(){
+        unset($this->clone_theme_id);
     }
 }

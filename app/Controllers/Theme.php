@@ -21,7 +21,9 @@ class Theme extends BaseController
         $pageTitle = 'Theme';
 
         $model = new ThemeModel();
-        $form = new ThemeForm();
+        $clone = $model->getThemeForSelect();
+
+        $form = new ThemeForm($clone);
 
         $fieldList = $model->getThemeFieldList();
 
@@ -103,10 +105,14 @@ class Theme extends BaseController
         return true;
     }
 
-    public function insertTheme(){
+    public function cloneTheme(){
         $model = new ThemeModel();
 
-        $r = $model->add($_POST);
+        //ambil clone theme id
+        $cloneId = $_POST['clone_theme_id'];
+        unset($_POST['clone_theme_id']);
+
+        $r = $model->clone($cloneId, $_POST);
 
         if ($r>0){
             $this->setSuccessMessage('Insert success');

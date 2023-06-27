@@ -11,6 +11,7 @@ class ThemeModel extends BaseModel
     const TABLE_THEME = 'ttheme';
 
     const SQL_GET = 'SELECT * FROM ttheme WHERE theme_id=?';
+    const SQL_CLONE = 'INSERT INTO ttheme_element (theme_id, element_id, path, url_image, color_value) SELECT ?, element_id, path, url_image, color_value FROM ttheme_element WHERE theme_id=?';
     const SQL_GET_ELEMENT = 'SELECT * FROM vtheme_element WHERE (theme_id=?) AND (element_id=?)';
     const SQL_GET_ALL = 'SELECT ttheme.theme_id AS theme_id, ttheme.name AS theme_name, telement.element_id AS element_id,telement.name AS element_name, ttheme_element.update_date AS update_date, ttheme_element.url_image AS url_image, ttheme_element.color_value AS color_value, telement.width AS width, telement.height AS height, telement.type AS type from ((ttheme JOIN ttheme_element ON(ttheme_element.theme_id = ttheme.theme_id)) JOIN telement ON(ttheme_element.element_id = telement.element_id))';
     const SQL_MODIFY = 'UPDATE ttheme_element SET url_image=?, color_value=? WHERE (theme_id=?) AND (element_id=?)';
@@ -85,6 +86,47 @@ class ThemeModel extends BaseModel
             return $this->db->insertID(); // Return the inserted record ID
         }
         catch (\Exception $e){
+            $this->errCode = $e->getCode();
+            $this->errMessage = $e->getMessage();
+
+            return 0;
+        }
+
+        return $this->db->affectedRows();
+    }
+
+    /**
+     * Buat theme baru dan clone semua contentnya
+     * @param $value
+     * @return int|string
+     */
+    public function clone($themeId, $value)  {
+        try
+        {
+            $db = $this->db;
+            $db->transStart();
+
+            $value['name'] = htmlentities($value['name'], ENT_QUOTES, 'UTF-8');
+
+            //create new record pada ttheme
+            $db->table(self::TABLE_THEME)->insert($value);
+            $newId = $db->insertID(); // new themeId
+
+            //clone semua ttheme_element, dari themeId --> newId
+            $db->query(self::SQL_CLONE, [$newId, $themeId]);
+
+            if ($db->transStatus() === FALSE) {
+                // Handle transaction error
+                $this->db->transRollback();
+            } else {
+                // Transaction was successful
+                $this->db->transComplete();
+                return $newId;
+            }
+        }
+        catch (\Exception $e){
+            $this->varDump($e);
+
             $this->errCode = $e->getCode();
             $this->errMessage = $e->getMessage();
 
