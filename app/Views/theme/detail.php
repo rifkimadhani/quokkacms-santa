@@ -67,7 +67,7 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
 <?= view('util/filemanager.php') ?>
 
 <script>
-    const urlSsp = "<?= $baseUrl ?>/ssp";
+    const urlSsp = "<?= $baseUrl ?>/ssp/<?=$themeId?>";
     const lastCol = <?= count($fieldList) ?>;
     const dataList = $('#datalist');
     const primaryKey = "<?=$primaryKey?>";

@@ -148,7 +148,7 @@ $routes->post('/theme/update_theme', 'Theme::updateTheme');
 $routes->get('/theme', 'Theme::index');
 $routes->get('/theme/detail', 'Theme::detail/0');
 $routes->get('/theme/detail/(:num)?', 'Theme::detail/$1');
-$routes->get('/theme/ssp', 'Theme::ssp');
+$routes->get('/theme/ssp/(:num)', 'Theme::ssp/$1');
 $routes->get('/theme/edit/(:any)/(:any)', 'Theme::edit/$1/$2');
 $routes->get('/theme/delete_theme/(:any)', 'Theme::deleteTheme/$1');
 $routes->post('/theme/update', 'Theme::update');

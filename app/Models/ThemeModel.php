@@ -223,8 +223,15 @@ class ThemeModel extends BaseModel
         return $this->_getSsp(self::TABLE_THEME, $this->primaryKey, $this->getThemeFieldList());
     }
 
-    public function getSsp()
+    /**
+     * ssp utk theme_element
+     *
+     * @param $themeId
+     * @return array
+     */
+    public function getSsp($themeId)
     {
-        return $this->_getSsp(self::VIEW, $this->primaryKey, $this->getFieldList());
+        $where = 'theme_id=' . $themeId;
+        return $this->_getSspComplex(self::VIEW, $this->primaryKey, $this->getFieldList(), $where);
     }
 }

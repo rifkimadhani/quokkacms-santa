@@ -43,7 +43,7 @@ class Theme extends BaseController
         $theme = $model->get($themeId);
 
         if (is_null($theme)){
-            $pageTitle = 'Theme';
+            $pageTitle = 'Theme not found';
         } else {
             $pageTitle = 'Theme detail ' . $theme['name'];
         }
@@ -55,16 +55,16 @@ class Theme extends BaseController
 
         $form = new ThemeElementForm($elementData, $themeData);
 
-        return view('layout/template', compact('mainview', 'primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form', 'themeElementData'));
+        return view('layout/template', compact('mainview', 'primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form', 'themeElementData', 'themeId'));
     }
 
-    public function ssp()
+    public function ssp($themeId)
     {
         $model = new ThemeModel();
 
         header('Content-Type: application/json');
 
-        $data = $model->getSsp();
+        $data = $model->getSsp($themeId);
 
         self::sspDataConversion($data);
 
