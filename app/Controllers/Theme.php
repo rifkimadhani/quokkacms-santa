@@ -134,6 +134,8 @@ class Theme extends BaseController
         $data = $model->get($themeId);
 
         $form = new ThemeForm();
+        $form->removeCloneTheme();
+
         $urlAction = $this->baseUrl . '/update_theme';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
     }
