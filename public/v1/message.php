@@ -47,9 +47,12 @@ function doGetList($stbId){
 	$list = ModelMessage::getBySubscriberAndRoom($subscriberId, $roomId);
 	$images = ModelMessage::getAllImage($subscriberId, $roomId);
 
-	$host = ModelSetting::getHostVod();
+    $baseHost = ModelSetting::getBaseHost('../'); //turun 1 level dari posisi api ini
+
+    $host = ModelSetting::getHostVod();
 	foreach($images as &$item){
 		$item['url_video'] = str_replace('{HOST-VOD}', $host, $item['url_video']);
+		$item['url_image'] = str_replace('{BASE-HOST}', $baseHost, $item['url_image']);
 	}
 
 	echo (  json_encode(['count'=>sizeof($list), 'list'=>$list, 'medias'=>$images ]) );
