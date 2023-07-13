@@ -98,8 +98,8 @@ class Theme extends BaseController
         // check image dimensions
         list($uploadedWidth, $uploadedHeight) = getimagesize($urlimage);
 
-        if ($uploadedWidth !== $width || $uploadedHeight !== $height) {
-            return "Insert failed: Image dimensions should be {$width} x {$height} Pixels!";
+        if ($uploadedWidth > $width || $uploadedHeight > $height) {
+            return "Insert failed: Maximum Image dimensions should be {$width} x {$height} Pixels!";
         }
     
         return true;
@@ -195,7 +195,7 @@ class Theme extends BaseController
             $r = $this->checkImageDimensions($urlimage, $width, $height);
 
             if ($r !== true) {
-                $this->setErrorMessage('Update fail: Maximum image size is '.$width.' x '. $height . $model->errMessage);
+                $this->setErrorMessage('Update failed: Maximum image dimensions is '.$width.' x '. $height . $model->errMessage);
                 return redirect()->back();
             }
         }
