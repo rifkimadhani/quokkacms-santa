@@ -17,6 +17,10 @@ require_once __DIR__ . '/../library/Log.php';
 
 class ModelRoomservice
 {
+    const SQL_GET_ACTIVE = 'SELECT vroomservice_order.*, tsubscriber_group.`name` group_name FROM vroomservice_order LEFT JOIN tsubscriber_group ON vroomservice_order.group_id = tsubscriber_group.group_id WHERE vroomservice_order.status NOT IN (\'DELIVERED\', \'CANCEL\')';
+    const SQL_GET_HISTORY = 'SELECT vroomservice_order.*, tsubscriber_group.`name` group_name FROM vroomservice_order LEFT JOIN tsubscriber_group ON vroomservice_order.group_id = tsubscriber_group.group_id WHERE vroomservice_order.status IN (\'DELIVERED\', \'CANCEL\')';
+    const SQL_GET_DETAIL = 'SELECT * FROM troomservice_item WHERE order_code=?';
+
 	const SQL_GET_LIST = 'SELECT * FROM vsubsciber_order WHERE subscriber_id=? AND room_id=? AND kitchen_id=?';
 	const SQL_ADD_ORDER = 'INSERT INTO tsubscriber_roomservice (subscriber_id, room_id, menu_id, qty) VALUES (?,?,?,?)';
 	const SQL_UPDATE_ORDER = 'UPDATE tsubscriber_roomservice SET qty=? WHERE subscriber_id=? AND room_id=? AND menu_id=?';
@@ -31,8 +35,68 @@ class ModelRoomservice
 	const SQL_CREATE_B = 'INSERT INTO troomservice_item (order_code, menu_id, qty, price, menu_name) VALUES (?,?,?,?,?)';
 	const SQL_CREATE_C = 'DELETE FROM tsubscriber_roomservice WHERE subscriber_id=? AND room_id=? AND menu_id=?';
 
+	const SQL_UPDATE_STATUS = 'UPDATE troomservice SET status=? WHERE order_code=?';
+
+	const SQL_GET_ONE  = 'SELECT * FROM troomservice WHERE order_code=?';
 	const SQL_GET  = 'SELECT *, purchase_amount+troomservice.service_charge+troomservice.tax+troomservice.delivery_fee as amount_payable FROM troomservice WHERE subscriber_id=? AND room_id=? AND order_code=?';
 
+    /**
+     * return semua order yg active
+     *
+     * @return array|Exception|PDOException
+     */
+	public static function getActive(){
+		try{
+			$pdo = Koneksi::create();
+			$stmt = $pdo->prepare(self::SQL_GET_ACTIVE);
+			$stmt->execute( [ ] );
+
+			return $stmt->fetchAll();
+
+		}catch (PDOException $e){
+			Log::writeErrorLn($e->getMessage());
+			return $e;
+		}
+	}
+
+    /**
+     * semua order yg sdh DELIVERED / CANCEL
+     *
+     * @return array|Exception|PDOException
+     */
+	public static function getHistory(){
+		try{
+			$pdo = Koneksi::create();
+			$stmt = $pdo->prepare(self::SQL_GET_HISTORY);
+			$stmt->execute( [ ] );
+
+			return $stmt->fetchAll();
+
+		}catch (PDOException $e){
+			Log::writeErrorLn($e->getMessage());
+			return $e;
+		}
+	}
+
+    /**
+     * ambil item utk 1 order
+     *
+     * @param $orderCode
+     * @return array|Exception|PDOException
+     */
+	public static function getDetail($orderCode){
+		try{
+			$pdo = Koneksi::create();
+			$stmt = $pdo->prepare(self::SQL_GET_DETAIL);
+			$stmt->execute( [$orderCode] );
+
+			return $stmt->fetchAll();
+
+		}catch (PDOException $e){
+			Log::writeErrorLn($e->getMessage());
+			return $e;
+		}
+	}
 
 	public static function getList($subscriberId, $roomId, $kitchenId){
 		try{
@@ -292,5 +356,36 @@ class ModelRoomservice
 		}
 
 	}
+
+	public static function getOne($orderCode){
+		try{
+			$pdo = Koneksi::create();
+			$stmt = $pdo->prepare(self::SQL_GET_ONE);
+			$stmt->execute( [$orderCode] );
+			$rows = $stmt->fetchAll();
+
+			if (count($rows)==0) return null;
+			return $rows[0];
+
+		}catch (PDOException $e){
+			Log::writeErrorLn($e->getMessage());
+			return $e;
+		}
+
+	}
+
+    public static function updateStatus($orderCode, $status){
+        try{
+            $pdo = Koneksi::create();
+            $stmt = $pdo->prepare(self::SQL_UPDATE_STATUS);
+            $stmt->execute( [strtoupper($status), $orderCode] );
+
+            return $stmt->rowCount();
+
+        }catch (PDOException $e){
+            Log::writeErrorLn($e->getMessage());
+            return $e;
+        }
+    }
 
 }

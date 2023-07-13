@@ -27,7 +27,7 @@ switch ($action){
 
 exit();
 
-function doGetList(){
+function doGetList($stbId){
     require_once __DIR__ . '/../../model/ModelSetting.php';
 
     $menuList = ModelSetting::getFeatureAppMenuList();
