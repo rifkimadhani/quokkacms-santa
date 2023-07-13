@@ -205,7 +205,7 @@ function doGetStbList(){
 	require_once '../../model/ModelStb.php';
 
 	$sessionId = (empty($_GET['sessionId']) ? '' : $_GET['sessionId']);
-	$sig = (empty($_GET['sig']) ? '' : $_GET['sig']);
+//	$sig = (empty($_GET['sig']) ? '' : $_GET['sig']);
 	$keyword = (empty($_GET['keyword']) ? '' : $_GET['keyword']);
 	$offset = (empty($_GET['offset']) ? 0 : $_GET['offset']);
 	$limit = (empty($_GET['limit']) ? 50 : $_GET['limit']);
@@ -226,15 +226,14 @@ function doGetStbList(){
 	//
 
 	//check signature
-	$salt = $admin['salt'];
-	$checkSig = Security::genHash("{$keyword}{$offset}", $salt);
-
-	if ($checkSig<>$sig){
-//		var_dump($checkSig);
-		$extra = ' ' . $checkSig . ' <> ' . $sig;
-		echo errCompose(ERR_INVALID_SIGNATURE, $extra);
-		die();
-	}
+//	$salt = $admin['salt'];
+//	$checkSig = Security::genHash("{$keyword}{$offset}", $salt);
+//
+//	if ($checkSig<>$sig){
+//		$extra = ' ' . $checkSig . ' <> ' . $sig;
+//		echo errCompose(ERR_INVALID_SIGNATURE, $extra);
+//		die();
+//	}
 
 	//get list
 	$list = ModelStb::getPartialByKeyword($keyword, $offset, $limit);
