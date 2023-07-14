@@ -74,8 +74,13 @@ function doUpdateInfo($admin, $sessionId){
 
     $deviceType = strtoupper($deviceType);
 
-    ModelAdminSession::update($sessionId, $deviceType, $expDate, $versionCode, $versionName, $fcmToken);
+    $r = ModelAdminSession::update($sessionId, $deviceType, $expDate, $versionCode, $versionName, $fcmToken);
 
-    echo json_encode(['site_id'=>$siteId, 'expire_date'=>$expDate]);
+    if ($r instanceof PDOException){
+        echo errCompose($r);
+        return;
+    }
+
+    echo json_encode(['site_id'=>$siteId, 'expire_date'=>$expDate, 'result'=>$r]);
 }
 
