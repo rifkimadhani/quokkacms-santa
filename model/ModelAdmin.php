@@ -18,7 +18,7 @@ class ModelAdmin
     const ACCESS_UPDATE = 4;
     const ACCESS_DELETE = 8;
 
-	const SQL_GET_ADMIN_FROM_SESSIONID = 'SELECT * FROM tadmin_session WHERE admin_session_id=?';
+	const SQL_GET_ADMIN_FROM_SESSIONID = 'SELECT * FROM tadmin_session WHERE admin_session_id=? AND expire_date>NOW()';
 	const SQL_CHECK_LOGIN = 'SELECT * FROM tadmin WHERE username=? AND hash_password=?';
 	const SQL_ADD_SESSION = 'INSERT INTO tadmin_session (admin_id, admin_session_id, salt) VALUES (?, ?, ?)';
 	const SQL_GET_ACL = 'SELECT * FROM vadmin_acl WHERE admin_id=?';
