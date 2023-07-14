@@ -2,14 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: erick
- * Date: 7/13/2023
- * Time: 1:02 PM
- */
-
-
-/**
- * staff di pakai utk accept task yg di issue dari stb
- * 1. hotel service
+ * Date: 7/14/2023
+ * Time: 9:03 AM
  */
 
 require_once __DIR__ . '/../../library/http_errorcodes.php';
@@ -45,16 +39,8 @@ if ($admin instanceof PDOException){
 $action = (empty($_GET['action']) ? '' : $_GET['action']);
 
 switch ($action){
-    case 'list_history':
-        doGetListHistory($admin);
-        break;
-
-    case 'list_active':
-        doGetListActive($admin);
-        break;
-
-    case 'change_status':
-        doChangeStatus($admin);
+    case 'update_info':
+        doUpdateInfo($admin, $sessionId);
         break;
 
     default:
@@ -67,35 +53,27 @@ exit();
 
 ////////////////////////////////////////////////////////////////////////////
 
-function doGetListActive($admin){
-    require_once '../../model/ModelHotelService.php';
-
-    $data = ModelHotelService::getActive();
-
-    echo json_encode([ 'length'=>sizeof($data), 'data'=>$data ]);
-}
-
-function doGetListHistory($admin){
-    require_once '../../model/ModelHotelService.php';
-
-    $data = ModelHotelService::getHistory();
-
-    echo json_encode([ 'length'=>sizeof($data), 'data'=>$data ]);
-}
-
 /**
- * rubah status, new status ACK / FINISH
- * status tdk di verifikasi
- *
  * @param $admin
+ * @param $sessionId
  */
-function doChangeStatus($admin){
-    require_once '../../model/ModelHotelService.php';
+function doUpdateInfo($admin, $sessionId){
+    require_once '../../model/ModelSetting.php';
+    require_once '../../model/ModelAdminSession.php';
 
-    $taskId = (empty($_GET['task_id']) ? '' : $_GET['task_id']);
-    $status = (empty($_GET['status']) ? '' : $_GET['status']);
+    $deviceType = (empty($_GET['device_type']) ? '' : $_GET['device_type']);
+    $fcmToken = (empty($_GET['fcm_token']) ? '' : $_GET['fcm_token']);
+    $versionCode = (empty($_GET['version_code']) ? '' : $_GET['version_code']);
+    $versionName = (empty($_GET['version_name']) ? '' : $_GET['version_name']);
 
-    $r = ModelHotelService::updateStatus($taskId, $status);
+    $siteId = ModelSetting::getSiteId();
 
-    echo json_encode(['result'=>$r]);
+    //update expire date
+    $now = date('Y-m-d H:i:s'); // Current date and time
+    $expDate = date('Y-m-d H:i:s', strtotime($now. '+3 days'));
+
+    ModelAdminSession::update($sessionId, $deviceType, $expDate, $versionCode, $versionName, $fcmToken);
+
+    echo json_encode(['site_id'=>$siteId, 'expire_date'=>$expDate]);
 }
+

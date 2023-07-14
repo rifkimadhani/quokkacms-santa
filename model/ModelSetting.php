@@ -21,7 +21,8 @@ class ModelSetting
 
     const SETTING_HOST_API = 1;
 	const SETTING_EMGERCENCY_STATE = 2;
-	const SETTING_PATH_APPLICATION = 3;
+//	const SETTING_PATH_APPLICATION = 3; //di replace SETTING_SITE_ID
+	const SETTING_SITEID = 3;
 	const SETTING_PATH_UPLOAD_VIDEO = 4;
 
 	const SETTING_EMAIL_FROM= 8;
@@ -190,7 +191,7 @@ class ModelSetting
 	static public function getHostApi(){
 //		if (is_null(ModelSetting::$hostApi)) ModelSetting::$hostApi = ModelSetting::getString(ModelSetting::SETTING_HOST_API);
 //		return ModelSetting::$hostApi;
-		return ModelSetting::getString(ModelSetting::SETTING_HOST_API);;
+		return ModelSetting::getString(ModelSetting::SETTING_HOST_API);
 	}
 	static public function getHostVod(){
 		if (is_null(ModelSetting::$hostVod)) ModelSetting::$hostVod= ModelSetting::getString(ModelSetting::SETTING_HOST_VOD);
@@ -213,14 +214,16 @@ class ModelSetting
 		return ModelSetting::getString(ModelSetting::SETTING_PATH_UPLOAD_VIDEO);
 	}
 
-	static public function getPathVideo(){
-		return ModelSetting::getString(ModelSetting::SETTING_PATH_VIDEO);
-	}
+	//tdk di pakai
+//	static public function getPathVideo(){
+//		return ModelSetting::getString(ModelSetting::SETTING_PATH_VIDEO);
+//	}
 
-	static public function getPathApplication(){
-		if (is_null(ModelSetting::$pathApplication)) ModelSetting::$pathApplication = ModelSetting::getString(ModelSetting::SETTING_PATH_APPLICATION);
-		return ModelSetting::$pathApplication;
-	}
+	//di hapus, hanya utk referensi saja
+//	static public function getPathApplication(){
+//		if (is_null(ModelSetting::$pathApplication)) ModelSetting::$pathApplication = ModelSetting::getString(ModelSetting::SETTING_PATH_APPLICATION);
+//		return ModelSetting::$pathApplication;
+//	}
 
 	/**
 	 * path content di pakai utk video & image (locality / facility / message dan ads)
@@ -292,6 +295,7 @@ class ModelSetting
      * jadi bergantung dari domain yg di pakai saat hit api
      * level path juga bergantung dari php yg di hit
      *
+     * @param path
      * @return null
      */
     static public function getBaseHost($path){
@@ -305,7 +309,7 @@ class ModelSetting
 
     /**
      * Path berdasarkan instalasi app
-     *
+     * @param $pathRelative
      * @return null
      */
     static public function getBasePath($pathRelative){
@@ -360,5 +364,8 @@ class ModelSetting
     }
     static public function getMailgunKey(){
         return ModelSetting::getString(self::SETTING_MAILGUN_KEY);
+    }
+    static public function getSiteId(){
+        return ModelSetting::getString(self::SETTING_SITEID);
     }
 }
