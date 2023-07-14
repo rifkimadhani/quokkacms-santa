@@ -72,6 +72,8 @@ function doUpdateInfo($admin, $sessionId){
     $now = date('Y-m-d H:i:s'); // Current date and time
     $expDate = date('Y-m-d H:i:s', strtotime($now. '+3 days'));
 
+    $deviceType = strtoupper($deviceType);
+
     ModelAdminSession::update($sessionId, $deviceType, $expDate, $versionCode, $versionName, $fcmToken);
 
     echo json_encode(['site_id'=>$siteId, 'expire_date'=>$expDate]);
