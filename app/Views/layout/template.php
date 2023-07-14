@@ -70,7 +70,9 @@
                     from: 'top',                
                     type: '<?php echo $session->getFlashdata('type'); ?>',
                     icon: '<?php echo ($session->getFlashdata('type') == 'success') ? "fa fa-check mr-5" : "fa fa-exclamation-triangle mr-5"; ?>',
-                    message: '<?php echo $session->getFlashdata('message'); ?>'
+                    message: '<?php echo $session->getFlashdata("message"); ?>',
+                    delay: 9000, // Delay in milliseconds
+                    timer: 1000 // Timer interval in milliseconds
                 }); 
             });
         </script>
