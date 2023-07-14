@@ -73,7 +73,7 @@ function doUpload(){
 	$type = empty($_GET['type']) ? '' : $_GET['type'];
 	$id = (int) (empty($_GET['id']) ? 0 : $_GET['id']);
 
-	$pathApp = ModelSetting::getPathApplication();
+	$pathApp = '';//ModelSetting::getPathApplication();
 	$pathContent = ModelSetting::getPathContent();
 	$pathContent = str_replace('{PATH-APP}', $pathApp, $pathContent);
 
@@ -238,7 +238,7 @@ function doCallback(){
 	$jobType = $job['type'];
 
 	//path di format mempergunakan {PATH-APP}
-	$pathApp = ModelSetting::getPathApplication();
+	$pathApp = '';//ModelSetting::getPathApplication();
 	$pathThumb = str_replace($pathApp, '{PATH-APP}', $pathThumb);
 
 	switch ($jobType){
@@ -262,7 +262,7 @@ function processLocality($jobId, $localityMediaId, $duration, $bitrates, $pathVi
 
 	//path di format mempergunakan {PATH-APP}
 	$pathVideo1 = $pathVideos[0];
-	$pathApp = ModelSetting::getPathApplication();
+	$pathApp = '';//ModelSetting::getPathApplication();
 	$pathVideo1 = str_replace($pathApp, '{PATH-APP}', $pathVideo1);
 
 	$urlVideo1 = ModelSetting::getUrlContentVideo();
@@ -288,7 +288,7 @@ function processVod($jobId, $paramIn, $duration, $bitrates, $pathVideos, $pathTh
 
 	//path di format mempergunakan {PATH-APP}
 	$pathVideo1 = $pathVideos[0];
-	$pathApp = ModelSetting::getPathApplication();
+	$pathApp = '';//ModelSetting::getPathApplication();
 	$pathVideo1 = str_replace($pathApp, '{PATH-APP}', $pathVideo1);
 
 	$urlVideo1 = ModelSetting::getUrlVodVideo();
