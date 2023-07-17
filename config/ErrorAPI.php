@@ -140,6 +140,14 @@ define('ERR_VOD_RATING_ALREADY_SUBMIT', 3021);
 $errMessage[ERR_VOD_RATING_ALREADY_SUBMIT] = 'Rating already submit';
 
 //////////////////////////////////////////////////////////////////////////////////////
+// TASK Hotel Service & Room service
+
+define('ERR_HOTELSERVICE_TASK_ALREADY_COMPLETE', 3030);
+$errMessage[ERR_HOTELSERVICE_TASK_ALREADY_COMPLETE] = 'Task already complete'; // FINISH / CANCEL / CANCEL_BY_SYSTE<
+define('ERR_ROOMSERVICE_TASK_ALREADY_COMPLETE', 3031);
+$errMessage[ERR_ROOMSERVICE_TASK_ALREADY_COMPLETE] = 'Task already complete'; // FINISH / CANCEL / CANCEL_BY_SYSTE<
+
+//////////////////////////////////////////////////////////////////////////////////////
 
 define('ERR_UNAUTHORIZED_ENTRY', 9900);
 $errMessage[ERR_UNAUTHORIZED_ENTRY] = 'Unauthorized entry';

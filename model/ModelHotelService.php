@@ -11,6 +11,8 @@ require_once __DIR__ . '/../library/Log.php';
 
 class ModelHotelService
 {
+    const SQL_GET_ONE_ACTIVE = 'SELECT * FROM tsubscriber_hotel_service WHERE task_id=? AND status NOT IN (\'FINISH\', \'CANCEL\', \'CANCEL_BY_SYSTEM\')';
+
     const SQL_GET_ACTIVE = 'SELECT
             tsubscriber_hotel_service.`task_id`, 
             tsubscriber_hotel_service.`data`, 
@@ -84,11 +86,33 @@ class ModelHotelService
 		        tsubscriber_hotel_service.admin_id = tadmin.admin_id
             WHERE tsubscriber_hotel_service.status IN ( \'FINISH\',\'CANCEL\', \'CANCEL_BY_SYSTEM\')';
 
-    const SQL_UPDATE_STATUS = 'UPDATE tsubscriber_hotel_service SET status=? WHERE task_id=?';
+    const SQL_UPDATE_STATUS = 'UPDATE tsubscriber_hotel_service SET status=?, admin_id=? WHERE task_id=?';
     const SQL_CREATE = 'INSERT INTO tsubscriber_hotel_service (room_id, subscriber_id, type, status, data) VALUES (?, ?, ?, ?, ?)';
     const SQL_GET_ALL = "SELECT * FROM tsubscriber_hotel_service WHERE room_id=? AND subscriber_id=? AND status IN ('NEW','ACK') ORDER BY update_date DESC";
     const SQL_GET = 'SELECT * FROM tsubscriber_hotel_service WHERE room_id=? AND subscriber_id=? AND task_id=?';
     const SQL_CANCEL = "UPDATE tsubscriber_hotel_service SET status='CANCEL' WHERE status NOT IN ('FINISH', 'CANCEL') AND room_id=? AND subscriber_id=? AND task_id=?";
+
+
+    /**
+     * hanya ambil yg active saja
+     *
+     * @param $taskId
+     * @return array|Exception|PDOException
+     */
+    public static function getOneActive($taskId){
+        try{
+            $pdo = Koneksi::create();
+            $stmt = $pdo->prepare(self::SQL_GET_ONE_ACTIVE);
+            $stmt->execute( [$taskId] );
+            $rows = $stmt->fetchAll();
+            if (sizeof($rows)==0) return null;
+            return $rows[0];
+
+        }catch (PDOException $e){
+            Log::writeErrorLn($e->getMessage());
+            return $e;
+        }
+    }
 
     /**
      * return semua yg active NEW & ACK
@@ -167,11 +191,11 @@ class ModelHotelService
         }
     }
 
-    public static function updateStatus($taskId, $status){
+    public static function updateStatus($taskId, $status, $adminId){
         try{
             $pdo = Koneksi::create();
             $stmt = $pdo->prepare(ModelHotelService::SQL_UPDATE_STATUS);
-            $stmt->execute( [strtoupper($status), $taskId] );
+            $stmt->execute( [strtoupper($status), $adminId, $taskId] );
 
             return $stmt->rowCount();
 

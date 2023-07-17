@@ -118,7 +118,15 @@ function doChangeStatus($admin){
     $orderCode = (empty($_GET['order_code']) ? '' : $_GET['order_code']);
     $status = (empty($_GET['status']) ? '' : $_GET['status']);
 
-    $r = ModelRoomservice::updateStatus($orderCode, $status);
+    $task = ModelRoomservice::getOneActive($orderCode);
+
+    if (is_null($task)){
+        echo errCompose(ERR_ROOMSERVICE_TASK_ALREADY_COMPLETE);
+        exit();
+    }
+
+
+    $r = ModelRoomservice::updateStatus($orderCode, $status, $admin['admin_id']);
 
     echo json_encode(['result'=>$r]);
 }

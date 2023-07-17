@@ -95,7 +95,17 @@ function doChangeStatus($admin){
     $taskId = (empty($_GET['task_id']) ? '' : $_GET['task_id']);
     $status = (empty($_GET['status']) ? '' : $_GET['status']);
 
-    $r = ModelHotelService::updateStatus($taskId, $status);
+    $task = ModelHotelService::getOneActive($taskId);
+
+    //check apakah task sdh complete ??
+    //complete task status != FINISH / CANCEL / CANCEL_BY_SYSTEM
+    //
+    if (is_null($task)){
+        echo errCompose(ERR_HOTELSERVICE_TASK_ALREADY_COMPLETE);
+        exit();
+    }
+
+    $r = ModelHotelService::updateStatus($taskId, $status, $admin['admin_id']);
 
     echo json_encode(['result'=>$r]);
 }

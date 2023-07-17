@@ -17,6 +17,7 @@ require_once __DIR__ . '/../library/Log.php';
 
 class ModelRoomservice
 {
+    const SQL_GET_ONE_ACTIVE = 'SELECT * FROM troomservice WHERE status NOT IN (\'FINISH\',\'CANCEL\',\'CANCEL_BY_SYSTEM\') AND order_code=?';
     const SQL_GET_ACTIVE = 'SELECT vroomservice_order.*, tsubscriber_group.`name` group_name FROM vroomservice_order LEFT JOIN tsubscriber_group ON vroomservice_order.group_id = tsubscriber_group.group_id WHERE vroomservice_order.status NOT IN (\'DELIVERED\', \'CANCEL\')';
     const SQL_GET_HISTORY = 'SELECT vroomservice_order.*, tsubscriber_group.`name` group_name FROM vroomservice_order LEFT JOIN tsubscriber_group ON vroomservice_order.group_id = tsubscriber_group.group_id WHERE vroomservice_order.status IN (\'DELIVERED\', \'CANCEL\')';
     const SQL_GET_DETAIL = 'SELECT * FROM troomservice_item WHERE order_code=?';
@@ -35,10 +36,29 @@ class ModelRoomservice
 	const SQL_CREATE_B = 'INSERT INTO troomservice_item (order_code, menu_id, qty, price, menu_name) VALUES (?,?,?,?,?)';
 	const SQL_CREATE_C = 'DELETE FROM tsubscriber_roomservice WHERE subscriber_id=? AND room_id=? AND menu_id=?';
 
-	const SQL_UPDATE_STATUS = 'UPDATE troomservice SET status=? WHERE order_code=?';
+	const SQL_UPDATE_STATUS = 'UPDATE troomservice SET status=?, admin_id=? WHERE order_code=?';
 
 	const SQL_GET_ONE  = 'SELECT * FROM troomservice WHERE order_code=?';
 	const SQL_GET  = 'SELECT *, purchase_amount+troomservice.service_charge+troomservice.tax+troomservice.delivery_fee as amount_payable FROM troomservice WHERE subscriber_id=? AND room_id=? AND order_code=?';
+
+    public static function getOneActive($orderCode){
+        try{
+            $pdo = Koneksi::create();
+            $stmt = $pdo->prepare(self::SQL_GET_ONE_ACTIVE);
+            $stmt->execute( [ $orderCode ] );
+
+            $rows = $stmt->fetchAll();
+
+            if (sizeof($rows)==0) return null;
+
+            return $rows[0];
+
+        }catch (PDOException $e){
+            Log::writeErrorLn($e->getMessage());
+            return $e;
+        }
+    }
+
 
     /**
      * return semua order yg active
@@ -374,11 +394,11 @@ class ModelRoomservice
 
 	}
 
-    public static function updateStatus($orderCode, $status){
+    public static function updateStatus($orderCode, $status, $adminId){
         try{
             $pdo = Koneksi::create();
             $stmt = $pdo->prepare(self::SQL_UPDATE_STATUS);
-            $stmt->execute( [strtoupper($status), $orderCode] );
+            $stmt->execute( [strtoupper($status), $adminId, $orderCode] );
 
             return $stmt->rowCount();
 
