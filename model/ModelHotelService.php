@@ -18,6 +18,8 @@ class ModelHotelService
             tsubscriber_hotel_service.`status`, 
             tsubscriber_hotel_service.update_date,
             tsubscriber_group.`name` group_name, 
+            tsubscriber_hotel_service.admin_id,
+            tadmin.username,
             tsubscriber.subscriber_id, 
             tsubscriber.group_id, 
             tsubscriber.salutation, 
@@ -40,13 +42,19 @@ class ModelHotelService
             troom
             ON 
                 tsubscriber_hotel_service.room_id = troom.room_id
-            WHERE tsubscriber_hotel_service.status IN (\'NEW\', \'ACK\')';
+            LEFT JOIN
+	        tadmin
+	        ON 
+		        tsubscriber_hotel_service.admin_id = tadmin.admin_id
+            WHERE tsubscriber_hotel_service.status NOT IN (\'FINISH\', \'CANCEL\', \'CANCEL_BY_SYSTEM\')';
     const SQL_GET_HISTORY = 'SELECT
             tsubscriber_hotel_service.`task_id`, 
             tsubscriber_hotel_service.`data`, 
             tsubscriber_hotel_service.type, 
             tsubscriber_hotel_service.`status`, 
             tsubscriber_hotel_service.update_date,
+            tsubscriber_hotel_service.admin_id,
+            tadmin.username,
             tsubscriber_group.`name` group_name, 
             tsubscriber.subscriber_id, 
             tsubscriber.group_id, 
@@ -70,7 +78,11 @@ class ModelHotelService
             troom
             ON 
                 tsubscriber_hotel_service.room_id = troom.room_id
-            WHERE tsubscriber_hotel_service.status IN (\'CANCEL\', \'FINISH\')';
+            LEFT JOIN
+	        tadmin
+	        ON 
+		        tsubscriber_hotel_service.admin_id = tadmin.admin_id
+            WHERE tsubscriber_hotel_service.status IN ( \'FINISH\',\'CANCEL\', \'CANCEL_BY_SYSTEM\')';
 
     const SQL_UPDATE_STATUS = 'UPDATE tsubscriber_hotel_service SET status=? WHERE task_id=?';
     const SQL_CREATE = 'INSERT INTO tsubscriber_hotel_service (room_id, subscriber_id, type, status, data) VALUES (?, ?, ?, ?, ?)';
