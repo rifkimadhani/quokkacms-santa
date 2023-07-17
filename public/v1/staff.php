@@ -81,6 +81,11 @@ function doUpdateInfo($admin, $sessionId){
         return;
     }
 
-    echo json_encode(['site_id'=>$siteId, 'expire_date'=>$expDate, 'result'=>$r]);
+    $adminId = $admin['admin_id'];
+    $admin = ModelAdmin::get($adminId);
+    $username = $admin['username'];
+    $json = $admin['json'];
+
+    echo json_encode(['site_id'=>$siteId, 'expire_date'=>$expDate, 'result'=>$r, 'admin_id'=>$adminId, 'username'=>$username, 'json'=>$json ]);
 }
 

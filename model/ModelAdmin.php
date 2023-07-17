@@ -22,8 +22,25 @@ class ModelAdmin
 	const SQL_CHECK_LOGIN = 'SELECT * FROM tadmin WHERE username=? AND hash_password=?';
 	const SQL_ADD_SESSION = 'INSERT INTO tadmin_session (admin_id, admin_session_id, salt) VALUES (?, ?, ?)';
 	const SQL_GET_ACL = 'SELECT * FROM vadmin_acl WHERE admin_id=?';
+	const SQL_GET = 'SELECT * FROM tadmin WHERE admin_id=?';
 
-	public static function getAcl($adminId){
+    public static function get($adminId){
+        try{
+            $pdo = Koneksi::create();
+            $stmt = $pdo->prepare(self::SQL_GET);
+            $stmt->execute( [$adminId] );
+
+            $rows = $stmt->fetchAll();
+            if (count($rows)==0) return null;
+            return $rows[0];
+
+        }catch (PDOException $e){
+            Log::writeErrorLn($e->getMessage());
+            return $e;
+        }
+    }
+
+    public static function getAcl($adminId){
 		try{
 			$pdo = Koneksi::create();
 			$stmt = $pdo->prepare(ModelAdmin::SQL_GET_ACL);
