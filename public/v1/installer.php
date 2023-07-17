@@ -72,6 +72,7 @@ function doLogin(){
 
 	//login berhasil, user valid
 	$adminId = $user['admin_id'];
+	$json = $user['json'];
 
 	$sessionId = $adminId . Security::random(24);
 	$sessionId = substr($sessionId,0, 24); //cut string max 24 char
@@ -84,7 +85,7 @@ function doLogin(){
 		die();
 	}
 
-	echo json_encode([ 'result'=>$r, 'admin_session_id'=>$sessionId, 'salt'=>$salt ]);
+	echo json_encode([ 'result'=>$r, 'admin_session_id'=>$sessionId, 'salt'=>$salt, 'username'=>$username, 'json'=>$json ]);
 }
 
 function doRegisterMacaddress(){
