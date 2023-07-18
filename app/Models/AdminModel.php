@@ -29,8 +29,15 @@ class AdminModel extends BaseModel
      * @return array|null|object
      */
     public function get($username){
-        $r = $this->where('username', $username)->find();
-        if ($r!=null) return $r[0];
+        $r = $this->select('tadmin.*, trole.role_name')
+            ->join('trole', 'tadmin.role_id = trole.role_id')
+            ->where('username', $username)
+            ->find();
+
+        if ($r != null) {
+            return $r[0];
+        }
+
         return null;
     }
 
