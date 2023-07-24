@@ -56,7 +56,7 @@ class Login extends BaseController
                 session()->set('username', $username);
                 session()->set('admin_id', $adminId);
                 session()->set('role_name', $roleName);
-                return redirect()->to('/home');
+                return redirect()->to('/dashboard');
             }
 
             //show error kalo password salah
