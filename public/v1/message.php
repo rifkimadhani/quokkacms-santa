@@ -44,8 +44,8 @@ function doGetList($stbId){
 	$subscriberId = $stb['subscriber_id'];
 	$roomId= $stb['room_id'];
 
-	$list = ModelMessage::getBySubscriberAndRoom($subscriberId, $roomId);
-	$images = ModelMessage::getAllImage($subscriberId, $roomId);
+	$list = ModelMessage::getBySubscriber($subscriberId);
+	$images = ModelMessage::getAllImage($subscriberId);
 
     $baseHost = ModelSetting::getBaseHost('../'); //turun 1 level dari posisi api ini
 

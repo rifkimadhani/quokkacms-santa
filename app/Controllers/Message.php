@@ -12,6 +12,7 @@ use App\Models\MessageForm;
 
 use App\Models\MessageMediaModel;
 use App\Models\MessageModel;
+use App\Models\NotificationModel;
 use App\Models\SubscriberModel;
 use App\Models\RoomModel;
 
@@ -142,6 +143,9 @@ class Message extends BaseController
 
         if ($r>0){
             $this->setSuccessMessage('UPDATE success');
+
+            NotificationModel::sendMessageToAll();
+
         } else {
             $this->setErrorMessage('UPDATE fail ' . $model->errMessage);
         }
