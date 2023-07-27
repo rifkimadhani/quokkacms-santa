@@ -8,6 +8,7 @@
 
 namespace App\Controllers;
 
+use App\Models\NotificationModel;
 use App\Models\RoomModel;
 use App\Models\SubscriberModel;
 use App\Models\SubscriberRoomModel;
@@ -114,6 +115,7 @@ class Subscriber extends BaseController
 
         if ($r>0){
             $this->setSuccessMessage('UPDATE success');
+            NotificationModel::sendStateToSubscriber($id);
         } else {
             $this->setErrorMessage('UPDATE fail ' . $model->errMessage);
         }
