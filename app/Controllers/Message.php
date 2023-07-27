@@ -50,7 +50,7 @@ class Message extends BaseController
     }
 
     public function insert(){
-//        $subscriberId = $_POST['subscriber_id'];
+        $subscriberId = $_POST['subscriber_id'];
 //        $title = $_POST['title'];
 //        $message = $_POST['message'];
 //        $status = $_POST['status'];
@@ -65,6 +65,9 @@ class Message extends BaseController
         $urlImage = str_replace($this->baseHost, '{BASE-HOST}', $urlImage);
 
         $media->write($messageId, $urlImage);
+
+        //kirim notifikasi ke stb
+        NotificationModel::sendMessageToSubscriber($subscriberId);
 
         return redirect()->to($this->baseUrl);
     }
@@ -143,9 +146,6 @@ class Message extends BaseController
 
         if ($r>0){
             $this->setSuccessMessage('UPDATE success');
-
-            NotificationModel::sendMessageToAll();
-
         } else {
             $this->setErrorMessage('UPDATE fail ' . $model->errMessage);
         }
