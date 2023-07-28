@@ -15,6 +15,9 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
     <a class="btn btn-secondary" href="javascript:" role="button" onclick="onClickBack()">
         <i class="fa fa-backward text-primary mr-5 "></i> Back
     </a>
+    <a class="btn btn-secondary" href="javascript:" role="button" onclick="onClickNotify()" title="Notify all stb to update theme">
+        <i class=""></i> Notify
+    </a>
     <div class="btn-group float-right">
         <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
             Options <i class="fa fa-th-large text-primary ml-5"></i>
@@ -170,6 +173,10 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
     function onClickBack() {
         event.stopPropagation();
         window.location.href = "<?=$baseUrl?>";
+    }
+    function onClickNotify() {
+        event.stopPropagation();
+        window.location.href = "<?=$baseUrl?>/notify/<?=$themeId?>";
     }
 
     function renderImage(value) {

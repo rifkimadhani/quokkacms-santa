@@ -153,6 +153,7 @@ $routes->get('/theme/edit/(:any)/(:any)', 'Theme::edit/$1/$2');
 $routes->get('/theme/delete_theme/(:any)', 'Theme::deleteTheme/$1');
 $routes->post('/theme/update', 'Theme::update');
 $routes->post('/theme/insert', 'Theme::insert');
+$routes->get('/theme/notify/(:num)', 'Theme::notify/$1');
 
 // EPG
 $routes->get('/livetv_epg', 'Livetv_EPG::index');

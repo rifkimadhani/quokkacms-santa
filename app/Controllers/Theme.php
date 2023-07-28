@@ -6,6 +6,7 @@
 
 namespace App\Controllers;
 
+use App\Models\NotificationModel;
 use App\Models\ThemeForm;
 use App\Models\ThemeModel;
 use App\Models\ThemeElementForm;
@@ -56,6 +57,16 @@ class Theme extends BaseController
         $form = new ThemeElementForm($elementData, $themeData);
 
         return view('layout/template', compact('mainview', 'primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form', 'themeElementData', 'themeId'));
+    }
+
+    /**
+     * notify ke semua stb utk update theme
+     *
+     */
+    public function notify($themeId){
+        NotificationModel::sendThemeUpdateToAll();
+        $this->setSuccessMessage('Notification sent to all stb');
+        return redirect()->to($this->baseUrl . "/detail/$themeId");
     }
 
     public function ssp($themeId)
