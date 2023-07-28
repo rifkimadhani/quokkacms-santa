@@ -36,9 +36,9 @@ class STBDevicesModel extends BaseModel
 
     const SQL_GET_IP_ALL            = 'SELECT troom.room_id,troom.subscriber_id,STB.stb_id,STB.ip_address FROM troom LEFT JOIN (SELECT troom_stb.room_id,tstb.stb_id,tstb.ip_address FROM tstb INNER JOIN troom_stb ON tstb.stb_id = troom_stb.stb_id)STB ON troom.room_id = STB.room_id WHERE STB.ip_address IS NOT NULL GROUP BY STB.ip_address ORDER BY troom.room_id ASC';
     const SQL_GET_ACTIVE_IP         = 'SELECT ip_address FROM tstb WHERE LENGTH(TRIM(ip_address))>0 AND TIMESTAMPDIFF(SECOND,last_seen,NOW())<15';
-    const SQL_GET_IP_BY_ROOM        = 'SELECT troom.room_id,troom.subscriber_id,STB.stb_id,STB.ip_address FROM troom LEFT JOIN (SELECT troom_stb.room_id,tstb.stb_id,tstb.ip_address FROM tstb INNER JOIN troom_stb ON tstb.stb_id = troom_stb.stb_id)STB ON troom.room_id = STB.room_id WHERE troom.room_id = ? ORDER BY troom.room_id ASC';
-    const SQL_GET_IP_BY_SUBSCRIBER  = 'SELECT troom.room_id,troom.subscriber_id,STB.stb_id,STB.ip_address FROM troom LEFT JOIN (SELECT troom_stb.room_id,tstb.stb_id,tstb.ip_address FROM tstb INNER JOIN troom_stb ON tstb.stb_id = troom_stb.stb_id)STB ON troom.room_id = STB.room_id WHERE troom.subscriber_id = ? ORDER BY troom.room_id ASC';
-    const SQL_GET_IP_BY_STBID       = 'SELECT troom.room_id,troom.subscriber_id,STB.stb_id,STB.ip_address FROM troom LEFT JOIN (SELECT troom_stb.room_id,tstb.stb_id,tstb.ip_address FROM tstb INNER JOIN troom_stb ON tstb.stb_id = troom_stb.stb_id)STB ON troom.room_id = STB.room_id WHERE STB.stb_id = ? ORDER BY troom.room_id ASC';
+    const SQL_GET_IP_BY_ROOM        = 'SELECT troom.room_id,troom.subscriber_id,STB.stb_id,STB.ip_address FROM troom LEFT JOIN (SELECT troom_stb.room_id,tstb.stb_id,tstb.ip_address, tstb.last_seen FROM tstb INNER JOIN troom_stb ON tstb.stb_id = troom_stb.stb_id)STB ON troom.room_id = STB.room_id WHERE troom.room_id = ? AND TIMESTAMPDIFF(SECOND,STB.last_seen,NOW())<15 ORDER BY troom.room_id ASC';
+    const SQL_GET_IP_BY_SUBSCRIBER  = 'SELECT troom.room_id,troom.subscriber_id,STB.stb_id,STB.ip_address FROM troom LEFT JOIN (SELECT troom_stb.room_id,tstb.stb_id,tstb.ip_address, tstb.last_seen FROM tstb INNER JOIN troom_stb ON tstb.stb_id = troom_stb.stb_id)STB ON troom.room_id = STB.room_id WHERE troom.subscriber_id = ? AND TIMESTAMPDIFF(SECOND,STB.last_seen,NOW())<15 ORDER BY troom.room_id ASC';
+    const SQL_GET_IP_BY_STBID       = 'SELECT troom.room_id,troom.subscriber_id,STB.stb_id,STB.ip_address FROM troom LEFT JOIN (SELECT troom_stb.room_id,tstb.stb_id,tstb.ip_address, tstb.last_seen FROM tstb INNER JOIN troom_stb ON tstb.stb_id = troom_stb.stb_id)STB ON troom.room_id = STB.room_id WHERE STB.stb_id = ? AND TIMESTAMPDIFF(SECOND,STB.last_seen,NOW())<15 ORDER BY troom.room_id ASC';
 
     const SQL_GET_ONE_BY_STBID   = 'SELECT tstb.*,troom_stb.room_id FROM tstb LEFT JOIN troom_stb ON tstb.stb_id = troom_stb.stb_id WHERE tstb.stb_id = ?';
     const SQL_GET_ONE_BY_STBNAME = 'SELECT * FROM tstb WHERE name = ?';
@@ -126,22 +126,26 @@ class STBDevicesModel extends BaseModel
      */
     public function getActiveIp()
     {
-        return  $this->db->query(self::SQL_GET_ACTIVE_IP,[])->getResult('array');
+        $db = db_connect();
+        return  $db->query(self::SQL_GET_ACTIVE_IP,[])->getResult('array');
     }
 
     public function getIPSTBDevicesByRoomID($room_id)
     {
-        return  $this->db->query(self::SQL_GET_IP_BY_ROOM,[$room_id])->getResult('array');
+        $db = db_connect();
+        return  $db->query(self::SQL_GET_IP_BY_ROOM,[$room_id])->getResult('array');
     }
 
     public function getIPSTBDevicesBySubscriberID($subscriber_id)
     {
-        return  $this->db->query(self::SQL_GET_IP_BY_SUBSCRIBER,[$subscriber_id])->getResult('array');
+        $db = db_connect();
+        return  $db->query(self::SQL_GET_IP_BY_SUBSCRIBER,[$subscriber_id])->getResult('array');
     }
 
     public function getIPSTBDevicesBySTBID($stb_id)
     {
-        return  $this->db->query(self::SQL_GET_IP_BY_STBID,[$stb_id])->getResult('array');
+        $db = db_connect();
+        return  $db->query(self::SQL_GET_IP_BY_STBID,[$stb_id])->getResult('array');
     }
 
 
