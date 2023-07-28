@@ -81,7 +81,7 @@ HTML;
      * @return string
      */
     function renderBody($dialogTitle, $formId, $form, $action, $data=[]){
-//        $action = 'http://192.168.2.7/alpha/auth/logincheck';
+        //        $action = 'http://192.168.2.7/alpha/auth/logincheck';
 
         $inputElement = '';
 
@@ -91,7 +91,7 @@ HTML;
             //skip apabila attr null
             if (is_null($attr)) continue;
 
-//            echo "\n\nitem=$item=$attr\n\n";
+            //            echo "\n\nitem=$item=$attr\n\n";
 
             //set type & hapus type dari array
             $type = $this->getAndUnset($attr, 'type'); //if (isset($value['type'])) $type = $value['type']; $type = '';
@@ -125,6 +125,11 @@ HTML;
 
                 case 'select-multiple':
                     $element = $this->renderSelectMultiple($item, $attr);
+                    break;
+                
+                // to handle json field on tadmin
+                case 'select-multiple-2':
+                    $element = $this->renderSelectMultiple2($item, $attr);
                     break;
 
                 case 'filemanager':
@@ -325,6 +330,42 @@ HTML;
         HTML;
     }
 
+    function renderSelectMultiple2($item, $data)
+    {
+        $label = $this->getAndUnset($data, 'label');
+        $required = $this->getAndUnset($data, 'required');
+        $readonly = $this->getAndUnset($data, 'readonly');
+        $options = $this->getAndUnset($data, 'options');
+        $placeholder = $this->getAndUnset($data, 'placeholder');
+    
+        // Get the selected values for the select-multiple field
+        $selectedRoles = $this->getAndUnset($data, 'selected') ?? [];
+    
+        $attr = $this->buildAttribute($data);
+    
+        $htmlOptions = '';
+        foreach ($options as $opt) {
+            $id = $opt['id'];
+            $text = $opt['value'];
+    
+            // Check if the option is selected
+            $selected = in_array($id, $selectedRoles) ? 'selected' : '';
+    
+            $htmlOptions .= "<option value='{$id}' label='{$text}' {$selected}>{$text}</option>";
+        }
+
+        return <<< HTML
+            <div class="form-group">
+                <label class="col-form-label"><b>{$label}</b></label>
+                <select name='{$item}[]' id='{$item}' class='js-example-basic-multiple form-control' multiple="multiple" {$attr} {$required} {$readonly}>
+                    {$htmlOptions}
+                </select>
+            </div>
+        HTML;
+    }
+    
+    
+
     function renderFilemanager($formId, $item, $data){
         $label = $this->getAndUnset($data, 'label');
         $required = $this->getAndUnset($data, 'required');
@@ -467,8 +508,15 @@ HTML;
      */
     function buildAttribute($data){
         $html = '';
-        foreach ($data as $attr => $value){
-            $html .= "$attr='{$value}' ";
+        foreach ($data as $attr => $value) {
+            if (is_array($value)) {
+                // convert the array of attributes into individual attributes
+                foreach ($value as $arrayAttr => $arrayValue) {
+                    $html .= "$arrayAttr='{$arrayValue}' ";
+                }
+            } else {
+                $html .= "$attr='{$value}' ";
+            }
         }
         return $html;
     }

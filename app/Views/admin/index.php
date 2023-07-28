@@ -5,7 +5,7 @@ use App\Libraries\TableBuilder;
 //create form
 $htmlEdit = $form->renderPlainDialog('formEdit');
 $htmlNew = $form->renderDialog('New User', 'formNew', "{$baseUrl}/insert");
-$htmlDelete = Dialog::renderDelete('Delete Group', 'CONFIRM DELETE');
+$htmlDelete = Dialog::renderDelete('Delete User', 'CONFIRM DELETE');
 
 //create table
 //datatable tdk mempergunakan ssp, tapi memakai hardcode
@@ -13,8 +13,10 @@ $htmlTableBody = TableBuilder::renderRow($data, ['Action'],
 function ($row){
     //function utk content pada col terakhir
     return <<<HTML
-    <a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>
-HTML;
+        <div class="text-center">
+            <a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>
+        </div>
+    HTML;
 });
 
 ?>
@@ -51,10 +53,13 @@ HTML;
 
 <script>
     var dataTable;
+    const lastCol = <?= count($fieldList) ?>;
 
     //exec when ready
     $('document').ready(function () {
         initDataTable();
+
+        initSelectMultiple();
     });
 
     function initDataTable() {
@@ -66,13 +71,22 @@ HTML;
                     columnDefs: [
                         {
                             targets: [],visible: false,searchable: false
+                        },
+                        {
+                            // action column
+                            targets: lastCol,
+                            className: "text-center"
                         }
                     ]
                 });
 
+        var roleptions = {placeholder: "Choose User's Roles here", allowClear: true, tags:true, "language": {"noResults": function(){return "No Roles Found. Please Type Role Name To Add New Role";}},escapeMarkup: function (markup) {return markup;}}
+
         // handle click on row
         $('#datalist tbody').on( 'click', 'tr', function (event)
         {
+            initSelectMultiple();
+
             event.stopPropagation();
             const data = dataTable.row( $(this)).data();
             const value = data[0];
@@ -85,6 +99,24 @@ HTML;
             {
                 $('.dialogformEdit').html(result);
                 $('.dialogformEdit').modal();
+
+                // find roles within the dialogformEdit and initialize it as a Select2 element
+                var selectRole = $('.dialogformEdit').find('.js-example-basic-multiple');
+                if (selectRole.length) {
+                    selectRole.select2(roleptions)
+                        .on('select2:unselecting', function() 
+                    {
+                        $(this).data('unselecting', true);
+                    })
+                    .on('select2:opening', function(e) 
+                    {
+                        if ($(this).data('unselecting')) 
+                        {
+                            $(this).removeData('unselecting');
+                            e.preventDefault();
+                        }
+                    });
+                }
             })
                 .always(function()
                 {

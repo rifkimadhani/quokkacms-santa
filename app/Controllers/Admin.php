@@ -31,33 +31,44 @@ class Admin extends BaseController
         $fieldList = $model->getFieldList();
         $data = $model->getAll();
 
-        $role = new RoleModel();
-        $roles = $role->getAllForSelect();
-        $form = new AdminForm($roles);
+        $roles = $model->getRolesForSelect();
+        $jsonData = [];
+        
+        $form = new AdminForm($roles, $jsonData);
 
         return view('layout/template', compact('mainview','data', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
     }
 
     public function detail($adminId){
-        $admin = new AdminModel();
-        $data = $admin->getById($adminId);
+        $model = new AdminModel();
+        $data = $model->getById($adminId);
 
-        $role = new RoleModel();
-        $roles = $role->getAllForSelect();
+        $roles = $model->getRolesForSelect();
+        $jsonData = json_decode($data['json'], true)['roles'] ?? [];
 
-        $form = new AdminForm($roles);
+        // Set the array value as the id
+        $jsonData = array_combine($jsonData, $jsonData);
 
+        $form = new AdminForm($roles, $jsonData);
+
+        // dd($jsonData);
         $urlAction = $this->baseUrl . '/update';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
     }
 
     public function insert(){
 
-        $roleId = $_POST['role_id'];
         $username = $_POST['username'];
         $password = $_POST['password'];
         $password2 = $_POST['password2'];
 
+        // check if the username already exists
+        $adminModel = new AdminModel();
+        $existingAdmin = $adminModel->get($username);
+        if ($existingAdmin) {
+            $this->setErrorMessage('Username already exists. Please choose a different username.');
+            return redirect()->to($this->baseUrl);
+        }
 
         if (empty($password)){
             $this->setErrorMessage('Password must not empty');
@@ -69,11 +80,23 @@ class Admin extends BaseController
             return redirect()->to($this->baseUrl);
         }
 
+        // check if the 'json' field is not empty and build an array from it
+        $jsonData = [];
+        if (!empty($_POST['json'])) {
+            foreach ($_POST['json'] as $role) {
+                $jsonData['roles'][] = $role;
+            }
+            $_POST['json'] = json_encode($jsonData);
+        } else {
+            $_POST['json'] = null;
+        }
+        
+
         require_once __DIR__ . '/../../library/Security.php';
         $hash = \Security::genHash($username, $password);
 
         $model = new AdminModel();
-        $messageId = $model->add(['role_id'=>$roleId, 'username'=>$username, 'hash_password'=>$hash]);
+        $messageId = $model->add(['username'=>$username, 'hash_password'=>$hash, 'json' => $_POST['json']]);
 
         $this->setSuccessMessage('New admin user create success');
 
@@ -93,6 +116,25 @@ class Admin extends BaseController
 
         //username bisa di update, tapi passwrod juga harus di rubah
         $username = $_POST['username'];
+        
+        // check if the username already exists
+        $adminModel = new AdminModel();
+        $existingAdmin = $adminModel->get($username);
+        if ($existingAdmin) {
+            $this->setErrorMessage('Username already exists. Please choose a different username.');
+            return redirect()->to($this->baseUrl);
+        }
+
+        // Check if the 'json' field is not empty and build an array from it
+        $jsonData = [];
+        if (!empty($_POST['json'])) {
+            foreach ($_POST['json'] as $role) {
+                $jsonData['roles'][] = $role;
+            }
+            $_POST['json'] = json_encode($jsonData);
+        } else {
+            $_POST['json'] = null;
+        }
 
         //password bisa di rubah tanpa merubah username
         $password = $_POST['password'];
@@ -111,8 +153,11 @@ class Admin extends BaseController
         $hash = \Security::genHash($username, $password);
 
         $model = new AdminModel();
-        $r = $model->modify($adminId, $_POST);
+        $r = $model->modify($adminId, ['username' => $username, 'json' => $_POST['json']]);
         $r = $model->modifyPassword($adminId, $hash);
+
+        // Update the 'json' field separately from the rest of the fields
+        $jsonUpdateResult = $model->modifyJson($adminId, $_POST['json']);
 
         if ($r>0){
             $this->setSuccessMessage('Update success');
