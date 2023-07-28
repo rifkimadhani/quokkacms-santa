@@ -81,12 +81,10 @@ $htmlDelete = Dialog::renderDelete('Delete STB Device', 'CONFIRM DELETE');
                         targets: [5],
                         className: "text-center",
                         render: function(data) {
-                            if (data == 0) {
-                                return '<span class="badge badge-pill badge-danger">DOWN</span>';
-                            } else if (data == 1) {
+                            if (data == 1) {
                                 return '<span class="badge badge-pill badge-success">UP</span>';
                             } else {
-                                return data; // render the original data if it's neither 0 nor 1
+                                return '<span class="badge badge-pill badge-danger">DOWN</span>';
                             }
                         }
                     },

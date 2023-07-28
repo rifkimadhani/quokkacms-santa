@@ -16,7 +16,7 @@ class STBDevicesModel extends BaseModel
                                 tstb.stb_id, tstb.name, tstb.ip_address,
                                 tstb.mac_address,
                                 tstb.location, 
-                                IF (TIMESTAMPDIFF(SECOND,tstb.last_seen,NOW())<15,1,0) status,
+                                IF (TIMESTAMPDIFF(SECOND,tstb.last_seen,NOW())<15,1,0) AS Status,
                                 tstb.last_seen,
                                 tstb.app_id,
                                 tstb.version_code,
@@ -42,6 +42,8 @@ class STBDevicesModel extends BaseModel
 
     const SQL_GET_ONE_BY_STBID   = 'SELECT tstb.*,troom_stb.room_id FROM tstb LEFT JOIN troom_stb ON tstb.stb_id = troom_stb.stb_id WHERE tstb.stb_id = ?';
     const SQL_GET_ONE_BY_STBNAME = 'SELECT * FROM tstb WHERE name = ?';
+
+    const VIEW = 'vstb_status';
 
     protected $table      = 'tstb';
     protected $primaryKey = 'stb_id';
@@ -69,7 +71,7 @@ class STBDevicesModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['stb_id', 'ip_address', 'name', 'mac_address', 'location', 'status', 'app_id', 'version_code', 'version_name', 'android_version', 'android_api', 'last_seen', 'create_date', 'update_date'];
+        return ['stb_id', 'ip_address', 'name', 'mac_address', 'location', 'Status', 'app_id', 'version_code', 'version_name', 'android_version', 'android_api', 'last_seen', 'create_date', 'update_date'];
     }
 
 
@@ -323,6 +325,6 @@ class STBDevicesModel extends BaseModel
      */
     public function getSsp()
     {
-        return $this->_getSsp($this->table, $this->primaryKey, $this->getFieldList());
+        return $this->_getSsp(self::VIEW, $this->primaryKey, $this->getFieldList());
     }
 }
