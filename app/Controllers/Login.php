@@ -38,7 +38,7 @@ class Login extends BaseController
             }
 
             $adminId = $user['admin_id'];
-            $roleName = $user['role_name'];
+            $jsonRoles = json_decode($user['json'], true);
 
             //create hash dari entry
             $hash = \Security::genHash($username, $password);
@@ -47,7 +47,7 @@ class Login extends BaseController
             if ($hash==$user['hash_password']){
                 
                 // check user role
-                if ($roleName !== 'admin') {
+                if (!in_array('admin', $jsonRoles['roles'])) {
                     $this->setErrorMessage('Only admins can log in');
                     return redirect()->to('/login');
                 }
@@ -55,7 +55,7 @@ class Login extends BaseController
                 //apabila benar maka masuk ke home
                 session()->set('username', $username);
                 session()->set('admin_id', $adminId);
-                session()->set('role_name', $roleName);
+                session()->set('role_name', 'admin');
                 return redirect()->to('/dashboard');
             }
 
