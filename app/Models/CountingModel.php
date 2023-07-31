@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class CountingModel extends Model
 {
     public $table = 'tstb';
-    const STB_COUNTING       = "SELECT SUM(CASE WHEN `status` = 1 THEN 1 ELSE 0 END)online,SUM(CASE WHEN `status` = 0 THEN 1 ELSE 0 END)offline FROM tstb";
+    const STB_COUNTING       = "SELECT SUM(CASE WHEN IF (TIMESTAMPDIFF(SECOND,tstb.last_seen,NOW()) < 15, 1, 0) = 1 THEN 1 ELSE 0 END)online, SUM(CASE WHEN IF (TIMESTAMPDIFF(SECOND,tstb.last_seen,NOW()) < 15, 1, 0) = 0 THEN 1 ELSE 0 END)offline FROM tstb";
     
     const ROOM_COUNTING      = "SELECT SUM(CASE WHEN `status` = 'OCCUPIED' THEN 1 ELSE 0 END)occupied,SUM(CASE WHEN `status` = 'VACANT' THEN 1 ELSE 0 END)vacant FROM troom";
     const GUEST_COUNTING     = "SELECT SUM(CASE WHEN DATE(checkin_date) = CURDATE() THEN 1 ELSE 0 END)checkin,SUM(CASE WHEN DATE(checkout_date) = CURDATE() THEN 1 ELSE 0 END)checkout FROM tsubscriber";
@@ -51,6 +51,7 @@ class CountingModel extends Model
     {
         $db = db_connect();
         $result = $db->query(CountingModel::GUEST_COUNTING)->getResultArray();
+        // dd($result);
 
 //        $result = $this->db->query(CountingModel::GUEST_COUNTING)->result_array();
        if($result AND count($result) > 0)
