@@ -10,6 +10,8 @@ class SettingModel extends BaseModel
     const SQL_GET = 'SELECT * FROM tsetting WHERE (setting_id=?)';
     const SQL_MODIFY = 'UPDATE tsetting SET name=?, value_int=?, value_string=? WHERE (setting_id=?)';
 
+    const SETTING_TIMEZONE = 14;
+
     protected $table      = 'tsetting';
     protected $primaryKey = 'setting_id';
     protected $allowedFields = ['setting_id', 'name', 'value_int', 'value_string', 'value_float', 'create_date', 'update_date'];
@@ -121,5 +123,11 @@ class SettingModel extends BaseModel
     public function getSsp()
     {
         return $this->_getSsp($this->table, $this->primaryKey, $this->getFieldList());
+    }
+
+    public function getTimeZone(){
+        $row = $this->get(self::SETTING_TIMEZONE);
+        if ($row==null) return null;
+        return $row['value_string'];
     }
 }

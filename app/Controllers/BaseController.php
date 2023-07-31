@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\SettingModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -27,6 +28,10 @@ abstract class BaseController extends Controller
 
     function __construct()
     {
+        $setting = new SettingModel();
+        $timeZome = $setting->getTimeZone();
+        date_default_timezone_set($timeZome);
+
         //init className & baseUrl
         $router = service('router');
         $controllerName = $router->controllerName();
