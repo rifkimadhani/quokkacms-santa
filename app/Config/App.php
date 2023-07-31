@@ -111,7 +111,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $appTimezone = 'Asia/Jakarta';
+    public $appTimezone = 'GMT'; //timezone +0000
 
     /**
      * --------------------------------------------------------------------------
