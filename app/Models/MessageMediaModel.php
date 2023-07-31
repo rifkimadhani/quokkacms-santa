@@ -34,10 +34,17 @@ class MessageMediaModel extends BaseModel
      */
     public function write($messageId, $urlImage){
 
+
         $this->db->transStart();
 
         //delete
         $this->db->query(self::SQL_WRITE_1, [$messageId]);
+
+        //url kosong tdk perlu simpan image
+        if (strlen($urlImage)==0) {
+            $this->db->transComplete();
+            return;
+        }
 
         $ar = explode(',', $urlImage);
 

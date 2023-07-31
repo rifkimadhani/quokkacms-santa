@@ -142,7 +142,7 @@ class Message extends BaseController
 
 
         $media = new MessageMediaModel();
-        $r = $media->write($id, $urlImage);
+        $media->write($id, $urlImage);
 
         if ($r>0){
             $this->setSuccessMessage('UPDATE success');
