@@ -93,7 +93,7 @@ function doChangeStatus($admin){
     require_once '../../model/ModelHotelService.php';
 
     $taskId = (empty($_GET['task_id']) ? '' : $_GET['task_id']);
-    $status = (empty($_GET['status']) ? '' : $_GET['status']);
+//    $status = (empty($_GET['status']) ? '' : $_GET['status']);
 
     $task = ModelHotelService::getOneActive($taskId);
 
@@ -105,7 +105,21 @@ function doChangeStatus($admin){
         exit();
     }
 
-    $r = ModelHotelService::updateStatus($taskId, $status, $admin['admin_id']);
+    $adminId = $admin['admin_id'];
+    $newStatus = '';
+
+    switch ($task['status']){
+        case 'NEW':
+            $newStatus = 'ACK';
+            break;
+
+        default:
+            $newStatus = 'FINISH';
+            $adminId = $task['admin_id']; //utk status terakhis, admin id di ambil dari task, shg user yg mengerjakan di awal tdk berubah
+            break;
+    }
+
+    $r = ModelHotelService::updateStatus($taskId, $newStatus, $adminId);
 
     echo json_encode(['result'=>$r]);
 }
