@@ -45,6 +45,9 @@ HTML;
         <!-- </div> -->
     <!-- </div> -->
     <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
+        <a class="btn btn-secondary" href="javascript:" role="button" onclick="onClickBack()">
+            <i class="fa fa-backward text-primary mr-5 "></i> Back
+        </a>
         <a class="btn btn-danger showNewModal" href="javascript:;" role="button" onclick="onCheckoutAll()">
             CHECKOUT
         </a>
@@ -140,5 +143,8 @@ HTML;
             window.location.href = "<?=$baseUrl?>/checkout/<?=$subscriberId?>";
         })
     }
-
+    function onClickBack() {
+        event.stopPropagation();
+        window.location.href = "<?=$baseUrl?>";
+    }
 </script>
