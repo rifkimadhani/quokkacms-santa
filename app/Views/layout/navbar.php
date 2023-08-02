@@ -12,6 +12,13 @@
 
     $fStat= ModelSetting::getFeatureLivetvStat();
     if ($fStat==0) $fStat='hidden'; else $fStat='';
+
+    $fInbox = 0; //inbox tdk butuhkan saat ini, krn inbox khusus utk mobile user
+    if ($fInbox==0) $fInbox='hidden'; else $fInbox='';
+
+    //utk saat ini shop blm di dukung, jadi di hide saja
+    $fShop = 0;
+    if ($fShop==0) $fShop='hidden'; else $fShop='';
 ?>
 <!-- Sidebar -->
 <!--
@@ -117,7 +124,7 @@
                 <li>
                     <a href="<?= base_url('message'); ?>"><i class="si si-bubbles"></i> <span class="sidebar-mini-hide">Messages</span></a>
                 </li>
-                <li>
+                <li <?=$fInbox?>>
                     <a href="<?= base_url('inbox'); ?>"><i class="si si-envelope"></i> <span class="sidebar-mini-hide">Inbox</span></a>
                 </li>
                 <li>
@@ -250,7 +257,7 @@
                     </ul>
                 </li>
                 <!-- shop START-->
-                <li>
+                <li <?=$fShop?>>
                     <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-bag"></i><span class="sidebar-mini-hide">Shop</span></a>
                     <ul>
                         <li>
@@ -265,7 +272,7 @@
                     </ul>
                 </li>
                 <!--shop END-->
-                <li>
+                <li <?=$fMarketing?>>
                     <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-badge"></i><span class="sidebar-mini-hide">Marketing</span></a>
                     <ul>
                         <li>
