@@ -39,7 +39,7 @@ class App extends BaseController
     // From apk_helper.php
     function getApkInformation($full_path)
     {
-        $engine      = 'aapt dump badging '.$full_path;
+        $engine      = 'aapt dump badging "'.$full_path.'"';
         exec($engine." 2>&1",$output,$return_var);
         if(count($output) > 0)
         {
@@ -84,70 +84,78 @@ class App extends BaseController
 
     public function insert(){
         $model = new AppModel();
-        // $r = $model->add($_POST);
-    
-        // Check if the form was submitted
-        if ($this->request->getMethod() === 'post') {
-            // Get the uploaded file data
-            $file = $this->request->getFile('apkfile');
-    
-            // Check if a file was uploaded
-            if ($file->isValid() && ! $file->hasMoved()) {
-                // Define the upload directory and allowed file types
-                $upload_dir = FCPATH . 'assets/apk/';
-                $allowed_types = ['apk'];
-    
-                // Check if the file type is allowed
-                if (in_array($file->getClientExtension(), $allowed_types)) {
-                    // Move the file to the upload directory
-                    $file->move($upload_dir);
-    
-                    // Get the full path to the uploaded file
-                    $full_path = $upload_dir . $file->getName();
-    
-                    // Get the APK information
-                    $matches = $this->getApkInformation($full_path);
-    
-                    // Check if the APK information was obtained successfully
-                    if ($matches['status'] === 'success') {
-                        // Extract the package name, version code, version name, and main activity
-                        $dataapk = $matches['data'];
-                        $packagename = $this->getPackageName($dataapk);
-                        $acktivity = $this->getMainActivity($dataapk);
-    
-                        // Save the APK data to the database
-                        $data = [
-                            'app_id' => str_replace("'", "", $packagename[0]),
-                            'version_code' => str_replace("'", "", $packagename[1]),
-                            'version_name' => str_replace("'", "", $packagename[2]),
-                            'main_activity' => str_replace("'", "", $acktivity[0]),
-                            'urlDownload' => '{BASE-HOST}/assets/apk/' . $file->getName(),
-                            'path' => $full_path
-                        ];
-                        $r = $model->insert($data);
-                        if ($r === -1) {
-                            // Delete the uploaded file and display an error message
-                            unlink($full_path);
-                            $this->setErrorMessage('Add fail ' . $model->errMessage);
-                        } else {
-                            $this->setSuccessMessage('Add success');
-                        }    
-                    } else {
+
+        if ($this->request->getMethod() != 'post') {
+            return redirect()->to($this->baseUrl);
+        }
+
+        // Get the uploaded file data
+        $file = $this->request->getFile('apkfile');
+
+        // Check if a file was uploaded
+        if ($file->isValid() && ! $file->hasMoved()) {
+            // Define the upload directory and allowed file types
+            $upload_dir = FCPATH . 'assets/apk/';
+            $allowed_types = ['apk'];
+
+            // Check if the file type is allowed
+            if (in_array($file->getClientExtension(), $allowed_types)) {
+                // Move the file to the upload directory
+                $file->move($upload_dir);
+
+                // Get the full path to the uploaded file
+                $full_path = $upload_dir . $file->getName();
+
+                // Get the APK information
+                $matches = $this->getApkInformation($full_path);
+
+                // Check if the APK information was obtained successfully
+                if ($matches['status'] === 'success') {
+                    // Extract the package name, version code, version name, and main activity
+                    $dataapk = $matches['data'];
+                    $packagename = $this->getPackageName($dataapk);
+                    $acktivity = $this->getMainActivity($dataapk);
+
+
+                    // Save the APK data to the database
+                    $data = [
+                        'app_id' => str_replace("'", "", $packagename[0]),
+                        'version_code' => str_replace("'", "", $packagename[1]),
+                        'version_name' => str_replace("'", "", $packagename[2]),
+                        'main_activity' => str_replace("'", "", $acktivity[0]),
+                        'urlDownload' => '{BASE-HOST}/assets/apk/' . $file->getName(),
+                        'path' => $full_path
+                    ];
+
+                    log_message('error', '$data');
+                    $this->varDump($data);
+
+
+
+
+                    $r = $model->insert($data);
+                    if ($r === -1) {
                         // Delete the uploaded file and display an error message
                         unlink($full_path);
-                        $msg = $matches['data'];
-                        $this->setErrorMessage('error_msg', $msg);
+                        $this->setErrorMessage('Add fail ' . $model->errMessage);
+                    } else {
+                        $this->setSuccessMessage('Add success');
                     }
                 } else {
-                    // Display an error message if the file type is not allowed
-                    $this->setErrorMessage('error_msg', 'Invalid file type. Only APK files are allowed.');
+                    // Delete the uploaded file and display an error message
+                    unlink($full_path);
+                    $msg = $matches['data'];
+                    $this->setErrorMessage('error_msg', $msg);
                 }
             } else {
-                // Display an error message if no file was uploaded
-                $this->setErrorMessage('error_msg', 'No file was uploaded.');
+                // Display an error message if the file type is not allowed
+                $this->setErrorMessage('error_msg', 'Invalid file type. Only APK files are allowed.');
             }
+        } else {
+            // Display an error message if no file was uploaded
+            $this->setErrorMessage('error_msg', 'No file was uploaded.');
         }
-    
+
         return redirect()->to($this->baseUrl);
     }
 

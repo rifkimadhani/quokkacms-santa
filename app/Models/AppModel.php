@@ -14,7 +14,7 @@ class AppModel extends BaseModel
 
     protected $table      = 'tapp';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['app_id', 'version_code', 'version_name','main_activity'];
+    protected $allowedFields = ['app_id', 'version_code', 'version_name','main_activity', 'path', 'urlDownload'];
 
     public $errCode;
     public $errMessage;
