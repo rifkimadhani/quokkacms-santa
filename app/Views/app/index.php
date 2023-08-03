@@ -13,7 +13,7 @@ $htmlDelete = Dialog::renderDelete('Delete Application', 'CONFIRM DELETE');
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
     <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformNew')">
-        <i class="fa fa-plus text-primary mr-5 "></i> Create
+        <i class="fa fa-plus text-primary mr-5 "></i> Add
     </a>
     <div class="btn-group float-right">
         <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
