@@ -24,11 +24,12 @@ class Room extends BaseController
         $model = new RoomModel();
         $fieldList = $model->getFieldList();
         $roomtypeData = $model->getTypeForSelect();
+        $stbData = $model->getStbForSelect();
 
         $themeModel= new ThemeModel();
         $themeData = $themeModel->getThemeForSelect();
 
-        $form = new RoomForm($roomtypeData, $themeData);
+        $form = new RoomForm($roomtypeData, $themeData, $stbData);
 
         return view('layout/template', compact('mainview', 'primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
     }
@@ -48,15 +49,22 @@ class Room extends BaseController
 
     public function insert(){
         $model = new RoomModel();
+        $themeId = $_POST['theme_id'];
 
         $this->normalizeData($_POST, true);
+
+        // check if theme is selected
+        if (empty($themeId)) {  
+            $this->setErrorMessage('Insert failed: Please select Theme! '. $model->errMessage);
+            return redirect()->back();
+        }
 
         $r = $model->add($_POST);
 
         if ($r>0){
             $this->setSuccessMessage('Insert success');
         } else {
-            $this->setErrorMessage('Insert fail ' . $model->errMessage);
+            $this->setErrorMessage('Insert failed ' . $model->errMessage);
         }
 
         return redirect()->to($this->baseUrl);
@@ -71,12 +79,19 @@ class Room extends BaseController
     {
         $model = new RoomModel();
         $data = $model->get($roomId);
-
         $roomtypeData = $model->getTypeForSelect();
+
+        $selectedStb = $model->getStbRoom($roomId);
+
+        $stbData = $model->getStbForSelect();
+        if (!empty($selectedStb)) {
+            $stbData = $model->getStbForEdit($selectedStb);
+        }
+
         $themeModel= new ThemeModel();
         $themeData = $themeModel->getThemeForSelect();
 
-        $form = new RoomForm($roomtypeData, $themeData);
+        $form = new RoomForm($roomtypeData, $themeData, $stbData, $selectedStb);
 
         $urlAction = $this->baseUrl . '/update';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
@@ -84,15 +99,25 @@ class Room extends BaseController
 
     public function update(){
         $model = new RoomModel();
+        $themeId = $_POST['theme_id'];
 
         $this->normalizeData($_POST);
 
-        $r = $model->modify($_POST);
+        // check if theme is selected
+        if (empty($themeId)) {  
+            $this->setErrorMessage('Update failed: Please select Theme! '. $model->errMessage);
+            return redirect()->back();
+        }
+        
+        $roomId = $_POST['room_id']; // Get the room_id from the $_POST data
+        $value = $_POST; // Pass the entire $_POST data as the $value
+    
+        $r = $model->modify($roomId, $value); // Pass both arguments to the modify() method    
 
         if ($r>0){
             $this->setSuccessMessage('Update success');
         } else {
-            $this->setErrorMessage('Update fail ' . $model->errMessage);
+            $this->setErrorMessage('Update failed ' . $model->errMessage);
         }
 
         return redirect()->to($this->baseUrl);
