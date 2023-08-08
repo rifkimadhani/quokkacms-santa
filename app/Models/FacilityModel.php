@@ -9,6 +9,8 @@ use App\Libraries\StringUtil;
 
 class FacilityModel extends BaseModel
 {
+    const VIEW = "vfacility_media";
+
     const SQL_INSERT = 'INSERT INTO tfacility (name, description) VALUES (?, ?)';
     const SQL_GET = 'SELECT * FROM tfacility WHERE (facility_id=?)';
     const SQL_MODIFY = 'UPDATE tfacility SET name=?, description=? WHERE (facility_id=?)';
@@ -42,7 +44,7 @@ class FacilityModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['facility_id', 'name', 'description', 'create_date', 'update_date'];
+        return ['facility_id', 'name', 'url_image', 'url_video', 'description', 'create_date', 'update_date'];
     }
 
     public function add($value)  {
@@ -197,6 +199,6 @@ class FacilityModel extends BaseModel
      */
     public function getSsp()
     {
-        return $this->_getSsp($this->table, $this->primaryKey, $this->getFieldList());
+        return $this->_getSsp(self::VIEW, $this->primaryKey, $this->getFieldList());
     }
 }
