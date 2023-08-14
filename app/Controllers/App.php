@@ -121,6 +121,7 @@ class App extends BaseController
                 $packagename = $this->getPackageName($dataapk);
                 $acktivity = $this->getMainActivity($dataapk);
 
+                $basePath = realpath(__DIR__ . '/../..');
 
                 // Save the APK data to the database
                 $data = [
@@ -129,7 +130,7 @@ class App extends BaseController
                     'version_name' => str_replace("'", "", $packagename[2]),
                     'main_activity' => str_replace("'", "", $acktivity[0]),
                     'urlDownload' => '{BASE-HOST}/assets/apk/' . $file->getName(),
-                    'path' => $full_path
+                    'path' => str_replace($basePath, '{BASE-PATH}', $full_path)
                 ];
 
                 try{
