@@ -67,7 +67,7 @@ function doGetApk(){
 
     //fix url download
     $baseHost = ModelSetting::getBaseHost('../'); //turun 1 level dari posisi api ini
-    $app['urlDownload'] = str_replace('{BASE_HOST}', $baseHost, $app['urlDownload']);
+    $app['urlDownload'] = str_replace('{BASE-HOST}', $baseHost, $app['urlDownload']);
 
     echo json_encode($app);
 }
