@@ -64,7 +64,18 @@ $htmlDelete = Dialog::renderDelete('Delete facility', 'CONFIRM DELETE');
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [0],visible: false,searchable: false
+                        targets: [0,3,5],visible: false,searchable: false
+                    },
+                    {
+                        targets: [1], width: '20%' 
+                    },
+                    {
+                        targets: [2],
+                        className: "text-center",
+                        width: '30%',
+                        render: function(value) {
+                            return renderImages(value);
+                        }
                     },
                     {
                         // action column
@@ -117,11 +128,32 @@ $htmlDelete = Dialog::renderDelete('Delete facility', 'CONFIRM DELETE');
 
 
         //please correct the index for name variable, sehingga message delete akan terlihat benar
-        const name = data[0];
+        const name = data[1];
 
-        showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
+        showDialogDelete('formDelete', 'Are you sure to delete info Facility ' + name, function () {
             window.location.href = "<?=$baseUrl?>/delete/" + facilityId;
         })
+    }
+
+
+    function renderImages(value) 
+    {
+        if (value) {
+            var urls = value.split(',');
+            var images = '';
+
+            for (var i = 0; i < urls.length; i++) {
+                var url = urls[i].trim();
+                if (url) {
+                    url = url.replace('{BASE-HOST}', '<?= base_url(); ?>');
+                    images += '<img src="' + url + '" class="urlimage" style="margin:5px; max-width: 300px;">';
+                }
+            }
+
+            return images;
+        }
+        
+        return ''; // render blank if there's no value
     }
 </script>
 

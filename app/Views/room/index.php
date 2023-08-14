@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PageBuilder.
- * Date: 2023-05-08 15:14:15
+ * Date: 2023-08-03 13:32:56
  */
 
 use App\Libraries\Dialog;
@@ -51,6 +51,7 @@ $htmlDelete = Dialog::renderDelete('Delete room', 'CONFIRM DELETE');
     //exec when ready
     $('document').ready(function () {
         initDataTable();
+        initSelectMultiple();
     });
 
     function initDataTable() {
@@ -60,14 +61,40 @@ $htmlDelete = Dialog::renderDelete('Delete room', 'CONFIRM DELETE');
                 responsive: true,
                 scrollX: true,
                 pageLength: 100,
-                order: [['3','desc']],
+                order: [['3','asc']],
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [0,3,5,7,11,13],visible: false,searchable: false
+                        targets: [0,10],visible: false,searchable: false
                     },
                     {
-                        targets:[13,14],render: function(data) 
+                        targets: [1],
+                        title: "ROOM"
+                    },
+                    {
+                        //stb
+                        targets: [9],
+                        className: "text-center",
+                        render: function(data) {
+                            if (data === null) {
+                                return '';
+                            }
+
+                            const STBs = data.split(",");
+                            var html = '';
+
+                            STBs.forEach(function(value) {
+                                const [name, state] = value.split('|');
+                                const badgeClass = state === '1' ? 'badge-success' : 'badge-danger';
+
+                                html += `<span class='badge badge-pill ${badgeClass}'>${name}</span>&nbsp;`;
+                            });
+
+                            return html;
+                        }
+                    },
+                    {
+                        targets:[10,11],render: function(data) 
                         {
                         if(data)
                         {
@@ -85,13 +112,16 @@ $htmlDelete = Dialog::renderDelete('Delete room', 'CONFIRM DELETE');
 
                 ]
             });
-
+        
+        var stboptions = {placeholder: "Choose STB here",allowClear: true,tags:true,"language": {"noResults": function(){return "No STB Found. Please Type STB Name To Add New STB.";}},escapeMarkup: function (markup) {return markup;}}
+        
         // handle click on row,
         //  1. ambil dialog yg sdh di isikan dgn data dari server
         //  2. kemudian dialog tsb akan di tampilkan
         //
         dataList.find('tbody').on( 'click', 'tr', function (event)
         {
+            initSelectMultiple();
             event.stopPropagation();
             const data = dataTable.row( $(this)).data();
 
@@ -107,6 +137,24 @@ $htmlDelete = Dialog::renderDelete('Delete room', 'CONFIRM DELETE');
             {
                 $('.dialogformEdit').html(result);
                 $('.dialogformEdit').modal();
+
+                // for multiple select STB
+                var selectElement = $('.dialogformEdit').find('.js-example-basic-multiple');
+                if (selectElement.length) {
+                    selectElement.select2(stboptions)
+                        .on('select2:unselecting', function() 
+                    {
+                        $(this).data('unselecting', true);
+                    })
+                    .on('select2:opening', function(e) 
+                    {
+                        if ($(this).data('unselecting')) 
+                        {
+                        $(this).removeData('unselecting');
+                        e.preventDefault();
+                        }
+                    });
+                }
             })
             .always(function()
             {
@@ -129,7 +177,7 @@ $htmlDelete = Dialog::renderDelete('Delete room', 'CONFIRM DELETE');
         //please correct the index for name variable, sehingga message delete akan terlihat benar
         const name = data[1];
 
-        showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
+        showDialogDelete('formDelete', 'Are you sure to delete Room ' + name +'?', function () {
             window.location.href = "<?=$baseUrl?>/delete/" + roomId;
         })
     }
