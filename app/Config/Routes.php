@@ -50,6 +50,11 @@ $routes->post('/login/login', 'Login::login');
 $routes->get('/login/login', 'Login::login');
 $routes->get('/login/logout', 'Login::logout');
 
+//installer
+$routes->get('/installer', 'Installer::index');
+$routes->post('/installer/ajax_install', 'Installer::ajaxInstall');
+$routes->post('/installer/installapp', 'Installer::installApp');
+
 //admin
 $routes->get('/admin', 'Admin::index');
 $routes->get('/admin/ssp', 'Admin::ssp');

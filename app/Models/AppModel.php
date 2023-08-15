@@ -7,6 +7,10 @@ namespace App\Models;
 
 class AppModel extends BaseModel
 {
+
+    const GET_LATEST_APK = 'SELECT * FROM tapp WHERE app_id = ? ORDER BY version_code DESC LIMIT 1';
+    const GET_STB_FOR_SELECT = 'SELECT stb_id as id, name as value, app_id as data FROM tstb';
+
     // const SQL_GET_ALL ='SELECT * FROM tapp WHERE app_id = ?';
     // const SQL_GET_LATEST ='SELECT B.* FROM(SELECT app_id,MAX(version_code)version_code FROM `tapp` GROUP BY tapp.app_id ORDER BY tapp.app_id ASC )A LEFT JOIN tapp B ON (A.app_id = B.app_id AND A.version_code = B.version_code)';
     // const SQL_GET_VERSION ='SELECT * FROM {$this->table} WHERE version_code = ? AND app_id = ?';
@@ -30,6 +34,17 @@ class AppModel extends BaseModel
 
     public function getFieldList(){
         return ['ID','app_id','version_code', 'version_name','main_activity'];
+    }
+
+    public function getLatestApk($app_id)
+    {
+        return db_connect()->query(self::GET_LATEST_APK, [$app_id])->getResultArray();
+    }
+
+    public function getStbForSelect()
+    {
+        $result = db_connect()->query(self::GET_STB_FOR_SELECT)->getResultArray();
+        return $result;
     }
 
     // public function findOneBy($namaColumn,$valueColumn)

@@ -28,15 +28,20 @@ class Adb
 		return self::execute($cmd);
 	}
 
+	static public function root(){
+		$cmd = "adb root";
+		return self::execute($cmd);
+	}
+
 	//req root
 	static public function mkdir($name, $path){
-		$cmd = "adb -s {$name} shell \"su -c 'mkdir {$path}'\"";
+		$cmd = "adb -s {$name} shell \"mkdir {$path}\"";
 		return self::execute($cmd);
 	}
 
 	//req root
 	static public function chmod($name, $path, $permission='777'){
-		$cmd = "adb -s {$name} shell \"su -c 'chmod {$permission} {$path}'\"";
+		$cmd = "adb -s {$name} shell \"chmod {$permission} {$path}\"";
 		return self::execute($cmd);
 	}
 
@@ -48,7 +53,6 @@ class Adb
 	//adb shell "echo {"host_api": "{HOST_API}", "time_zone": "{TIME_ZONE}", "session_id": "{SESSION_ID}"} > /data/mr/config.json"
 	static public function shell($name, $shellCmd){
 		$cmd = "adb -s {$name} shell \"{$shellCmd}\"";
-//		$cmd = 'adb shell "echo \'\"lalalala"\"\'"';
 		return self::execute($cmd);
 	}
 
