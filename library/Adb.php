@@ -81,6 +81,7 @@ class Adb
 
 	static private function execute($cmd){
 //		echo 'execute ' . $cmd;
+        $cmd = $cmd . ' 2>&1';
 		$ret = exec($cmd, $output, $retValue);
 		return ['cmd'=>$cmd, 'retValue'=>$retValue, 'retString'=>$ret, 'output'=>$output];
 	}

@@ -21,8 +21,8 @@ body::-webkit-scrollbar
     <div class="box-body">
         <form id="newForm" action="<?= $baseUrl?>/installapp" method="post">
             <div class="form-group">
-                <label class="col-form-label"><b>IP Adress</b></label>
-                <input type="text" name="ip_address" value="<?php if(isset($ip_address))echo $ip_address; ?>" required minlength="0" maxlength="15" placeholder="Masukkan IP Address Disini" autocomplete="off" class="form-control">
+                <label class="col-form-label"><b>Device IP adress</b></label>
+                <input type="text" name="ip_address" value="<?php if(isset($ip_address))echo $ip_address; ?>" required minlength="0" maxlength="15" placeholder="eg. 1.2.3.4" autocomplete="off" class="form-control">
             </div>
             <div class="form-group">
               <label class='col-form-label'><b>Latest APK</b></label>
@@ -39,9 +39,9 @@ body::-webkit-scrollbar
               </select>
             </div>
             <div class="form-group">
-              <label class='col-form-label'><b>Nama STB</b></label>
+              <label class='col-form-label'><b>Nama device</b></label>
               <select class='form-control' id='stb_name' name='stb_id' required>
-                <option value='' disabled selected >Pilih STB Devices</option>
+                <option value='' disabled selected >Pilih device</option>
                   <?php
                   if(count($stbdevices)> 0 )
                   {
@@ -55,34 +55,30 @@ body::-webkit-scrollbar
               </select>
             </div>
 
-            <!-- <div class="form-group">
-                <label class="col-form-label"><b>Nama STB</b></label>
-                <input type="text" name="stb_name" value="<?php if(isset($stb_name))echo $stb_name; ?>"  minlength="0" maxlength="100" placeholder="Masukkan Nama STB Disini" autocomplete="off" class="form-control" required="required">
-            </div>            -->
             <div class="modal-footer">
             <button type="submit" class="btn btn-primary btn-full btn-block">INSTALL APP</button>
           </div>
         </form>
     </div>
 </div>
-<div class="box" style="top:0px;">
+<div class="box">
     <div class="box-body">
-      <div class="row">
-        <div class="col-xs-12">
-            <?= view('installer/stepwizard', ['order_status'=>'new']); ?>
-<!--            --><?php //$this->load->view('stb/devices/stepwizard',['order_status'=>'new']);?>
-        </div>
+      <div id="div_connect">
       </div>
-    </div>
-    <div class="box-body">
-        <pre id="disconnect"></pre>
-        <pre id="runapk"></pre>
-        <pre id="installapk"></pre>
-        <pre id="injectconfig"></pre>
-        <pre id="pushapk"></pre>
-        <pre id="changepermission"></pre>
-        <pre id="makedir"></pre>
-        <pre id="connectdevices"></pre>
+      <div id="div_mkdir">
+      </div>
+      <div id="div_chmod">
+      </div>
+      <div id="div_pushapk">
+      </div>
+      <div id="div_pushconfig">
+      </div>
+      <div id="div_install">
+      </div>
+      <div id="div_runapp">
+      </div>
+      <div id="div_disconnect">
+      </div>
     </div>
 </div>
 
@@ -91,7 +87,7 @@ body::-webkit-scrollbar
   {
      var baseurl = "<?=$baseUrl?>";
      globalTableList = $('#datalist').DataTable({});
-      var stboptions = {containerCssClass : "show-hide",placeholder: "Pilih STB Disini",allowClear: true,tags:true,"language": {"noResults": function(){return "No STB Vacant Found.Please Type STB Name To Add New STB";}},escapeMarkup: function (markup) {return markup;}}
+      var stboptions = {containerCssClass : "show-hide",placeholder: "Pilih device",allowClear: true,tags:true,"language": {"noResults": function(){return "No STB Vacant Found.Please Type STB Name To Add New STB";}},escapeMarkup: function (markup) {return markup;}}
       $('#newForm input[name=ip_address]').inputmask({ alias: "ip"});
       jQuery('#newForm #stb_name').select2(stboptions)
       .on('select2:unselecting', function() 
@@ -114,9 +110,7 @@ body::-webkit-scrollbar
           const form = $(this);
           const urlinstall = baseurl + '/ajax_install';
 
-          $(".box-body").children('pre').hide();
-          $('.stepwizard-step').children('a').removeClass("btn-success btn-danger").addClass("btn-primary");
-          $('.progress-bar').css({width: 0 + '%'});
+          clearDiv();
 
           $.ajax({
               type: 'POST',
@@ -134,8 +128,55 @@ body::-webkit-scrollbar
   });
 
   function updateStatus(data) {
-      console.log('updateStatus');
-      console.log(data);
+//      console.log('updateStatus');
+//      console.log(data);
+
+      //connect
+      updateDiv('connect', $('#div_connect'), data.connect);
+      updateDiv('mkdir', $('#div_mkdir'), data.mkdir);
+      updateDiv('chmod', $('#div_chmod'), data.chmod);
+      updateDiv('push apk', $('#div_pushapk'), data.push_apk);
+      updateDiv('push config', $('#div_pushconfig'), data.push_config);
+      updateDiv('install', $('#div_install'), data.install);
+      updateDiv('run application', $('#div_runapp'), data.runapp);
+      updateDiv('disconnect', $('#div_disconnect'), data.disconnect);
+  }
+
+  function updateDiv(title, div, step) {
+      const text = step.retString;
+      var color = 'blue'; //default color blue
+
+      html = "<h5 style='margin-bottom: 0;'><p style='margin-bottom: 0;'>" + title + "</p></h5>";
+      html += "<p style='margin-bottom: 0;'>$ " + step.cmd + "</p>";
+
+      //set color berdasarkan response text
+      if (text.toLowerCase().indexOf('fail')>=0){
+          color = 'red';
+      }
+      if (text.toLowerCase().indexOf('error')>=0){
+          color = 'red';
+      }
+      if (text.toLowerCase().indexOf('not found')>=0){
+          color = 'red';
+      }
+
+      html += "<p style='margin-bottom: 0; color: "+color+";'>" +  text + "</p><br/>";
+
+      div.html(html);
+  }
+
+  /**
+   * hapus semua div
+   */
+  function clearDiv() {
+      $('#div_connect').html('');
+      $('#div_mkdir').html('');
+      $('#div_chmod').html('');
+      $('#div_pushapk').html('');
+      $('#div_pushconfig').html('');
+      $('#div_install').html('');
+      $('#div_runapp').html('');
+      $('#div_disconnect').html('');
   }
 </script>
 

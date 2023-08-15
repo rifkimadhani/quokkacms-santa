@@ -53,7 +53,7 @@ class ModelApp {
 		require_once __DIR__ . '/ModelStb.php';
 		require_once __DIR__ . '/ModelSetting.php';
 
-		$basePath = __DIR__ . '/..';
+		$basePath = realpath(__DIR__ . '/..');
 
 		//1. Get apk Path
 		$app = self::get($id);
@@ -102,10 +102,11 @@ class ModelApp {
 		$r2 = Adb::mkdir($name, $pathAndroid);
 //		var_dump($r);
 
+        //chmod
 		$r3 = Adb::chmod($name, $pathAndroid);
 //		var_dump($r);
 
-		//4. push apk ke path
+		//4. push apk
 		$r4 = Adb::push($name, $pathApk, $pathAndroid);
 //		var_dump($r);
 
