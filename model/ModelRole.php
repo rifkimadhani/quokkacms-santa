@@ -8,8 +8,8 @@
 
 define('role_housekeeping', 'housekeeping');
 define('role_room_service', 'room_service');
-define('role_room_concierge', 'concierge');
-define('role_room_kitchen', 'kitchen');
+define('role_concierge', 'concierge');
+define('role_kitchen', 'kitchen');
 
 class ModelRole
 {

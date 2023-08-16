@@ -26,8 +26,8 @@ require_once __DIR__ . '/../library/Log.php';
 class ModelRoomservice
 {
     const SQL_GET_ONE_ACTIVE = 'SELECT * FROM troomservice WHERE status NOT IN (\'FINISH\',\'CANCEL\',\'CANCEL_BY_SYSTEM\') AND order_code=?';
-    const SQL_GET_ACTIVE = 'SELECT vroomservice_order.*, tsubscriber_group.`name` group_name FROM vroomservice_order LEFT JOIN tsubscriber_group ON vroomservice_order.group_id = tsubscriber_group.group_id WHERE vroomservice_order.status NOT IN (\'DELIVERED\', \'CANCEL\')';
-    const SQL_GET_HISTORY = 'SELECT vroomservice_order.*, tsubscriber_group.`name` group_name FROM vroomservice_order LEFT JOIN tsubscriber_group ON vroomservice_order.group_id = tsubscriber_group.group_id WHERE vroomservice_order.status IN (\'DELIVERED\', \'CANCEL\')';
+    const SQL_GET_ACTIVE = 'SELECT vroomservice_order.*, tsubscriber_group.`name` group_name FROM vroomservice_order LEFT JOIN tsubscriber_group ON vroomservice_order.group_id = tsubscriber_group.group_id WHERE vroomservice_order.status NOT IN (\'FINISH\', \'CANCEL\')';
+    const SQL_GET_HISTORY = 'SELECT vroomservice_order.*, tsubscriber_group.`name` group_name FROM vroomservice_order LEFT JOIN tsubscriber_group ON vroomservice_order.group_id = tsubscriber_group.group_id WHERE vroomservice_order.status IN (\'FINISH\', \'CANCEL\')';
     const SQL_GET_DETAIL = 'SELECT * FROM troomservice_item WHERE order_code=?';
 
 	const SQL_GET_LIST = 'SELECT * FROM vsubsciber_order WHERE subscriber_id=? AND room_id=? AND kitchen_id=?';
