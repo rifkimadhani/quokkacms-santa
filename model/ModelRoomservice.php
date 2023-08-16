@@ -7,6 +7,14 @@
  * Time: 10:04 AM
  */
 
+define('status_new', 'NEW');
+define('status_process', 'PROCESS');
+define('status_wait_pick', 'WAIT_PICK');
+define('status_enroute', 'ENROUTE');
+define('status_delivered', 'DELIVERED');
+define('status_finish', 'FINISH');
+define('status_cancel', 'CANCEL');
+
 const PAYMENT_TYPE_BILL_TO_ROOM = 'BILL-TO-ROOM';
 const PAYMENT_TYPE_CASH = 'CASH';
 

@@ -5,6 +5,10 @@ require_once __DIR__ . '/../library/http_errorcodes.php';
 
 $errMessage = array();
 
+//ROLE
+define('ERR_ROLE_ROOMSERVICE_NOTFOUND', 100);
+$errMessage[ERR_ROLE_ROOMSERVICE_NOTFOUND] = 'Role room service not found';
+
 define('ERR_MAC_ADDRESS_IS_EMPTY', 1000);
 $errMessage[ERR_MAC_ADDRESS_IS_EMPTY] = 'MAC address is empty';
 
@@ -146,6 +150,9 @@ define('ERR_HOTELSERVICE_TASK_ALREADY_COMPLETE', 3030);
 $errMessage[ERR_HOTELSERVICE_TASK_ALREADY_COMPLETE] = 'Task already complete'; // FINISH / CANCEL / CANCEL_BY_SYSTE<
 define('ERR_ROOMSERVICE_TASK_ALREADY_COMPLETE', 3031);
 $errMessage[ERR_ROOMSERVICE_TASK_ALREADY_COMPLETE] = 'Task already complete'; // FINISH / CANCEL / CANCEL_BY_SYSTE<
+
+define('ERR_ROOMSERVICE_FOOD_NOT_READY', 3032);
+$errMessage[ERR_ROOMSERVICE_FOOD_NOT_READY] = 'Food not ready'; // FINISH / CANCEL / CANCEL_BY_SYSTE<
 
 //////////////////////////////////////////////////////////////////////////////////////
 
