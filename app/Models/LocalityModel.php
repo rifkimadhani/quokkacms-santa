@@ -63,9 +63,6 @@ class LocalityModel extends BaseModel
 
             // insert into tlocality_media
             $localityId = $this->db->insertID();
-//            $urlImage = $value['url_image'];
-
-//            $this->db->query(self::SQL_INSERT_MEDIA, [$localityId, $urlImage]);
 
             $this->db->transCommit();
 
@@ -100,8 +97,6 @@ class LocalityModel extends BaseModel
         $description = htmlentities($value['description'], ENT_QUOTES, 'UTF-8');
         $ord = $value['ord'];
 
-//        $urlImage = htmlentities($value['url_image'], ENT_QUOTES, 'UTF-8');
-
         try{
 
             $pdo = $this->openPdo();
@@ -111,11 +106,6 @@ class LocalityModel extends BaseModel
             $stmt = $pdo->prepare(self::SQL_MODIFY);
             $stmt->execute([$title, $description, $ord, $localityId]);
             $rowCount = $stmt->rowCount();
-
-            // update tlocality_media
-//            $stmt = $pdo->prepare(self::SQL_UPDATE_MEDIA);
-//            $stmt->execute([$urlImage, $localityId]);
-//            $rowCount = $stmt->rowCount();
 
             $pdo->commit();
 

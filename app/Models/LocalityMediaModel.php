@@ -69,6 +69,14 @@ class LocalityMediaModel extends BaseModel
         }
     }
 
+    public function remove($localityId){
+        $r = $this
+            ->where('locality_id', $localityId)
+            ->delete();
+
+        return $this->db->affectedRows();
+    }
+
     //return true if file with extension .mp4
     private function isVideo($filename){
         $filename = strtolower($filename);

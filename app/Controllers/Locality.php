@@ -121,6 +121,12 @@ class Locality extends BaseController
     }
 
     public function delete($localityId){
+
+        //remove media dulu
+        $media = new LocalityMediaModel();
+        $media->remove($localityId);
+
+        //remove locality
         $model = new LocalityModel();
         $r = $model->remove($localityId);
 
