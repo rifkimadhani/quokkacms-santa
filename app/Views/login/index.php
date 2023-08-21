@@ -41,7 +41,7 @@ HTML;
             /* Set the fixed height of the footer here */
             height: 50px;
             line-height: 60px; /* Vertically center the text there */
-            background-color: black;
+            /*background-color: black;*/
         }
         .field-icon {
             float: right;
@@ -64,18 +64,18 @@ HTML;
 <body style="background-color: #E8E6E6">
 
 <header>
-    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
+    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-brand" href="#">
-            <b style="color: white">ENTERTAINZ<span style="color: green"> MANAGEMENT</b></span>
-        </div>
+<!--        <div class="navbar-brand" href="#">-->
+<!--            <b style="color: white">ENTERTAINZ<span style="color: green"> MANAGEMENT</b></span>-->
+<!--        </div>-->
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav ml-auto">
 
-                <center><img src="<?= base_url('assets/entertainz.png'); ?>" class="embed-responsive-item float-left" width="200px" ></center>
+                <center><img src="<?= base_url('res/me_logo_fa_3.png'); ?>" class="embed-responsive-item float-left" width="200px" ></center>
             </ul>
 
         </div>
@@ -103,7 +103,7 @@ HTML;
                 <div class="form-group">
                     <div class="col-12 pull-left">
                         <button type="submit" class="btn btn-primary" name="login" style="border-color: #F89938; border-radius:10px; background-color: #F89938;cursor:pointer;">Login</button>
-                        <a class="forget-password" style="float:right;cursor:pointer;color:blue;">Forget Password?</a>
+<!--                        <a class="forget-password" style="float:right;cursor:pointer;color:blue;">Forget Password?</a>-->
                     </div>
                 </div>
             </form>
@@ -114,13 +114,11 @@ HTML;
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-4 col-sm-12 col-xs-12">
-                <center><img src="<?= base_url('assets/logo.png'); ?>" class="embed-responsive-item float-left" width="200px"  style="margin-top:10px;"></center>
             </div>
             <div class="col-lg-4 hidden-xs hidden-sm">
-                <p style="text-align: center; color: white">Copyright &copy Madeira Research Pte Ltd</p>
+                <p style="text-align: center; color: grey">Copyright &copy Madeira Research Pte Ltd</p>
             </div>
             <div class="col-lg-4 hidden-xs hidden-sm">
-                <p style="text-align: right; color: white"><b style="color: white">ENTERTAINZ<span style="color: green"> MANAGEMENT</b></span> Ver 1.0.1</p>
             </div>
         </div>
     </div>
