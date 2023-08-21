@@ -7,6 +7,7 @@
 
 namespace App\Controllers;
 
+use App\Models\LocalityMediaModel;
 use App\Models\LocalityModel;
 use App\Models\LocalityForm;
 
@@ -48,15 +49,13 @@ class Locality extends BaseController
 
         $r = $model->add($_POST);
 
-        // if ($r>0){
-        //     $this->setSuccessMessage('Insert success');
-        // } else {
-        //     $this->setErrorMessage('Insert fail ' . $model->errMessage);
-        // }
-        if (is_string($r)) {
-            $this->setErrorMessage($r);
+        if ($r instanceof \PDOException) {
+            $this->setErrorMessage($r->getMessage());
         } else {
             $this->setSuccessMessage('Insert success');
+
+            $media = new LocalityMediaModel();
+            $media->modify($r, $_POST['url_media']);
         }
 
         return redirect()->to($this->baseUrl);
@@ -69,9 +68,28 @@ class Locality extends BaseController
      */
     public function edit($localityId)
     {
+        $media = new LocalityMediaModel();
+        $list = $media->get($localityId);
+
+        $url_media = '';
+        foreach ($list as &$item){
+            $image = $item['url_image'];
+            $video = $item['url_video'];
+
+            //pilih salah satu, image / video
+            $media = (strlen($video)>0) ? $video : $image;
+
+            //merge dalam $url_media
+            if (strlen($url_media)==0){
+                $url_media = $media;
+            } else {
+                $url_media .= ',' . $media;
+            }
+        }
+
         $model = new LocalityModel();
         $data = $model->get($localityId);
-
+        $data['url_media'] = str_replace('{BASE-HOST}', $this->baseHost, $url_media);
 
         $form = new LocalityForm();
 
@@ -84,10 +102,17 @@ class Locality extends BaseController
 
         $this->normalizeData($_POST);
 
+        //simpan data locality
         $r = $model->modify($_POST);
 
         if ($r>0){
             $this->setSuccessMessage('Update success');
+
+            //simpan image / video
+            $localityId = $_POST['locality_id'];
+            $media = new LocalityMediaModel();
+            $media->modify($localityId, $_POST['url_media']);
+
         } else {
             $this->setErrorMessage('Update fail ' . $model->errMessage);
         }
@@ -116,6 +141,8 @@ class Locality extends BaseController
      */
     protected function normalizeData(&$data, $isInsert=false){
 
+        //conversikan url --> {BASE-HOST}
+        $data['url_media'] = str_replace($this->baseHost, '{BASE-HOST}', $data['url_media']);
     }
 
     /**

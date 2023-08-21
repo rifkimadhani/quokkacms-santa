@@ -63,11 +63,13 @@ class LocalityModel extends BaseModel
 
             // insert into tlocality_media
             $localityId = $this->db->insertID();
-            $urlImage = $value['url_image'];
+//            $urlImage = $value['url_image'];
 
-            $this->db->query(self::SQL_INSERT_MEDIA, [$localityId, $urlImage]);
+//            $this->db->query(self::SQL_INSERT_MEDIA, [$localityId, $urlImage]);
 
             $this->db->transCommit();
+
+            return $localityId;
         }
         catch (\Exception $e){
             $this->db->transRollback();
@@ -75,10 +77,8 @@ class LocalityModel extends BaseModel
             $this->errCode = $e->getCode();
             $this->errMessage = "Insert failed: ".$e->getMessage();
 
-            return $this->errMessage;
+            return $e;
         }
-
-        return $this->db->affectedRows();
     }
 
     /**
@@ -100,7 +100,7 @@ class LocalityModel extends BaseModel
         $description = htmlentities($value['description'], ENT_QUOTES, 'UTF-8');
         $ord = $value['ord'];
 
-        $urlImage = htmlentities($value['url_image'], ENT_QUOTES, 'UTF-8');
+//        $urlImage = htmlentities($value['url_image'], ENT_QUOTES, 'UTF-8');
 
         try{
 
@@ -113,9 +113,9 @@ class LocalityModel extends BaseModel
             $rowCount = $stmt->rowCount();
 
             // update tlocality_media
-            $stmt = $pdo->prepare(self::SQL_UPDATE_MEDIA);
-            $stmt->execute([$urlImage, $localityId]);
-            $rowCount = $stmt->rowCount();
+//            $stmt = $pdo->prepare(self::SQL_UPDATE_MEDIA);
+//            $stmt->execute([$urlImage, $localityId]);
+//            $rowCount = $stmt->rowCount();
 
             $pdo->commit();
 
