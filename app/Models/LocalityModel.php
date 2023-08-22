@@ -45,7 +45,8 @@ class LocalityModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['locality_id', 'title', 'description', 'create_date', 'update_date', 'ord'];
+//        return ['locality_id', 'title', 'description', 'create_date', 'update_date', 'ord'];
+        return ['locality_id', 'title', 'url_image', 'url_video', 'description', 'ord', 'create_date', 'update_date'];
     }
 
     public function add($value)  {
@@ -137,8 +138,9 @@ class LocalityModel extends BaseModel
      *
      * @return mixed
      */
-    public function getSsp()
+    public function getSspCustom()
     {
-        return $this->_getSsp($this->table, $this->primaryKey, $this->getFieldList());
+        $query = "SELECT `tlocality`.`locality_id`, `tlocality`.`title`, group_concat( `tlocality_media`.`url_image` SEPARATOR ',' ) AS `url_image`, group_concat( `tlocality_media`.`url_video` SEPARATOR ',' ) AS `url_video`, `tlocality`.`description`, `tlocality`.`ord`, `tlocality`.`create_date`, `tlocality`.`update_date` FROM ( `tlocality` LEFT JOIN `tlocality_media` ON ( `tlocality`.`locality_id` = `tlocality_media`.`locality_id` )) GROUP BY `tlocality`.`locality_id`";
+        return $this->_getSspCustom($query, $this->getFieldList());
     }
 }

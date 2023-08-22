@@ -19,7 +19,7 @@ class Locality extends BaseController
 
         $mainview = 'locality/index';
         $primaryKey = 'locality_id';
-        $pageTitle = 'Locality';
+        $pageTitle = 'Tourist info';
 
         $model = new LocalityModel();
         $fieldList = $model->getFieldList();
@@ -35,7 +35,7 @@ class Locality extends BaseController
 
         header('Content-Type: application/json');
 
-        $data = $model->getSsp();
+        $data = $model->getSspCustom();
 
         self::sspDataConversion($data);
 

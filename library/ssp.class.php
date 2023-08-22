@@ -216,6 +216,41 @@ class SSP {
 		return $where;
 	}
 
+    /**
+     * perform ssp using custom query, function ini di modif dari self::simple
+     *
+     * @param $request
+     * @param $conn
+     * @param $query
+     * @param $columns
+     * @return array
+     */
+    static function custom( $request, $conn, $query, $columns )
+    {
+        $bindings = array();
+        $db = self::db( $conn );
+
+        // Main query to actually get the data
+        $data = self::sql_exec( $db, $bindings, $query);
+
+        // Data set length after filtering or total
+        $resFilterLength = self::sql_exec( $db, $bindings,
+            "SELECT COUNT(*) AS order_count FROM ({$query}) AS subquery;"
+        );
+        $recordsTotal = $recordsFiltered = $resFilterLength[0][0];
+
+        /*
+         * Output
+         */
+        return array(
+            "draw"            => isset ( $request['draw'] ) ?
+                intval( $request['draw'] ) :
+                0,
+            "recordsTotal"    => intval( $recordsTotal ),
+            "recordsFiltered" => intval( $recordsFiltered ),
+            "data"            => self::data_output( $columns, $data )
+        );
+    }
 
 	/**
 	 * Perform the SQL queries needed for an server-side processing requested,
