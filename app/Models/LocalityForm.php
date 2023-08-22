@@ -18,7 +18,7 @@ class LocalityForm extends BaseForm
     {
         $this->locality_id = ['type'=>'varchar', 'label'=>'Locality Id', 'readonly'=>'readonly' ];
         $this->title = ['type'=>'varchar', 'label'=>'Title', 'placeholder'=>'', 'required'=>''];
-        $this->description = ['type'=>'varchar', 'label'=>'Description', 'placeholder'=>'', 'required'=>''];
+        $this->description = ['type'=>'text', 'label'=>'Description', 'placeholder'=>'Enter description here', 'rows'=>'8'];
         $this->url_media     = ['type'=>'filemanager','label'=>'Image','placeholder'=>''];
         $this->ord = ['type'=>'numeric', 'label'=>'Ord', 'placeholder'=>'', 'required'=>''];
     }
