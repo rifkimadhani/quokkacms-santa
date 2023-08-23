@@ -12,6 +12,11 @@
  *
  */
 
+require_once __DIR__ . '/../../library/Log.php';
+Log::writeRequestUri();
+
+exit();
+
 require_once __DIR__ . '/../../config/ErrorAPI.php';
 require_once __DIR__ . '/../../model/ModelSetting.php';
 require_once __DIR__ . '/../../model/ModelMovie.php';
