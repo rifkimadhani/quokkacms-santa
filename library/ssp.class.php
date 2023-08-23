@@ -240,11 +240,17 @@ class SSP {
 
         $data = self::sql_exec( $db, $bindings, $finalQuery);
 
-        // Data set length after filtering or total
+        // Data set length after filtering
         $resFilterLength = self::sql_exec( $db, $bindings,
-            "SELECT COUNT(*) AS order_count FROM ({$query}) AS subquery;"
+            "SELECT COUNT(*) FROM ({$query}) as sub {$where};"
         );
-        $recordsTotal = $recordsFiltered = $resFilterLength[0][0];
+        $recordsFiltered = $resFilterLength[0][0];
+
+        // Total data set length
+        $resTotalLength = self::sql_exec( $db, $bindings,
+            "SELECT COUNT(*) AS order_count FROM ({$query}) AS sub;"
+        );
+        $recordsTotal = $resTotalLength[0][0];
 
         /*
          * Output
