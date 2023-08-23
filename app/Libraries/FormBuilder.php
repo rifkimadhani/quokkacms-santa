@@ -481,8 +481,8 @@ HTML;
 
         return <<< HTML
             <div class="form-group">
-            <label class='col-form-label'><b>{$label}</b></label>
             <input name='{$item}' id='{$item}' type='checkbox' value='{$value}' {$checked} {$attr} {$required} {$readonly}><label class='form-check-label' for='inlineCheckbox1'></label>
+            <label class='col-form-label'><b>{$label}</b></label>
             </div>
 HTML;
     }
