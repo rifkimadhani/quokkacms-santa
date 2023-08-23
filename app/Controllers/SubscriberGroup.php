@@ -17,12 +17,24 @@ class SubscriberGroup extends BaseController
     public function index()
     {
         $baseUrl = $this->getBaseUrl();
-        // $modal = view('util/modal');
-        // $modalPreview = view('util/modal-image-preview');
 
         $mainview = "subscriber_group/index";
         $primary = 'group_id';
         $pageTitle = 'Guest group';
+
+        $group = new SubscriberGroupModel();
+        $fieldList = $group->getFieldList();
+
+        return view('layout/template', compact('mainview','primary', 'fieldList', 'pageTitle', 'baseUrl'));
+    }
+
+    public function history()
+    {
+        $baseUrl = $this->getBaseUrl();
+
+        $mainview = "subscriber_group/history";
+        $primary = 'group_id';
+        $pageTitle = 'Guest group (history)';
 
         $group = new SubscriberGroupModel();
         $fieldList = $group->getFieldList();
@@ -35,7 +47,15 @@ class SubscriberGroup extends BaseController
         $group = new SubscriberGroupModel();
 
         $this->response->setContentType("application/json");
-        echo json_encode($group->getSsp());
+        echo json_encode($group->getSsp(true));
+    }
+
+    public function sspHistory()
+    {
+        $group = new SubscriberGroupModel();
+
+        $this->response->setContentType("application/json");
+        echo json_encode($group->getSsp(false));
     }
 
 //    public function detail(int $message_id)

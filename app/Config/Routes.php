@@ -83,7 +83,9 @@ $routes->post('/subscriber/update', 'Subscriber::update');
 
 //subscriber group
 $routes->get('/subscribergroup', 'SubscriberGroup::index');
+$routes->get('/subscribergroup/history', 'SubscriberGroup::history');
 $routes->get('/subscribergroup/ssp', 'SubscriberGroup::ssp');
+$routes->get('/subscribergroup/ssp_history', 'SubscriberGroup::sspHistory');
 $routes->get('/subscribergroup/edit/(:num)', 'SubscriberGroup::edit/$1');
 $routes->get('/subscribergroup/delete/(:num)', 'SubscriberGroup::delete/$1');
 $routes->post('/subscribergroup/insert', 'SubscriberGroup::insert');

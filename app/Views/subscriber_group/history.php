@@ -10,11 +10,8 @@ $htmlDelete = Dialog::renderDelete('Delete Group', 'CONFIRM DELETE');
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
-    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformNew')">
-        <i class="fa fa-plus text-primary mr-5 "></i> Create Group
-    </a>
-    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showHistory()">
-        <i class="fa fa-list text-primary mr-5 "></i> Show history
+    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showActive()">
+        <i class="fa fa-backward text-primary mr-5 "></i> Back
     </a>
     <div class="btn-group float-right">
         <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
@@ -43,7 +40,7 @@ $htmlDelete = Dialog::renderDelete('Delete Group', 'CONFIRM DELETE');
 
 <script>
     var dataTable;
-    const urlSsp = "<?= $baseUrl ?>/ssp";
+    const urlSsp = "<?= $baseUrl ?>/ssp_history";
     const lastCol = <?= count($fieldList) ?>;
 
     //exec when ready
@@ -65,7 +62,7 @@ $htmlDelete = Dialog::renderDelete('Delete Group', 'CONFIRM DELETE');
                         targets: [],visible: false,searchable: false
                     },
                     {
-                        targets:[3,4],render: function(data)
+                        targets:[3,4],render: function(data) 
                         {
                         if(data)
                         {
@@ -122,8 +119,7 @@ $htmlDelete = Dialog::renderDelete('Delete Group', 'CONFIRM DELETE');
             window.location.href = "<?=$baseUrl?>/delete/" + groupId;
         })
     }
-
-    function showHistory() {
-        window.location.href = "<?=$baseUrl?>/history";
+    function showActive() {
+        window.location.href = "<?=$baseUrl?>";
     }
 </script>

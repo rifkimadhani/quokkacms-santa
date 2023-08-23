@@ -101,8 +101,9 @@ class SubscriberGroupModel extends BaseModel
      *
      * @return mixed
      */
-    public function getSsp()
+    public function getSsp($isActive)
     {
-        return $this->_getSsp($this->table, $this->primaryKey, $this->getFieldList());
+        $where = ($isActive) ? 'status=\'ACTIVE\'' : 'status=\'INACTIVE\'';
+        return $this->_getSspComplex($this->table, $this->primaryKey, $this->getFieldList(), $where);
     }
 }
