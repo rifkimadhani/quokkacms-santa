@@ -67,7 +67,7 @@ $htmlDelete = Dialog::renderDelete('Delete vod', 'CONFIRM DELETE');
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [6,13,14,15,18],visible: false,searchable: false
+                        targets: [0,2,3,4,5,6,7,8,9,10,12,13,14],visible: false,searchable: false
                     },
                     {
                         targets:[7],className: "popupimage",
@@ -83,28 +83,6 @@ $htmlDelete = Dialog::renderDelete('Delete vod', 'CONFIRM DELETE');
                             return '<img src="<?= base_url("assets/notfound.png") ?>" width="50px" height="100px;" class="urlimage">';
                         },
                         width:100
-                    },
-                    {
-                        //rooms
-                        targets:[2], render: function(data)
-                        {
-                            const genre = data.split(",");
-                            var html = '';
-                            genre.forEach(function(value){
-                                html += "<span class='badge badge-pill badge-primary'>"+value+"</span>";
-                            });
-                            return html;
-                        }
-                    },
-                    {
-                        targets:[18,19],render: function(data) 
-                        {
-                        if(data)
-                        {
-                            return datetostring.datetimetoindonesia(data)
-                        }
-                        return '';
-                        }
                     },
                     {
                         // action column

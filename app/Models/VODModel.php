@@ -12,6 +12,7 @@ class VODModel extends BaseModel
     const VIEW = 'vvod';
 
     const SQL_GET = 'SELECT * FROM tvod WHERE (vod_id=?)';
+    const SQL_SSP = 'select `tvod`.`vod_id` AS `vod_id`,`tvod`.`title` AS `title`,group_concat(`tgenre`.`genre` separator \',\') AS `genres`,`tvod`.`description` AS `description`,`tvod`.`rating_value` AS `rating_value`,`tvod`.`rating_count` AS `rating_count`,`tvod`.`image_poster` AS `image_poster`,`tvod`.`url_stream1` AS `url_stream1`,`tvod`.`url_poster` AS `url_poster`,`tvod`.`url_trailer` AS `url_trailer`,`tvod`.`duration` AS `duration`,`tvod`.`price` AS `price`,`tvod`.`year_release` AS `year_release`,`tvod`.`production` AS `production`,`tvod`.`create_date` AS `create_date`,`tvod`.`update_date` AS `update_date` from ((`tvod` join `tvod_genre` on(`tvod_genre`.`vod_id` = `tvod`.`vod_id`)) join `tgenre` on(`tgenre`.`genre_id` = `tvod_genre`.`genre_id`)) group by `tvod`.`vod_id`';
     // const SQL_MODIFY = 'UPDATE tvod SET title=?, description=?, rating_value=?, rating_count=?, url_stream1=?, url_poster=?, url_trailer=?, duration=?, price=?, year_release=?, currency=?, production=?, mpaa_rating=?, lang_code=? WHERE (vod_id=?)';
     // const SQL_MODIFY_GENRE = 'UPDATE tvod_genre SET genre_id=? WHERE vod_id=?';
 
@@ -63,9 +64,8 @@ class VODModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['vod_id', 'title', 'genre', 'description', 'rating_value', 'rating_count', 'image_poster', 'url_poster', 'url_stream1', 'url_trailer', 'duration', 'currency', 'price', 'path_poster', 'path_trailer', 'path_stream1', 'year_release', 'production','create_date', 'update_date'];
+        return ['vod_id', 'title', 'genres', 'description', 'rating_value', 'rating_count', 'image_poster', 'url_stream1', 'url_poster', 'url_trailer', 'duration', 'price', 'year_release', 'production', 'create_date', 'update_date'];
     }
-    
 
     public function add($value)
     {
@@ -291,6 +291,6 @@ class VODModel extends BaseModel
      */
     public function getSsp()
     {
-        return $this->_getSsp(self::VIEW, $this->primaryKey, $this->getFieldList());
+        return $this->_getSspCustom(self::SQL_SSP, $this->getFieldList());
     }
 }
