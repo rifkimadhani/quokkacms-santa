@@ -35,7 +35,7 @@ class Locality extends BaseController
 
         header('Content-Type: application/json');
 
-        $data = $model->getSspCustom();
+        $data = $model->getSsp();
 
         self::sspDataConversion($data);
 

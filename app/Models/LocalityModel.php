@@ -9,6 +9,8 @@ use App\Libraries\SSP;
 
 class LocalityModel extends BaseModel
 {
+    const SQL_SSP = "SELECT `tlocality`.`locality_id`, `tlocality`.`title`, group_concat( `tlocality_media`.`url_image` SEPARATOR ',' ) AS `url_image`, group_concat( `tlocality_media`.`url_video` SEPARATOR ',' ) AS `url_video`, `tlocality`.`description`, `tlocality`.`ord`, `tlocality`.`create_date`, `tlocality`.`update_date` FROM ( `tlocality` LEFT JOIN `tlocality_media` ON ( `tlocality`.`locality_id` = `tlocality_media`.`locality_id` )) GROUP BY `tlocality`.`locality_id`";
+
     const SQL_GET = 'SELECT * FROM tlocality WHERE (locality_id=?)';
     // const SQL_GET_MEDIA = 'SELECT tlocality.*, tlocality_media.url_image FROM tlocality LEFT JOIN tlocality_media ON tlocality.locality_id = tlocality_media.locality_id WHERE tlocality.locality_id = ?';
     const SQL_GET_ALL = 'SELECT tlocality.locality_id, tlocality.title, tlocality.description, tlocality_media.url_image, tlocality.ord FROM tlocality LEFT JOIN tlocality_media ON tlocality.locality_id = tlocality_media.locality_id ORDER BY tlocality.locality_id DESC';
@@ -138,9 +140,8 @@ class LocalityModel extends BaseModel
      *
      * @return mixed
      */
-    public function getSspCustom()
+    public function getSsp()
     {
-        $query = "SELECT `tlocality`.`locality_id`, `tlocality`.`title`, group_concat( `tlocality_media`.`url_image` SEPARATOR ',' ) AS `url_image`, group_concat( `tlocality_media`.`url_video` SEPARATOR ',' ) AS `url_video`, `tlocality`.`description`, `tlocality`.`ord`, `tlocality`.`create_date`, `tlocality`.`update_date` FROM ( `tlocality` LEFT JOIN `tlocality_media` ON ( `tlocality`.`locality_id` = `tlocality_media`.`locality_id` )) GROUP BY `tlocality`.`locality_id`";
-        return $this->_getSspCustom($query, $this->getFieldList());
+        return $this->_getSspCustom(self::SQL_SSP, $this->getFieldList());
     }
 }
