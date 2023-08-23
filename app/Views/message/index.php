@@ -53,6 +53,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
             .DataTable(
             {
                 ajax: urlSsp,
+                serverSide: true,
                 responsive: true,
                 "scrollX":true,
                 pageLength: 100,
