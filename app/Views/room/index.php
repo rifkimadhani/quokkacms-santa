@@ -58,9 +58,10 @@ $htmlDelete = Dialog::renderDelete('Delete room', 'CONFIRM DELETE');
         dataTable = dataList.DataTable(
             {
                 ajax: urlSsp,
+                serverSide: true,
                 responsive: true,
                 scrollX: true,
-                pageLength: 100,
+                pageLength: 10,
                 order: [['3','asc']],
                 columnDefs: [
                     {
