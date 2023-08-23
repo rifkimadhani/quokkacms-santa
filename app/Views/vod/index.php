@@ -67,10 +67,10 @@ $htmlDelete = Dialog::renderDelete('Delete vod', 'CONFIRM DELETE');
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [0,2,3,4,5,6,7,8,9,10,12,13,14],visible: false,searchable: false
+                        targets: [],visible: false,searchable: false
                     },
                     {
-                        targets:[7],className: "popupimage",
+                        targets:[1],className: "popupimage",
                         className: "text-center",
                         render: function(data) 
                         {        

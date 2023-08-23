@@ -64,7 +64,7 @@ class VODModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['vod_id', 'title', 'genres', 'description', 'rating_value', 'rating_count', 'image_poster', 'url_stream1', 'url_poster', 'url_trailer', 'duration', 'price', 'year_release', 'production', 'create_date', 'update_date'];
+        return ['vod_id', 'url_poster', 'title', 'price', 'update_date'];
     }
 
     public function add($value)

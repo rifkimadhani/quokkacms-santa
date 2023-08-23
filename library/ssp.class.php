@@ -231,7 +231,14 @@ class SSP {
         $db = self::db( $conn );
 
         // Main query to actually get the data
-        $data = self::sql_exec( $db, $bindings, $query);
+        $fields = '`' . implode("`, `", self::pluck($columns, 'db')) . '`';
+        $finalQuery = "SELECT {$fields} FROM ({$query}) as sub";
+
+
+        log_message('error', $finalQuery);
+
+
+        $data = self::sql_exec( $db, $bindings, $finalQuery);
 
         // Data set length after filtering or total
         $resFilterLength = self::sql_exec( $db, $bindings,
