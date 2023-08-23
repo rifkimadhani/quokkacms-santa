@@ -89,18 +89,19 @@ class Setting extends BaseController
         return redirect()->to($this->baseUrl);
     }
 
-    public function delete($settingId){
-        $model = new SettingModel();
-        $r = $model->remove($settingId);
-
-        if ($r>0){
-            $this->setSuccessMessage('Delete success');
-        } else {
-            $this->setErrorMessage('Delete fail');
-        }
-
-        return redirect()->to($this->baseUrl);
-    }
+    //delete tdk di pakai pada setting, krn tdk boleh di hapus
+//    public function delete($settingId){
+//        $model = new SettingModel();
+//        $r = $model->remove($settingId);
+//
+//        if ($r>0){
+//            $this->setSuccessMessage('Delete success');
+//        } else {
+//            $this->setErrorMessage('Delete fail');
+//        }
+//
+//        return redirect()->to($this->baseUrl);
+//    }
 
     /**
      * melaukan proses normalisasi data apabila di butuhkan

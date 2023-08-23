@@ -67,7 +67,7 @@ $htmlDelete = Dialog::renderDelete('Delete setting', 'CONFIRM DELETE');
                         // action column
                         targets: lastCol,
                         className: "text-center",
-                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
+                        defaultContent: ''
                     }
 
                 ]
