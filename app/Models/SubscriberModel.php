@@ -13,6 +13,9 @@ class SubscriberModel extends BaseModel
     const VIEW = 'vsubscriber';
     const PK = 'Subscriber ID'; //primary key yg di pergunakan pada SSP
 
+    const SQL_SSP_CHECKIN = 'select `tsubscriber`.`subscriber_id` AS `Subscriber ID`,concat(`tsubscriber`.`name`,\' \',`tsubscriber`.`last_name`) AS `Full name`,`ttheme`.`name` AS `theme`,`tpackage`.`name` AS `package`,group_concat(`troom`.`name` separator \',\') AS `Room`,`tsubscriber`.`status` AS `status`,`tsubscriber`.`checkin_date` AS `Checkin Date`,`tsubscriber`.`checkout_date` AS `Checkout Date`,`tsubscriber`.`create_date` AS `Create Date`,`tsubscriber`.`update_date` AS `Update Date`,`tsubscriber_group`.`name` AS `group_name` from (((((`tsubscriber` left join `tsubscriber_room` on(`tsubscriber`.`subscriber_id` = `tsubscriber_room`.`subscriber_id`)) left join `tsubscriber_group` on(`tsubscriber`.`group_id` = `tsubscriber_group`.`group_id`)) join `troom` on(`tsubscriber_room`.`room_id` = `troom`.`room_id`)) left join `ttheme` on(`tsubscriber`.`theme_id` = `ttheme`.`theme_id`)) left join `tpackage` on(`tsubscriber`.`package_id` = `tpackage`.`package_id`)) where `tsubscriber`.`status` = \'CHECKIN\' group by `tsubscriber`.`subscriber_id`';
+    const SQL_SSP_HISTORY= 'select `tsubscriber`.`subscriber_id` AS `Subscriber ID`,concat(`tsubscriber`.`name`,\' \',`tsubscriber`.`last_name`) AS `Full name`,`ttheme`.`name` AS `theme`,`tpackage`.`name` AS `package`,group_concat(`troom`.`name` separator \',\') AS `Room`,`tsubscriber`.`status` AS `status`,`tsubscriber`.`checkin_date` AS `Checkin Date`,`tsubscriber`.`checkout_date` AS `Checkout Date`,`tsubscriber`.`create_date` AS `Create Date`,`tsubscriber`.`update_date` AS `Update Date`,`tsubscriber_group`.`name` AS `group_name` from (((((`tsubscriber` left join `tsubscriber_room` on(`tsubscriber`.`subscriber_id` = `tsubscriber_room`.`subscriber_id`)) left join `tsubscriber_group` on(`tsubscriber`.`group_id` = `tsubscriber_group`.`group_id`)) join `troom` on(`tsubscriber_room`.`room_id` = `troom`.`room_id`)) left join `ttheme` on(`tsubscriber`.`theme_id` = `ttheme`.`theme_id`)) left join `tpackage` on(`tsubscriber`.`package_id` = `tpackage`.`package_id`)) where `tsubscriber`.`status` <> \'CHECKIN\' group by `tsubscriber`.`subscriber_id`';
+
     const SQL_ADD_1 = 'INSERT INTO tsubscriber (group_id, salutation, name, last_name, status, checkin_date) VALUES (?,?,?,?,?,now())';
     const SQL_ADD_2 = 'UPDATE troom SET subscriber_id=?, status=? WHERE status=\'VACANT\' AND room_id=?';
     const SQL_ADD_3 = 'INSERT INTO tsubscriber_room (subscriber_id, room_id, checkin_date, status) VALUES (?, ?, now(), ?)';
@@ -124,9 +127,10 @@ class SubscriberModel extends BaseModel
         return $db->query(self::SQL_GET_FOR_SELECT)->getResult('array');
     }
 
-    public function getSsp()
+    public function getSsp($isCheckin)
     {
-        return $this->_getSsp(self::VIEW, self::PK, $this->getFieldList());
+        $query = ($isCheckin) ? self::SQL_SSP_CHECKIN : self::SQL_SSP_HISTORY;
+        return $this->_getSspCustom($query, $this->getFieldList());
     }
 
     /**

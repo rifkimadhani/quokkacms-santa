@@ -73,7 +73,9 @@ $routes->get('/dashboard', 'Dashboard::index');
 
 //subscriber / guest
 $routes->get('/subscriber', 'Subscriber::index');
+$routes->get('/subscriber/history', 'Subscriber::history');
 $routes->get('/subscriber/ssp', 'Subscriber::ssp');
+$routes->get('/subscriber/ssp_history', 'Subscriber::sspHistory');
 $routes->get('/subscriber/detail/(:num)', 'Subscriber::detail/$1');
 $routes->get('/subscriber/sspRoom/(:num)', 'Subscriber::sspRoom/$1');
 $routes->get('/subscriber/checkout/(:num)', 'Subscriber::checkout/$1');

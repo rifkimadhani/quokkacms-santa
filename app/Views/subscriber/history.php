@@ -7,11 +7,8 @@ $htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
-    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformNew')">
-        <i class="fa fa-plus text-primary mr-5 "></i> Add Guest
-    </a>
-    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showHistory()">
-        <i class="fa fa-list text-primary mr-5 "></i> Show history
+    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showCheckin()">
+        <i class="fa fa-backward text-primary mr-5 "></i> Back
     </a>
     <div class="btn-group float-right">
         <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
@@ -43,7 +40,7 @@ $htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
 <script>
     var dataTable;
     const primaryKey = "<?=$primaryKey?>";
-    const urlSsp = "<?= $baseUrl ?>/ssp";
+    const urlSsp = "<?= $baseUrl ?>/ssp_history";
     const lastCol = <?= count($fieldList) ?>;
 
     //exec when ready
@@ -61,7 +58,7 @@ $htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
                 ajax: urlSsp,
                 serverSide: true,
                 responsive: true,
-                scrollX: true,
+                "scrollX":true,
                 pageLength: 50,
                 order: [['1','asc']],
                 columnDefs: [
@@ -122,8 +119,8 @@ $htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
         })
     }
 
-    function showHistory(event, that) {
-        window.location.href = "<?=$baseUrl?>/history";
+    function showCheckin(event, that) {
+        window.location.href = "<?=$baseUrl?>";
     }
 
 </script>

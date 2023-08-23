@@ -43,12 +43,46 @@ class Subscriber extends BaseController
         return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
     }
 
+    public function history()
+    {
+        $pageTitle = 'Guest (history)';
+
+        $baseUrl = $this->baseUrl;
+        $mainview = "subscriber/history";
+        $primaryKey = 'subscriber_id';
+
+        //ambil record room2 yg vacant
+        $room = new RoomModel();
+        $roomData = $room->getVacantForSelect();
+
+        //ambil semua liat group yg active
+        $group = new SubscriberGroupModel();
+        $groupData = $group->getAllActiveForSelect();
+
+        //ambil field list
+        $subscriber = new SubscriberModel();
+        $fieldList = $subscriber->getFieldList();
+
+        //form ini akan di render saat di view
+        $form = new SubscriberForm($roomData, $groupData);
+
+        return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
+    }
+
     public function ssp()
     {
         $model = new SubscriberModel();
 
         $this->response->setContentType("application/json");
-        echo json_encode($model->getSsp());
+        echo json_encode($model->getSsp(true));
+    }
+
+    public function sspHistory()
+    {
+        $model = new SubscriberModel();
+
+        $this->response->setContentType("application/json");
+        echo json_encode($model->getSsp(false));
     }
 
     public function sspRoom($subscriberId)
