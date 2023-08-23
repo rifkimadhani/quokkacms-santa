@@ -57,6 +57,7 @@ $htmlDelete = Dialog::renderDelete('Delete facility', 'CONFIRM DELETE');
         dataTable = dataList.DataTable(
             {
                 ajax: urlSsp,
+                serverSide: true,
                 responsive: true,
                 scrollX: true,
                 pageLength: 100,
