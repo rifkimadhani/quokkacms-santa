@@ -8,7 +8,7 @@ namespace App\Models;
 class SettingModel extends BaseModel
 {
     const SQL_GET = 'SELECT * FROM tsetting WHERE (setting_id=?)';
-    const SQL_MODIFY = 'UPDATE tsetting SET name=?, value_int=?, value_string=? WHERE (setting_id=?)';
+    const SQL_MODIFY = 'UPDATE tsetting SET name=?, value_int=?, value_float=?, value_string=? WHERE (setting_id=?)';
 
     const SETTING_TIMEZONE = 14;
 
@@ -43,7 +43,7 @@ class SettingModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['setting_id', 'name', 'value_int', 'value_string', 'create_date', 'update_date'];
+        return ['setting_id', 'name', 'value_int', 'value_float', 'value_string', 'create_date', 'update_date'];
     }
 
     public function add($value)  {
@@ -84,17 +84,19 @@ class SettingModel extends BaseModel
 
         $name = htmlentities($value['name'], ENT_QUOTES, 'UTF-8');
         $valueInt = $value['value_int'];
+        $valueFloat = $value['value_float'];
         $valueString = htmlentities($value['value_string'], ENT_QUOTES, 'UTF-8');
 //        $valueFloat = htmlentities($value['value_float'], ENT_QUOTES, 'UTF-8');
 
         //make null apabila value tdk ada
         if (strlen($valueInt)==0) $valueInt = null;
+        if (strlen($valueFloat)==0) $valueFloat = null;
         if (strlen($valueString)==0) $valueString = null;
 
         try{
             $pdo = $this->openPdo();
             $stmt = $pdo->prepare(self::SQL_MODIFY);
-            $stmt->execute( [$name, $valueInt, $valueString, $settingId] );
+            $stmt->execute( [$name, $valueInt, $valueFloat, $valueString, $settingId] );
 
             return $stmt->rowCount();
 

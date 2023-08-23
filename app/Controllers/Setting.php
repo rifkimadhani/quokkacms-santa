@@ -78,10 +78,6 @@ class Setting extends BaseController
 
         $this->normalizeData($_POST);
 
-
-
-        $this->varDump($_POST);
-
         $r = $model->modify($_POST);
 
         if ($r>0){
