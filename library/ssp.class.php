@@ -230,13 +230,13 @@ class SSP {
         $bindings = array();
         $db = self::db( $conn );
 
+        $limit = self::limit( $request, $columns );
+        $order = self::order( $request, $columns );
+        $where = self::filter( $request, $columns, $bindings );
+
         // Main query to actually get the data
         $fields = '`' . implode("`, `", self::pluck($columns, 'db')) . '`';
-        $finalQuery = "SELECT {$fields} FROM ({$query}) as sub";
-
-
-        log_message('error', $finalQuery);
-
+        $finalQuery = "SELECT {$fields} FROM ({$query}) as sub {$where} {$order} {$limit}";
 
         $data = self::sql_exec( $db, $bindings, $finalQuery);
 

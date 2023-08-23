@@ -60,10 +60,11 @@ $htmlDelete = Dialog::renderDelete('Delete vod', 'CONFIRM DELETE');
         dataTable = dataList.DataTable(
             {
                 ajax: urlSsp,
+                serverSide: true,
                 responsive: true,
                 scrollX: true,
-                pageLength: 100,
-                order: [['0','desc']],
+                pageLength: 10,
+                order: [['2','desc']],
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
