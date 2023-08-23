@@ -34,7 +34,7 @@ class UserForm extends BaseForm
     function __construct()
     {
         $this->user_id = ['type'=>'numeric', 'label'=>'User Id', 'placeholder'=>'', 'required'=>'', 'readonly'=>'readonly'];
-        $this->is_block = ['type'=>'checkbox', 'label'=>'Is Block', 'placeholder'=>'', 'required'=>''];
+        $this->is_block = ['type'=>'checkbox', 'label'=>'Block', 'required'=>''];
         $this->username = ['type'=>'varchar', 'label'=>'Username', 'placeholder'=>'', 'required'=>'', 'readonly'=>'readonly'];
         $this->hash = ['type'=>'varchar', 'label'=>'Hash', 'placeholder'=>'', 'required'=>'', 'readonly'=>'readonly'];
         $this->salt = ['type'=>'varchar', 'label'=>'Salt', 'placeholder'=>'', 'required'=>'', 'readonly'=>'readonly'];
