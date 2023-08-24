@@ -27,23 +27,6 @@ function renderTable($subscriberId, $fields){
 HTML;
 }
 ?>
-<!-- <div class="block-content"> -->
-    <!-- <div class="box-header"> -->
-        <!-- <div class="row"> -->
-            <!-- <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 col-4"> -->
-                    <!-- <a href="javascript:;" role="button" class="btn btn-danger showNewModal" onclick="onCheckoutAll()"> -->
-                        <!-- CHECKOUT -->
-                    <!-- </a> -->
-            <!-- </div> -->
-            <!-- <div class="col-xl-8 col-lg-6 col-md-5 col-sm-4 col-8"> -->
-            <!-- </div> -->
-            <!-- <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12 text-right"> -->
-                <!-- <a href="javascript:;" role="button" class="btn btn-success showOptionsModal"> -->
-                   <!-- OPTIONS -->
-                <!-- </a> -->
-            <!-- </div> -->
-        <!-- </div> -->
-    <!-- </div> -->
     <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
         <a class="btn btn-secondary" href="javascript:" role="button" onclick="onClickBack()">
             <i class="fa fa-backward text-primary mr-5 "></i> Back
@@ -68,6 +51,9 @@ HTML;
                         </tr>
                     </thead>
                 </table>
+                <div class="mt-3">
+                    Total outstanding <strong><?=$currency?>  <?=number_format($grandTotal)?></strong>
+                </div>
             </div>
         </div>
     </div>
@@ -81,6 +67,7 @@ HTML;
     var dataTable;
     const primaryKey = "<?=$primaryKey?>";
     const urlSsp = "<?= $baseUrl ?>/sspRoom/<?=$subscriberId?>";
+    const billingCol = <?= count($fieldList)-1 ?>;
     const lastCol = <?= count($fieldList) ?>;
 
     //exec when ready
@@ -104,7 +91,7 @@ HTML;
                 order: [['0','desc']],
                 columnDefs: [
                     {
-                        targets: [0],visible: false,searchable: false
+                        targets: [0,1], visible: false,searchable: false
                     },
                     {
                         targets:[lastCol], render: function(data, type, row, meta)

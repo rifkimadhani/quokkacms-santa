@@ -8,8 +8,10 @@
 
 namespace App\Controllers;
 
+use App\Models\BillingModel;
 use App\Models\NotificationModel;
 use App\Models\RoomModel;
+use App\Models\SettingModel;
 use App\Models\SubscriberModel;
 use App\Models\SubscriberRoomModel;
 use App\Models\SubscriberGroupModel;
@@ -88,9 +90,23 @@ class Subscriber extends BaseController
     public function sspRoom($subscriberId)
     {
         $model = new SubscriberRoomModel();
+        $billing = new BillingModel();
 
         $this->response->setContentType("application/json");
-        echo json_encode($model->getssp($subscriberId));
+
+        $ssp = $model->getssp($subscriberId);
+        $data = &$ssp['data'];
+
+        //inject billing
+        foreach ($data as &$row){
+            $roomId = $row[1]; //index 1 = roomId
+            $roomService = $billing->getSummaryRoomService($subscriberId, $roomId);
+            $vod = $billing->getSummaryVod($subscriberId, $roomId);
+
+            $row[] = number_format($roomService + $vod);
+        }
+
+        echo json_encode($ssp);
     }
 
     public function insert(){
@@ -130,6 +146,7 @@ class Subscriber extends BaseController
 
         $room = new SubscriberRoomModel();
         $fieldList = $room->getFieldList();
+        $fieldList[] = 'total'; //tambahkan 1 col, total utk billing
 
         $group = new SubscriberGroupModel();
         $groupData = $group->getAllActiveForSelect();
@@ -138,7 +155,23 @@ class Subscriber extends BaseController
         $form = new SubscriberForm([], $groupData);
         unset($form->room_id); //di remove krm room tdk bisa di rubah2 setelah di create
 
-        return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'subscriberId', 'subscriberData', 'form'));
+        //room yg di pakai oleh subscriber
+        $rooms = $room->getAllBySubscriber($subscriberId);
+        $billing = new BillingModel();
+
+        $grandTotal = 0;
+        foreach ($rooms as $item){
+            $roomId = $item['room_id'];
+            $roomService = $billing->getSummaryRoomService($subscriberId, $roomId);
+            $vod = $billing->getSummaryVod($subscriberId, $roomId);
+            $grandTotal += $roomService + $vod;
+        }
+
+        $setting = new SettingModel();
+
+        $currency = $setting->getCurrency();
+
+        return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'subscriberId', 'subscriberData', 'form', 'grandTotal', 'currency'));
     }
 
     public function update(){

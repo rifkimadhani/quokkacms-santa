@@ -11,6 +11,8 @@ class SettingModel extends BaseModel
     const SQL_MODIFY = 'UPDATE tsetting SET name=?, value_int=?, value_float=?, value_string=? WHERE (setting_id=?)';
 
     const SETTING_TIMEZONE = 14;
+    const SETTING_CURRENCY = 10;
+    const SETTING_CURRENCY_SIGN = 11;
 
     protected $table      = 'tsetting';
     protected $primaryKey = 'setting_id';
@@ -129,6 +131,21 @@ class SettingModel extends BaseModel
 
     public function getTimeZone(){
         $row = $this->get(self::SETTING_TIMEZONE);
+        if ($row==null) return null;
+        return $row['value_string'];
+    }
+
+    /**
+     * @return null IDR
+     */
+    public function getCurrency(){
+        $row = $this->get(self::SETTING_CURRENCY);
+        if ($row==null) return null;
+        return $row['value_string'];
+    }
+
+    public function getCurrencySign(){
+        $row = $this->get(self::SETTING_CURRENCY_SIGN);
         if ($row==null) return null;
         return $row['value_string'];
     }

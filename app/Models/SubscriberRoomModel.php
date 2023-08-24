@@ -5,6 +5,7 @@ namespace App\Models;
 
 class SubscriberRoomModel extends BaseModel
 {
+    const SQL_GET_ALL_BY_SUBSCRIBER = 'SELECT room_id FROM vsubscriber_room WHERE subscriber_id=?';
     const FIELD_LIST = ['subscriber_id', 'room_id', 'name', 'security_pin'];
     const VIEW = 'vsubscriber_room';
 
@@ -19,6 +20,11 @@ class SubscriberRoomModel extends BaseModel
 
     public function getAll(){
         return $this->findAll();
+    }
+
+    public function getAllBySubscriber($subscriberId){
+        $db = db_connect();
+        return $db->query(self::SQL_GET_ALL_BY_SUBSCRIBER, [$subscriberId])->getResult('array');
     }
 
     public function getssp($subscriberId){
