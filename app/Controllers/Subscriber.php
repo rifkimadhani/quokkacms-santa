@@ -174,6 +174,162 @@ class Subscriber extends BaseController
         return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'subscriberId', 'subscriberData', 'form', 'grandTotal', 'currency'));
     }
 
+    /**
+     * return dialog detail billing
+     * @param $roomId
+     * @return string
+     */
+    public function ajaxBilling($subscriberId, $roomId){
+
+        $billing = new BillingModel();
+
+        $htmlRoomService = $this->genBillingRoomService($billing, $subscriberId, $roomId);
+        $htmlVod = $this->genBillingVod($billing, $subscriberId, $roomId);
+
+        //dialog template
+        return <<< HTML
+        <div class="modal-dialog modal-lg modal-dialog-popout" role="document">
+            <div class="modal-content">
+                <div class="block block-themed block-transparent mb-0">
+                    <div class="block-header bg-primary-dark">
+                        <h3 class="block-title">Billing</h3>
+                        <div class="block-options">
+                            <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                <i class="si si-close" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                        <form id="formEdit" action="" method="post" enctype="multipart/form-data">
+            <div class="block-content">
+                {$htmlRoomService}
+                {$htmlVod}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-alt-secondary" data-dismiss="modal">Close</button>
+                <!--<button type="submit" class="btn btn-alt-primary">-->
+                    <!--<i class="fa fa-check"></i> Submit-->
+                <!--</button>-->
+            </div>
+        </form>
+            </div>
+        </div>
+HTML;
+    }
+
+    /**
+     * Generate html billing room service utk dialog billing
+     *
+     * @param BillingModel $billing
+     * @param $subscriberId
+     * @param $roomId
+     * @return string
+     */
+    protected function genBillingRoomService(BillingModel $billing, $subscriberId, $roomId){
+        $orders = $billing->getRoomService($subscriberId, $roomId);
+
+        $htmlTable = '';
+
+        foreach ($orders as $order){
+
+            $orderCode = $order['order_code'];
+
+            $htmlTable .= <<< HTML
+                        <tr><th colspan="3">Order #{$orderCode}</th></tr>
+HTML;
+
+            $items = $billing->getRoomServiceItem($orderCode);
+
+            $htmlRow = '';
+            foreach ($items as $item){
+                $menu = $item['menu_name'];
+                $qty = $item['qty'];
+                $price = $item['price'];
+                $subtotal = $qty * $price;
+
+                $htmlRow .= <<< HTML
+                        <tr>
+                            <td width="10px"></td>
+                            <td>{$menu}<br/>{$qty} x {$price}</td>
+                            <td valign="top" style="text-align: right;">{$subtotal}</td>
+                        </tr>
+HTML;
+            }
+
+            $purchaseAmount = $order['purchase_amount'];
+            $serviceCharge = $order['service_charge'];
+            $tax = $order['tax'];
+            $total = $purchaseAmount + $serviceCharge + $tax;
+
+            $htmlTable .= <<< HTML
+                        {$htmlRow}
+                        <tr>
+                            <td width="10px"></td>
+                            <td>Service charge</td>
+                            <td valign="top" style="text-align: right;">{$serviceCharge}</td>
+                        </tr>
+                        <tr>
+                            <td width="10px"></td>
+                            <td>Tax</td>
+                            <td valign="top" style="text-align: right;">{$tax}</td>
+                        </tr>
+                        <tr><th colspan="3" style="text-align: right;">Total {$total}</th></tr>
+                        <tr><th colspan="3" style="text-align: right;">&nbsp;</th></tr>
+HTML;
+        }
+
+        if (strlen($htmlTable)==0) return '';
+
+        return <<< HTML
+            <div>
+                <table border="1" width="70%">
+                    <tbody>
+                        {$htmlTable}
+                    </tbody>
+                </table>
+            </div>
+HTML;
+    }
+
+    protected function genBillingVod(BillingModel $billing, $subscriberId, $roomId){
+
+        $grandTotal = 0;
+        $htmlRow = '';
+        $vods= $billing->getVod($subscriberId, $roomId);
+        foreach ($vods as $item){
+            $title = $item['title'];
+            $purchaseAmount = $item['purchase_amount'];
+            $tax = $item['tax'];
+            $total = $purchaseAmount + $tax;
+            $grandTotal += $total;
+
+            $htmlRow .= <<< HTML
+                        <tr>
+                            <td width="10px"></td>
+                            <td >{$title}</td>
+                            <td valign="top" style="text-align: right;">{$total}</td>
+                        </tr>
+HTML;
+        }
+
+        //add grand total
+        $htmlRow .= <<< HTML
+                        <tr>
+                            <th colspan="3" style="text-align: right;">Total {$grandTotal}</th>
+                        </th>
+HTML;
+
+        return <<< HTML
+            <div>
+                <table border="1" width="70%">
+                    <tbody>
+                        {$htmlRow}
+                    </tbody>
+                </table>
+            </div>
+HTML;
+    }
+
     public function update(){
         $id = $_POST['subscriber_id'];
 

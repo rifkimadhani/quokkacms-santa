@@ -1,8 +1,8 @@
 <?php
 use App\Libraries\Dialog;
 
+$htmlDialogBilling = $form->renderPlainDialog('formBilling');
 $htmlEdit = $form->renderBody('Edit', 'formEdit', "{$baseUrl}/update", $subscriberData);
-//$htmlNew = $form->renderDialog('NEW', 'formNew', "{$baseUrl}/insert");
 $htmlDelete = Dialog::renderDelete('Checkout', 'Checkout');
 
 function renderTable($subscriberId, $fields){
@@ -41,6 +41,7 @@ HTML;
         </div>
         <div class="col-lg-6">
             <div class="block-content block-content-full table-responsive">
+                <!-- table room-->
                 <table id="datalist" class="table table-bordered table-hover table-striped table-vcenter">
                     <thead>
                         <tr> 
@@ -59,12 +60,16 @@ HTML;
     </div>
 <!-- </div> -->
 
-<?//=$htmlNew?>
+<!--dialogbilling-->
+<?=$htmlDialogBilling?>
+<!--end dialogbilling-->
+
 <?=$htmlDelete?>
 <?= view('util/scripts') ?>
 
 <script>
     var dataTable;
+    var dlgBilling = $('.dialogformBilling');
     const primaryKey = "<?=$primaryKey?>";
     const urlSsp = "<?= $baseUrl ?>/sspRoom/<?=$subscriberId?>";
     const billingCol = <?= count($fieldList)-1 ?>;
@@ -106,6 +111,26 @@ HTML;
                     }
                 ]
             });
+
+        //handle row click pada table room
+        dataTable.on( 'click', 'tr', function (event)
+        {
+            event.stopPropagation();
+            const data = dataTable.row( $(this)).data();
+            const roomId = data[1];
+            const url = "<?= $baseUrl ?>/ajax_billing/<?=$subscriberId?>/" + roomId;
+
+            $.ajax({url: url}).done(function(result)
+            {
+                dlgBilling.html(result);
+                dlgBilling.modal();
+            })
+                .always(function()
+                {
+                    jQuery('#overlay-loader-indicator').hide();
+                });
+
+        });
     }
 
     //hanya checkout room saja,

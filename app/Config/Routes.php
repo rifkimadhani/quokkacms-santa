@@ -82,6 +82,7 @@ $routes->get('/subscriber/checkout/(:num)', 'Subscriber::checkout/$1');
 $routes->get('/subscriber/checkout_room/(:num)/(:num)', 'Subscriber::checkoutRoom/$1/$2');
 $routes->post('/subscriber/insert', 'Subscriber::insert');
 $routes->post('/subscriber/update', 'Subscriber::update');
+$routes->get('/subscriber/ajax_billing/(:num)/(:num)', 'Subscriber::ajaxBilling/$1/$2');
 
 //subscriber group
 $routes->get('/subscribergroup', 'SubscriberGroup::index');
