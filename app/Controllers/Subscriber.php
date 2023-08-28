@@ -203,6 +203,7 @@ class Subscriber extends BaseController
                         <form id="formEdit" action="" method="post" enctype="multipart/form-data">
             <div class="block-content">
                 {$htmlRoomService}
+                <br/>
                 {$htmlVod}
             </div>
             <div class="modal-footer">
@@ -230,12 +231,24 @@ HTML;
 
         $htmlTable = '';
 
+
+        $this->varDump($orders);
+
+
+
+        $lastOrderCode = '';
+        $orderLen = sizeof($orders);
+        if ($orderLen>0){
+            //get code of the last order
+            $lastOrderCode  = $orders[$orderLen-1]['order_code'];
+        }
+
         foreach ($orders as $order){
 
             $orderCode = $order['order_code'];
 
             $htmlTable .= <<< HTML
-                        <tr><th colspan="3">Order #{$orderCode}</th></tr>
+                        <tr><th colspan="3" style="border-top-width: 2px;">Order #{$orderCode}</th></tr>
 HTML;
 
             $items = $billing->getRoomServiceItem($orderCode);
@@ -247,11 +260,13 @@ HTML;
                 $price = $item['price'];
                 $subtotal = $qty * $price;
 
+                $format = number_format($subtotal);
+
                 $htmlRow .= <<< HTML
                         <tr>
-                            <td width="10px"></td>
+                            <td width="10px" style="border-right: hidden;"></td>
                             <td>{$menu}<br/>{$qty} x {$price}</td>
-                            <td valign="top" style="text-align: right;">{$subtotal}</td>
+                            <td valign="top" style="text-align: right; width: 25%;">{$format}</td>
                         </tr>
 HTML;
             }
@@ -261,20 +276,32 @@ HTML;
             $tax = $order['tax'];
             $total = $purchaseAmount + $serviceCharge + $tax;
 
+            $serviceCharge = number_format($serviceCharge);
+            $tax = number_format($tax);
+            $format = number_format($total);
+
+            //bagian ini khusus ukk handle border paling bawah
+            //apabila order terakhir, maka bottom = off
+            if ($orderCode==$lastOrderCode){
+                $borderBottom = 'border-bottom: hidden;';
+            } else {
+                $borderBottom = '';
+            }
+
             $htmlTable .= <<< HTML
                         {$htmlRow}
                         <tr>
-                            <td width="10px"></td>
+                            <td width="10px" style="border-right: hidden;"></td>
                             <td>Service charge</td>
                             <td valign="top" style="text-align: right;">{$serviceCharge}</td>
                         </tr>
                         <tr>
-                            <td width="10px"></td>
+                            <td width="10px" style="border-right: hidden;"></td>
                             <td>Tax</td>
                             <td valign="top" style="text-align: right;">{$tax}</td>
                         </tr>
-                        <tr><th colspan="3" style="text-align: right;">Total {$total}</th></tr>
-                        <tr><th colspan="3" style="text-align: right;">&nbsp;</th></tr>
+                        <tr><th colspan="3" style="text-align: right; border-bottom-width: 2px;">Total {$format}</th></tr>
+                        <tr style="border-left: hidden; border-right:hidden; {$borderBottom}"><th colspan="3" style="text-align: right;">&nbsp;</th></tr>
 HTML;
         }
 
@@ -282,7 +309,7 @@ HTML;
 
         return <<< HTML
             <div>
-                <table border="1" width="70%">
+                <table border="1" width="100%" style="border-width: 2px 2px 0px 2px;">
                     <tbody>
                         {$htmlTable}
                     </tbody>
@@ -303,14 +330,18 @@ HTML;
             $total = $purchaseAmount + $tax;
             $grandTotal += $total;
 
+            $format = number_format($total);
+
             $htmlRow .= <<< HTML
                         <tr>
-                            <td width="10px"></td>
+                            <td width="10px" style="border-right: hidden;"></td>
                             <td >{$title}</td>
-                            <td valign="top" style="text-align: right;">{$total}</td>
+                            <td valign="top" style="text-align: right;">{$format}</td>
                         </tr>
 HTML;
         }
+
+        $grandTotal = number_format($grandTotal);
 
         //add grand total
         $htmlRow .= <<< HTML
@@ -321,8 +352,9 @@ HTML;
 
         return <<< HTML
             <div>
-                <table border="1" width="70%">
+                <table border="1" width="100%" style="border-width: 2px;">
                     <tbody>
+                        <tr><th colspan="2">VOD Title</th><th style=" width: 25%;">Price</th></tr>
                         {$htmlRow}
                     </tbody>
                 </table>
