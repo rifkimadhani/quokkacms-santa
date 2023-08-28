@@ -8,10 +8,10 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 ?>
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
     <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformNew')">
-        <i class="fa fa-plus text-primary mr-5 "></i> Message to Guest
+        <i class="fa fa-user text-primary mr-5 "></i> Message to Guest
     </a>
     <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformGroupNew')">
-        <i class="fa fa-plus text-primary mr-5 "></i> Message to Group
+        <i class="fa fa-users text-primary mr-5 "></i> Message to Group
     </a>
     <div class="btn-group float-right">
         <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
@@ -64,10 +64,10 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
                 order: [['0','desc']],
                 columnDefs: [
                     {
-                        targets: [0,1,4,10],visible: false,searchable: false
+                        targets: [0,1,3,5],visible: false,searchable: false
                     },
                     {
-                        targets:[10,11],render: function(data) 
+                        targets:[11,12],render: function(data) 
                         {
                         if(data)
                         {

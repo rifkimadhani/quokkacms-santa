@@ -12,7 +12,7 @@ use App\Libraries\SSP;
 
 class MessageModel extends BaseModel
 {
-    const SQL_GET_ALL   = "SELECT tmessage.message_id AS 'message_id', tmessage.subscriber_id AS 'Guest ID', CASE WHEN tsubscriber.name IS NOT NULL THEN tsubscriber.name ELSE '-' END AS 'Guest Name',tsubscriber.group_id AS group_id,tmessage.room_id AS 'Room ID',troom.name AS Room, tmessage.from AS 'From',tmessage.title AS Title,tmessage.message AS 'Message',tmessage.status AS 'Status',tmessage.create_date AS 'Create Date',tmessage.update_date AS 'Update Date' FROM ((tmessage LEFT JOIN tsubscriber ON (tmessage.subscriber_id = tsubscriber.subscriber_id)) LEFT JOIN troom ON (tmessage.room_id = troom.room_id)) ORDER BY tmessage.message_id DESC";
+    const SQL_GET_ALL   = "SELECT `tmessage`.`message_id` AS `message_id`, `tmessage`.`subscriber_id` AS `Guest ID`, CASE WHEN `tsubscriber`.`name` IS NOT NULL THEN `tsubscriber`.`name` ELSE '-' END AS `Guest Name`, `tsubscriber`.`group_id` AS `group_id`, `tsubscriber_group`.`name` AS `Guest Group`, `tmessage`.`room_id` AS `Room ID`, `troom`.`name` AS `Room`, `tmessage`.`from` AS `From`, `tmessage`.`title` AS `Title`, `tmessage`.`message` AS `Message`, `tmessage`.`status` AS `Status`, `tmessage`.`create_date` AS `Create Date`, `tmessage`.`update_date` AS `Update Date` FROM `tmessage` LEFT JOIN `tsubscriber` ON `tmessage`.`subscriber_id` = `tsubscriber`.`subscriber_id` LEFT JOIN `tsubscriber_group` ON `tsubscriber`.`group_id` = `tsubscriber_group`.`group_id` LEFT JOIN `troom` ON `tmessage`.`room_id` = `troom`.`room_id` ORDER BY `tmessage`.`message_id` DESC";
     const SQL_MODIFY = 'UPDATE tmessage SET subscriber_id=?, room_id=?, title=?, message=?, status=? WHERE message_id=?';
     const SQL_GET_ROOM_FOR_SELECT = 'SELECT room_id AS id, name AS value FROM troom ORDER BY name';
     const SQL_GET_SUBSCRIBER_ROOM = 'SELECT troom.room_id AS id, troom.name AS value FROM troom INNER JOIN tsubscriber_room ON troom.room_id = tsubscriber_room.room_id WHERE tsubscriber_room.subscriber_id = ?';
@@ -36,7 +36,7 @@ class MessageModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['message_id', 'Guest ID', 'Guest Name', 'group_id', 'Room ID', 'Room', 'From', 'Title', 'Message', 'Status', 'Create Date', 'Update Date'];
+        return ['message_id', 'Guest ID', 'Guest Name', 'group_id', 'Guest Group', 'Room ID', 'Room', 'From', 'Title', 'Message', 'Status', 'Create Date', 'Update Date'];
     }
 
     public function getSubscribersByGroup($groupId){
