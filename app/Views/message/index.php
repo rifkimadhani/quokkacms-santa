@@ -2,12 +2,16 @@
 use App\Libraries\Dialog;
 
 $htmlEdit = $form->renderPlainDialog('formEdit');
-$htmlNew = $form->renderDialog('NEW', 'formNew', "{$baseUrl}/insert");
+$htmlNew = $form->renderDialog('NEW MESSAGE', 'formNew', "{$baseUrl}/insert");
+$htmlGroupNew = $formGroup->renderDialog('NEW MESSAGE TO GROUP', 'formGroupNew', "{$baseUrl}/insertGroup");
 $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 ?>
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
     <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformNew')">
-        <i class="fa fa-plus text-primary mr-5 "></i> Create Message
+        <i class="fa fa-plus text-primary mr-5 "></i> Message to Guest
+    </a>
+    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformGroupNew')">
+        <i class="fa fa-plus text-primary mr-5 "></i> Message to Group
     </a>
     <div class="btn-group float-right">
         <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
@@ -30,9 +34,9 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 
 <?=$htmlEdit?>
 <?=$htmlNew?>
+<?=$htmlGroupNew?>
 <?=$htmlDelete?>
 
-<?//=view('util/scripts.php')?>
 
 <script>
     var dataTable;
@@ -44,8 +48,8 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
     $('document').ready(function () {
         initDataTable();
 
-//        installClick();
-//        initDialog();
+        // installClick();
+        // initDialog();
     });
 
     function initDataTable() {
@@ -60,10 +64,10 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
                 order: [['0','desc']],
                 columnDefs: [
                     {
-                        targets: [0,1,3,4,10],visible: false,searchable: false
+                        targets: [0,1,4,10],visible: false,searchable: false
                     },
                     {
-                        targets:[9,10],render: function(data) 
+                        targets:[10,11],render: function(data) 
                         {
                         if(data)
                         {
@@ -82,6 +86,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
                 ]
             });
 
+            var roomoptions = {placeholder: "Pilih Room Disini",allowClear: true,tags:true,"language": {"noResults": function(){return "No Room Found.Please Type Room Name To Add New Room";}},escapeMarkup: function (markup) {return markup;}}
         //handle click on row
         //
         $('#datalist tbody').on( 'click', 'tr', function (event)
@@ -97,7 +102,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
             $.ajax({url: url}).done(function(result)
             {
                 $('.dialogformEdit').html(result);
-                $('.dialogformEdit').modal();
+                $('.dialogformEdit').modal();               
             })
             .always(function()
             {

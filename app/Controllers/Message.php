@@ -9,12 +9,14 @@
 namespace App\Controllers;
 
 use App\Models\MessageForm;
+use App\Models\MessageFormGroup;
 
 use App\Models\MessageMediaModel;
 use App\Models\MessageModel;
 use App\Models\NotificationModel;
 use App\Models\SubscriberModel;
 use App\Models\RoomModel;
+use App\Models\SubscriberGroupModel;
 
 class Message extends BaseController
 {
@@ -29,34 +31,59 @@ class Message extends BaseController
         $group = new MessageModel();
         $fieldList = $group->getFieldList();
 
-        $room = new RoomModel();
-        $roomData = $room->getForSelect();
+        // $room = new RoomModel();
+        // $roomData = $room->getForSelect();
+
+        $roomData = $group->getRoomForSelect();
 
         $subscriber = new SubscriberModel();
         $subscriberData = $subscriber->getCheckinForSelect();
 
         $form = new MessageForm($subscriberData, $roomData);
 
+        $groupModel = new SubscriberGroupModel();
+        $groupData = $groupModel->getAllActiveForSelect();
+        $formGroup = new MessageFormGroup($groupData);
 
-        return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
+
+        return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form', 'formGroup'));
     }
 
     public function ssp()
     {
-        $group = new MessageModel();
+        $model = new MessageModel();
 
-        $this->response->setContentType("application/json");
-        echo json_encode($group->getSsp());
+        header('Content-Type: application/json');
+
+        $data = $model->getSsp();
+
+        self::sspDataConversion($data);
+
+        echo json_encode($data);
     }
 
     public function insert(){
         $subscriberId = $_POST['subscriber_id'];
-//        $title = $_POST['title'];
-//        $message = $_POST['message'];
-//        $status = $_POST['status'];
+        $roomId = $_POST['room_id'];
         $urlImage = $_POST['url_image'];
 
+        // check if room_id based on subscriber_id
         $model = new MessageModel();
+        $validRooms = $model->getSubscriberRoom($subscriberId);
+        $isValidRoom = false;
+
+        foreach ($validRooms as $room) {
+            if ($room['id'] == $roomId) {
+                $isValidRoom = true;
+                break;
+            }
+        }
+    
+        if (!$isValidRoom) {
+            $this->setErrorMessage('Invalid Room selected.');
+            return redirect()->to($this->baseUrl);
+        }
+    
         $messageId = $model->add($_POST);
 
         $media = new MessageMediaModel();
@@ -68,6 +95,53 @@ class Message extends BaseController
 
         //kirim notifikasi ke stb
         NotificationModel::sendMessageToSubscriber($subscriberId);
+
+        if ($messageId>0){
+            $this->setSuccessMessage('Messages sent');
+        } else {
+            $this->setErrorMessage('Message fail to sent ' . $model->errMessage);
+        }
+
+        return redirect()->to($this->baseUrl);
+    }
+
+    public function insertGroup(){
+        $from = $_POST['from'];
+        $groupId = $_POST['group_id'];
+        $title = $_POST['title'];
+        $message = $_POST['message'];
+        $urlImage = $_POST['url_image'];  
+        
+        $model = new MessageModel();
+
+        // get all the active subscriber_id based on group_id
+        $subscriberIds = $model->getSubscribersByGroup($groupId);
+
+        $media = new MessageMediaModel();
+        
+        //convert url -> {BASE-HOST}
+        $urlImage = str_replace($this->baseHost, '{BASE-HOST}', $urlImage);
+        
+        // looping to push to db and send notification
+        foreach ($subscriberIds as $subscriberId){
+            $messageId = $model->add([
+                'from' => $from,
+                'title' => $title,
+                'message' => $message,
+                'group_id' => $groupId,
+                'subscriber_id' => $subscriberId
+            ]);
+            $media->write($messageId, $urlImage);
+
+            //kirim notifikasi ke stb
+            NotificationModel::sendMessageToSubscriber($subscriberId);
+        }
+
+        if ($messageId>0){
+            $this->setSuccessMessage('Messages sent');
+        } else {
+            $this->setErrorMessage('Messages fail to sent ' . $model->errMessage);
+        }
 
         return redirect()->to($this->baseUrl);
     }
@@ -121,7 +195,8 @@ class Message extends BaseController
             $subscriberData[] = ['id'=>$subscriberId, 'value'=>$value];
         }
 
-        $form = new MessageForm($subscriberData);
+        $roomData = $model->getRoomForSelect();
+        $form = new MessageForm($subscriberData, $roomData);
 
         $urlAction = $this->baseUrl . '/update';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
@@ -129,15 +204,32 @@ class Message extends BaseController
 
     public function update(){
         $id = $_POST['message_id'];
+        $subscriberId = $_POST['subscriber_id'];
+        $roomId = $_POST['room_id'];
         $urlImage = $_POST['url_image'];
 
         //convert URL --> {BASE-HOST}
         $urlImage = str_replace($this->baseHost, '{BASE-HOST}', $urlImage);
 
-        // room_id tidak dipakai lagi
-        $_POST['room_id'] = null;
+        // // room_id tidak dipakai lagi
+        // $_POST['room_id'] = null;
 
         $model = new MessageModel();
+        $validRooms = $model->getSubscriberRoom($subscriberId);
+        $isValidRoom = false;
+
+        foreach ($validRooms as $room) {
+            if ($room['id'] == $roomId) {
+                $isValidRoom = true;
+                break;
+            }
+        }
+    
+        if (!$isValidRoom) {
+            $this->setErrorMessage('Invalid room selected');
+            return redirect()->to($this->baseUrl);
+        }
+
         $r = $model->modify($id, $_POST);
 
 
@@ -147,7 +239,7 @@ class Message extends BaseController
         if ($r>0){
             $this->setSuccessMessage('UPDATE success');
         } else {
-            $this->setErrorMessage('UPDATE fail ' . $model->errMessage);
+            $this->setErrorMessage('UPDATE failed ' . $model->errMessage);
         }
 
         return redirect()->to($this->baseUrl);
@@ -164,6 +256,18 @@ class Message extends BaseController
         }
 
         return redirect()->to($this->baseUrl);
+    }
+
+    /**
+     * melakukan conversi data ke asalnya, misalnya utk url balik dari BASE-HOST -> http://
+     * @param $data
+     */
+    protected function sspDataConversion(&$data){
+        return;
+
+        foreach($data['data'] as &$row){
+
+        }
     }
 
 }

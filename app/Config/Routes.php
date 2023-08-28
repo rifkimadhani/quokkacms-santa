@@ -100,6 +100,7 @@ $routes->get('/message/ssp', 'Message::ssp');
 $routes->get('/message/edit/(:num)', 'Message::edit/$1');
 $routes->get('/message/delete/(:num)', 'Message::delete/$1');
 $routes->post('/message/insert', 'Message::insert');
+$routes->post('/message/insertGroup', 'Message::insertGroup');
 $routes->post('/message/update', 'Message::update');
 
 //Role
