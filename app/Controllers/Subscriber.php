@@ -188,7 +188,7 @@ class Subscriber extends BaseController
 
         //dialog template
         return <<< HTML
-        <div class="modal-dialog modal-lg modal-dialog-popout" role="document">
+        <div class="modal-dialog modal-dialog-popout" role="document">
             <div class="modal-content">
                 <div class="block block-themed block-transparent mb-0">
                     <div class="block-header bg-primary-dark">
@@ -248,10 +248,21 @@ HTML;
             $orderCode = $order['order_code'];
 
             $htmlTable .= <<< HTML
-                        <tr><th colspan="3" style="border-top-width: 2px;">Order #{$orderCode}</th></tr>
+                        <tr>
+                            <th colspan="3" style="border-top: hidden;"><h4 class="font-w300 mb-2">Order #{$orderCode}</h4></th>
+                        </tr>
+                        <tr>
+                            <td width="10px" style="border-right: hidden;"></td>
+                            <td><b>Item</b></td>
+                            <td style="text-align: right;"><b>Price</b></td>
+                        </tr>
 HTML;
 
             $items = $billing->getRoomServiceItem($orderCode);
+
+            //curency sign
+            $setting = new SettingModel();
+            $currencySign = $setting->getCurrencySign();
 
             $htmlRow = '';
             foreach ($items as $item){
@@ -260,13 +271,14 @@ HTML;
                 $price = $item['price'];
                 $subtotal = $qty * $price;
 
+                $priceFormat = number_format($price);
                 $format = number_format($subtotal);
 
                 $htmlRow .= <<< HTML
-                        <tr>
+                        <tr style="border-bottom: hidden;">
                             <td width="10px" style="border-right: hidden;"></td>
-                            <td>{$menu}<br/>{$qty} x {$price}</td>
-                            <td valign="top" style="text-align: right; width: 25%;">{$format}</td>
+                            <td>{$menu}<br/>{$qty} x {$priceFormat}</td>
+                            <td valign="top" style="text-align: right;">{$currencySign} {$format}</td>
                         </tr>
 HTML;
             }
@@ -274,6 +286,7 @@ HTML;
             $purchaseAmount = $order['purchase_amount'];
             $serviceCharge = $order['service_charge'];
             $tax = $order['tax'];
+            $taxPercent = $order['percent_tax'];
             $total = $purchaseAmount + $serviceCharge + $tax;
 
             $serviceCharge = number_format($serviceCharge);
@@ -290,18 +303,22 @@ HTML;
 
             $htmlTable .= <<< HTML
                         {$htmlRow}
-                        <tr>
-                            <td width="10px" style="border-right: hidden;"></td>
-                            <td>Service charge</td>
-                            <td valign="top" style="text-align: right;">{$serviceCharge}</td>
+                        <tr></tr>
+                        <tr style="padding-top: 10px; border-bottom: hidden;">
+                            <td colspan="2" style="text-align: right;">Service charge</td>
+                            <td valign="top" style="text-align: right;">{$currencySign} {$serviceCharge}</td>
                         </tr>
                         <tr>
-                            <td width="10px" style="border-right: hidden;"></td>
-                            <td>Tax</td>
-                            <td valign="top" style="text-align: right;">{$tax}</td>
+                            <td colspan="2" style="text-align: right;">Tax ({$taxPercent}%)</td>
+                            <td valign="top" style="text-align: right;">{$currencySign} {$tax}</td>
                         </tr>
-                        <tr><th colspan="3" style="text-align: right; border-bottom-width: 2px;">Total {$format}</th></tr>
-                        <tr style="border-left: hidden; border-right:hidden; {$borderBottom}"><th colspan="3" style="text-align: right;">&nbsp;</th></tr>
+                        <tr style="border-bottom: hidden;">
+                            <th colspan="2" style="text-align: right;"><span class="font-size-xl ">Total</span></th>
+                            <th style="text-align: right;"><span class="font-size-xl ">{$currencySign} {$format}</span></th>
+                        </tr>
+                        <tr style="border-left: hidden; border-right:hidden; {$borderBottom}">
+                            <th colspan="3" style="text-align: right;">&nbsp;</th>
+                        </tr>
 HTML;
         }
 
@@ -309,7 +326,7 @@ HTML;
 
         return <<< HTML
             <div>
-                <table border="1" width="100%" style="border-width: 2px 2px 0px 2px;">
+                <table class="table table-sm table-vtop" width="100%" style="border-width: 5px 5px 0px 5px;">
                     <tbody>
                         {$htmlTable}
                     </tbody>
@@ -323,6 +340,11 @@ HTML;
         $grandTotal = 0;
         $htmlRow = '';
         $vods= $billing->getVod($subscriberId, $roomId);
+        
+        //curency sign
+        $setting = new SettingModel();
+        $currencySign = $setting->getCurrencySign();
+
         foreach ($vods as $item){
             $title = $item['title'];
             $purchaseAmount = $item['purchase_amount'];
@@ -333,10 +355,10 @@ HTML;
             $format = number_format($total);
 
             $htmlRow .= <<< HTML
-                        <tr>
+                        <tr style="border-bottom: hidden;">
                             <td width="10px" style="border-right: hidden;"></td>
-                            <td >{$title}</td>
-                            <td valign="top" style="text-align: right;">{$format}</td>
+                            <td>{$title}</td>
+                            <td valign="top" style="text-align: right;">{$currencySign} {$format}</td>
                         </tr>
 HTML;
         }
@@ -345,16 +367,25 @@ HTML;
 
         //add grand total
         $htmlRow .= <<< HTML
-                        <tr>
-                            <th colspan="3" style="text-align: right;">Total {$grandTotal}</th>
-                        </th>
+                        <tr></tr>
+                        <tr style="border-bottom: hidden;">
+                            <th colspan="2" style="text-align: right; padding-bottom: 2em;"><span class="font-size-xl ">Total</span></th>
+                            <th style="text-align: right; padding-bottom: 2em;"><span class="font-size-xl ">{$currencySign} {$grandTotal}</span></th>
+                        </tr>
 HTML;
 
         return <<< HTML
             <div>
-                <table border="1" width="100%" style="border-width: 2px;">
+                <table class="table table-sm table-vtop" width="100%" style="border-width: 5px 5px 0px 5px;">
                     <tbody>
-                        <tr><th colspan="2">VOD Title</th><th style=" width: 25%;">Price</th></tr>
+                        <tr>
+                            <th colspan="3" style="border-top: hidden;"><h4 class="font-w300 mb-2">Purchased VODs</h4></th>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>VOD Title</b></td>
+                            <td style="text-align:right; width: 30%"><b>Price</b></td>
+                        </tr>
                         {$htmlRow}
                     </tbody>
                 </table>
