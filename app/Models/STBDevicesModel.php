@@ -11,23 +11,23 @@ use DateTime;
 class STBDevicesModel extends BaseModel
 {
     const SQL_GET     = 'SELECT * FROM tstb WHERE (stb_id=?)';
-    const SQL_GET_ALL = <<<'SQL'
-                            SELECT
-                                tstb.stb_id, tstb.name, tstb.ip_address,
-                                tstb.mac_address,
-                                tstb.location, 
-                                IF (TIMESTAMPDIFF(SECOND,tstb.last_seen,NOW())<15,1,0) AS Status,
-                                tstb.last_seen,
-                                tstb.app_id,
-                                tstb.version_code,
-                                tstb.version_name,
-                                tstb.android_version,
-                                tstb.android_api,
-                                tstb.create_date,
-                                tstb.update_date 
-                            FROM
-                                tstb
-                        SQL;
+    // const SQL_GET_ALL = <<<'SQL'
+    //                         SELECT
+    //                             tstb.stb_id, tstb.name, tstb.ip_address,
+    //                             tstb.mac_address,
+    //                             tstb.location, 
+    //                             IF (TIMESTAMPDIFF(SECOND,tstb.last_seen,NOW())<15,1,0) AS Status,
+    //                             tstb.last_seen,
+    //                             tstb.app_id,
+    //                             tstb.version_code,
+    //                             tstb.version_name,
+    //                             tstb.android_version,
+    //                             tstb.android_api,
+    //                             tstb.create_date,
+    //                             tstb.update_date 
+    //                         FROM
+    //                             tstb
+    //                     SQL;
 
     const SQL_MODIFY                      = 'UPDATE tstb SET name=?, location=?, ip_address=? WHERE (stb_id=?)';
     const SQL_GET_STB_FOR_SELECT          = 'SELECT name as id,name as value,app_id as data FROM tstb';
@@ -65,13 +65,13 @@ class STBDevicesModel extends BaseModel
 
     public function getAll(){
 
-        $db = db_connect();
-        // dd($db->query(self::SQL_GET_ALL, array())->getResult('array'));
-        return $db->query(self::SQL_GET_ALL, array())->getResult('array');
+        // $db = db_connect();
+        // return $db->query(self::SQL_GET_ALL, array())->getResult('array');
+        return $this->findAll();
     }
 
     public function getFieldList(){
-        return ['stb_id', 'ip_address', 'name', 'mac_address', 'location', 'Status', 'app_id', 'version_code', 'version_name', 'android_version', 'android_api', 'last_seen', 'create_date', 'update_date'];
+        return ['stb_id', 'ip_address', 'name', 'mac_address', 'location', 'status', 'app_id', 'version_code', 'version_name', 'android_version', 'android_api', 'last_seen', 'create_date', 'update_date'];
     }
 
 
@@ -325,6 +325,7 @@ class STBDevicesModel extends BaseModel
      */
     public function getSsp()
     {
-        return $this->_getSsp(self::VIEW, $this->primaryKey, $this->getFieldList());
+        // return $this->_getSsp(self::VIEW, $this->primaryKey, $this->getFieldList());
+        return $this->_getSsp($this->table, $this->primaryKey, $this->getFieldList());
     }
 }

@@ -80,9 +80,17 @@ $htmlDelete = Dialog::renderDelete('Delete STB Device', 'CONFIRM DELETE');
                     {
                         // status
                         targets: [5],
-                        className: "text-center",
-                        render: function(data) {
-                            if (data == 1) {
+                        render: function (value, type, row) {
+                            const lastSeen = row[11];
+
+                            if (lastSeen==null){
+                                return '<span class="badge badge-pill badge-danger">DOWN</span>';
+                            }
+                            
+                            const now = new Date ();
+                            const timediv = calculateTimeDifferenceInSeconds(lastSeen, now);
+
+                            if (timediv <= 15) {
                                 return '<span class="badge badge-pill badge-success">UP</span>';
                             } else {
                                 return '<span class="badge badge-pill badge-danger">DOWN</span>';
@@ -162,5 +170,17 @@ $htmlDelete = Dialog::renderDelete('Delete STB Device', 'CONFIRM DELETE');
         showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
             window.location.href = "<?=$baseUrl?>/delete/" + stbId;
         })
+    }
+
+    function calculateTimeDifferenceInSeconds(timestamp, currentTimestamp) {
+        if (!timestamp) {
+            return Number.MAX_SAFE_INTEGER; // Return a very large value to indicate "null"
+        }
+
+        const now = currentTimestamp || new Date().getTime(); // Current timestamp
+        const lastSeenTimestamp = new Date(timestamp).getTime(); // Convert input timestamp to a UNIX timestamp
+        const timeDifference = Math.floor((now - lastSeenTimestamp) / 1000); // Calculate time difference in seconds
+
+        return timeDifference;
     }
 </script>
