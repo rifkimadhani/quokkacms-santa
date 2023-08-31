@@ -20,7 +20,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
     </div>
 </div>
 <div class="block-content block-content-full table-responsive">
-    <table id="datalist" class="table table-bordered table-hover table-striped table-vcenter table-responsive">
+    <table id="datalist" class="table table-bordered table-hover table-striped table-vcenter">
         <thead>
             <tr> 
                 <?php foreach ($fieldList as $field): ?>
