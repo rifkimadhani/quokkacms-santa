@@ -131,15 +131,20 @@ if (empty(session()->getFlashdata('type')) == false) {
                                     <div class="col-12">
                                         <div class="form-material floating text-dark">
                                             <input type="text" class="form-control text-black" id="username" name="username" required>
-                                            <label for="login-username">Username or Email</label>
+                                            <label for="username">Username or Email</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-12">
-                                        <div class="form-material floating text-dark">
+                                        <div class="form-material floating input-group text-dark">
                                             <input type="password" class="form-control text-black" id="password" name="password" required>
-                                            <label for="login-password">Password</label>
+                                            <label for="password">Password</label>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text ">
+                                                    <i toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></i>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

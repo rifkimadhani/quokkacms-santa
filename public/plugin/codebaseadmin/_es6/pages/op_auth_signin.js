@@ -25,21 +25,21 @@ class OpAuthSignIn {
                 jQuery(e).remove();
             },
             rules: {
-                'login-username': {
+                'username': {
                     required: true,
                     minlength: 3
                 },
-                'login-password': {
+                'password': {
                     required: true,
                     minlength: 5
                 }
             },
             messages: {
-                'login-username': {
+                'username': {
                     required: 'Please enter a username',
                     minlength: 'Your username must consist of at least 3 characters'
                 },
-                'login-password': {
+                'password': {
                     required: 'Please provide a password',
                     minlength: 'Your password must be at least 5 characters long'
                 }
