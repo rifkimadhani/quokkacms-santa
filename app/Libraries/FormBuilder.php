@@ -476,12 +476,12 @@ HTML;
         if ($value>0){
             $checked = 'checked';
         } else {
-            $checked = '';
+            $checked = 'unchecked';
         }
 
         return <<< HTML
             <div class="form-group">
-            <input name='{$item}' id='{$item}' type='checkbox' value='{$value}' {$checked} {$attr} {$required} {$readonly}><label class='form-check-label' for='inlineCheckbox1'></label>
+            <input name='{$item}' id='{$item}' type='checkbox' {$checked} {$attr} {$required} {$readonly}><label class='form-check-label' for='inlineCheckbox1'></label>
             <label class='col-form-label'><b>{$label}</b></label>
             </div>
 HTML;

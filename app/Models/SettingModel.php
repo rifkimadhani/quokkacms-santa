@@ -13,10 +13,11 @@ class SettingModel extends BaseModel
     const SETTING_TIMEZONE = 14;
     const SETTING_CURRENCY = 10;
     const SETTING_CURRENCY_SIGN = 11;
+    const SETTING_THEME_DEFAULT = 1000;
 
     protected $table      = 'tsetting';
     protected $primaryKey = 'setting_id';
-    protected $allowedFields = ['setting_id', 'name', 'value_int', 'value_string', 'value_float', 'create_date', 'update_date'];
+    protected $allowedFields = ['name', 'value_int', 'value_string', 'value_float'];
 
     public $errCode;
     public $errMessage;
@@ -148,5 +149,20 @@ class SettingModel extends BaseModel
         $row = $this->get(self::SETTING_CURRENCY_SIGN);
         if ($row==null) return null;
         return $row['value_string'];
+    }
+
+    public function getThemeDefault(){
+        $row = $this->get(self::SETTING_THEME_DEFAULT);
+        if ($row==null) return 0;
+        return $row['value_int'];
+    }
+
+    public function setThemeDefault($themeId){
+        $data = [
+            'value_int' => $themeId
+        ];
+        self::update(self::SETTING_THEME_DEFAULT, $data);
+
+        return $this->db->affectedRows();
     }
 }
