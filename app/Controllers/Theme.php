@@ -7,6 +7,7 @@
 namespace App\Controllers;
 
 use App\Models\NotificationModel;
+use App\Models\SettingModel;
 use App\Models\ThemeForm;
 use App\Models\ThemeModel;
 use App\Models\ThemeElementForm;
@@ -25,6 +26,7 @@ class Theme extends BaseController
         $clone = $model->getThemeForSelect();
 
         $form = new ThemeForm($clone);
+        $form->removeSetAsDefault();
 
         $fieldList = $model->getThemeFieldList();
 
@@ -141,11 +143,18 @@ class Theme extends BaseController
      * @return mixed html dialog
      */
     public function editTheme($themeId){
+
         $model = new ThemeModel();
         $data = $model->get($themeId);
 
         $form = new ThemeForm();
         $form->removeCloneTheme();
+
+        $setting = new SettingModel();
+        $defaultThemeId = $setting->getThemeDefault();
+        if ($defaultThemeId==$themeId){
+            $form->setDefault(1);
+        }
 
         $urlAction = $this->baseUrl . '/update_theme';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
@@ -167,6 +176,15 @@ class Theme extends BaseController
 
     public function updateTheme(){
         $model = new ThemeModel();
+
+        $default = (isset($_POST['set_as_default'])) ? 1 : 0;
+        if ($default>0){
+            $themeId = $_POST['theme_id'];
+            $setting = new SettingModel();
+            $setting->setThemeDefault($themeId);
+        }
+
+        unset($_POST['default']); //hapus dari post, shg tdk menganggu update
         $r = $model->modifyTheme($_POST);
 
         if ($r>0){
