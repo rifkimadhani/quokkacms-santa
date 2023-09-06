@@ -45,7 +45,7 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
     const urlSsp = "<?= $baseUrl ?>/ssp_theme";
     const lastCol = <?= count($fieldList) ?>;
     const dataList = $('#datalist');
-    const primaryKey = "<?=$primaryKey?>";
+    const defaultThemeId = <?=$defaultThemeId?>;
     var dataTable;
 
     //exec when ready
@@ -64,7 +64,20 @@ $htmlDelete = Dialog::renderDelete('Delete theme', 'CONFIRM DELETE');
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [],visible: false,searchable: false
+                        targets: [2],visible: false,searchable: false
+                    },
+                    {
+                        //modify nama theme, shg include default sign
+                        targets:[1], render: function(value, type, row)
+                        {
+                            themeId = row[0];
+
+                            //apabila theme ini adalah default theme maka berikan  tanda
+                            if (themeId==defaultThemeId){
+                                return value + " (default)"; //add tanda * sbg default theme
+                            }
+                            return value;
+                        }
                     },
                     {
                         // action column

@@ -30,7 +30,10 @@ class Theme extends BaseController
 
         $fieldList = $model->getThemeFieldList();
 
-        return view('layout/template', compact('mainview', 'primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
+        $setting = new SettingModel();
+        $defaultThemeId = $setting->getThemeDefault();
+
+        return view('layout/template', compact('mainview', 'primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form', 'defaultThemeId'));
     }
 
     public function detail($themeId)
