@@ -14,6 +14,7 @@ class SettingModel extends BaseModel
     const SETTING_CURRENCY = 10;
     const SETTING_CURRENCY_SIGN = 11;
     const SETTING_THEME_DEFAULT = 1000;
+    const SETTING_LIVEPACKAGE_DEFAULT = 1000;
 
     protected $table      = 'tsetting';
     protected $primaryKey = 'setting_id';
@@ -162,6 +163,24 @@ class SettingModel extends BaseModel
             'value_int' => $themeId
         ];
         self::update(self::SETTING_THEME_DEFAULT, $data);
+
+        return $this->db->affectedRows();
+    }
+
+    /**
+     * get / set LiveTvPackageDefault
+     * @return int
+     */
+    public function getLiveTvPackageDefault(){
+        $row = $this->get(self::SETTING_LIVEPACKAGE_DEFAULT);
+        if ($row==null) return 0;
+        return $row['value_int'];
+    }
+    public function setLiveTvPackageDefault($themeId){
+        $data = [
+            'value_int' => $themeId
+        ];
+        self::update(self::SETTING_LIVEPACKAGE_DEFAULT, $data);
 
         return $this->db->affectedRows();
     }

@@ -47,6 +47,7 @@ $htmlDelete = Dialog::renderDelete('Delete package', 'CONFIRM DELETE');
     const urlSsp = "<?= $baseUrl ?>/ssp";
     const lastCol = <?= count($fieldList) ?>;
     const dataList = $('#datalist');
+    const defaultLiveTvPackage = <?=$defaultLiveTvPackage?>;
     var dataTable;
 
     //exec when ready
@@ -60,12 +61,26 @@ $htmlDelete = Dialog::renderDelete('Delete package', 'CONFIRM DELETE');
                 ajax: urlSsp,
                 responsive: true,
                 scrollX: true,
-                pageLength: 100,
+                serverSide: true,
+                pageLength: 10,
                 order: [['0','desc']],
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
                         targets: [],visible: false,searchable: false
+                    },
+                    {
+                        //modify nama theme, shg include default sign
+                        targets:[1], render: function(value, type, row)
+                        {
+                            const id = row[0];
+
+                            //apabila theme ini adalah default theme maka berikan  tanda
+                            if (id==defaultLiveTvPackage){
+                                return value + " (default)"; //add tanda * sbg default theme
+                            }
+                            return value;
+                        }
                     },
                     {
                         // action column

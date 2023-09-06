@@ -181,13 +181,13 @@ class Theme extends BaseController
         $model = new ThemeModel();
 
         $default = (isset($_POST['set_as_default'])) ? 1 : 0;
+        unset($_POST['set_as_default']); //hapus dari post, shg tdk menganggu update
         if ($default>0){
             $themeId = $_POST['theme_id'];
             $setting = new SettingModel();
             $setting->setThemeDefault($themeId);
         }
 
-        unset($_POST['default']); //hapus dari post, shg tdk menganggu update
         $r = $model->modifyTheme($_POST);
 
         if ($r>0){

@@ -10,6 +10,7 @@ namespace App\Controllers;
 use App\Models\LiveTVModel;
 use App\Models\LiveTvPackageModel;
 use App\Models\LiveTvPackageForm;
+use App\Models\SettingModel;
 
 class LiveTvPackage extends BaseController
 {
@@ -24,8 +25,12 @@ class LiveTvPackage extends BaseController
         $fieldList = $model->getFieldList();
 
         $form = new LiveTvPackageForm();
+        $form->removeSetAsDefault();
 
-        return view('layout/template', compact('mainview', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
+        $setting = new SettingModel();
+        $defaultLiveTvPackage = $setting->getLiveTvPackageDefault();
+
+        return view('layout/template', compact('mainview', 'fieldList', 'pageTitle', 'baseUrl', 'form', 'defaultLiveTvPackage'));
     }
 
     public function ssp()
@@ -70,11 +75,27 @@ class LiveTvPackage extends BaseController
 
         $form = new LiveTvPackageForm();
 
+        //set check apabila package adalah default
+        $setting = new SettingModel();
+        $defaultLiveTvPackageId = $setting->getLiveTvPackageDefault();
+        if ($defaultLiveTvPackageId==$packageId){
+            $form->setDefault(1);
+        }
+
         $urlAction = $this->baseUrl . '/update';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
     }
 
     public function update(){
+
+        $default = (isset($_POST['set_as_default'])) ? 1 : 0;
+        unset($_POST['set_as_default']); //hapus dari post, shg tdk menganggu update
+        if ($default>0){
+            $packageId = $_POST['package_id'];
+            $setting = new SettingModel();
+            $setting->setLiveTvPackageDefault($packageId);
+        }
+
         $model = new LiveTvPackageModel();
 
         $this->normalizeData($_POST);

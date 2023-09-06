@@ -8,6 +8,7 @@ namespace App\Models;
 
 class LiveTvPackageForm extends BaseForm
 {
+    public $set_as_default;
     public $package_id;
     public $name;
     public $description;
@@ -24,6 +25,7 @@ class LiveTvPackageForm extends BaseForm
 
     function __construct()
     {
+        $this->set_as_default = ['type'=>'checkbox','label'=>'Set as default'];
         $this->package_id = ['type'=>'numeric', 'label'=>'Package Id', 'placeholder'=>'', 'required'=>'', 'readonly'=>'readonly'];
         $this->name = ['type'=>'varchar', 'label'=>'Name', 'placeholder'=>'', 'required'=>''];
         $this->description = ['type'=>'varchar', 'label'=>'Description', 'placeholder'=>'', 'required'=>''];
@@ -37,5 +39,16 @@ class LiveTvPackageForm extends BaseForm
 //        $this->create_date = ['type'=>'datetime', 'label'=>'Create Date', 'placeholder'=>'', 'required'=>''];
 //        $this->update_date = ['type'=>'datetime', 'label'=>'Update Date', 'placeholder'=>'', 'required'=>''];
 
+    }
+
+    public function removeSetAsDefault(){
+        unset($this->set_as_default);
+    }
+
+    /**
+     * @param $value =1 --> checkbox on
+     */
+    public function setDefault($value){
+        $this->set_as_default['value'] = $value;
     }
 }
