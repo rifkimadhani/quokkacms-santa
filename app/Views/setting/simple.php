@@ -8,49 +8,42 @@
 use App\Libraries\Dialog;
 
 $htmlEdit = $form->renderPlainDialog('formEdit');
-$htmlNew = $form->renderDialog('New setting', 'formNew', "{$baseUrl}/insert");
-$htmlDelete = Dialog::renderDelete('Delete setting', 'CONFIRM DELETE');
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
-    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showSimple()">
-        <i class="fa fa-gear text-primary mr-5 "></i> Simple Settings
-    </a>
     <div class="btn-group float-right">
-        <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
-            Options <i class="fa fa-th-large text-primary ml-5"></i>
+        <a class="btn btn-secondary" href="javascript:;" role="button" onclick="onClickBack()">
+            Advanced Settings <i class="fa fa-gears text-primary ml-5"></i>
         </a>
     </div>
 </div>
-<div class="block-content block-content-full table-responsive">
-    <table id="datalist" class="table table-bordered table-hover table-striped table-vcenter">
-        <thead>
+<div class="block-content block-content-full">
+    <table id="datalist" class="table table-borderless table-vcenter" width="100%">
+        <thead style="display: none;">
             <tr>
                 <?php foreach ($fieldList as $field) : ?>
-                    <th><?= $field ?></th>
+                    <th class="d-none d-sm-table-cell" style="width: 100%;"><?= $field; ?></th>
                 <?php endforeach; ?>
-                <!-- <th style="width: 5%;">Action</th> -->
             </tr>
         </thead>
     </table>
 </div>
 
 <?= $htmlEdit ?>
-<?= $htmlNew ?>
-<?= $htmlDelete ?>
 
 <?= view('util/scripts.php') ?>
 
 
 <script>
-    const urlSsp = "<?= $baseUrl ?>/ssp";
-    const lastCol = <?= count($fieldList) ?>;
+    const urlSsp = "<?= $baseUrl ?>/sspSimple";
     const dataList = $('#datalist');
     var dataTable;
 
     //exec when ready
     $('document').ready(function() {
         initDataTable();
+
+        // showDialog('.dialogformNew');
     });
 
     function initDataTable() {
@@ -59,15 +52,25 @@ $htmlDelete = Dialog::renderDelete('Delete setting', 'CONFIRM DELETE');
             serverSide: true,
             responsive: true,
             scrollX: true,
-            pageLength: 100,
+            searching: false,
+            paging: false,
+            info: false,
             order: [
                 ['0', 'asc']
             ],
             columnDefs: [{
                     //hide your cols here, enter index of col into targets array
-                    targets: [],
+                    targets: [0],
                     visible: false,
                     searchable: false
+                },
+                {
+                    targets: [1],
+                    className: "font-w700 text-uppercase"
+                },
+                {
+                    targets: [2],
+                    className: "border border-primary"
                 }
 
             ]
@@ -84,7 +87,7 @@ $htmlDelete = Dialog::renderDelete('Delete setting', 'CONFIRM DELETE');
             //get pk from data
             const settingId = data[0];
 
-            const url = "<?= $baseUrl ?>/edit/" + settingId;
+            const url = "<?= $baseUrl ?>/editSetting/" + settingId;
 
             // show hourglass
             jQuery('#overlay-loader-indicator').show();
@@ -99,29 +102,10 @@ $htmlDelete = Dialog::renderDelete('Delete setting', 'CONFIRM DELETE');
                     jQuery('#overlay-loader-indicator').hide();
                 });
         });
-
-        initDataTableOptions(dataTable);
     }
 
-    //
-    //
-    // function onClickTrash(event, that) {
-    //     event.stopPropagation();
-
-    //     const data = dataTable.row($(that).parents('tr')).data();
-    //     const settingId = data[0];
-
-
-    //     //please correct the index for name variable, sehingga message delete akan terlihat benar
-    //     const name = data[0];
-
-    //     showDialogDelete('formDelete', 'Are you sure to delete ' + name, function() {
-    //         window.location.href = "<? //= $baseUrl 
-                                        ?>/delete/" + settingId;
-    //     })
-    // }
-
-    function showSimple(event, that) {
-        window.location.href = "<?= $baseUrl ?>/simple";
+    function onClickBack() {
+        event.stopPropagation();
+        window.location.href = "<?= $baseUrl ?>";
     }
 </script>

@@ -10,6 +10,8 @@ class SettingModel extends BaseModel
     const SQL_GET = 'SELECT * FROM tsetting WHERE (setting_id=?)';
     const SQL_MODIFY = 'UPDATE tsetting SET name=?, value_int=?, value_float=?, value_string=? WHERE (setting_id=?)';
 
+    const SQL_GET_SIMPLE_SETTING = 'SELECT `setting_id`, `name`, `value_string` FROM tsetting WHERE setting_id IN (10, 11, 14, 101)';
+
     const SETTING_TIMEZONE = 14;
     const SETTING_CURRENCY = 10;
     const SETTING_CURRENCY_SIGN = 11;
@@ -48,6 +50,12 @@ class SettingModel extends BaseModel
 
     public function getFieldList(){
         return ['setting_id', 'name', 'value_int', 'value_float', 'value_string', 'create_date', 'update_date'];
+    }
+
+    // for Simple Settings 
+    public function getSimpleFieldList()
+    {
+        return ['setting_id', 'name', 'value_string'];
     }
 
     public function add($value)  {
@@ -129,6 +137,12 @@ class SettingModel extends BaseModel
     public function getSsp()
     {
         return $this->_getSsp($this->table, $this->primaryKey, $this->getFieldList());
+    }
+
+    // for Simple Settings
+    public function getSspSimple()
+    {
+        return $this->_getSspCustom(self::SQL_GET_SIMPLE_SETTING, $this->getSimpleFieldList());
     }
 
     public function getTimeZone(){

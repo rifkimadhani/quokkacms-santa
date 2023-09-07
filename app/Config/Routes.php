@@ -256,6 +256,10 @@ $routes->get('/setting/edit/(:any)', 'Setting::edit/$1');
 $routes->get('/setting/delete/(:any)', 'Setting::delete/$1');
 $routes->post('/setting/update', 'Setting::update');
 $routes->post('/setting/insert', 'Setting::insert');
+$routes->get('/setting/simple', 'Setting::simple');
+$routes->get('/setting/sspSimple', 'Setting::sspSimple');
+$routes->get('/setting/editSetting/(:any)', 'Setting::editSetting/$1');
+$routes->post('/setting/updateSetting', 'Setting::updateSetting');
 
 //hotelservice
 $routes->get('/hotelservice', 'HotelService::index');

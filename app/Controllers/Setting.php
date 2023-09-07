@@ -9,6 +9,7 @@ namespace App\Controllers;
 
 use App\Models\SettingModel;
 use App\Models\SettingForm;
+use App\Models\SettingSimpleForm;
 
 class Setting extends BaseController
 {
@@ -17,12 +18,30 @@ class Setting extends BaseController
         $baseUrl = $this->getBaseUrl();
 
         $mainview = 'setting/index';
-        $pageTitle = 'Setting';
+        $pageTitle = 'Settings';
 
         $model = new SettingModel();
         $fieldList = $model->getFieldList();
 
         $form = new SettingForm();
+
+        return view('layout/template', compact('mainview', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
+    }
+
+    // for Simple Settings
+    public function simple()
+    {
+        $baseUrl = $this->baseUrl;
+
+        $mainview = 'setting/simple';
+        $pageTitle = 'Simple Settings';
+
+        $model = new SettingModel();
+        $fieldList = $model->getSimpleFieldList();
+
+        // var_dump($data);
+
+        $form = new SettingSimpleForm();
 
         return view('layout/template', compact('mainview', 'fieldList', 'pageTitle', 'baseUrl', 'form'));
     }
@@ -34,6 +53,20 @@ class Setting extends BaseController
         header('Content-Type: application/json');
 
         $data = $model->getSsp();
+
+        self::sspDataConversion($data);
+
+        echo json_encode($data);
+    }
+
+    // for Simple Settings
+    public function sspSimple()
+    {
+        $model = new SettingModel();
+
+        header('Content-Type: application/json');
+
+        $data = $model->getSspSimple();
 
         self::sspDataConversion($data);
 
@@ -73,6 +106,19 @@ class Setting extends BaseController
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
     }
 
+    // for Simple Settings
+    public function editSetting($settingId)
+    {
+        $model = new SettingModel();
+        $data = $model->get($settingId);
+
+
+        $form = new SettingSimpleForm();
+
+        $urlAction = $this->baseUrl . '/updateSetting';
+        return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
+    }
+
     public function update(){
         $model = new SettingModel();
 
@@ -87,6 +133,24 @@ class Setting extends BaseController
         }
 
         return redirect()->to($this->baseUrl);
+    }
+
+    // for Simple Settings
+    public function updateSetting()
+    {
+        $model = new SettingModel();
+
+        $this->normalizeData($_POST);
+
+        $r = $model->modify($_POST);
+
+        if ($r > 0) {
+            $this->setSuccessMessage('Update success');
+        } else {
+            $this->setErrorMessage('Update fail ' . $model->errMessage);
+        }
+
+        return redirect()->to($this->baseUrl . '/simple');
     }
 
     //delete tdk di pakai pada setting, krn tdk boleh di hapus
