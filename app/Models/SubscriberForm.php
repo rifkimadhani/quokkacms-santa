@@ -19,8 +19,8 @@ class SubscriberForm extends BaseForm
         $this->group_id = ['type'=>'select','label'=>'Group','options'=>$group,'placeholder'=>'---'];
 
         $this->salutation = ['type'=>'varchar','label'=>'Salutation','placeholder'=>'Mr. Mrs. Ms.'];
-        $this->name = ['type'=>'varchar','label'=>'First Name','placeholder'=>'Masukkan Nama Pelanggan Disini'];
-        $this->last_name = ['type'=>'varchar','label'=>'Last Name','placeholder'=>'Masukkan Nama Pelanggan Disini'];
+        $this->name = ['type' => 'varchar', 'label' => 'First Name', 'placeholder' => 'Nama Depan Tamu'];
+        $this->last_name = ['type' => 'varchar', 'label' => 'Last Name', 'placeholder' => 'Nama Belakang Tamu'];
         $this->room_id = ['type'=>'select-multiple','label'=>'Room','required'=>'required','options'=>$room,'placeholder'=>'Pilih Room Disini'];
     }
 }
