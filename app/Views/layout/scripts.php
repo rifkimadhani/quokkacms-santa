@@ -1,6 +1,3 @@
-<!-- <script src="<? //= base_url('plugin/codebaseadmin/js/codebase.core.min.js'); 
-                    ?>"></script> -->
-
 <!--
     Codebase JS
 
@@ -23,33 +20,19 @@
 
 
 <!-- Sync from old template -->
-
 <!-- Bootstrap -->
-<!-- <script src="<? //= base_url('plugin/adminlte/bower_components/bootstrap/dist/js/bootstrap.min.js') 
-                    ?>"></script> -->
-<!-- <script src="<? //= base_url('plugin/adminlte/bower_components/select2/dist/js/select2.full.min.js') 
-                    ?>"></script> -->
 <script src="<?= base_url('plugin/codebaseadmin/js/plugins/select2/js/select2.full.min.js') ?>"></script>
 <script src="<?= base_url('plugin/adminlte/bower_components/fastclick/lib/fastclick.js') ?>"></script>
-<!-- <script src="<? //= base_url('plugin/adminlte/bower_components/datatables.net/js/jquery.dataTables.min.js') 
-                    ?>"></script> -->
 <script src="<?= base_url('plugin/codebaseadmin/js/plugins/datatables/jquery.dataTables.min.js') ?>"></script>
-<!-- <script src="<? //= base_url('plugin/adminlte/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') 
-                    ?>"></script> -->
 <script src="<?= base_url('plugin/codebaseadmin/js/plugins/datatables/dataTables.bootstrap4.min.js') ?>"></script>
 <script src="<?= base_url('plugin/RowReorder-1.2.6/js/dataTables.rowReorder.min.js') ?>"></script>
 <script src="<?= base_url('plugin/adminlte/bower_components/inputmask/dist/jquery.inputmask.bundle.js') ?>"></script>
-<!-- <script src="<? //= base_url('plugin/adminlte/dist/js/adminlte.min.js') 
-                    ?>"></script> -->
-<!-- <script src="<? //= base_url('plugin/adminlte/bower_components/jquery-slimscroll/jquery.slimscroll.js') 
-                    ?>"></script> -->
 <script src="<?= base_url('plugin/codebaseadmin/js/plugins/jquery-slimscroll/jquery.slimscroll.js') ?>"></script>
 <script src="<?= base_url('plugin/js/datetostring.js'); ?>"></script>
 <script src="<?= base_url('plugin/js/uriquerystring.js'); ?>"></script>
 <!--<script src="--><? //= base_url('plugin/js/modalutil.js'); 
                     ?><!--"></script>-->
-<!--<script src="--><? //= base_url('plugin/js/videohls.js'); 
-                    ?><!--" type="text/javascript"></script>-->
+<script src="<?= base_url('plugin/js/videohls.js'); ?>" type="text/javascript"></script>
 
 <!-- menu active -->
 <script>
@@ -57,7 +40,7 @@
     var url = window.location;
     var urlsplit = url.href.split('/');
     var fullurl = urlsplit[0] + '/' + urlsplit[1] + '/' + urlsplit[2] + '/' + urlsplit[3] + '/' + urlsplit[4];
-    console.log(fullurl);
+    // console.log(fullurl);
 
     $('ul.nav-main > li > a').filter(function() {
         // console.log(this.href);
@@ -99,4 +82,79 @@
 
     // Add event listener to update data-action when the window is resized
     window.addEventListener('resize', updateDataAction);
+</script>
+
+<!-- Save theme's layout -->
+<script>
+    // Function to apply the selected theme
+    function applyTheme() {
+        const selectedTheme = localStorage.getItem('selectedTheme');
+
+        // check if a theme is selected & Apply the selected theme by setting the CSS link
+        if (selectedTheme) {
+            document.getElementById('css-theme').setAttribute('href', selectedTheme);
+        }
+
+        // retrieve the saved sidebar style
+        const sidebarStyle = localStorage.getItem('sidebarStyle');
+
+        // check if a sidebar style is saved and apply it
+        if (sidebarStyle === 'dark') {
+            // sidebar dark
+            document.getElementById('page-container').classList.add('sidebar-inverse');
+        } else {
+            // sidebar light
+            document.getElementById('page-container').classList.remove('sidebar-inverse');
+        }
+    }
+
+    // Event handler for theme change
+    document.querySelectorAll('[data-toggle="theme"]').forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            const selectedTheme = this.getAttribute('data-theme');
+            localStorage.setItem('selectedTheme', selectedTheme);
+            applyTheme();
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const themeButtons = document.querySelectorAll('[data-toggle="theme"]');
+        const sidebarLightButton = document.getElementById('sidebar-light');
+        const sidebarDarkButton = document.getElementById('sidebar-dark');
+
+        // theme change
+        themeButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const selectedTheme = this.getAttribute('data-theme');
+                localStorage.setItem('selectedTheme', selectedTheme);
+                applyTheme();
+            });
+        });
+
+        // sidebar style change
+        sidebarLightButton.addEventListener('click', function() {
+            localStorage.setItem('sidebarStyle', 'light');
+        });
+
+        sidebarDarkButton.addEventListener('click', function() {
+            localStorage.setItem('sidebarStyle', 'dark');
+        });
+
+        applyTheme();
+    });
+
+    // Function to reset the theme to default
+    function resetThemeToDefault() {
+        const defaultThemeLink = document.getElementById('default-theme');
+        const defaultTheme = defaultThemeLink.getAttribute('data-theme');
+
+        localStorage.removeItem('selectedTheme');
+        document.getElementById('css-theme').setAttribute('href', defaultTheme);
+        localStorage.setItem('sidebarStyle', 'dark');
+        applyTheme();
+    }
+
+    // Event handler for the reset button/link
+    document.getElementById('reset-theme-button').addEventListener('click', resetThemeToDefault);
 </script>

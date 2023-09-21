@@ -21,46 +21,51 @@
                      <h6 class="dropdown-header">Color Themes</h6>
                      <div class="row no-gutters text-center mb-5">
                          <div class="col-2 mb-5">
-                             <a class="text-default" data-toggle="theme" data-theme="default" href="javascript:void(0)">
+                             <a class="text-default" data-toggle="theme" data-theme="default" href="#">
                                  <i class="fa fa-2x fa-circle"></i>
                              </a>
                          </div>
                          <div class="col-2 mb-5">
-                             <a class="text-elegance" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/elegance.min.css'); ?>" href="javascript:void(0)">
+                             <a class="text-elegance" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/elegance.min.css'); ?>" href="#">
                                  <i class="fa fa-2x fa-circle"></i>
                              </a>
                          </div>
                          <div class="col-2 mb-5">
-                             <a class="text-pulse" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/pulse.min.css'); ?>" href="javascript:void(0)">
+                             <a class="text-pulse" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/pulse.min.css'); ?>" href="#">
                                  <i class="fa fa-2x fa-circle"></i>
                              </a>
                          </div>
                          <div class="col-2 mb-5">
-                             <a class="text-flat" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/flat.min.css'); ?>" href="javascript:void(0)">
+                             <a class="text-flat" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/flat.min.css'); ?>" href="#">
                                  <i class="fa fa-2x fa-circle"></i>
                              </a>
                          </div>
                          <div class="col-2 mb-5">
-                             <a class="text-corporate" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/corporate.min.css'); ?>" href="javascript:void(0)">
+                             <a class="text-corporate" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/corporate.min.css'); ?>" href="#">
                                  <i class="fa fa-2x fa-circle"></i>
                              </a>
                          </div>
                          <div class="col-2 mb-5">
-                             <a class="text-earth" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/earth.min.css'); ?>" href="javascript:void(0)">
+                             <a id="default-theme" class="text-earth" data-toggle="theme" data-theme="<?= base_url('plugin/codebaseadmin/css/themes/earth.min.css'); ?>" href="#">
                                  <i class="fa fa-2x fa-circle"></i>
                              </a>
                          </div>
                      </div>
                      <h6 class="dropdown-header">Sidebar</h6>
-                     <div class="row gutters-tiny text-center mb-5">
+                     <div class="row gutters-tiny text-center mb-5" style="padding: 0px 10px 0px 10px;">
                          <div class="col-6">
-                             <button type="button" class="btn btn-sm btn-block btn-alt-secondary mb-10" data-toggle="layout" data-action="sidebar_style_inverse_off">Light</button>
+                             <button type="button" class="btn btn-sm btn-block btn-alt-secondary mb-10" id="sidebar-light" data-toggle="layout" data-action="sidebar_style_inverse_off"><i class="fa fa-sun-o fa-fw"></i> Light</button>
                          </div>
                          <div class="col-6">
-                             <button type="button" class="btn btn-sm btn-block btn-alt-secondary mb-10" data-toggle="layout" data-action="sidebar_style_inverse_on">Dark</button>
+                             <button type="button" class="btn btn-sm btn-block btn-dark mb-10" id="sidebar-dark" data-toggle="layout" data-action="sidebar_style_inverse_on"><i class="fa fa-moon-o fa-fw"></i> Dark</button>
                          </div>
                      </div>
-                     <div class="dropdown-divider"></div>
+                     <h6 class="dropdown-header">Default Theme</h6>
+                     <div class="row gutters-tiny text-center mb-5" style="padding: 0px 10px 0px 10px;">
+                         <div class="col-12">
+                             <button type="button" class="btn btn-md btn-block btn-alt-primary mb-10" id="reset-theme-button">Reset Theme</button>
+                         </div>
+                     </div>
                  </div>
              </div>
              <!-- END Layout Options -->
