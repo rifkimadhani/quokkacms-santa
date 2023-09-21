@@ -7,8 +7,8 @@
 use App\Libraries\Dialog;
 
 $htmlEdit = $form->renderPlainDialog('formEdit');
-$htmlNew = $form->renderDialog('New STB Device', 'formNew', "{$baseUrl}/insert");
-$htmlDelete = Dialog::renderDelete('Delete STB Device', 'CONFIRM DELETE');
+                                    $htmlNew = $form->renderDialog('New Device', 'formNew', "{$baseUrl}/insert");
+                                    $htmlDelete = Dialog::renderDelete('Delete Device', 'CONFIRM DELETE');
 ?>
 
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
