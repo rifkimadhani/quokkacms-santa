@@ -65,9 +65,22 @@ $htmlDelete = Dialog::renderDelete('Delete setting', 'CONFIRM DELETE');
             ],
             columnDefs: [{
                     //hide your cols here, enter index of col into targets array
-                    targets: [],
+                    targets: [6],
                     visible: false,
                     searchable: false
+                },
+                {
+                    targets: [1],
+                    width: 100
+                },
+                {
+                    targets: [5, 6],
+                    render: function(data) {
+                        if (data) {
+                            return datetostring.datetimetoindonesia(data)
+                        }
+                        return '';
+                    }
                 }
 
             ]
@@ -105,21 +118,20 @@ $htmlDelete = Dialog::renderDelete('Delete setting', 'CONFIRM DELETE');
 
     //
     //
-    // function onClickTrash(event, that) {
-    //     event.stopPropagation();
+    function onClickTrash(event, that) {
+        event.stopPropagation();
 
-    //     const data = dataTable.row($(that).parents('tr')).data();
-    //     const settingId = data[0];
+        const data = dataTable.row($(that).parents('tr')).data();
+        const settingId = data[0];
 
 
-    //     //please correct the index for name variable, sehingga message delete akan terlihat benar
-    //     const name = data[0];
+        //     //please correct the index for name variable, sehingga message delete akan terlihat benar
+        const name = data[0];
 
-    //     showDialogDelete('formDelete', 'Are you sure to delete ' + name, function() {
-    //         window.location.href = "<? //= $baseUrl 
-                                        ?>/delete/" + settingId;
-    //     })
-    // }
+        showDialogDelete('formDelete', 'Are you sure to delete ' + name, function() {
+            window.location.href = "<?= $baseUrl ?>/delete/" + settingId;
+        })
+    }
 
     function showSimple(event, that) {
         window.location.href = "<?= $baseUrl ?>/simple";
