@@ -39,17 +39,19 @@ function doAuth(){
     $stb= ModelStb::getFromSessionId($sessionId);
 
     if ($stb instanceof PDOException){
-        echo errCompose($stb);
+        Log::writeErrorLn($stb);
+//        echo errCompose($stb);
+        echo '0';
         return;
     }
 
     //stb not found
     if ($stb==null){
-        echo json_encode(['status'=>0]);
+        echo '0';//json_encode(['status'=>0]);
         return;
     }
 
-    echo json_encode(['status'=>1]);
+    echo '1';//json_encode(['status'=>1]);
 
     //stbid akan di pakai utk rubah status online menjadi 1
     $stbId = $stb['stb_id'];
