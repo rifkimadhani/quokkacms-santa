@@ -1,24 +1,30 @@
 <?php
-    require_once __DIR__ . '/../../../model/ModelSetting.php';
+require_once __DIR__ . '/../../../model/ModelSetting.php';
 
-    $fKitchen = ModelSetting::getFeatureKitchen();
-    if ($fKitchen==0) $fKitchen='hidden'; else $fKitchen='';
+$fKitchen = ModelSetting::getFeatureKitchen();
+if ($fKitchen == 0) $fKitchen = 'hidden';
+else $fKitchen = '';
 
-    $fMarketing = ModelSetting::getFeatureMarketing();
-    if ($fMarketing==0) $fMarketing='hidden'; else $fMarketing='';
+$fMarketing = ModelSetting::getFeatureMarketing();
+if ($fMarketing == 0) $fMarketing = 'hidden';
+else $fMarketing = '';
 
-    $fDimsum = ModelSetting::getFeatureDimsum();
-    if ($fDimsum==0) $fDimsum='hidden'; else $fDimsum='';
+$fDimsum = ModelSetting::getFeatureDimsum();
+if ($fDimsum == 0) $fDimsum = 'hidden';
+else $fDimsum = '';
 
-    $fStat= ModelSetting::getFeatureLivetvStat();
-    if ($fStat==0) $fStat='hidden'; else $fStat='';
+$fStat = ModelSetting::getFeatureLivetvStat();
+if ($fStat == 0) $fStat = 'hidden';
+else $fStat = '';
 
-    $fInbox = 0; //inbox tdk butuhkan saat ini, krn inbox khusus utk mobile user
-    if ($fInbox==0) $fInbox='hidden'; else $fInbox='';
+$fInbox = 0; //inbox tdk butuhkan saat ini, krn inbox khusus utk mobile user
+if ($fInbox == 0) $fInbox = 'hidden';
+else $fInbox = '';
 
-    //utk saat ini shop blm di dukung, jadi di hide saja
-    $fShop = 0;
-    if ($fShop==0) $fShop='hidden'; else $fShop='';
+//utk saat ini shop blm di dukung, jadi di hide saja
+$fShop = 0;
+if ($fShop == 0) $fShop = 'hidden';
+else $fShop = '';
 ?>
 <!-- Sidebar -->
 <!--
@@ -108,7 +114,7 @@
                 <li class="nav-main-heading">
                     <span class="sidebar-mini-visible">MN</span><span class="sidebar-mini-hidden">Main Navigation</span>
                 </li>
-                
+
                 <li>
                     <a href="<?= base_url('dashboard'); ?>"><i class="si si-home"></i> <span class="sidebar-mini-hide">Home</span></a>
                 </li>
@@ -124,7 +130,7 @@
                 <li>
                     <a href="<?= base_url('message'); ?>"><i class="si si-bubbles"></i> <span class="sidebar-mini-hide">Messages</span></a>
                 </li>
-                <li <?=$fInbox?>>
+                <li <?= $fInbox ?>>
                     <a href="<?= base_url('inbox'); ?>"><i class="si si-envelope"></i> <span class="sidebar-mini-hide">Inbox</span></a>
                 </li>
                 <li>
@@ -187,7 +193,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="<?= base_url('stbdevices'); ?>">STB Devices</a>
+                            <a href="<?= base_url('stbdevices'); ?>">Devices</a>
                         </li>
                         <li>
                             <a class="nav-submenu" data-toggle="nav-submenu" href="#">Room & Type</a>
@@ -238,11 +244,11 @@
                             <a href="<?= base_url('filemanager/filemanager/dialog.php'); ?>" target="_blank">File Manager</a>
                         </li>
                         <li>
-                            <a href="<?= base_url('setting'); ?>">Setting</a>
+                            <a href="<?= base_url('setting/simple'); ?>">Settings</a>
                         </li>
                     </ul>
                 </li>
-                <li <?=$fKitchen?>>
+                <li <?= $fKitchen ?>>
                     <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-cup"></i><span class="sidebar-mini-hide">Kitchen & Menu</span></a>
                     <ul>
                         <li>
@@ -257,7 +263,7 @@
                     </ul>
                 </li>
                 <!-- shop START-->
-                <li <?=$fShop?>>
+                <li <?= $fShop ?>>
                     <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-bag"></i><span class="sidebar-mini-hide">Shop</span></a>
                     <ul>
                         <li>
@@ -272,7 +278,7 @@
                     </ul>
                 </li>
                 <!--shop END-->
-                <li <?=$fMarketing?>>
+                <li <?= $fMarketing ?>>
                     <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-badge"></i><span class="sidebar-mini-hide">Marketing</span></a>
                     <ul>
                         <li>

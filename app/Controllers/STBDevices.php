@@ -18,7 +18,7 @@ class STBDevices extends BaseController
 
         $mainview = 'stbdevices/index';
         $primaryKey = 'stb_id';
-        $pageTitle = 'STBDevices';
+        $pageTitle = 'Devices';
 
         $model = new STBDevicesModel();
         $fieldList = $model->getFieldList();

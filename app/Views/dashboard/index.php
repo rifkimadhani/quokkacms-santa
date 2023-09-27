@@ -7,11 +7,11 @@
                 <div class="row py-20 text-center">
                     <div class="col-6 border-r">
                         <div class="font-size-h3 font-w600 text-info"><?php echo $datastb['online']; ?></div>
-                        <div class="font-size-sm font-w600 text-uppercase text-muted">STB Online</div>
+                        <div class="font-size-sm font-w600 text-uppercase text-muted">Device Online</div>
                     </div>
                     <div class="col-6">
                         <div class="font-size-h3 font-w600 text-warning"><?php echo $datastb['offline']; ?></div>
-                        <div class="font-size-sm font-w600 text-uppercase text-muted">STB Offline</div>
+                        <div class="font-size-sm font-w600 text-uppercase text-muted">Device Offline</div>
                     </div>
                 </div>
             </div>
@@ -25,11 +25,11 @@
                 </div>
                 <div class="row py-20 text-center">
                     <div class="col-6 border-r">
-                        <div class="font-size-h3 font-w600 text-info"><?php echo $dataguest['checkin'];?></div>
+                        <div class="font-size-h3 font-w600 text-info"><?php echo $dataguest['checkin']; ?></div>
                         <div class="font-size-sm font-w600 text-uppercase text-muted">Guest Check-In</div>
                     </div>
                     <div class="col-6">
-                        <div class="font-size-h3 font-w600 text-warning"><?php echo $dataguest['checkout'];?></div>
+                        <div class="font-size-h3 font-w600 text-warning"><?php echo $dataguest['checkout']; ?></div>
                         <div class="font-size-sm font-w600 text-uppercase text-muted">Guest Check-Out</div>
                     </div>
                 </div>
@@ -45,18 +45,18 @@
                 <div class="float-left mt-10">
                     <i class="si si-info fa-3x text-body-bg-dark"></i>
                 </div>
-                <div class="font-size-h3 font-w600 text-white"><?php echo $dataemergency['emergency_count'];?></div>
+                <div class="font-size-h3 font-w600 text-white"><?php echo $dataemergency['emergency_count']; ?></div>
                 <div class="font-size-sm font-w600 text-uppercase text-light">Emergency Today</div>
             </div>
         </a>
-    </div>    
+    </div>
     <div class="col-md-6 col-xl-3">
         <a class="block block-link-shadow text-right" href="<?= base_url('room'); ?>">
             <div class="block-content block-content-full clearfix bg-info">
                 <div class="float-left mt-10">
                     <i class="si si-user fa-3x text-body-bg-dark"></i>
                 </div>
-                <div class="font-size-h3 font-w600 text-white"><?php echo $dataroom['occupied'];?></div>
+                <div class="font-size-h3 font-w600 text-white"><?php echo $dataroom['occupied']; ?></div>
                 <div class="font-size-sm font-w600 text-uppercase text-light">Room Occupied</div>
             </div>
         </a>
@@ -67,9 +67,9 @@
                 <div class="float-right mt-10">
                     <i class="si si-ghost fa-3x text-body-bg-dark"></i>
                 </div>
-                <div class="font-size-h3 font-w600 text-white"><?php echo $dataroom['vacant'];?></div>
+                <div class="font-size-h3 font-w600 text-white"><?php echo $dataroom['vacant']; ?></div>
                 <div class="font-size-sm font-w600 text-uppercase text-light">Room Vacant</div>
             </div>
         </a>
-    </div>   
+    </div>
 </div>

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\EmergencyCategoryModel;
 use App\Models\EmergencyHistoryModel;
+use App\Models\NotificationModel;
 
 class Emergency extends BaseController
 {
@@ -21,6 +22,9 @@ class Emergency extends BaseController
 
         // Check if emergency is active
         $isEmergency = ($oneactive->emergency_history_id != 0);
+
+        // Notify Emergency alert to all the devices
+        NotificationModel::sendEmergencyWarningToAll($isEmergency);
         
         // Pass the emergency status to the view
         $status['isEmergency'] = $isEmergency;

@@ -70,7 +70,7 @@ class Theme extends BaseController
      */
     public function notify($themeId){
         NotificationModel::sendThemeUpdateToAll();
-        $this->setSuccessMessage('Notification sent to all stb');
+        $this->setSuccessMessage('Notification sent to all Devices.');
         return redirect()->to($this->baseUrl . "/detail/$themeId");
     }
 

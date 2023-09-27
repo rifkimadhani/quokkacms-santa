@@ -11,8 +11,8 @@ class SettingSimpleForm extends BaseForm
 {
     public $setting_id;
     public $name;
-    // public $value_int;
-    // public $value_float;
+    public $value_int;
+    public $value_float;
     public $value_string;
 
     function __construct()
@@ -21,8 +21,8 @@ class SettingSimpleForm extends BaseForm
         $this->setting_id = ['type' => 'hidden'];
         // $this->name = ['type' => 'varchar', 'label' => 'Name', 'placeholder' => '', 'required' => '', 'readonly' => 'readonly'];
         $this->name = ['type' => 'hidden'];
-        // $this->value_int = ['type'=>'numeric', 'label'=>'Value Int'];
-        // $this->value_float = ['type'=>'numeric', 'label'=>'Value Float', 'step'=>'0.01'];
+        $this->value_int = ['type' => 'hidden'];
+        $this->value_float = ['type' => 'hidden'];;
         $this->value_string = ['type' => 'text', 'label' => null, 'rows' => '7'];
     }
 }
