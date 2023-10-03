@@ -52,6 +52,9 @@ class ModelSetting
 
 	const SETTING_WEATHER_SERVER = 400;
 
+	const SETTING_DISPATCHER_SERVER = 402;
+	const SETTING_DISPATCHER_CLIENT = 403;
+
 	const SETTING_DIMSUM_AUTOLOGIN = 501;
 
 	const SETTING_DEFAULT_THEMEID = 1000;
@@ -367,5 +370,20 @@ class ModelSetting
     }
     static public function getSiteId(){
         return ModelSetting::getString(self::SETTING_SITEID);
+    }
+
+    /**
+     * setting utk dispatcher server & client
+     * dispatcher memiliki 2 jenis koneksi, utk koneksi server dan client
+     * koneksi server di pakai utk webserver
+     * koneksi client di pakai utk stb
+     *
+     * @return Exception|null|PDOException
+     */
+    static public function getDispatcherServer(){
+        return ModelSetting::get(self::SETTING_DISPATCHER_SERVER);
+    }
+    static public function getDispatcherClient(){
+        return ModelSetting::get(self::SETTING_DISPATCHER_CLIENT);
     }
 }
