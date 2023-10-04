@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\DipatcherModel;
 use App\Models\EmergencyCategoryModel;
 use App\Models\EmergencyHistoryModel;
 use App\Models\NotificationModel;
@@ -24,8 +25,21 @@ class Emergency extends BaseController
         $isEmergency = ($oneactive->emergency_history_id != 0);
 
         // Notify Emergency alert to all the devices
-        NotificationModel::sendEmergencyWarningToAll($isEmergency);
-        
+//        NotificationModel::sendEmergencyWarningToAll($isEmergency);
+
+        if ($isEmergency)
+        {
+            $json = json_encode( ['type'=>'emergency_warning_1'] );
+        }
+        else
+        {
+            $json = json_encode( ['type'=>'emergency_warning_0'] );
+        }
+
+        //sent event dgn dispatcher
+        $disp = new DipatcherModel();
+        $disp->sendToAll($json);
+
         // Pass the emergency status to the view
         $status['isEmergency'] = $isEmergency;
 
