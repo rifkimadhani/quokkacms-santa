@@ -6,7 +6,7 @@
 
 namespace App\Controllers;
 
-use App\Models\NotificationModel;
+use App\Models\DipatcherModel;
 use App\Models\SettingModel;
 use App\Models\ThemeForm;
 use App\Models\ThemeModel;
@@ -69,7 +69,12 @@ class Theme extends BaseController
      *
      */
     public function notify($themeId){
-        NotificationModel::sendThemeUpdateToAll();
+//        NotificationModel::sendThemeUpdateToAll();
+
+        //kirim event dgn dispatcher
+        $disp = new DipatcherModel();
+        $disp->sendToAll(json_encode( ['type'=>'theme'] ));
+
         $this->setSuccessMessage('Notification sent to all Devices.');
         return redirect()->to($this->baseUrl . "/detail/$themeId");
     }

@@ -79,15 +79,17 @@ class DipatcherModel extends BaseModel
         $this->send($channel, $message);
     }
 
-    public function sendToRoom($roomId, $meesage){
-
+    public function sendToRoom($roomId, $message){
+        $channel = "room-{$roomId}";
+        $this->send($channel, $message);
     }
 
     public function sendToGroup($groupId, $meesage){
 
     }
 
-    public function sendToAll($meesage){
-
+    public function sendToAll($message){
+        $channel = "all";
+        $this->send($channel, $message);
     }
 }
