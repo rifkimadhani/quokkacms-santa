@@ -9,6 +9,7 @@
 namespace App\Controllers;
 
 use App\Models\BillingModel;
+use App\Models\DipatcherModel;
 use App\Models\NotificationModel;
 use App\Models\RoomModel;
 use App\Models\SettingModel;
@@ -401,7 +402,13 @@ HTML;
 
         if ($r>0){
             $this->setSuccessMessage('UPDATE success');
-            NotificationModel::sendStateToSubscriber($id);
+//            NotificationModel::sendStateToSubscriber($id);
+
+            //send update with dispatcher
+            $disp = new DipatcherModel();
+            $disp->sendToSubscriber($id, json_encode( ['type'=>'guest_state'] ));
+
+
         } else {
             $this->setErrorMessage('UPDATE fail ' . $model->errMessage);
         }
