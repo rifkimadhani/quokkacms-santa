@@ -30,6 +30,7 @@ class SubscriberModel extends BaseModel
     const SQL_CHECKOUT_4 = 'UPDATE tsubscriber SET status=?, checkout_date=now() WHERE subscriber_id=?';
 
     const SQL_GET_FOR_SELECT = 'SELECT subscriber_id AS id, CONCAT(name, \' \', last_name) AS value FROM tsubscriber WHERE status=\'CHECKIN\' ORDER BY name';
+    const SQL_GET_ROOM = 'SELECT * FROM tsubscriber_room WHERE subscriber_id = ?';
 
     const SQL_MODIFY = 'UPDATE tsubscriber SET group_id=?, salutation=?, name=?, last_name=? WHERE subscriber_id=?';
 
@@ -131,6 +132,15 @@ class SubscriberModel extends BaseModel
     {
         $query = ($isCheckin) ? self::SQL_SSP_CHECKIN : self::SQL_SSP_HISTORY;
         return $this->_getSspCustom($query, $this->getFieldList());
+    }
+
+    /**
+     * get all room from subscriberId
+     * @param subscriberId
+     */
+    public function getRoom($subscriberId){
+        $db = db_connect();
+        return $db->query(self::SQL_GET_ROOM, [$subscriberId])->getResult('array');
     }
 
     /**

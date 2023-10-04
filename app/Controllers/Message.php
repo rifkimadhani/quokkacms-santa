@@ -8,6 +8,7 @@
 
 namespace App\Controllers;
 
+use App\Models\DipatcherModel;
 use App\Models\MessageForm;
 use App\Models\MessageFormGroup;
 
@@ -17,6 +18,7 @@ use App\Models\NotificationModel;
 use App\Models\SubscriberModel;
 use App\Models\RoomModel;
 use App\Models\SubscriberGroupModel;
+use App\Models\SubscriberRoomModel;
 
 class Message extends BaseController
 {
@@ -93,8 +95,9 @@ class Message extends BaseController
 
         $media->write($messageId, $urlImage);
 
-        //kirim notifikasi ke stb
-        NotificationModel::sendMessageToSubscriber($subscriberId);
+        //kirim lewat dispatcher
+        $disp = new DipatcherModel();
+        $disp->sendToSubscriber($subscriberId, json_encode( ['type'=>'message'] ));
 
         if ($messageId>0){
             $this->setSuccessMessage('Messages sent');
@@ -121,8 +124,11 @@ class Message extends BaseController
         
         //convert url -> {BASE-HOST}
         $urlImage = str_replace($this->baseHost, '{BASE-HOST}', $urlImage);
-        
-        // looping to push to db and send notification
+
+        $rooms = '';
+        $subsRoom = new SubscriberRoomModel();
+
+        // looping to push to db and built channel name
         foreach ($subscriberIds as $subscriberId){
             $messageId = $model->add([
                 'from' => $from,
@@ -133,9 +139,23 @@ class Message extends BaseController
             ]);
             $media->write($messageId, $urlImage);
 
+            $listRoom = $subsRoom->getRoom($subscriberId);
+            foreach ($listRoom as $item){
+                $roomId = $item['room_id'];
+                if (empty($rooms)){
+                    $rooms = "room-{$roomId}";
+                } else {
+                    $rooms .= ",room-{$roomId}";
+                }
+            }
+
             //kirim notifikasi ke stb
-            NotificationModel::sendMessageToSubscriber($subscriberId);
+//            NotificationModel::sendMessageToSubscriber($subscriberId);
         }
+
+        //kirim event dgn dispatcher
+        $disp = new DipatcherModel();
+        $disp->send($rooms, json_encode( ['type'=>'message'] ));
 
         if ($messageId>0){
             $this->setSuccessMessage('Messages sent');

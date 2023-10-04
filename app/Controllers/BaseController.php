@@ -95,6 +95,15 @@ abstract class BaseController extends Controller
     }
 
     /**
+     * log error
+     *
+     * @param $message
+     */
+    function loge($message){
+        log_message('error', $message);
+    }
+
+    /**
      * Vardump var --> log info
      *
      * @param $var

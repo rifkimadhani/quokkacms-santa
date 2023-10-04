@@ -15,6 +15,7 @@ class SettingModel extends BaseModel
     const SETTING_TIMEZONE = 14;
     const SETTING_CURRENCY = 10;
     const SETTING_CURRENCY_SIGN = 11;
+    const SETTING_DISPATCHER_SERVER = 402;
     const SETTING_THEME_DEFAULT = 1000;
     const SETTING_LIVEPACKAGE_DEFAULT = 1000;
 
@@ -197,5 +198,9 @@ class SettingModel extends BaseModel
         self::update(self::SETTING_LIVEPACKAGE_DEFAULT, $data);
 
         return $this->db->affectedRows();
+    }
+
+    public function getDispatcherServer(){
+        return $this->get(self::SETTING_DISPATCHER_SERVER);
     }
 }
