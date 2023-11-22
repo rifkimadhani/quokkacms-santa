@@ -86,7 +86,7 @@ class SubscriberModel extends BaseModel
 
             $db->commit();
 
-            return $countSuccess;
+            return $subscriberId;
 
         }catch (\PDOException $e){
             log_message('error', json_encode($e));

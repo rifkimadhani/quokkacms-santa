@@ -117,12 +117,17 @@ class Subscriber extends BaseController
 //        $rooms = $_POST['room_id'];
 
         $model = new SubscriberModel();
-        $count = $model->checkin($_POST);
+        $subscriberId = $model->checkin($_POST);
 
-        if ($count==0){
+        if ($subscriberId<=0){
             $this->setErrorMessage('Add guest fail, room already occupied');
         } else {
             $this->setSuccessMessage('Success');
+
+            //send checkin with dispatcher
+            $disp = new DipatcherModel();
+            $disp->sendToSubscriber($subscriberId, json_encode( ['type'=>'guest_checkin'] ));
+
         }
 
         return redirect()->to($this->baseUrl);
@@ -428,6 +433,10 @@ HTML;
 
         $model = new SubscriberModel();
         $r = $model->checkout($subscriberId, $rooms);
+
+        //send checkout with dispatcher
+        $disp = new DipatcherModel();
+        $disp->sendToSubscriber($subscriberId, json_encode( ['type'=>'guest_checkout'] ));
 
         if ($r>0){
             $this->setSuccessMessage('DELETE success');
