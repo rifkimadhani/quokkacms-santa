@@ -10,7 +10,7 @@ class SettingModel extends BaseModel
     const SQL_GET = 'SELECT * FROM tsetting WHERE (setting_id=?)';
     const SQL_MODIFY = 'UPDATE tsetting SET name=?, value_int=?, value_float=?, value_string=? WHERE (setting_id=?)';
 
-    const SQL_GET_SIMPLE_SETTING = 'SELECT `setting_id`, `name`, `value_string` FROM tsetting WHERE setting_id IN (10, 11, 14, 101)';
+    const SQL_GET_SIMPLE_SETTING = 'SELECT `setting_id`, `name`, `value_string` FROM tsetting WHERE setting_id IN (10, 11, 14, 100, 101)';
 
     const SETTING_TIMEZONE = 14;
     const SETTING_CURRENCY = 10;
