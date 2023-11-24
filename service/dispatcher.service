@@ -8,6 +8,7 @@
 Description=Service for dispathcer, hoteliptv3
 
 [Service]
+WorkingDirectory=/data/website/alpha_cms2a/service
 ExecStart=/data/website/alpha_cms2a/service/dispatcher.sh
 #ExecStop=
 TimeoutStartSec=0
