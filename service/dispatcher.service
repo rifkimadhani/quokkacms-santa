@@ -1,0 +1,17 @@
+#service for dispatcher
+#
+# $ systemctl enable dispatcher.service
+# $ systemctl start dispatcher.service
+# $ systemctl status dispatcher.service
+
+[Unit]
+Description=Service for dispathcer, hoteliptv3
+
+[Service]
+ExecStart=/data/website/alpha_cms2a/service/dispatcher.sh
+#ExecStop=
+TimeoutStartSec=0
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
