@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/bash -x
 
 filePath="$(dirname "$0")"
 filePath="$(realpath "$filePath")"
 
-java -jar "$filePath/dispatcher.jar" "$filePath/dispatcher.conf"
+cd $filePath
+java -jar dispatcher.jar dispatcher.conf
