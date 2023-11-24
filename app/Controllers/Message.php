@@ -36,12 +36,12 @@ class Message extends BaseController
         // $room = new RoomModel();
         // $roomData = $room->getForSelect();
 
-        $roomData = $group->getRoomForSelect();
+        // $roomData = $group->getRoomForSelect();
 
         $subscriber = new SubscriberModel();
         $subscriberData = $subscriber->getCheckinForSelect();
 
-        $form = new MessageForm($subscriberData, $roomData);
+        $form = new MessageForm($subscriberData);
 
         $groupModel = new SubscriberGroupModel();
         $groupData = $groupModel->getAllActiveForSelect();
@@ -66,25 +66,10 @@ class Message extends BaseController
 
     public function insert(){
         $subscriberId = $_POST['subscriber_id'];
-        $roomId = $_POST['room_id'];
+        // $roomId = $_POST['room_id'];
         $urlImage = $_POST['url_image'];
 
-        // check if room_id based on subscriber_id
         $model = new MessageModel();
-        $validRooms = $model->getSubscriberRoom($subscriberId);
-        $isValidRoom = false;
-
-        foreach ($validRooms as $room) {
-            if ($room['id'] == $roomId) {
-                $isValidRoom = true;
-                break;
-            }
-        }
-    
-        if (!$isValidRoom) {
-            $this->setErrorMessage('Invalid Room selected.');
-            return redirect()->to($this->baseUrl);
-        }
     
         $messageId = $model->add($_POST);
 
@@ -225,7 +210,7 @@ class Message extends BaseController
     public function update(){
         $id = $_POST['message_id'];
         $subscriberId = $_POST['subscriber_id'];
-        $roomId = $_POST['room_id'];
+        // $roomId = $_POST['room_id'];
         $urlImage = $_POST['url_image'];
 
         //convert URL --> {BASE-HOST}
@@ -235,23 +220,8 @@ class Message extends BaseController
         // $_POST['room_id'] = null;
 
         $model = new MessageModel();
-        $validRooms = $model->getSubscriberRoom($subscriberId);
-        $isValidRoom = false;
-
-        foreach ($validRooms as $room) {
-            if ($room['id'] == $roomId) {
-                $isValidRoom = true;
-                break;
-            }
-        }
-    
-        if (!$isValidRoom) {
-            $this->setErrorMessage('Invalid room selected');
-            return redirect()->to($this->baseUrl);
-        }
 
         $r = $model->modify($id, $_POST);
-
 
         $media = new MessageMediaModel();
         $media->write($id, $urlImage);
