@@ -10,7 +10,7 @@ require_once __DIR__ . '/../config/Koneksi.php';
 require_once __DIR__ . '/../library/Log.php';
 
 
-class ModelApp {
+class ModelApp{
 
 	const SQL_GET = 'SELECT * FROM tapp WHERE id=?';
 	const SQL_GET_LATEST = 'SELECT * FROM tapp WHERE app_id=? AND version_code>? ORDER BY version_code DESC LIMIT 1';
@@ -90,25 +90,24 @@ class ModelApp {
 		//Begin install process
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        //ini di pakai utk quokka tv
-        $r0 = Adb::root();
-
-		//2. connect if no device attached
-		$name = "{$ip}:{$port}"; //setiap adb akan mempergunakan device name, shg dalam 1 adb bisa multiple devices
+		//1. connect if no device attached
 		$r1 = Adb::connect($ip, $port);
-//		var_dump($r);
+        Log::writeLn(json_encode($r1));
 
-		//3. buat folder
+        //2. ini di pakai utk quokka tv
+        $r0 = Adb::root();
+        Log::writeLn(json_encode($r0));
+
+        $name = "{$ip}:{$port}"; //setiap adb akan mempergunakan device name, shg dalam 1 adb bisa multiple devices
+
+        //3. buat folder
 		$r2 = Adb::mkdir($name, $pathAndroid);
-//		var_dump($r);
 
         //chmod
 		$r3 = Adb::chmod($name, $pathAndroid);
-//		var_dump($r);
 
 		//4. push apk
 		$r4 = Adb::push($name, $pathApk, $pathAndroid);
-//		var_dump($r);
 
 		//5. push config ke file config.json
 		$configJson = "{\"host_api\": \"{$hostApi}\", \"time_zone\": \"{$timeZone}\", \"session_id\": \"{$sessionId}\"}";
@@ -117,12 +116,10 @@ class ModelApp {
 		$configJson = str_replace('"', '\"', $configJson);
 
 		$r5 = Adb::shell( $name,"echo '{$configJson}' > {$pathAndroid}/{$configFile}" );
-//		var_dump($r);
 
 		//6. install
 		//adb shell pm install -t /data/mr/NewAcappela-release-1.0.apk
 		$r6 = Adb::install($name,$pathAndroid . '/' . $apkFile);
-//		var_dump($r);
 
 		//7. enable device owner
 		//adb shell dpm set-device-owner com.madeiraresearch.hoteliptv2/.MyDeviceAdminReceiver
@@ -132,11 +129,9 @@ class ModelApp {
 		//8. run
 		//adb shell am start -n com.madeiraresearch.hoteliptv2/.MainActivity
 		$r7 = Adb::runApp($name, $appId, $mainActivity);
-//		var_dump($r);
 
 		//disconnect from stb
 		$r8 = Adb::disconnect($name);
-//		var_dump($r);
 
         return ['root'=>$r0, 'connect'=>$r1, 'mkdir'=>$r2, 'chmod'=>$r3, 'push_apk'=>$r4, 'push_config'=>$r5, 'install'=>$r6, 'runapp'=>$r7, 'disconnect'=>$r8];
 	}
