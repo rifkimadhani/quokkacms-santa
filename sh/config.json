@@ -1,0 +1,6 @@
+{
+	"time_zone": "Asia/Kuala_Lumpur",
+	"host_api": "https://quokkademo.com/stanley",
+	"host_weather": "https://quokkademo.com/weather",
+	"session_id": "SESSION-STB1"
+}
