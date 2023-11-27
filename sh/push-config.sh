@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 app_id=com.madeiraresearch.hoteliptv3
-folder=/data/mr/$app_id
+folder=/data/mr
 
 if [ -z "$1" ]; then
     echo "Usage: push-config.sh <ip-address>"
