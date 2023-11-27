@@ -112,6 +112,8 @@ body::-webkit-scrollbar
 
           clearDiv();
 
+          alert("Will begin installing app to device");
+
           $.ajax({
               type: 'POST',
               url: urlinstall, // Replace with your server endpoint
