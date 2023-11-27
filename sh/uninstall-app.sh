@@ -20,4 +20,3 @@ adb -s $ip:5555 shell "rm -r $folder"
 adb -s $ip:5555 shell "pm uninstall $app_id"
 
 adb disconnect $ip:5555
-

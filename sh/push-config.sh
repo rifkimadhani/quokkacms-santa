@@ -23,3 +23,4 @@ adb -s $ip:5555 push config.json $folder
 
 #disconnect
 adb disconnect $ip:5555
+
