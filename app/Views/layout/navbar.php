@@ -124,9 +124,9 @@ else $fShop = '';
                 <li>
                     <a href="<?= base_url('subscribergroup'); ?>"><i class="si si-users"></i> <span class="sidebar-mini-hide">Guest Group</span></a>
                 </li>
-                <li>
-                    <a href="<?= base_url('user'); ?>"><i class="si si-screen-smartphone"></i> <span class="sidebar-mini-hide">User Mobile</span></a>
-                </li>
+<!--                <li>-->
+<!--                    <a href="--><?//= base_url('user'); ?><!--"><i class="si si-screen-smartphone"></i> <span class="sidebar-mini-hide">User Mobile</span></a>-->
+<!--                </li>-->
                 <li>
                     <a href="<?= base_url('message'); ?>"><i class="si si-bubbles"></i> <span class="sidebar-mini-hide">Messages</span></a>
                 </li>
