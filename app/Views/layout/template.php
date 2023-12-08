@@ -5,7 +5,7 @@
 
     $username  = session('username');//$this->session->userdata('username');
 
-    $username = 'admin';
+//    $username = 'admin';
     $isEmergency = false;
 ?>
 <!DOCTYPE html>
