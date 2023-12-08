@@ -50,6 +50,8 @@ $htmlDelete = Dialog::renderDelete('Delete roomservice', 'CONFIRM DELETE');
     //exec when ready
     $('document').ready(function () {
         initDataTable();
+
+        setInterval(onInterval, 1000); // Call loadData every 5 seconds
     });
 
     function initDataTable() {
@@ -119,6 +121,15 @@ $htmlDelete = Dialog::renderDelete('Delete roomservice', 'CONFIRM DELETE');
         });
 
         initDataTableOptions(dataTable);
+    }
+
+    /**
+     * akan di loat secara periodik
+     */
+    function onInterval(){
+
+        //reload table
+        dataTable.ajax.reload( null, false );
     }
 
     //
