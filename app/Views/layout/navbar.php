@@ -1,30 +1,55 @@
 <?php
 require_once __DIR__ . '/../../../model/ModelSetting.php';
 
-$fKitchen = ModelSetting::getFeatureKitchen();
-if ($fKitchen == 0) $fKitchen = 'hidden';
-else $fKitchen = '';
+//$fKitchen = ModelSetting::getFeatureKitchen();
+//if ($fKitchen == 0) $fKitchen = 'hidden';
+//else $fKitchen = '';
 
-$fMarketing = ModelSetting::getFeatureMarketing();
-if ($fMarketing == 0) $fMarketing = 'hidden';
-else $fMarketing = '';
+//$fMarketing = ModelSetting::getFeatureMarketing();
+//if ($fMarketing == 0) $fMarketing = 'hidden';
+//else $fMarketing = '';
 
-$fDimsum = ModelSetting::getFeatureDimsum();
-if ($fDimsum == 0) $fDimsum = 'hidden';
-else $fDimsum = '';
+//$fDimsum = ModelSetting::getFeatureDimsum();
+//if ($fDimsum == 0) $fDimsum = 'hidden';
+//else $fDimsum = '';
 
-$fStat = ModelSetting::getFeatureLivetvStat();
-if ($fStat == 0) $fStat = 'hidden';
-else $fStat = '';
+//$fStat = ModelSetting::getFeatureLivetvStat();
+//if ($fStat == 0) $fStat = 'hidden';
+//else $fStat = '';
 
-$fInbox = 0; //inbox tdk butuhkan saat ini, krn inbox khusus utk mobile user
-if ($fInbox == 0) $fInbox = 'hidden';
-else $fInbox = '';
+//$fInbox = 0; //inbox tdk butuhkan saat ini, krn inbox khusus utk mobile user
+//if ($fInbox == 0) $fInbox = 'hidden';
+//else $fInbox = '';
 
 //utk saat ini shop blm di dukung, jadi di hide saja
-$fShop = 0;
-if ($fShop == 0) $fShop = 'hidden';
-else $fShop = '';
+//$fShop = 0;
+//if ($fShop == 0) $fShop = 'hidden';
+//else $fShop = '';
+
+//role
+$isAdmin = hasRole('admin'); //admin bisa semua role
+
+//role kitchen dan room service sama2 mengerjakan room service task
+$isKitchen = $isAdmin | hasRole('kitchen'); //rubah nama menu dan juga room service
+$isRoomService = $isAdmin | $isKitchen | hasRole('room_service'); //user kitchen harus bisa rubah status roomservice
+
+//concierge & house keeping sama2 mengerjakan hotel service task
+$isConcierge = $isAdmin | hasRole('concierge');
+$isHouseKeeping = $isAdmin | hasRole('housekeeping');
+$isStaff = $isConcierge | $isHouseKeeping;
+
+//set vibility utk setiap role
+$adminVisibility = ($isAdmin) ? '' : 'hidden';
+$kitchenVisibility = ($isKitchen) ? '' : 'hidden';
+$staffVisibility = ($isStaff) ? '' : 'hidden';
+$rsVisibility = ($isRoomService) ? '' : 'hidden';
+
+// {"roles":["admin","housekeeping","room_service","concierge","kitchen"]}
+function hasRole($roleName){
+    $roles = session()->get('roles');
+    if (!in_array($roleName, $roles)) return false;
+    return true;
+}
 ?>
 <!-- Sidebar -->
 <!--
@@ -118,28 +143,29 @@ else $fShop = '';
                 <li>
                     <a href="<?= base_url('dashboard'); ?>"><i class="si si-home"></i> <span class="sidebar-mini-hide">Home</span></a>
                 </li>
-                <li>
+                <li <?=$adminVisibility?>>
                     <a href="<?= base_url('subscriber'); ?>"><i class="si si-user"></i> <span class="sidebar-mini-hide">Guest</span></a>
                 </li>
-                <li>
+                <li <?=$adminVisibility?>>
                     <a href="<?= base_url('subscribergroup'); ?>"><i class="si si-users"></i> <span class="sidebar-mini-hide">Guest Group</span></a>
                 </li>
 <!--                <li>-->
 <!--                    <a href="--><?//= base_url('user'); ?><!--"><i class="si si-screen-smartphone"></i> <span class="sidebar-mini-hide">User Mobile</span></a>-->
 <!--                </li>-->
-                <li>
+                <li <?=$adminVisibility?>>
                     <a href="<?= base_url('message'); ?>"><i class="si si-bubbles"></i> <span class="sidebar-mini-hide">Messages</span></a>
                 </li>
-                <li <?= $fInbox ?>>
-                    <a href="<?= base_url('inbox'); ?>"><i class="si si-envelope"></i> <span class="sidebar-mini-hide">Inbox</span></a>
-                </li>
-                <li>
+<!--                <li --><?//= $fInbox ?><!-->
+<!--                    <a href="--><?//= base_url('inbox'); ?><!--"><i class="si si-envelope"></i> <span class="sidebar-mini-hide">Inbox</span></a>-->
+<!--                </li>-->
+                <li <?=$staffVisibility?>>
                     <a href="<?= base_url('hotelservice'); ?>"><i class="si si-handbag"></i> <span class="sidebar-mini-hide">Hotel Service</span></a>
                 </li>
-                <li>
+                <li <?=$rsVisibility?>>
                     <a href="<?= base_url('roomservice'); ?>"><i class="si si-basket"></i> <span class="sidebar-mini-hide">Room Service</span></a>
                 </li>
-                <li>
+
+                <li <?=$adminVisibility?>>
                     <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-settings"></i><span class="sidebar-mini-hide">Setup</span></a>
                     <ul>
                         <li>
@@ -248,7 +274,8 @@ else $fShop = '';
                         </li>
                     </ul>
                 </li>
-                <li <?= $fKitchen ?>>
+
+                <li <?= $kitchenVisibility ?>>
                     <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-cup"></i><span class="sidebar-mini-hide">Kitchen & Menu</span></a>
                     <ul>
                         <li>
@@ -262,37 +289,40 @@ else $fShop = '';
                         </li>
                     </ul>
                 </li>
+
                 <!-- shop START-->
-                <li <?= $fShop ?>>
-                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-bag"></i><span class="sidebar-mini-hide">Shop</span></a>
-                    <ul>
-                        <li>
-                            <a href="<?= base_url('shop'); ?>">Seller</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('shopproduct'); ?>">Product</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('shoporder'); ?>">Order</a>
-                        </li>
-                    </ul>
-                </li>
+<!--                <li --><?//= $fShop ?><!-->
+<!--                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-bag"></i><span class="sidebar-mini-hide">Shop</span></a>-->
+<!--                    <ul>-->
+<!--                        <li>-->
+<!--                            <a href="--><?//= base_url('shop'); ?><!--">Seller</a>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <a href="--><?//= base_url('shopproduct'); ?><!--">Product</a>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <a href="--><?//= base_url('shoporder'); ?><!--">Order</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </li>-->
                 <!--shop END-->
-                <li <?= $fMarketing ?>>
-                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-badge"></i><span class="sidebar-mini-hide">Marketing</span></a>
-                    <ul>
-                        <li>
-                            <a href="<?= base_url('marketingvod'); ?>">VOD</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('marketingkaraoke'); ?>">Karaoke</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
+
+<!--                <li --><?//= $fMarketing ?><!-->
+<!--                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-badge"></i><span class="sidebar-mini-hide">Marketing</span></a>-->
+<!--                    <ul>-->
+<!--                        <li>-->
+<!--                            <a href="--><?//= base_url('marketingvod'); ?><!--">VOD</a>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <a href="--><?//= base_url('marketingkaraoke'); ?><!--">Karaoke</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </li>-->
+
+                <li <?=$adminVisibility?>>
                     <a href="<?= base_url('emergency'); ?>"><i class="si si-bell"></i> <span class="sidebar-mini-hide">Emergency</span></a>
                 </li>
-                <li>
+                <li <?=$adminVisibility?>>
                     <a href="<?= base_url('statistic'); ?>"><i class="si si-bar-chart"></i> <span class="sidebar-mini-hide">Statistic (Live TV)</span></a>
                 </li>
 
@@ -300,13 +330,13 @@ else $fShop = '';
                 <li class="nav-main-heading">
                     <span class="sidebar-mini-visible">ADM</span><span class="sidebar-mini-hidden">Administrator</span>
                 </li>
-                <li>
+                <li <?=$adminVisibility?>>
                     <a href="<?= base_url('admin'); ?>"><i class="si si-user-following"></i> <span class="sidebar-mini-hide">User</span></a>
                 </li>
-                <li>
+                <li <?=$adminVisibility?>>
                     <a href="<?= base_url('role'); ?>"><i class="si si-puzzle"></i> <span class="sidebar-mini-hide">Role</span></a>
                 </li>
-                <li>
+                <li <?=$adminVisibility?>>
                     <a href="<?= base_url('builder'); ?>"><i class="fa fa-code"></i> <span class="sidebar-mini-hide">Page Builder</span></a>
                 </li>
 

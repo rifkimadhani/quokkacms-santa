@@ -38,7 +38,7 @@ class Login extends BaseController
             }
 
             $adminId = $user['admin_id'];
-            $jsonRoles = json_decode($user['json'], true);
+            $json = json_decode($user['json'], true);
 
             //create hash dari entry
             $hash = \Security::genHash($username, $password);
@@ -47,15 +47,18 @@ class Login extends BaseController
             if ($hash==$user['hash_password']){
                 
                 // check user role
-                if (!in_array('admin', $jsonRoles['roles'])) {
-                    $this->setErrorMessage('Only admins can log in');
-                    return redirect()->to('/login');
-                }
+//                if (!in_array('admin', $jsonRoles['roles'])) {
+//                    $this->setErrorMessage('Only admins can log in');
+//                    return redirect()->to('/login');
+//                }
 
-                //apabila benar maka masuk ke home
+                //simpan data user logn ke session
                 session()->set('username', $username);
                 session()->set('admin_id', $adminId);
-                session()->set('role_name', 'admin');
+                session()->set('roles', $json['roles']);
+//                session()->set('role_name', 'admin'); //tdk di pakai
+
+                //apabila benar maka masuk ke home
                 return redirect()->to('/dashboard');
             }
 
