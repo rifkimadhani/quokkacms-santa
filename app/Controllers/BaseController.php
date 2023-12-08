@@ -25,6 +25,7 @@ abstract class BaseController extends Controller
     protected $className;
     protected $baseUrl;
     protected $baseHost;
+    protected $roles;
 
     function __construct()
     {
@@ -38,6 +39,7 @@ abstract class BaseController extends Controller
         $this->className = strtolower(class_basename($controllerName));
         $this->baseHost = base_url();
         $this->baseUrl = base_url('/' . $this->className);
+        $this->roles = session()->get('roles');
     }
 
     /**
@@ -125,5 +127,9 @@ abstract class BaseController extends Controller
         var_dump($data);
         $output = ob_get_clean();
         return $output;
+    }
+
+    function hasRole($roleName){
+        return in_array($roleName, $this->roles) ? true : false;
     }
 }

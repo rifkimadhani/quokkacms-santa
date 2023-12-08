@@ -12,8 +12,22 @@ use App\Models\AdminForm;
 use App\Models\AdminModel;
 use App\Models\RoleModel;
 
+/**
+ * hanya role admin yg bisa add user dan modify user
+ *
+ * Class Admin
+ * @package App\Controllers
+ */
 class Admin extends BaseController
 {
+    private $isAdmin;
+
+    function __construct()
+    {
+        parent::__construct();
+        $this->isAdmin = self::hasRole('admin');
+    }
+
     /**
      * list semua record pada tadmin
      *
@@ -21,6 +35,12 @@ class Admin extends BaseController
      */
     public function index()
     {
+        //block view
+        if ($this->isAdmin==false){
+            $this->setErrorMessage('Unauthorized Entry');
+            return redirect()->to('dashboard');
+        }
+
         $model = new AdminModel();
 
         $baseUrl = $this->baseUrl;
@@ -57,6 +77,12 @@ class Admin extends BaseController
     }
 
     public function insert(){
+
+        //block
+        if ($this->isAdmin==false){
+            $this->setErrorMessage('Unauthorized Entry');
+            return redirect()->to('dashboard');
+        }
 
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -110,6 +136,13 @@ class Admin extends BaseController
      * @return $this
      */
     public function update(){
+
+        //block
+        if ($this->isAdmin==false){
+            $this->setErrorMessage('Unauthorized Entry');
+            return redirect()->to('dashboard');
+        }
+
         require_once __DIR__ . '/../../library/Security.php';
 
         $adminId = $_POST['admin_id'];
@@ -169,6 +202,13 @@ class Admin extends BaseController
     }
 
     public function delete($adminId){
+
+        //block
+        if ($this->isAdmin==false){
+            $this->setErrorMessage('Unauthorized Entry');
+            return redirect()->to('dashboard');
+        }
+
         $model = new AdminModel();
         $r = $model->remove($adminId);
 
