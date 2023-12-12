@@ -3,21 +3,13 @@
 use App\Libraries\Dialog;
 
 $htmlEdit = $form->renderPlainDialog('formEdit');
-$htmlNew = $form->renderDialog('NEW MESSAGE', 'formNew', "{$baseUrl}/insert");
-$htmlGroupNew = $formGroup->renderDialog('NEW MESSAGE TO GROUP', 'formGroupNew', "{$baseUrl}/insertGroup");
 $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 ?>
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
-    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformNew')">
-        <i class="fa fa-user text-primary mr-5 "></i> Message to Guest
+    <a class="btn btn-secondary" href="javascript:;" role="button" onclick="onClickBack()">
+        <i class="fa fa-backward text-primary mr-5 "></i> Back
     </a>
-    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformGroupNew')">
-        <i class="fa fa-users text-primary mr-5 "></i> Message to Group
-    </a>
-    <div class="float-right">
-        <a class="btn btn-secondary" href="javascript:;" role="button" onclick="showHistory()" data-toggle="tooltip" data-placement="left" title="Show History">
-            <i class="fa fa-history text-primary"></i>
-        </a>
+    <div class="btn-group float-right">
         <a class="btn btn-secondary showOptionsModal" href="javascript:;" role="button" data-target="#modal-checkbox">
             Options <i class="fa fa-th-large text-primary ml-5"></i>
         </a>
@@ -37,15 +29,13 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 </div>
 
 <?= $htmlEdit ?>
-<?= $htmlNew ?>
-<?= $htmlGroupNew ?>
 <?= $htmlDelete ?>
 
 
 <script>
     var dataTable;
     const primaryKey = "<?= $primaryKey ?>";
-    const urlSsp = "<?= $baseUrl ?>/ssp";
+    const urlSsp = "<?= $baseUrl ?>/ssp_history";
     const lastCol = <?= count($fieldList) ?>;
 
     //exec when ready
@@ -97,7 +87,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
             tags: true,
             "language": {
                 "noResults": function() {
-                    return "No Room Found. Please Type Room Name To Add New Room";
+                    return "No Room Found.Please Type Room Name To Add New Room";
                 }
             },
             escapeMarkup: function(markup) {
@@ -110,7 +100,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
             event.stopPropagation();
             const data = dataTable.row($(this)).data();
             const value = data[0];
-            const url = "<?= $baseUrl ?>/edit/" + value;
+            const url = "<?= $baseUrl ?>/history/edit/" + value;
 
             //show hourglass
             jQuery('#overlay-loader-indicator').show();
@@ -120,6 +110,8 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
                 }).done(function(result) {
                     $('.dialogformEdit').html(result);
                     $('.dialogformEdit').modal();
+
+                    // $('.dialogformEdit #formEdit button[type="submit"]').prop('disabled', true);
                 })
                 .always(function() {
                     jQuery('#overlay-loader-indicator').hide();
@@ -137,12 +129,13 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
         const id = data[0];
 
         showDialogDelete('formDelete', 'Are you sure to delete message #' + id, function() {
-            window.location.href = "<?= $baseUrl ?>/delete/" + id;
+            window.location.href = "<?= $baseUrl ?>/history/delete/" + id;
         })
     }
 
-    function showHistory(event, that) {
-        window.location.href = "<?= $baseUrl ?>/history";
+    function onClickBack() {
+        event.stopPropagation();
+        window.location.href = "<?= $baseUrl ?>";
     }
 </script>
 <?= view('util/filemanager.php') ?>

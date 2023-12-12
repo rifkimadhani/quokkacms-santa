@@ -51,6 +51,35 @@ class Message extends BaseController
         return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form', 'formGroup'));
     }
 
+    public function history()
+    {
+        $baseUrl = $this->baseUrl;
+
+        $mainview = "message/history";
+        $primaryKey = 'message_id';
+        $pageTitle = 'Messages History';
+
+        $group = new MessageModel();
+        $fieldList = $group->getFieldList();
+
+        // $room = new RoomModel();
+        // $roomData = $room->getForSelect();
+
+        // $roomData = $group->getRoomForSelect();
+
+        $subscriber = new SubscriberModel();
+        $subscriberData = $subscriber->getCheckinForSelect();
+
+        $form = new MessageForm($subscriberData);
+
+        $groupModel = new SubscriberGroupModel();
+        $groupData = $groupModel->getAllActiveForSelect();
+        $formGroup = new MessageFormGroup($groupData);
+
+
+        return view('layout/template', compact('mainview', 'primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form', 'formGroup'));
+    }
+
     public function ssp()
     {
         $model = new MessageModel();
@@ -58,6 +87,23 @@ class Message extends BaseController
         header('Content-Type: application/json');
 
         $data = $model->getSsp();
+
+        self::sspDataConversion($data);
+
+        echo json_encode($data);
+    }
+
+    /**
+     * Retrieves SSP history data (checkout's subsciber) from the `MessageModel` and converts it to
+     * JSON format before sending it as a response.
+     */
+    public function sspHistory()
+    {
+        $model = new MessageModel();
+
+        header('Content-Type: application/json');
+
+        $data = $model->getSspHistory();
 
         self::sspDataConversion($data);
 
@@ -248,6 +294,89 @@ class Message extends BaseController
         return redirect()->to($this->baseUrl);
     }
 
+    /*
+    * Update & Delate History Messages
+    *
+    */
+    public function editHistory($messageId)
+    {
+        $model = new MessageModel();
+        $data = $model->get($messageId);
+
+        //ambil image dari table
+        $media = new MessageMediaModel();
+        $ar = $media->getAll($messageId);
+
+        //rubah array ke string
+        $urlImage = '';
+        foreach ($ar as $row) {
+            if (strlen($urlImage) == 0) {
+                $urlImage = $row['url_image'];
+            } else {
+                $urlImage .= ',' . $row['url_image'];
+            }
+        }
+
+        //convert {BASE-HOST} --> URL
+        $urlImage = str_replace('{BASE-HOST}', $this->baseHost, $urlImage);
+
+        $data['url_image'] = $urlImage; //simpan hasil conversi ke dalam url_image
+
+        //cari subscriber
+        $subscriber = new SubscriberModel();
+        $subscriberData = $subscriber->getCheckinForSelect();
+
+        $subscriberId = $data['subscriber_id'];
+
+        //cari apakah subscriber pada message ada di daftar subscriber ??
+        $found = false;
+        foreach ($subscriberData as $item) {
+            if ($item['id'] == $subscriberId) {
+                $found = true;
+                break;
+            }
+        }
+
+        //apabila subscriber tdk ada, ambil dari db dan tambahkan ke dalam dafar subscriber
+        if ($found == false) {
+            //cari pada db
+            $subscriberCurrent = $subscriber->get($subscriberId);
+
+            //tambahkan subscriber ke dalam daftar
+            $value = $subscriberCurrent['name'] . ' ' . $subscriberCurrent['last_name'];
+            $subscriberData[] = ['id' => $subscriberId, 'value' => $value];
+        }
+
+        $roomData = $model->getRoomForSelect();
+        $form = new MessageForm($subscriberData, $roomData);
+
+        $urlAction = $this->baseUrl . '/history/update';
+        return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
+    }
+
+    public function updateHistory()
+    {
+
+        $errorMessage = "The Data on Message History cannot be Modified.";
+        $this->setErrorMessage($errorMessage);
+
+        return redirect()->to($this->baseUrl . '/history');
+    }
+
+    public function deleteHistory($messageId)
+    {
+        $model = new MessageModel();
+        $r = $model->remove($messageId);
+
+        if ($r) {
+            $this->setSuccessMessage('DELETE success');
+        } else {
+            $this->setErrorMessage('DELETE fail');
+        }
+
+        return redirect()->to($this->baseUrl . '/history');
+    }
+
     /**
      * melakukan conversi data ke asalnya, misalnya utk url balik dari BASE-HOST -> http://
      * @param $data
@@ -259,5 +388,4 @@ class Message extends BaseController
 
         }
     }
-
 }
