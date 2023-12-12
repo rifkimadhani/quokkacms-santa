@@ -17,7 +17,7 @@ class SettingModel extends BaseModel
     const SETTING_CURRENCY_SIGN = 11;
     const SETTING_DISPATCHER_SERVER = 402;
     const SETTING_THEME_DEFAULT = 1000;
-    const SETTING_LIVEPACKAGE_DEFAULT = 1000;
+    const SETTING_LIVEPACKAGE_DEFAULT = 1010;
 
     protected $table      = 'tsetting';
     protected $primaryKey = 'setting_id';
