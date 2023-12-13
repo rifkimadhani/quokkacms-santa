@@ -111,7 +111,10 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
                     $('.dialogformEdit').html(result);
                     $('.dialogformEdit').modal();
 
-                    // $('.dialogformEdit #formEdit button[type="submit"]').prop('disabled', true);
+                    $('.dialogformEdit #formEdit button[type="submit"]').prop('disabled', true);
+                    $('.dialogformEdit #formEdit select').prop('disabled', true);
+                    $('.dialogformEdit #formEdit input').prop('readonly', true);
+                    $('.dialogformEdit #formEdit textarea').prop('readonly', true);
                 })
                 .always(function() {
                     jQuery('#overlay-loader-indicator').hide();
