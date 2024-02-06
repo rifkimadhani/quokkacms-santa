@@ -60,6 +60,10 @@ function doLoginMsisdn(){
     $password = isset($_GET['password']) ? $_GET['password'] : ''; //real password
     $device = isset($_GET['device']) ? $_GET['device'] : ''; //ANDROID / IOS
 
+//    Log::writeLn("====================================");
+//    Log::writeLn("msisdn={$msisdn}");
+//    Log::writeLn("password={$password}");
+
     $user = ModelUser::getByMsisdn($msisdn);
 
     if ($user instanceof PDOException){
@@ -94,7 +98,7 @@ function doLoginMsisdn(){
     $sha = hash('sha512', $xor, true);
     $hash2 = base64_encode($sha);
 
-//    echo json_encode(['hash1'=>$hash, 'hash2'=>$hash2]);
+//    Log::writeLn("\nhash ={$hash}\nhash2={$hash2}");
 
     //password tdk match
     if ($hash!=$hash2){
