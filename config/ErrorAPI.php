@@ -18,7 +18,7 @@ define('ERR_MAC_ADDRESS_NOT_FOUND', 1010);
 $errMessage[ERR_MAC_ADDRESS_NOT_FOUND] = 'MAC address not found';
 
 define('ERR_SESSIONID_NOT_FOUND', 1012);
-$errMessage[ERR_SESSIONID_NOT_FOUND] = 'SessionId not found';
+$errMessage[ERR_SESSIONID_NOT_FOUND] = 'SessionId not found or expired';
 
 define('ERR_STBID_NOT_VALID', 1014);
 $errMessage[ERR_STBID_NOT_VALID] = 'StbId not valid';

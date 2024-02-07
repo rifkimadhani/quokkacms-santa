@@ -6,6 +6,7 @@ require_once __DIR__ . '/../config/Koneksi.php';
 class ModelSession {
     const SQL_CREATE = 'INSERT INTO tsession (session_id,user_id,salt,exp_date, device_type, login_type) VALUES (?, ?, ?, DATE_ADD(now(),INTERVAL 36500 DAY), ?, ?)';
     const SQL_GET = 'SELECT * FROM tsession WHERE session_id=?';
+    const SQL_UPDATE_TOKEN = 'UPDATE tsession SET device_type=?, device_token=? WHERE session_id=?';
 
     static public function create($userId, $deviceType, $loginType)
     {
@@ -54,6 +55,10 @@ class ModelSession {
         }
     }
 
+    /**
+     * @param $sessionId
+     * @return null=not found or expired, user_id
+     */
     static public function validate($sessionId)
     {
         $item = self::get($sessionId);
@@ -66,6 +71,21 @@ class ModelSession {
         if ($expDate < $now) return null;
 
         return $item['user_id'];
+    }
+
+    static public function updateToken($sessionId, $deviceType, $token){
+        try{
+            $pdo = Koneksi::create();
+            $stmt = $pdo->prepare(self::SQL_UPDATE_TOKEN);
+            $stmt->execute( [$deviceType, $token, $sessionId] );
+
+            return $stmt->rowCount();
+
+        }catch (PDOException $e){
+            Log::writeErrorLn($e->getMessage());
+            return $e;
+        }
+
     }
 }
 

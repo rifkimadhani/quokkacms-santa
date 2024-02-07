@@ -13,12 +13,12 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 header('Content-type: application/json; charset=utf-8');
 
-ini_set('display_errors', 'on');
+//ini_set('display_errors', 'on');
 
 $action = isset($_GET['action']) ? $_GET['action'] : null;
 
 switch ($action) {
-    case 'regToken':
+    case 'reg_token':
         regToken();
         break;
     case 'update_device_info':
@@ -34,65 +34,75 @@ exit();
 
 function regToken()
 {
-    $errObj = new ErrorAPI();
-    $security = new Security();
-    $sess = new ModelSession();
-    $sessionId = isset($_GET['sessionId']) ? $_GET['sessionId'] : NULL;
-    $token = isset($_GET['token']) ? $_GET['token'] : NULL;
-    $type = isset($_GET['type']) ? $_GET['type'] : NULL;
-    $signatureApp = isset($_GET['sig']) ? $_GET['sig'] : NULL;
+//    $errObj = new ErrorAPI();
+//    $security = new Security();
+//    $sess = new ModelSession();
+    $sessionId = isset($_GET['session_id']) ? $_GET['session_id'] : '';
+    $token = isset($_GET['token']) ? $_GET['token'] : '';
+    $type = isset($_GET['type']) ? $_GET['type'] : '';
+//    $signatureApp = isset($_GET['sig']) ? $_GET['sig'] : '';
 
-
-    $cekSess = $sess->get($sessionId);
+    $cekSess = ModelSession::validate($sessionId);
     if ($cekSess == NULL) {
-        $response = $errObj->compose(ErrorAPI::INVALID_SESSIONID);
-        header('Content-type: application/json');
-        echo json_encode($response);
+        http_response_code(HTTP_BAD_REQUEST);
+        echo errCompose(ERR_SESSIONID_NOT_FOUND);
+//        $response = $errObj->compose(ErrorAPI::INVALID_SESSIONID);
+//        header('Content-type: application/json');
+//        echo json_encode($response);
         return;
-    } else {
-        $cekExpSess = $sess->cekExpSession($sessionId);
-        if ($cekExpSess == NULL) {
-            $response = $errObj->compose(ErrorAPI::EXPIRED_SESSIONID);
-            header('Content-type: application/json');
-            echo json_encode($response);
-            return;
-        } else {
-            $getSalt = $sess->getSalt($sessionId);
-            $signatureServer = $security->genHash($token, $getSalt);
-            if ($signatureApp == $signatureServer) {
-                $updateSess = $sess->updateDeviceType($token, $type, $sessionId);
-                if ($updateSess == true) {
-                    $updateSess = $sess->updateExpDate($sessionId);
-                    if ($updateSess == true) {
-                        //berhasil update semua
-                        $response = array('output' => 1);
-                        header('Content-type: application/json');
-                        echo json_encode($response);
-                        return;
-                    } else {
-                        //hanya update device dan type
-                        $response = array('output' => 2);
-                        header('Content-type: application/json');
-                        echo json_encode($response);
-                        return;
-                    }
-                } else {
-                    //gagal semua update
-                    $response = $errObj->compose(ErrorAPI::INVALID_UPDATE);
-                    header('Content-type: application/json');
-                    echo json_encode($response);
-                    return;
-                }
-            } else {
-                $response = $errObj->compose(ErrorAPI::INVALID_SIGNATURE);
-                header('Content-type: application/json');
-                echo json_encode($response);
-                return;
-            }
-
-        }
     }
 
+    //update token
+    $r = ModelSession::updateToken($sessionId, $type, $token);
+
+    if ($r instanceof PDOException){
+        echo errCompose($r);
+        return;
+    }
+
+    echo json_encode(['success'=>$r]);
+
+//    $cekExpSess = $sess->cekExpSession($sessionId);
+//    if ($cekExpSess == NULL) {
+//        $response = $errObj->compose(ErrorAPI::EXPIRED_SESSIONID);
+//        header('Content-type: application/json');
+//        echo json_encode($response);
+//        return;
+//    } else {
+//        $getSalt = $sess->getSalt($sessionId);
+//        $signatureServer = $security->genHash($token, $getSalt);
+//        if ($signatureApp == $signatureServer) {
+//            $updateSess = $sess->updateDeviceType($token, $type, $sessionId);
+//            if ($updateSess == true) {
+//                $updateSess = $sess->updateExpDate($sessionId);
+//                if ($updateSess == true) {
+//                    //berhasil update semua
+//                    $response = array('output' => 1);
+//                    header('Content-type: application/json');
+//                    echo json_encode($response);
+//                    return;
+//                } else {
+//                    //hanya update device dan type
+//                    $response = array('output' => 2);
+//                    header('Content-type: application/json');
+//                    echo json_encode($response);
+//                    return;
+//                }
+//            } else {
+//                //gagal semua update
+//                $response = $errObj->compose(ErrorAPI::INVALID_UPDATE);
+//                header('Content-type: application/json');
+//                echo json_encode($response);
+//                return;
+//            }
+//        } else {
+//            $response = $errObj->compose(ErrorAPI::INVALID_SIGNATURE);
+//            header('Content-type: application/json');
+//            echo json_encode($response);
+//            return;
+//        }
+//
+//    }
 }
 
 /**
