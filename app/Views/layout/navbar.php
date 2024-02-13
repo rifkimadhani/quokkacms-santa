@@ -17,9 +17,8 @@ require_once __DIR__ . '/../../../model/ModelSetting.php';
 //if ($fStat == 0) $fStat = 'hidden';
 //else $fStat = '';
 
-//$fInbox = 0; //inbox tdk butuhkan saat ini, krn inbox khusus utk mobile user
-//if ($fInbox == 0) $fInbox = 'hidden';
-//else $fInbox = '';
+$fInbox = 1; //1=inbox menu visible, 0=hide
+$fInbox = ($fInbox==0) ? 'hidden' : '';
 
 //utk saat ini shop blm di dukung, jadi di hide saja
 //$fShop = 0;
@@ -155,9 +154,9 @@ function hasRole($roleName){
                 <li <?=$adminVisibility?>>
                     <a href="<?= base_url('message'); ?>"><i class="si si-bubbles"></i> <span class="sidebar-mini-hide">Messages</span></a>
                 </li>
-<!--                <li --><?//= $fInbox ?><!-->
-<!--                    <a href="--><?//= base_url('inbox'); ?><!--"><i class="si si-envelope"></i> <span class="sidebar-mini-hide">Inbox</span></a>-->
-<!--                </li>-->
+                <li <?= $fInbox ?>>
+                    <a href="<?= base_url('inbox'); ?>"><i class="si si-envelope"></i> <span class="sidebar-mini-hide">Inbox</span></a>
+                </li>
                 <li <?=$staffVisibility?>>
                     <a href="<?= base_url('hotelservice'); ?>"><i class="si si-handbag"></i> <span class="sidebar-mini-hide">Hotel Service</span></a>
                 </li>
