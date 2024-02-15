@@ -133,6 +133,14 @@ define('ERR_GOOGLE_TOKEN_INVALID', 2060);
 $errMessage[ERR_GOOGLE_TOKEN_INVALID] = 'Google token not valid';
 
 //////////////////////////////////////////////////////////////////////////////////////
+// Live TV
+define('ERR_LIVETV_INVALID_NAME', 2910);
+$errMessage[ERR_LIVETV_INVALID_NAME] = 'Live TV nama not valid';
+
+define('ERR_LIVETV_EPG_SAVE_ERROR', 2920);
+$errMessage[ERR_LIVETV_EPG_SAVE_ERROR] = 'EPG save error';
+
+//////////////////////////////////////////////////////////////////////////////////////
 // VOD
 define('ERR_VODID_INVALID', 3010);
 $errMessage[ERR_VODID_INVALID] = 'vod id not valid';
