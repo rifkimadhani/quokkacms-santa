@@ -75,24 +75,15 @@ $htmlEdit = $form->renderPlainDialog('formEdit');
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [3,6,12,13],visible: false,searchable: false
+                        targets: [3,6,11,12,13],visible: false,searchable: false
                     },
                     {
                         // status
                         targets: [5],
                         render: function (value, type, row) {
-                            const lastSeen = row[11];
-
-                            if (lastSeen==null){
-                                return '<span class="badge badge-pill badge-danger">DOWN</span>';
-                            }
-                            
-                            const now = new Date ();
-                            const timediv = calculateTimeDifferenceInSeconds(lastSeen, now);
-
-                            if (timediv <= 15) {
+                            if (value===1){
                                 return '<span class="badge badge-pill badge-success">UP</span>';
-                            } else {
+                            }else {
                                 return '<span class="badge badge-pill badge-danger">DOWN</span>';
                             }
                         }

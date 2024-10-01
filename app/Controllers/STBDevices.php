@@ -93,13 +93,15 @@ class STBDevices extends BaseController
     {
         $model = new STBDevicesModel();
 
-        header('Content-Type: application/json');
+//        header('Content-Type: application/json');
 
         $data = $model->getSsp();
 
         self::sspDataConversion($data);
 
-        echo json_encode($data);
+//        echo json_encode($data);
+
+        return $this->response->setJSON($data);
     }
 
     public function insert(){
@@ -189,10 +191,25 @@ class STBDevices extends BaseController
      * @param $data
      */
     protected function sspDataConversion(&$data){
-        return;
 
         foreach($data['data'] as &$row){
+            $lastSeen = $row[11];
+            $row[5] = $this->isLive($lastSeen);
+        }
+    }
 
+    function isLive($date_string) {
+        // Convert the input date string to a timestamp
+        $input_date = strtotime($date_string);
+
+        // Get the current time and add 15 seconds
+        $current_time_plus_15 = time() + 15;
+
+        // Compare the input date with current time + 15 seconds
+        if ($input_date > $current_time_plus_15) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 }
