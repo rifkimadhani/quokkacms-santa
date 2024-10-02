@@ -29,6 +29,7 @@ class STBDevicesModel extends BaseModel
     //                             tstb
     //                     SQL;
 
+    const SQL_SSP = 'SELECT tstb.stb_id, tstb.`name`, tstb.ip_address, tstb.app_id, tstb.version_code, tstb.version_name, tstb.location, tstb.android_version, tstb.android_api, IF(timestampdiff(SECOND, `tstb`.`last_seen`, CURRENT_TIMESTAMP()) < 15, 1, 0) AS status, tstb.last_seen FROM tstb';
     const SQL_MODIFY                      = 'UPDATE tstb SET name=?, location=?, ip_address=? WHERE (stb_id=?)';
     const SQL_GET_STB_FOR_SELECT          = 'SELECT name as id,name as value,app_id as data FROM tstb';
     const SQL_GET_ONELASTVERSION_BY_APPID = 'SELECT tapp.* FROM tapp WHERE app_id = ? ORDER BY version_code DESC LIMIT 1';
@@ -71,10 +72,8 @@ class STBDevicesModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['stb_id', 'ip_address', 'name', 'mac_address', 'location', 'status', 'app_id', 'version_code', 'version_name', 'android_version', 'android_api', 'last_seen', 'create_date', 'update_date'];
+        return ['stb_id', 'ip_address', 'name', 'location', 'status', 'app_id', 'version_code', 'version_name', 'android_version', 'android_api', 'last_seen'];
     }
-
-
 
     public function getOneLatesApkEachGroup()
     {
@@ -326,6 +325,6 @@ class STBDevicesModel extends BaseModel
     public function getSsp()
     {
         // return $this->_getSsp(self::VIEW, $this->primaryKey, $this->getFieldList());
-        return $this->_getSsp($this->table, $this->primaryKey, $this->getFieldList());
+        return $this->_getSspCustom(self::SQL_SSP, $this->getFieldList());
     }
 }

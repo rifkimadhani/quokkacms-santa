@@ -54,7 +54,10 @@ $htmlEdit = $form->renderPlainDialog('formEdit');
 <script>
     var dataTable;
     const primaryKey = "<?=$primaryKey?>";
-    const urlSsp = "<?= $baseUrl ?>/ssp";
+    const urlSsp = "<?= $baseUrl ?>/ssp?tz=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const idxStatus = 4;
+    const idxAppId = 4;
+    const idxLastSeen = 10;
     const lastCol = <?= count($fieldList) ?>;
     const dataList = $('#datalist');
     
@@ -75,13 +78,13 @@ $htmlEdit = $form->renderPlainDialog('formEdit');
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [3,6,11,12,13],visible: false,searchable: false
+                        targets: [idxLastSeen],visible: false,searchable: false
                     },
                     {
                         // status
-                        targets: [5],
+                        targets: [idxStatus, idxAppId],
                         render: function (value, type, row) {
-                            if (value===1){
+                            if (value==='1'){
                                 return '<span class="badge badge-pill badge-success">UP</span>';
                             }else {
                                 return '<span class="badge badge-pill badge-danger">DOWN</span>';
@@ -90,14 +93,14 @@ $htmlEdit = $form->renderPlainDialog('formEdit');
                     },
                     {
                         //last_seen, create_date, update_date
-                        targets:[11,12,13],render: function(data) 
-                        {
-                            if(data)
-                            {
-                                return datetostring.datetimetoindonesia(data)
-                            }
-                            return '';
-                        }
+//                        targets:[11,12,13],render: function(data)
+//                        {
+//                            if(data)
+//                            {
+//                                return datetostring.datetimetoindonesia(data)
+//                            }
+//                            return '';
+//                        }
                     },
                     {
                         //text-center
