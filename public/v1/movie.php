@@ -185,8 +185,8 @@ function doPurchaseOne($stbId){
 
 	$roomId = $room['room_id'];
 	$title = $movie['title'];
-	$rentDuration = $movie['rent_duration'];
-	$expDate = DateUtil::getDateStrByHour($rentDuration);
+//	$rentDuration = $movie['rent_duration'];
+	$expDate = '2100-05-31 12:51:36';//DateUtil::getDateStrByHour(1000);
 	$amount = $movie['price'];
 	$currency = $movie['currency'];
 	$currencySign = $movie['currency_sign'];
@@ -195,17 +195,17 @@ function doPurchaseOne($stbId){
 	$rentType = RENT_TYPE_PAYPERVIEW;
 
 	//lakukan pembelian
-	$r = ModelMovie::purchase($roomId, $subscriberId, $vodId, $title, $rentDuration, $expDate, $amount, $currency, $currencySign, $percentTax, $tax, $rentType);
-
-	if ($r instanceof PDOException){
-		echo errCompose($r);
-		die();
-	}
-
-	if ($r==0){
-		echo errCompose(ERR_UNKNOWN);
-		die();
-	}
+//	$r = ModelMovie::purchase($roomId, $subscriberId, $vodId, $title, $rentDuration, $expDate, $amount, $currency, $currencySign, $percentTax, $tax, $rentType);
+//
+//	if ($r instanceof PDOException){
+//		echo errCompose($r);
+//		die();
+//	}
+//
+//	if ($r==0){
+//		echo errCompose(ERR_UNKNOWN);
+//		die();
+//	}
 
 	$hostVod = ModelSetting::getHostVod();
     $baseHost = ModelSetting::getBaseHost('../'); //turun 1 level dari posisi api ini
