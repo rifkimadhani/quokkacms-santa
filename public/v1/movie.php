@@ -188,8 +188,8 @@ function doPurchaseOne($stbId){
 //	$rentDuration = $movie['rent_duration'];
 	$expDate = '2100-05-31 12:51:36';//DateUtil::getDateStrByHour(1000);
 	$amount = $movie['price'];
-	$currency = $movie['currency'];
-	$currencySign = $movie['currency_sign'];
+//	$currency = $movie['currency'];
+//	$currencySign = $movie['currency_sign'];
 	$percentTax = ModelSetting::getTaxMovie();
 	$tax = $amount * $percentTax/100;
 	$rentType = RENT_TYPE_PAYPERVIEW;
@@ -207,12 +207,12 @@ function doPurchaseOne($stbId){
 //		die();
 //	}
 
-	$hostVod = ModelSetting::getHostVod();
+//	$hostVod = ModelSetting::getHostVod();
     $baseHost = ModelSetting::getBaseHost('../'); //turun 1 level dari posisi api ini
 
 	//apabila pembelian berhasil maka return url dari playback
 
-	$urlStream = str_replace('{HOST-VOD}', $hostVod, $movie['url_stream1']);
+//	$urlStream = str_replace('{HOST-VOD}', $hostVod, $movie['url_stream1']);
 	$urlStream = str_replace('{BASE-HOST}', $baseHost, $movie['url_stream1']);
 
 	echo json_encode([ 'vod_id'=>$vodId, 'exp_date'=>$expDate, 'url_stream_full_movie'=>$urlStream, 'rent_type'=>$rentType ]);
