@@ -45,9 +45,12 @@ $rsVisibility = ($isRoomService) ? '' : 'hidden';
 
 // {"roles":["admin","housekeeping","room_service","concierge","kitchen"]}
 function hasRole($roleName){
-    $roles = session()->get('roles');
-    if (!in_array($roleName, $roles)) return false;
-    return true;
+    try{
+        $roles = session()->get('roles');
+        if (!in_array($roleName, $roles)) return false;
+        return true;
+    }catch (\Exception $e){}
+    return false;
 }
 ?>
 <!-- Sidebar -->
