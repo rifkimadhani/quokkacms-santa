@@ -40,7 +40,7 @@ class VOD extends BaseController
 
         $data = $model->getSsp();
 
-        self::sspDataConversion($data);
+//        self::sspDataConversion($data);
 
         echo json_encode($data);
     }
@@ -54,10 +54,10 @@ class VOD extends BaseController
         $_POST['url_poster'] = str_replace($this->baseHost, '{BASE-HOST}', $_POST['url_poster']);
 
         // convert url -> {BASE-HOST}
-        $_POST['url_stream1'] = str_replace($this->baseHost, '{HOST-VOD}', $_POST['url_stream1']);
+        $_POST['url_stream1'] = str_replace($this->baseHost, '{BASE-HOST}', $_POST['url_stream1']);
 
         // convert url -> {BASE-HOST}
-        $_POST['url_trailer'] = str_replace($this->baseHost, '{HOST-VOD}', $_POST['url_trailer']);
+        $_POST['url_trailer'] = str_replace($this->baseHost, '{BASE-HOST}', $_POST['url_trailer']);
 
         
 
@@ -93,10 +93,10 @@ class VOD extends BaseController
         $data['url_poster'] = str_replace('{BASE-HOST}', $this->baseHost, $data['url_poster']);
 
         // convert url -> {HOST-VOD}
-        $data['url_stream1'] = str_replace('{HOST-VOD}', $this->baseHost, $data['url_stream1']);
+        $data['url_stream1'] = str_replace('{BASE-HOST}', $this->baseHost, $data['url_stream1']);
 
         // convert url -> {HOST-VOD}
-        $data['url_trailer'] = str_replace('{HOST-VOD}', $this->baseHost, $data['url_trailer']);
+        $data['url_trailer'] = str_replace('{BASE-HOST}', $this->baseHost, $data['url_trailer']);
 
 
         $form = new VODForm($genreData, $selectedGenres);
@@ -114,10 +114,10 @@ class VOD extends BaseController
         $_POST['url_poster'] = str_replace($this->baseHost, '{BASE-HOST}', $_POST['url_poster']);
 
         // convert url -> {BASE-HOST}
-        $_POST['url_stream1'] = str_replace($this->baseHost, '{HOST-VOD}', $_POST['url_stream1']);
+        $_POST['url_stream1'] = str_replace($this->baseHost, '{BASE-HOST}', $_POST['url_stream1']);
 
         // convert url -> {BASE-HOST}
-        $_POST['url_trailer'] = str_replace($this->baseHost, '{HOST-VOD}', $_POST['url_trailer']);
+        $_POST['url_trailer'] = str_replace($this->baseHost, '{BASE-HOST}', $_POST['url_trailer']);
 
         $vodId = $_POST['vod_id']; // Get the vod_id from the $_POST data
         $value = $_POST; // Pass the entire $_POST data as the $value
@@ -161,8 +161,6 @@ class VOD extends BaseController
      * @param $data
      */
     protected function sspDataConversion(&$data){
-        return;
-
         foreach($data['data'] as &$row){
 
         }
