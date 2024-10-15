@@ -8,7 +8,7 @@
 
 namespace App\Controllers;
 
-use App\Models\DipatcherModel;
+//use App\Models\DipatcherModel;
 use App\Models\MessageForm;
 use App\Models\MessageFormGroup;
 
@@ -127,8 +127,8 @@ class Message extends BaseController
         $media->write($messageId, $urlImage);
 
         //kirim lewat dispatcher
-        $disp = new DipatcherModel();
-        $disp->sendToSubscriber($subscriberId, json_encode( ['type'=>'message'] ));
+//        $disp = new DipatcherModel();
+//        $disp->sendToSubscriber($subscriberId, json_encode( ['type'=>'message'] ));
 
         if ($messageId>0){
             $this->setSuccessMessage('Messages sent');
@@ -185,8 +185,8 @@ class Message extends BaseController
         }
 
         //kirim event dgn dispatcher
-        $disp = new DipatcherModel();
-        $disp->send($rooms, json_encode( ['type'=>'message'] ));
+//        $disp = new DipatcherModel();
+//        $disp->send($rooms, json_encode( ['type'=>'message'] ));
 
         if ($messageId>0){
             $this->setSuccessMessage('Messages sent');

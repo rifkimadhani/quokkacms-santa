@@ -29,9 +29,16 @@ switch ($action){
 	case 'set_status_read':
 		doSetStatusRead($stbId);
 		break;
+	case 'check_new_message':
+		doCheckNewMessage($stbId);
+		break;
+
+    default:
+        http_response_code(HTTP_NOT_FOUND);
+        break;
 }
 
-die();
+exit();
 
 function doGetList($stbId){
 
@@ -73,4 +80,22 @@ function doSetStatusRead($stbId){
 	echo json_encode( [ 'result'=>$result] );
 }
 
+function doCheckNewMessage($stbId){
+    require_once '../../model/ModelStb.php';
+    require_once '../../model/ModelMessage.php';
 
+    $stb = ModelStb::get($stbId);
+
+    $subscriberId = $stb['subscriber_id'];
+    $roomId= $stb['room_id'];
+
+    $list = ModelMessage::countNewMessage($subscriberId);
+
+    if ($list==null || $list instanceof PDOException || sizeof($list)==0){
+        $count = 0;
+    } else {
+        $count = $list[0]['count'];
+    }
+
+    echo (  json_encode(['count'=>$count]) );
+}
