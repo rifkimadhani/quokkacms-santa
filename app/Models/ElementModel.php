@@ -11,7 +11,7 @@ class ElementModel extends BaseModel
 {
     const SQL_GET = "SELECT * FROM telement WHERE (element_id=?)";
     const SQL_MODIFY = "UPDATE telement SET `name`=?, `group`=?, `type`=?, `width`=?, `height`=? WHERE (element_id=?)";
-
+    const SQL_UPDATE_DATE = 'UPDATE ttheme_element SET update_date=now() WHERE theme_id=?';
     const SQL_GET_ALL_FOR_SELECT = 'SELECT element_id as id, `name` as value FROM telement ORDER BY element_id';
 
     protected $table      = 'telement';
@@ -108,6 +108,20 @@ class ElementModel extends BaseModel
         }
     }
 
+    public function updateDate($themeId){
+        try{
+            $pdo = $this->openPdo();
+            $stmt = $pdo->prepare(self::SQL_UPDATE_DATE);
+            $stmt->execute( [$themeId] );
+            return $stmt->rowCount();
+
+        }catch (\PDOException $e){
+            log_message('error', json_encode($e));
+            $this->errCode = $e->getCode();
+            $this->errMessage = $e->getMessage();
+            return -1;
+        }
+    }
 
     public function remove($elementId){
         $r = $this

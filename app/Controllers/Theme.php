@@ -190,7 +190,14 @@ class Theme extends BaseController
         if ($default>0){
             $themeId = $_POST['theme_id'];
             $setting = new SettingModel();
-            $setting->setThemeDefault($themeId);
+
+            //check apakah sebelum nya theme ini sdh default ??
+            //apabila blm default, artinya theme ini baru menjadi default
+            $defaultThemeId = $setting->getThemeDefault();
+            if ($defaultThemeId != $themeId){
+                $setting->setThemeDefault($themeId);
+                $this->updateElementUpdateDate($themeId);
+            }
         }
 
         $r = $model->modifyTheme($_POST);
@@ -202,6 +209,11 @@ class Theme extends BaseController
         }
 
         return redirect()->to($this->baseUrl);
+    }
+
+    protected function updateElementUpdateDate($themeId){
+        $model = new ElementModel();
+        $model->updateDate($themeId);
     }
 
     public function update(){
