@@ -108,20 +108,20 @@ class ElementModel extends BaseModel
         }
     }
 
-    public function updateDate($themeId){
-        try{
-            $pdo = $this->openPdo();
-            $stmt = $pdo->prepare(self::SQL_UPDATE_DATE);
-            $stmt->execute( [$themeId] );
-            return $stmt->rowCount();
-
-        }catch (\PDOException $e){
-            log_message('error', json_encode($e));
-            $this->errCode = $e->getCode();
-            $this->errMessage = $e->getMessage();
-            return -1;
-        }
-    }
+//    public function updateDate($themeId){
+//        try{
+//            $pdo = $this->openPdo();
+//            $stmt = $pdo->prepare(self::SQL_UPDATE_DATE);
+//            $stmt->execute( [$themeId] );
+//            return $stmt->rowCount();
+//
+//        }catch (\PDOException $e){
+//            log_message('error', json_encode($e));
+//            $this->errCode = $e->getCode();
+//            $this->errMessage = $e->getMessage();
+//            return -1;
+//        }
+//    }
 
     public function remove($elementId){
         $r = $this

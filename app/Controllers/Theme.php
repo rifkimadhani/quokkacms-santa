@@ -196,7 +196,7 @@ class Theme extends BaseController
             $defaultThemeId = $setting->getThemeDefault();
             if ($defaultThemeId != $themeId){
                 $setting->setThemeDefault($themeId);
-                $this->updateElementUpdateDate($themeId);
+//                $this->updateElementUpdateDate($themeId);
             }
         }
 
@@ -211,10 +211,10 @@ class Theme extends BaseController
         return redirect()->to($this->baseUrl);
     }
 
-    protected function updateElementUpdateDate($themeId){
-        $model = new ElementModel();
-        $model->updateDate($themeId);
-    }
+//    protected function updateElementUpdateDate($themeId){
+//        $model = new ElementModel();
+//        $model->updateDate($themeId);
+//    }
 
     public function update(){
         $model = new ThemeModel();
