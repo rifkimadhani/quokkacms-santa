@@ -150,5 +150,5 @@ function doGetLastUpdate($stbId){
         $lastUpdate = $theme[0]['update_date'];
     }
 
-    echo json_encode( [ 'last_update'=>$lastUpdate] );
+    echo json_encode( [ 'theme_id'=>$themeId, 'last_update'=>$lastUpdate] );
 }
