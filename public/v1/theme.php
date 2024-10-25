@@ -101,7 +101,28 @@ function doGetList($stbId){
  *
  * @param $stbId
  */
-function doGetLastUpdate($stbId){
+function doGetLastUpdate($stbId) {
+    require_once '../../model/ModelTheme.php';
+
+    $themeId = $_GET['theme_id'] ?? 0;
+    $defaultUpdate = '2000-01-01 00:00:00';
+
+    try {
+        $theme = ModelTheme::getLastUpdate($themeId);
+        $lastUpdate = ($theme && isset($theme[0]['last_update']))
+            ? $theme[0]['last_update'] ?? $defaultUpdate
+            : $defaultUpdate;
+    } catch (PDOException $e) {
+        $lastUpdate = $defaultUpdate;
+    }
+
+    echo json_encode([
+        'theme_id' => (int) $themeId,
+        'last_update' => $lastUpdate
+    ]);
+}
+
+function doGetLastUpdate_old($stbId){
     require_once '../../model/ModelStb.php';
     require_once '../../model/ModelTheme.php';
     require_once '../../model/ModelSubscriber.php';

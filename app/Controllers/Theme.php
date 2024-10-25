@@ -133,10 +133,11 @@ class Theme extends BaseController
         $cloneId = $_POST['clone_theme_id'];
         unset($_POST['clone_theme_id']);
 
-        $r = $model->clone($cloneId, $_POST);
+        $newId = $model->clone($cloneId, $_POST);
 
-        if ($r>0){
+        if ($newId>0){
             $this->setSuccessMessage('Insert success');
+            $row = $model->getLastUpdate($newId);
         } else {
             $this->setErrorMessage('Insert fail ' . $model->errMessage);
         }
@@ -221,7 +222,7 @@ class Theme extends BaseController
         $urlimage = $_POST['url_image'];
         $themeId = $_POST['theme_id'];
 
-        $this->normalizeData($_POST);
+//        $this->normalizeData($_POST);
         
         // get image dimensions
         $element = new ElementModel();
@@ -256,6 +257,7 @@ class Theme extends BaseController
 
         if ($r>0){
             $this->setSuccessMessage('Update success');
+            $model->updateLastTheme($themeId);
         } else {
             $this->setErrorMessage('Update fail ' . $model->errMessage);
         }

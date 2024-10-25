@@ -12,7 +12,8 @@ require_once __DIR__ . '/../library/Log.php';
 
 class ModelTheme
 {
-	const SQL_GET_LAST_UPDATE = 'SELECT update_date FROM ttheme_element WHERE theme_id=? ORDER BY update_date DESC LIMIT 1';
+	const SQL_GET_LAST_UPDATE = 'SELECT last_update FROM ttheme WHERE theme_id=?';
+	const SQL_GET_LAST_UPDATE_OLD = 'SELECT update_date FROM ttheme_element WHERE theme_id=? ORDER BY update_date DESC LIMIT 1';
 	const SQL_GET = 'SELECT * FROM vtheme_element WHERE theme_id=?';
 	const SQL_GET_ELEMENT = 'SELECT * FROM vtheme_element WHERE theme_id=? AND element_id=?';
 

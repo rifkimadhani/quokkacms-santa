@@ -18,6 +18,8 @@ class ThemeModel extends BaseModel
     const SQL_MODIFY_THEME = 'UPDATE ttheme SET name=? WHERE theme_id=?';
     const SQL_GET_THEME_FOR_SELECT = 'SELECT theme_id as id, `name` as value FROM  ttheme ORDER BY theme_id';
     const SQL_GET_ELEMENT_FOR_SELECT = 'SELECT element_id as id, `name` as value FROM telement ORDER BY element_id';
+    const SQL_UPDATE_LAST_UPDATE = 'UPDATE ttheme SET last_update=now() WHERE theme_id=?';
+    const SQL_GET_LAST_UPDATE = 'SELECT update_date FROM ttheme_element WHERE theme_id=? ORDER BY update_date DESC LIMIT 1';
 
     protected $table      = 'ttheme_element';
     protected $primaryKey = 'theme_id';
@@ -34,6 +36,14 @@ class ThemeModel extends BaseModel
         if (sizeof($ar)>0) return $ar[0];
 
         return null;
+    }
+
+    public function getLastUpdate($themeId)
+    {
+        $db = db_connect();
+        $ar = $db->query(self::SQL_GET_LAST_UPDATE, [$themeId])->getResult('array');
+
+        return $ar;
     }
 
     public function getElement($themeId, $elementId)
@@ -151,6 +161,27 @@ class ThemeModel extends BaseModel
             $pdo = $this->openPdo();
             $stmt = $pdo->prepare(self::SQL_MODIFY_THEME);
             $stmt->execute( [$name, $themeId] );
+
+            return $stmt->rowCount();
+
+        }catch (\PDOException $e){
+            log_message('error', json_encode($e));
+            $this->errCode = $e->getCode();
+            $this->errMessage = $e->getMessage();
+            return -1;
+        }
+    }
+
+    public function updateLastTheme($themeId){
+        $this->loge('updateLastTheme');
+
+        $this->errCode = '';
+        $this->errMessage = '';
+
+        try{
+            $pdo = $this->openPdo();
+            $stmt = $pdo->prepare(self::SQL_UPDATE_LAST_UPDATE);
+            $stmt->execute( [$themeId] );
 
             return $stmt->rowCount();
 
