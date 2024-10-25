@@ -103,8 +103,10 @@ function doGetList($stbId){
  */
 function doGetLastUpdate($stbId) {
     require_once '../../model/ModelTheme.php';
+    require_once '../../model/ModelSetting.php';
 
-    $themeId = $_GET['theme_id'] ?? 0;
+//    $themeId = $_GET['theme_id'] ?? 0;
+    $themeId = ModelSetting::getDefaultThemeId();
     $defaultUpdate = '2000-01-01 00:00:00';
 
     try {
