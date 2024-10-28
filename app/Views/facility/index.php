@@ -61,7 +61,7 @@ $htmlDelete = Dialog::renderDelete('Delete facility', 'CONFIRM DELETE');
                 responsive: true,
                 scrollX: true,
                 pageLength: 100,
-                order: [['0','desc']],
+                order: [[4,'asc']],
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array

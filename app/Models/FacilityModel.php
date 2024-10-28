@@ -13,16 +13,17 @@ class FacilityModel extends BaseModel
 
     const SQL_INSERT = 'INSERT INTO tfacility (name, description) VALUES (?, ?)';
     const SQL_GET = 'SELECT * FROM tfacility WHERE (facility_id=?)';
-    const SQL_MODIFY = 'UPDATE tfacility SET name=?, description=? WHERE (facility_id=?)';
+    const SQL_MODIFY = 'UPDATE tfacility SET name=?, description=?, ord=? WHERE (facility_id=?)';
 //    const SQL_INSERT = 'INSERT INTO tfacility (title, description, create_date, update_date, ord) VALUES (?, ?, ?, ?, ?)';
     const SQL_INSERT_MEDIA = 'INSERT INTO tfacility_image (facility_id, url_image, url_video) VALUES (?, ?, ?)';
 
     const SQL_REMOVE = 'DELETE FROM tfacility WHERE facility_id=?';
     const SQL_REMOVE_MEDIA = 'DELETE FROM tfacility_image WHERE facility_id=?';
+    const SQL_SSP = 'select `tfacility`.`facility_id` AS `facility_id`,`tfacility`.`name` AS `name`,group_concat(`tfacility_image`.`url_image` separator \',\') AS `url_image`,group_concat(`tfacility_image`.`url_video` separator \',\') AS `url_video`,`tfacility`.`create_date` AS `create_date`,`tfacility`.`update_date` AS `update_date`, ord from (`tfacility` left join `tfacility_image` on(`tfacility`.`facility_id` = `tfacility_image`.`facility_id`)) group by `tfacility`.`facility_id`';
 
     protected $table      = 'tfacility';
     protected $primaryKey = 'facility_id';
-    protected $allowedFields = ['name', 'description', 'create_date', 'update_date'];
+    protected $allowedFields = ['name', 'description', 'ord'];
 
     public $errCode;
     public $errMessage;
@@ -44,7 +45,7 @@ class FacilityModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['facility_id', 'name', 'url_image', 'url_video', 'description', 'create_date', 'update_date'];
+        return ['facility_id', 'name', 'url_image', 'url_video', 'ord', 'update_date'];
     }
 
     public function add($value)  {
@@ -114,6 +115,7 @@ class FacilityModel extends BaseModel
 
         $name = htmlentities($value['name'], ENT_QUOTES, 'UTF-8');
         $description = htmlentities($value['description'], ENT_QUOTES, 'UTF-8');
+        $ord = htmlentities($value['ord'], ENT_QUOTES, 'UTF-8');
 
         $value['url_image'] = htmlentities($value['url_image'], ENT_QUOTES, 'UTF-8');
 
@@ -124,7 +126,7 @@ class FacilityModel extends BaseModel
 
             // update tfacility
             $stmt = $pdo->prepare(self::SQL_MODIFY);
-            $stmt->execute( [$name, $description, $facilityId] );
+            $stmt->execute( [$name, $description, $ord, $facilityId] );
             $rowCount = $stmt->rowCount();
 
             // delete semua image
@@ -199,6 +201,7 @@ class FacilityModel extends BaseModel
      */
     public function getSsp()
     {
-        return $this->_getSsp(self::VIEW, $this->primaryKey, $this->getFieldList());
+//        return $this->_getSsp(self::VIEW, $this->primaryKey, $this->getFieldList());
+        return $this->_getSspCustom(self::SQL_SSP, $this->getFieldList());
     }
 }
