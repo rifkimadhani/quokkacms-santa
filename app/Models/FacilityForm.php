@@ -12,6 +12,7 @@ class FacilityForm extends BaseForm
     public $name;
     public $description;
     public $url_image;
+    public $ord;
 
     function __construct()
     {
@@ -19,5 +20,6 @@ class FacilityForm extends BaseForm
         $this->name = ['type'=>'varchar', 'label'=>'Name', 'placeholder'=>'', 'required'=>''];
         $this->description = ['type'=>'text', 'label'=>'Description', 'placeholder'=>'Enter description here', 'rows'=>'8'];
         $this->url_image     = ['type'=>'filemanager','label'=>'Image','placeholder'=>''];
+        $this->ord = ['type'=>'numeric','label'=>'Ordinal','placeholder'=>'Nilai terandah ada di posisis teratas'];
     }
 }

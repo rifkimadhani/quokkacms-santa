@@ -12,6 +12,7 @@ require_once __DIR__ . '/../../model/ModelStbCredential.php';
 
 //Log::writeLn('==========================================================================================================');
 //Log::writeRequestUri();
+header_remove("X-Powered-By");
 
 header('Content-type: application/json; charset=utf-8');
 

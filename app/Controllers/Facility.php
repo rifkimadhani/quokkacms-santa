@@ -37,7 +37,7 @@ class Facility extends BaseController
 
         $data = $model->getSsp();
 
-        self::sspDataConversion($data);
+//        self::sspDataConversion($data);
 
         echo json_encode($data);
     }
