@@ -60,11 +60,11 @@ $htmlDelete = Dialog::renderDelete('Delete livetv', 'CONFIRM DELETE');
                 responsive: true,
                 scrollX: true,
                 pageLength: 100,
-                order: [['8','asc']],
+                order: [['5','asc']],
                 columnDefs: [
                     {
                         //hide your cols here, enter index of col into targets array
-                        targets: [0,4,9,11,12,13,14,15,16],visible: false,searchable: false
+                        targets: [],visible: false,searchable: false
                     },
                     // {
                     //     targets: [3],

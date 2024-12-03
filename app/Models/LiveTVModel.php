@@ -62,7 +62,7 @@ class LiveTVModel extends BaseModel
     }
 
     public function getFieldList(){
-        return ['livetv_id', 'url_station_logo', 'name', 'url_stream1', 'lang_code', 'language', 'rating', 'channel_number', 'ord', 'livetv_category_id', 'category', 'create_date', 'update_date', 'running_text', 'pay_tv', 'countryId', 'status'];
+        return ['livetv_id', 'url_station_logo', 'name', 'rating', 'channel_number', 'ord', 'category', 'status'];
     }
 
     public function add($value)  {
