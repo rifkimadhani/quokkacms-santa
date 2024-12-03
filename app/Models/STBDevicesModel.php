@@ -310,9 +310,8 @@ class STBDevicesModel extends BaseModel
 
 
     public function remove($stbId){
-        $r = $this
-            ->where('stb_id', $stbId)
-            ->delete();
+        $this->db->table('tstb_session')->where('stb_id', $stbId)->delete();
+        $this->where('stb_id', $stbId)->delete();
 
         return $this->db->affectedRows();
     }
