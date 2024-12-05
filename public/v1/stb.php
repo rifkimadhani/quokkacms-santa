@@ -83,6 +83,7 @@ function doUpdateInfo($stbId){
 	$app = ModelApp::getLatest($appId, $versionCode);
 
     $welcomeMessage = ModelSetting::getWelcomeMessage();
+	$runningText = ModelSetting::getRunningText();
 
     $stb = ModelStb::get($stbId);
 	$subscriber = null;
@@ -130,7 +131,7 @@ function doUpdateInfo($stbId){
     $dispatcherIp = $client['value_string'];
     $dispatcherPort = $client['value_int'];
 
-    echo json_encode( [ 'result'=>$result, 'app'=>$app, 'subscriber'=>$subscriber, 'time_zone'=>$tz, 'server_time'=>$now, 'emergency_state'=>$emergency, 'hotel_name'=>$hotelName, 'hotel_address'=>$hotelAddress, 'weather_server'=>$weatherServer, 'welcome_message'=>$welcomeMessage, 'currency'=>$currency, 'currency_sign'=>$currencySign, 'weather_local_cityid'=>$weatherLocalCityId, 'dispatcher_ip'=>$dispatcherIp, 'dispatcher_port'=>$dispatcherPort] );
+	echo json_encode(['result' => $result, 'app' => $app, 'subscriber' => $subscriber, 'time_zone' => $tz, 'server_time' => $now, 'emergency_state' => $emergency, 'hotel_name' => $hotelName, 'hotel_address' => $hotelAddress, 'weather_server' => $weatherServer, 'welcome_message' => $welcomeMessage, 'running_text' => $runningText, 'currency' => $currency, 'currency_sign' => $currencySign, 'weather_local_cityid' => $weatherLocalCityId, 'dispatcher_ip' => $dispatcherIp, 'dispatcher_port' => $dispatcherPort]);
 }
 
 function doGetInfo($stbId){

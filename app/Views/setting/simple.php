@@ -29,6 +29,11 @@ $htmlEdit = $form->renderPlainDialog('formEdit');
     </table>
 </div>
 
+<div class="block-content block-content-full">
+    <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+" target="_blank" style="padding-left: 10px;"><i class="si si-info"></i> List Time Zone</a>
+</div>
+
 <?= $htmlEdit ?>
 
 <?= view('util/scripts.php') ?>

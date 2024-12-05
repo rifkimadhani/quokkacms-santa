@@ -47,6 +47,7 @@ class ModelSetting
 	const SETTING_SITE_NAME = 100;
 	const SETTING_WELCOME_MESSAGE = 101;
 	const SETTING_SITE_ADDRESS = 200;
+	const SETTING_RUNNING_TEXT = 201;
 
 	const SETTING_TAX_VOD = 310;
 
@@ -338,6 +339,11 @@ class ModelSetting
     static public function getWelcomeMessage(){
         return ModelSetting::getString(ModelSetting::SETTING_WELCOME_MESSAGE);
     }
+
+	static public function getRunningText()
+	{
+		return ModelSetting::getString(ModelSetting::SETTING_RUNNING_TEXT);
+	}
 
     static public function getFeatureKitchen(){
         return ModelSetting::getInt(ModelSetting::SETTING_FEATURE_KITCHEN);
