@@ -107,9 +107,45 @@ class Message extends BaseController
     }
 
     public function insert(){
-        $subscriberId = $_POST['subscriber_id'];
-        // $roomId = $_POST['room_id'];
-        $urlImage = $_POST['url_image'];
+        $r = $this->insertData($_POST);
+
+        if ($r>0){
+            $this->setSuccessMessage('Messages sent');
+        } else {
+            $this->setErrorMessage('Message fail to sent ' . $model->errMessage);
+        }
+
+        return redirect()->to($this->baseUrl);
+    }
+
+    public function insertGroup(){
+        $groupId = $_POST['group_id'];
+
+        //cari semua subscriber dari group yg di maksud
+        $model = new MessageModel();
+        $listSubs = $model->getSubscribersByGroup($groupId);
+
+        $data = $_POST;
+
+        //kirim message ke setiap subscriber
+        foreach ($listSubs as $item){
+            $data['subscriber_id'] = $item['subscriber_id'];
+            $this->insertData($data);
+        }
+
+        $r = 1;
+        if ($r>0){
+            $this->setSuccessMessage('Messages sent');
+        } else {
+            $this->setErrorMessage('Message fail to sent ' . $model->errMessage);
+        }
+
+        return redirect()->to($this->baseUrl);
+    }
+
+    public function insertData(&$data){
+        $subscriberId = $data['subscriber_id'];
+        $urlImage = $data['url_image'];
 
         //convert url -> {BASE-HOST}
         $urlImage = str_replace($this->baseHost, '{BASE-HOST}', $urlImage);
@@ -129,10 +165,10 @@ class Message extends BaseController
             $this->loge("roomId={$roomId}");
 
             //tambahkan room_id
-            $_POST['room_id'] = $roomId;
+            $data['room_id'] = $roomId;
 
             //insert message
-            $messageId = $model->add($_POST);
+            $messageId = $model->add($data);
 
             //insert gambar
             $media->write($messageId, $urlImage);
@@ -144,16 +180,12 @@ class Message extends BaseController
 //        $disp = new DipatcherModel();
 //        $disp->sendToSubscriber($subscriberId, json_encode( ['type'=>'message'] ));
 
-        if ($r>0){
-            $this->setSuccessMessage('Messages sent');
-        } else {
-            $this->setErrorMessage('Message fail to sent ' . $model->errMessage);
-        }
-
-        return redirect()->to($this->baseUrl);
+        return $r;
     }
 
-    public function insertGroup(){
+
+
+    public function insertGroup_old(){
         $from = $_POST['from'];
         $groupId = $_POST['group_id'];
         $title = $_POST['title'];
