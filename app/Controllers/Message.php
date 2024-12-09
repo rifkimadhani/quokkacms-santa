@@ -112,7 +112,7 @@ class Message extends BaseController
         if ($r>0){
             $this->setSuccessMessage('Messages sent');
         } else {
-            $this->setErrorMessage('Message fail to sent ' . $model->errMessage);
+            $this->setErrorMessage('Message fail to sent');
         }
 
         return redirect()->to($this->baseUrl);
@@ -128,16 +128,16 @@ class Message extends BaseController
         $data = $_POST;
 
         //kirim message ke setiap subscriber
+        $r = 0;
         foreach ($listSubs as $item){
             $data['subscriber_id'] = $item['subscriber_id'];
-            $this->insertData($data);
+            $r += $this->insertData($data);
         }
 
-        $r = 1;
         if ($r>0){
             $this->setSuccessMessage('Messages sent');
         } else {
-            $this->setErrorMessage('Message fail to sent ' . $model->errMessage);
+            $this->setErrorMessage('Message fail to sent');
         }
 
         return redirect()->to($this->baseUrl);
