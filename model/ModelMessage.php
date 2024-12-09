@@ -14,15 +14,18 @@ require_once __DIR__ . '/../library/Log.php';
 class ModelMessage {
 
 	const SQL_GET_NEW_MESSAGE = 'SELECT count(*) `count` FROM tmessage WHERE subscriber_id=? AND status=\'NEW\'';
-	const SQL_GET_BY_SUBSCRIBER = 'SELECT * FROM tmessage WHERE subscriber_id=? ORDER BY create_date DESC';
+	const SQL_GET_BY_SUBSCRIBER = 'SELECT * FROM tmessage WHERE subscriber_id=? AND (expire_date IS NULL OR expire_date > ?) ORDER BY create_date DESC';
 	const SQL_UPDATE_STATUS = 'UPDATE tmessage SET status=? WHERE message_id=?';
 	const SQL_GET_ALL_IMAGE = 'SELECT * FROM vmessage_media WHERE subscriber_id=?';
 
 	static public function getBySubscriber($subscriberId){
+	    require_once __DIR__ . '/../library/DateUtil.php';
+
 		try{
+		    $now = DateUtil::now();
 			$pdo = Koneksi::create();
 			$stmt = $pdo->prepare(ModelMessage::SQL_GET_BY_SUBSCRIBER);
-			$stmt->execute( [$subscriberId ] );
+			$stmt->execute( [$subscriberId, $now] );
 
 			$rows = $stmt->fetchAll();
 			return $rows;

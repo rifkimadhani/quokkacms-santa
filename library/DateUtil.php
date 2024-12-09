@@ -97,4 +97,8 @@ class DateUtil {
 	public static function getMonthName(string $date){
 		return date('F', strtotime($date));
 	}
+
+	public static function now(){
+        return date('Y-m-d H:i:s');
+    }
 }
