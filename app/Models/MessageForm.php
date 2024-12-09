@@ -37,4 +37,8 @@ class MessageForm extends BaseForm
         $this->status        = ['type'=>'select','label'=>'Status', 'default'=>'NEW', 'options'=>self::STATUS, 'placeholder'=>'---', 'required'=>'required'];
     }
 
+    public function forEdit(){
+        unset($this->subscriber_id['required']);
+        $this->subscriber_id[] = ['readonly'=>'reaonly'];
+    }
 }

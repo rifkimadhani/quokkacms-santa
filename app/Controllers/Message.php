@@ -307,32 +307,38 @@ class Message extends BaseController
         $data['url_image'] = $urlImage; //simpan hasil conversi ke dalam url_image
 
         //cari subscriber
-        $subscriber = new SubscriberModel();
-        $subscriberData = $subscriber->getCheckinForSelect();
-
         $subscriberId = $data['subscriber_id'];
 
-        //cari apakah subscriber pada message ada di daftar subscriber ??
-        $found = false;
-        foreach ($subscriberData as $item){
-            if ($item['id']==$subscriberId){
-                $found = true;
-                break;
+        $subscriberData = [];
+
+        if (isset($subscriberId)){
+            $subscriber = new SubscriberModel();
+            $subscriberData = $subscriber->getCheckinForSelect();
+
+
+            //cari apakah subscriber pada message ada di daftar subscriber ??
+            $found = false;
+            foreach ($subscriberData as $item){
+                if ($item['id']==$subscriberId){
+                    $found = true;
+                    break;
+                }
             }
-        }
 
-        //apabila subscriber tdk ada, ambil dari db dan tambahkan ke dalam dafar subscriber
-        if ($found==false){
-            //cari pada db
-            $subscriberCurrent = $subscriber->get($subscriberId);
+            //apabila subscriber tdk ada, ambil dari db dan tambahkan ke dalam dafar subscriber
+            if ($found==false){
+                //cari pada db
+                $subscriberCurrent = $subscriber->get($subscriberId);
 
-            //tambahkan subscriber ke dalam daftar
-            $value = $subscriberCurrent['name'] . ' ' . $subscriberCurrent['last_name'];
-            $subscriberData[] = ['id'=>$subscriberId, 'value'=>$value];
+                //tambahkan subscriber ke dalam daftar
+                $value = $subscriberCurrent['name'] . ' ' . $subscriberCurrent['last_name'];
+                $subscriberData[] = ['id'=>$subscriberId, 'value'=>$value];
+            }
         }
 
         $roomData = $model->getRoomForSelect();
         $form = new MessageForm($subscriberData, $roomData);
+        $form->forEdit();
 
         $urlAction = $this->baseUrl . '/update';
         return $form->renderForm('Edit', 'formEdit', $urlAction, $data);
@@ -341,6 +347,8 @@ class Message extends BaseController
     public function update(){
         $id = $_POST['message_id'];
         $subscriberId = $_POST['subscriber_id'];
+        if (strlen($subscriberId)==0) $_POST['subscriber_id'] = null; //apabila tdk ada subscruiber maka set jadi null
+
         // $roomId = $_POST['room_id'];
         $urlImage = $_POST['url_image'];
 
