@@ -88,8 +88,6 @@ class Message extends BaseController
 
         $data = $model->getSsp();
 
-        self::sspDataConversion($data);
-
         echo json_encode($data);
     }
 
@@ -105,8 +103,6 @@ class Message extends BaseController
 
         $data = $model->getSspHistory();
 
-        self::sspDataConversion($data);
-
         echo json_encode($data);
     }
 
@@ -115,22 +111,40 @@ class Message extends BaseController
         // $roomId = $_POST['room_id'];
         $urlImage = $_POST['url_image'];
 
-        $model = new MessageModel();
-    
-        $messageId = $model->add($_POST);
-
-        $media = new MessageMediaModel();
-
         //convert url -> {BASE-HOST}
         $urlImage = str_replace($this->baseHost, '{BASE-HOST}', $urlImage);
 
-        $media->write($messageId, $urlImage);
+        $model = new MessageModel();
+        $media = new MessageMediaModel();
+
+        //ambil roomId dari subscriber
+        $room = new RoomModel();
+        $listRoom = $room->getBySubscriber($subscriberId);
+
+        //create message utk setiap room,
+        //apabila subscriber sewa 2 room, maka ada 1 message utk setiap room
+        $r = 0;
+        foreach ($listRoom as $item){
+            $roomId = $item['room_id'];
+            $this->loge("roomId={$roomId}");
+
+            //tambahkan room_id
+            $_POST['room_id'] = $roomId;
+
+            //insert message
+            $messageId = $model->add($_POST);
+
+            //insert gambar
+            $media->write($messageId, $urlImage);
+
+            $r++;
+        }
 
         //kirim lewat dispatcher
 //        $disp = new DipatcherModel();
 //        $disp->sendToSubscriber($subscriberId, json_encode( ['type'=>'message'] ));
 
-        if ($messageId>0){
+        if ($r>0){
             $this->setSuccessMessage('Messages sent');
         } else {
             $this->setErrorMessage('Message fail to sent ' . $model->errMessage);
@@ -382,8 +396,6 @@ class Message extends BaseController
      * @param $data
      */
     protected function sspDataConversion(&$data){
-        return;
-
         foreach($data['data'] as &$row){
 
         }
