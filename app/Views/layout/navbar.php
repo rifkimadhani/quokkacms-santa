@@ -18,7 +18,7 @@ require_once __DIR__ . '/../../../model/ModelSetting.php';
 //else $fStat = '';
 
 $fInbox = 1; //1=inbox menu visible, 0=hide
-$fInbox = ($fInbox==0) ? 'hidden' : '';
+$fInbox = ($fInbox == 0) ? 'hidden' : '';
 
 //utk saat ini shop blm di dukung, jadi di hide saja
 //$fShop = 0;
@@ -44,12 +44,14 @@ $staffVisibility = ($isStaff) ? '' : 'hidden';
 $rsVisibility = ($isRoomService) ? '' : 'hidden';
 
 // {"roles":["admin","housekeeping","room_service","concierge","kitchen"]}
-function hasRole($roleName){
-    try{
+function hasRole($roleName)
+{
+    try {
         $roles = session()->get('roles');
         if (!in_array($roleName, $roles)) return false;
         return true;
-    }catch (\Exception $e){}
+    } catch (\Exception $e) {
+    }
     return false;
 }
 ?>
@@ -91,7 +93,7 @@ function hasRole($roleName){
 
                 <!-- Logo -->
                 <div class="content-header-item">
-                    <a class="link-effect font-w700" href="index.html">
+                    <a class="link-effect font-w700" href="<?= base_url('dashboard'); ?>">
                         <span class="font-size-l text-dual-primary-dark">entertainz</span><span class="font-size-l text-primary">management</span>
                     </a>
                 </div>
@@ -105,14 +107,14 @@ function hasRole($roleName){
         <div class="content-side content-side-full content-side-user px-10 align-parent">
             <!-- Visible only in mini mode -->
             <div class="sidebar-mini-visible-b align-v animated fadeIn">
-                <img class="img-avatar img-avatar32" src="<?= base_url('plugin/adminlte/dist/img/avatar04.png') ?>" alt="">
+                <img class="img-avatar img-avatar32" src="<?= base_url('res/assets/media/profile/avatar01.png') ?>" alt="">
             </div>
             <!-- END Visible only in mini mode -->
 
             <!-- Visible only in normal mode -->
             <div class="sidebar-mini-hidden-b text-center">
                 <a class="img-link" href="<?= base_url('adminprofile'); ?>">
-                    <img class="img-avatar" src="<?= base_url('plugin/adminlte/dist/img/avatar04.png') ?>" alt="">
+                    <img class="img-avatar" src="<?= base_url('res/assets/media/profile/avatar01.png') ?>" alt="">
                 </a>
                 <ul class="list-inline mt-10">
                     <li class="list-inline-item">
@@ -145,29 +147,32 @@ function hasRole($roleName){
                 <li>
                     <a href="<?= base_url('dashboard'); ?>"><i class="si si-home"></i> <span class="sidebar-mini-hide">Home</span></a>
                 </li>
-                <li <?=$adminVisibility?>>
+                <li <?= $adminVisibility ?>>
                     <a href="<?= base_url('subscriber'); ?>"><i class="si si-user"></i> <span class="sidebar-mini-hide">Guest</span></a>
                 </li>
-                <li <?=$adminVisibility?>>
+                <li <?= $adminVisibility ?>>
                     <a href="<?= base_url('subscribergroup'); ?>"><i class="si si-users"></i> <span class="sidebar-mini-hide">Guest Group</span></a>
                 </li>
-<!--                <li>-->
-<!--                    <a href="--><?//= base_url('user'); ?><!--"><i class="si si-screen-smartphone"></i> <span class="sidebar-mini-hide">User Mobile</span></a>-->
-<!--                </li>-->
-                <li <?=$adminVisibility?>>
+                <!--                <li>-->
+                <!--                    <a href="-->
+                <? //= base_url('user'); 
+                ?>
+                <!--"><i class="si si-screen-smartphone"></i> <span class="sidebar-mini-hide">User Mobile</span></a>-->
+                <!--                </li>-->
+                <li <?= $adminVisibility ?>>
                     <a href="<?= base_url('message'); ?>"><i class="si si-bubbles"></i> <span class="sidebar-mini-hide">Messages</span></a>
                 </li>
                 <li <?= $fInbox ?>>
                     <a href="<?= base_url('inbox'); ?>"><i class="si si-envelope"></i> <span class="sidebar-mini-hide">Inbox</span></a>
                 </li>
-                <li <?=$staffVisibility?>>
+                <li <?= $staffVisibility ?>>
                     <a href="<?= base_url('hotelservice'); ?>"><i class="si si-handbag"></i> <span class="sidebar-mini-hide">Hotel Service</span></a>
                 </li>
-                <li <?=$rsVisibility?>>
+                <li <?= $rsVisibility ?>>
                     <a href="<?= base_url('roomservice'); ?>"><i class="si si-basket"></i> <span class="sidebar-mini-hide">Room Service</span></a>
                 </li>
 
-                <li <?=$adminVisibility?>>
+                <li <?= $adminVisibility ?>>
                     <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-settings"></i><span class="sidebar-mini-hide">Setup</span></a>
                     <ul>
                         <li>
@@ -269,7 +274,8 @@ function hasRole($roleName){
                             <a href="<?= base_url('locality'); ?>">Tourist Info</a>
                         </li>
                         <li>
-                            <a href="<?= base_url('filemanager/filemanager/dialog.php'); ?>" target="_blank">File Manager</a>
+                            <a href="<?= base_url('filemanager/filemanager/dialog.php'); ?>" target="_blank">File
+                                Manager</a>
                         </li>
                         <li>
                             <a href="<?= base_url('setting/simple'); ?>">Settings</a>
@@ -293,38 +299,59 @@ function hasRole($roleName){
                 </li>
 
                 <!-- shop START-->
-<!--                <li --><?//= $fShop ?><!-->
+                <!--                <li -->
+                <? //= $fShop 
+                ?>
+                <!-->
 <!--                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-bag"></i><span class="sidebar-mini-hide">Shop</span></a>-->
-<!--                    <ul>-->
-<!--                        <li>-->
-<!--                            <a href="--><?//= base_url('shop'); ?><!--">Seller</a>-->
-<!--                        </li>-->
-<!--                        <li>-->
-<!--                            <a href="--><?//= base_url('shopproduct'); ?><!--">Product</a>-->
-<!--                        </li>-->
-<!--                        <li>-->
-<!--                            <a href="--><?//= base_url('shoporder'); ?><!--">Order</a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </li>-->
+                <!--                    <ul>-->
+                <!--                        <li>-->
+                <!--                            <a href="-->
+                <? //= base_url('shop'); 
+                ?>
+                <!--">Seller</a>-->
+                <!--                        </li>-->
+                <!--                        <li>-->
+                <!--                            <a href="-->
+                <? //= base_url('shopproduct'); 
+                ?>
+                <!--">Product</a>-->
+                <!--                        </li>-->
+                <!--                        <li>-->
+                <!--                            <a href="-->
+                <? //= base_url('shoporder'); 
+                ?>
+                <!--">Order</a>-->
+                <!--                        </li>-->
+                <!--                    </ul>-->
+                <!--                </li>-->
                 <!--shop END-->
 
-<!--                <li --><?//= $fMarketing ?><!-->
+                <!--                <li -->
+                <? //= $fMarketing 
+                ?>
+                <!-->
 <!--                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-badge"></i><span class="sidebar-mini-hide">Marketing</span></a>-->
-<!--                    <ul>-->
-<!--                        <li>-->
-<!--                            <a href="--><?//= base_url('marketingvod'); ?><!--">VOD</a>-->
-<!--                        </li>-->
-<!--                        <li>-->
-<!--                            <a href="--><?//= base_url('marketingkaraoke'); ?><!--">Karaoke</a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </li>-->
+                <!--                    <ul>-->
+                <!--                        <li>-->
+                <!--                            <a href="-->
+                <? //= base_url('marketingvod'); 
+                ?>
+                <!--">VOD</a>-->
+                <!--                        </li>-->
+                <!--                        <li>-->
+                <!--                            <a href="-->
+                <? //= base_url('marketingkaraoke'); 
+                ?>
+                <!--">Karaoke</a>-->
+                <!--                        </li>-->
+                <!--                    </ul>-->
+                <!--                </li>-->
 
-                <li <?=$adminVisibility?>>
+                <li <?= $adminVisibility ?>>
                     <a href="<?= base_url('emergency'); ?>"><i class="si si-bell"></i> <span class="sidebar-mini-hide">Emergency</span></a>
                 </li>
-                <li <?=$adminVisibility?>>
+                <li <?= $adminVisibility ?>>
                     <a href="<?= base_url('statistic'); ?>"><i class="si si-bar-chart"></i> <span class="sidebar-mini-hide">Statistic (Live TV)</span></a>
                 </li>
 
@@ -332,13 +359,13 @@ function hasRole($roleName){
                 <li class="nav-main-heading">
                     <span class="sidebar-mini-visible">ADM</span><span class="sidebar-mini-hidden">Administrator</span>
                 </li>
-                <li <?=$adminVisibility?>>
+                <li <?= $adminVisibility ?>>
                     <a href="<?= base_url('admin'); ?>"><i class="si si-user-following"></i> <span class="sidebar-mini-hide">User</span></a>
                 </li>
-                <li <?=$adminVisibility?>>
+                <li <?= $adminVisibility ?>>
                     <a href="<?= base_url('role'); ?>"><i class="si si-puzzle"></i> <span class="sidebar-mini-hide">Role</span></a>
                 </li>
-                <li <?=$adminVisibility?>>
+                <li <?= $adminVisibility ?>>
                     <a href="<?= base_url('builder'); ?>"><i class="fa fa-code"></i> <span class="sidebar-mini-hide">Page Builder</span></a>
                 </li>
 

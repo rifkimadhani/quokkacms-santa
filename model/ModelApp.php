@@ -94,6 +94,9 @@ class ModelApp{
 		$r1 = Adb::connect($ip, $port);
         Log::writeLn(json_encode($r1));
 
+		//sleep 2 second utk memberikan waktu pada adb utk start
+		sleep(2);
+
         //2. ini di pakai utk quokka tv
         $r0 = Adb::root();
         Log::writeLn(json_encode($r0));

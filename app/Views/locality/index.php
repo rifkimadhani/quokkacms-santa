@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PageBuilder.
  * Date: 2023-03-28 12:20:30
@@ -21,24 +22,24 @@ $htmlDelete = Dialog::renderDelete('Delete locality', 'CONFIRM DELETE');
         </a>
     </div>
 </div>
-<div class="block-content block-content-full table-responsive">
-    <table id="datalist" class="table table-bordered table-hover table-striped table-vcenter">
+<div class="block-content block-content-full ">
+    <table id="datalist" class="table table-responsive table-bordered table-hover table-striped table-vcenter" style="width: max-content;">
         <thead>
-            <tr> 
-                <?php foreach ($fieldList as $field): ?>
-                    <th><?=$field?></th>
-                <?php endforeach;?>
+            <tr>
+                <?php foreach ($fieldList as $field) : ?>
+                    <th><?= $field ?></th>
+                <?php endforeach; ?>
                 <th style="width: 5%;">Action</th>
             </tr>
         </thead>
     </table>
 </div>
 
-<?=$htmlEdit?>
-<?=$htmlNew?>
-<?=$htmlDelete?>
+<?= $htmlEdit ?>
+<?= $htmlNew ?>
+<?= $htmlDelete ?>
 
-<?=view('util/scripts.php')?>
+<?= view('util/scripts.php') ?>
 
 
 <script>
@@ -46,71 +47,73 @@ $htmlDelete = Dialog::renderDelete('Delete locality', 'CONFIRM DELETE');
     const lastCol = <?= count($fieldList) ?>;
     const dataList = $('#datalist');
     var dataTable;
-    const primaryKey = "<?=$primaryKey?>";
+    const primaryKey = "<?= $primaryKey ?>";
 
     //exec when ready
-    $('document').ready(function () {
+    $('document').ready(function() {
         initDataTable();
     });
 
     function initDataTable() {
-        dataTable = dataList.DataTable(
-            {
-                ajax: urlSsp,
-                serverSide: true,
-                responsive: true,
-                scrollX: true,
-                pageLength: 10,
-                order: [['0','desc']],
-                columnDefs: [
-                    {
-                        //hide your cols here, enter index of col into targets array
-                        targets: [0,3,6],visible: false,searchable: false
-                    },
-                    {
-                        targets: [2],
-                        className: "text-center",
-                        width: '30%',
-                        render: function(value) {
-                            return renderImages(value);
-                        }
-                    },
-                    {
-                        // action column
-                        targets: lastCol,
-                        className: "text-center",
-                        defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
+        dataTable = dataList.DataTable({
+            ajax: urlSsp,
+            serverSide: true,
+            responsive: true,
+            scrollX: true,
+            autoWidth: true,
+            pageLength: 10,
+            order: [
+                ['0', 'desc']
+            ],
+            columnDefs: [{
+                    //hide your cols here, enter index of col into targets array
+                    targets: [0, 3, 6],
+                    visible: false,
+                    searchable: false
+                },
+                {
+                    targets: [2],
+                    className: "text-center",
+                    width: '20vw',
+                    render: function(value) {
+                        return renderImages(value);
                     }
+                },
+                {
+                    // action column
+                    targets: lastCol,
+                    className: "text-center",
+                    defaultContent: '<a onclick="onClickTrash(event, this);" href="javascript:;"> <i class="fa fa-trash fa-2x"></i></a>'
+                }
 
-                ]
-            });
+            ]
+        });
 
         // handle click on row,
         //  1. ambil dialog yg sdh di isikan dgn data dari server
         //  2. kemudian dialog tsb akan di tampilkan
         //
-        dataList.find('tbody').on( 'click', 'tr', function (event)
-        {
+        dataList.find('tbody').on('click', 'tr', function(event) {
             event.stopPropagation();
-            const data = dataTable.row( $(this)).data();
+            const data = dataTable.row($(this)).data();
 
             //get pk from data
             const localityId = data[0];
 
-            const url = "<?=$baseUrl?>/edit/" + localityId;
+            const url = "<?= $baseUrl ?>/edit/" + localityId;
 
             // show hourglass
             jQuery('#overlay-loader-indicator').show();
 
-            $.ajax({url: url}).done(function(result)
-            {
-                $('.dialogformEdit').html(result);
-                $('.dialogformEdit').modal();
-            })
-            .always(function()
-            {
-                jQuery('#overlay-loader-indicator').hide();
-            });
+            $.ajax({
+                    url: url
+                }).done(function(result) {
+                    $('.dialogformEdit').html(result);
+                    $('.dialogformEdit').modal();
+                })
+                .always(function() {
+                    jQuery('#overlay-loader-indicator').hide();
+                });
         });
 
         initDataTableOptions(dataTable);
@@ -121,20 +124,19 @@ $htmlDelete = Dialog::renderDelete('Delete locality', 'CONFIRM DELETE');
     function onClickTrash(event, that) {
         event.stopPropagation();
 
-        const data = dataTable.row( $(that).parents('tr') ).data();
-            const localityId = data[0];
+        const data = dataTable.row($(that).parents('tr')).data();
+        const localityId = data[0];
 
 
         //please correct the index for name variable, sehingga message delete akan terlihat benar
         const name = data[1];
 
-        showDialogDelete('formDelete', 'Are you sure to delete ' + name, function () {
-            window.location.href = "<?=$baseUrl?>/delete/" + localityId;
+        showDialogDelete('formDelete', 'Are you sure to delete ' + name, function() {
+            window.location.href = "<?= $baseUrl ?>/delete/" + localityId;
         })
     }
 
-    function renderImages(value)
-    {
+    function renderImages(value) {
         if (value) {
             var urls = value.split(',');
             var images = '';
@@ -143,7 +145,8 @@ $htmlDelete = Dialog::renderDelete('Delete locality', 'CONFIRM DELETE');
                 var url = urls[i].trim();
                 if (url) {
                     url = url.replace('{BASE-HOST}', '<?= base_url(); ?>');
-                    images += '<img src="' + url + '" class="urlimage" style="margin:5px; max-width: 300px;">';
+                    images += '<img src="' + url +
+                        '" class="urlimage" style="margin:5px; max-width: 20vw; max-height: auto">';
                 }
             }
 
