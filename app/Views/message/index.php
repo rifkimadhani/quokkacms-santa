@@ -5,6 +5,7 @@ use App\Libraries\Dialog;
 $htmlEdit = $form->renderPlainDialog('formEdit');
 $htmlNew = $form->renderDialog('NEW MESSAGE', 'formNew', "{$baseUrl}/insert");
 $htmlGroupNew = $formGroup->renderDialog('NEW MESSAGE TO GROUP', 'formGroupNew', "{$baseUrl}/insertGroup");
+$htmlRoomNew = $formRoom->renderDialog('NEW MESSAGE TO ROOM', 'formRoomNew', "{$baseUrl}/insertRoom");
 $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 ?>
 <div class="block-content block-content-full border-b clearfix" style="padding-top:0px">
@@ -13,6 +14,9 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
     </a>
     <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformGroupNew')">
         <i class="fa fa-users text-primary mr-5 "></i> Message to Group
+    </a>
+    <a class="btn btn-secondary showNewModal" href="javascript:;" role="button" onclick="showDialog('.dialogformRoomNew')">
+        <i class="fa fa-users text-primary mr-5 "></i> Message to Room
     </a>
     <div class="float-right">
         <a class="btn btn-secondary" href="javascript:;" role="button" onclick="showHistory()" data-toggle="tooltip" data-placement="left" title="Show History">
@@ -39,6 +43,7 @@ $htmlDelete = Dialog::renderDelete('DELETE', 'formDelete');
 <?= $htmlEdit ?>
 <?= $htmlNew ?>
 <?= $htmlGroupNew ?>
+<?= $htmlRoomNew ?>
 <?= $htmlDelete ?>
 
 

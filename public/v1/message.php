@@ -40,6 +40,11 @@ switch ($action){
 
 exit();
 
+/**
+ * api akan return semua message utk room
+ *
+ * @param $stbId
+ */
 function doGetList($stbId){
 
 	require_once '../../model/ModelStb.php';
@@ -51,8 +56,8 @@ function doGetList($stbId){
 	$subscriberId = $stb['subscriber_id'];
 	$roomId= $stb['room_id'];
 
-	$list = ModelMessage::getBySubscriber($subscriberId);
-	$images = ModelMessage::getAllImage($subscriberId);
+	$list = ModelMessage::getByRoomAndSubs($roomId, $subscriberId);
+	$images = ModelMessage::getImageByRoom($roomId);
 
     $baseHost = ModelSetting::getBaseHost('../'); //turun 1 level dari posisi api ini
 

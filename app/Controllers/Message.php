@@ -11,6 +11,7 @@ namespace App\Controllers;
 //use App\Models\DipatcherModel;
 use App\Models\MessageForm;
 use App\Models\MessageFormGroup;
+use App\Models\MessageFormRoom;
 
 use App\Models\MessageMediaModel;
 use App\Models\MessageModel;
@@ -47,8 +48,11 @@ class Message extends BaseController
         $groupData = $groupModel->getAllActiveForSelect();
         $formGroup = new MessageFormGroup($groupData);
 
+        $room = new RoomModel();
+        $listRoom = $room->getForSelect();
+        $formRoom = new MessageFormRoom($listRoom);
 
-        return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form', 'formGroup'));
+        return view('layout/template', compact('mainview','primaryKey', 'fieldList', 'pageTitle', 'baseUrl', 'form', 'formGroup', 'formRoom'));
     }
 
     public function history()
@@ -143,9 +147,34 @@ class Message extends BaseController
         return redirect()->to($this->baseUrl);
     }
 
+    public function insertRoom(){
+        $data = $_POST;
+        $r = $this->insertData($data);
+
+        if ($r>0){
+            $this->setSuccessMessage('Messages sent');
+        } else {
+            $this->setErrorMessage('Message fail to sent');
+        }
+
+        return redirect()->to($this->baseUrl);
+    }
+
+    /**
+     * Support utk kirim
+     * 1. to subscriber
+     * 2. to room (subscriber==null)
+     *
+     * @param $data
+     * @return int
+     */
     public function insertData(&$data){
-        $subscriberId = $data['subscriber_id'];
+        $subscriberId = $data['subscriber_id'] ?? null;
         $urlImage = $data['url_image'];
+
+
+        $this->varDump($data);
+
 
         //convert url -> {BASE-HOST}
         $urlImage = str_replace($this->baseHost, '{BASE-HOST}', $urlImage);
@@ -153,9 +182,19 @@ class Message extends BaseController
         $model = new MessageModel();
         $media = new MessageMediaModel();
 
-        //ambil roomId dari subscriber
-        $room = new RoomModel();
-        $listRoom = $room->getBySubscriber($subscriberId);
+        //apabila ada subscriber maka cari room yg di pakai subscriber
+        //apabila tdk ada maka buat listroom dari room_id
+        if (isset($subscriberId)){
+            $this->loge("subscriberId={$subscriberId}");
+            //ambil roomId dari subscriber
+            $room = new RoomModel();
+            $listRoom = $room->getBySubscriber($subscriberId);
+        } else {
+            $this->loge("subscriberId=null");
+            $data['subscriber_id'] = null;
+            $roomId = $data['room_id'];
+            $listRoom[] = ['room_id'=>$roomId];
+        }
 
         //create message utk setiap room,
         //apabila subscriber sewa 2 room, maka ada 1 message utk setiap room

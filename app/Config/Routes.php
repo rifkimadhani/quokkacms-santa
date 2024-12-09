@@ -101,6 +101,7 @@ $routes->get('/message/edit/(:num)', 'Message::edit/$1');
 $routes->get('/message/delete/(:num)', 'Message::delete/$1');
 $routes->post('/message/insert', 'Message::insert');
 $routes->post('/message/insertGroup', 'Message::insertGroup');
+$routes->post('/message/insertRoom', 'Message::insertRoom');
 $routes->post('/message/update', 'Message::update');
 $routes->get('/message/history', 'Message::history');
 $routes->get('/message/ssp_history', 'Message::sspHistory');
