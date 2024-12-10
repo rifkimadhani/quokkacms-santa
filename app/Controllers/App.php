@@ -10,6 +10,17 @@ namespace App\Controllers;
 use App\Models\AppModel;
 use App\Models\AppForm;
 
+/**
+ * Utk masalah adb pada ubuntu 20.04
+ * solusi nya dgn membuat folder /usr/sbin/.android
+ *
+ * sudo mkdir /usr/sbin/.android
+ * sudo chmod o+w /usr/sbin/.android
+ *
+ *
+ * Class App
+ * @package App\Controllers
+ */
 class App extends BaseController
 {
     public function index()
