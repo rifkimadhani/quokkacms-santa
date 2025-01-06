@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\SettingModel;
+use App\Models\VisitorModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -69,6 +70,56 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
+
+        $this->trackVisit();
+    }
+
+    /**
+     * Track visitor for the current page
+     */
+    protected function trackVisit()
+    {
+        // Skip tracking for certain requests
+        if ($this->shouldSkipTracking()) {
+            return;
+        }
+
+        // Get current URL
+        $currentUrl = current_url();
+
+        // Track the visit
+        $visitor = new VisitorModel();
+        $visitor->addVisitor($currentUrl);
+    }
+
+    protected function shouldSkipTracking()
+    {
+        // Skip AJAX requests
+        if ($this->request->isAJAX()) {
+            return true;
+        }
+
+        // Skip API routes (assuming they're under /api/)
+        if (strpos(uri_string(), 'api/') === 0) {
+            return true;
+        }
+
+        // Skip bot/crawler requests
+        $userAgent = $this->request->getUserAgent();
+        if ($userAgent->isRobot()) {
+            return true;
+        }
+
+        // Skip certain file types
+        $excluded_types = ['jpg', 'jpeg', 'png', 'gif', 'css', 'js'];
+        $current_url = current_url();
+        foreach ($excluded_types as $type) {
+            if (strpos($current_url, '.' . $type) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function getBaseHost(){
