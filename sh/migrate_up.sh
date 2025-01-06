@@ -12,6 +12,7 @@ path=/opt/lampp/bin/
 username=$1
 database=$2
 
+
 cmd="
 USE ${database};
 SET FOREIGN_KEY_CHECKS=0;
