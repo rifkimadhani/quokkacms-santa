@@ -106,7 +106,7 @@ if (empty(session()->getFlashdata('type')) == false) {
                                 <!-- Entertainz Hospitality Solutions. -->
                             </p>
                             <p class="font-italic text-white-op">
-                                Copyright &copy; <span>Madeira Research Pte. Ltd.</span>
+                                Copyright &copy; <span>Madeira Entertainz</span>
                             </p>
                         </div>
                     </div>
@@ -197,7 +197,8 @@ if (empty(session()->getFlashdata('type')) == false) {
                                 <input type="email" class="form-control" id="user_name" name="user_name" placeholder="Please Input Your Email" required>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block" name="login" style="border-color: #F89938; border-radius:10px; background-color: #F89938;cursor:pointer;">Reset Password</button>
+                        <button type="submit" class="btn btn-primary btn-block" name="login" style="border-color: #F89938; border-radius:10px; background-color: #F89938;cursor:pointer;">Reset
+                            Password</button>
                     </form>
                 </div>
             </div>
