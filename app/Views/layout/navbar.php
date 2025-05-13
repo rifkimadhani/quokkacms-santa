@@ -365,9 +365,11 @@ function hasRole($roleName)
                 <li <?= $adminVisibility ?>>
                     <a href="<?= base_url('role'); ?>"><i class="si si-puzzle"></i> <span class="sidebar-mini-hide">Role</span></a>
                 </li>
-                <li <?= $adminVisibility ?>>
-                    <a href="<?= base_url('builder'); ?>"><i class="fa fa-code"></i> <span class="sidebar-mini-hide">Page Builder</span></a>
-                </li>
+                <!-- <li <? //= $adminVisibility 
+                            ?>>
+                    <a href="<? //= base_url('builder'); 
+                                ?>"><i class="fa fa-code"></i> <span class="sidebar-mini-hide">Page Builder</span></a>
+                </li> -->
 
             </ul>
         </div>
