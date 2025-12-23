@@ -6,11 +6,16 @@
  * Time: 10:59
  */
 
-define('VERSION', '1.1.20241205');
+define('VERSION', '1.1.20251224');
 
 /**
  * History
  *
+ * 1.1.20251224
+ *      - add feature installer for Philips TV
+ *      - add feature Batch Installer for Philips TV
+ *      - add feature Simulation Mode
+ * 
  * 1.1.20241205
  *      - fix ui table theme's detail - aligned table header & body
  *      - fix ui table facility & locality - aligned table header & body
