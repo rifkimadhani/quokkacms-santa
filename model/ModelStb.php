@@ -274,4 +274,45 @@ class ModelStb
             return $e;
         }
     }
+
+	/**
+	 * Get STB by name, or create new one if not exists
+	 * Used for batch installation where user provides device names
+	 *
+	 * @param string $name - Device name (e.g., "TV-Room-101")
+	 * @param string $ipAddress - IP address of the device
+	 * @return int|null - stb_id if found/created, null on error
+	 */
+	public static function getOrCreateByName($name, $ipAddress = null){
+		try{
+			$pdo = Koneksi::create();
+
+			// Try to find existing STB by name
+			$stmt = $pdo->prepare('SELECT stb_id FROM tstb WHERE name = ?');
+			$stmt->execute([$name]);
+			$rows = $stmt->fetchAll();
+
+			if (count($rows) > 0) {
+				$stbId = $rows[0]['stb_id'];
+
+				// Update IP address if provided
+				if ($ipAddress) {
+					$updateStmt = $pdo->prepare('UPDATE tstb SET ip_address = ? WHERE stb_id = ?');
+					$updateStmt->execute([$ipAddress, $stbId]);
+				}
+
+				return $stbId;
+			}
+
+			// Create new STB
+			$insertStmt = $pdo->prepare('INSERT INTO tstb (name, ip_address, status) VALUES (?, ?, 1)');
+			$insertStmt->execute([$name, $ipAddress]);
+
+			return $pdo->lastInsertId();
+
+		}catch (PDOException $e){
+			Log::writeErrorLn($e->getMessage());
+			return null;
+		}
+	}
 }

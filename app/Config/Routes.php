@@ -54,6 +54,8 @@ $routes->get('/login/logout', 'Login::logout');
 $routes->get('/installer', 'Installer::index');
 $routes->post('/installer/ajax_install', 'Installer::ajaxInstall');
 $routes->post('/installer/installapp', 'Installer::installApp');
+$routes->get('/installer/batch', 'Installer::batch');
+$routes->post('/installer/ajax_install_single', 'Installer::ajaxInstallSingle');
 
 //admin
 $routes->get('/admin', 'Admin::index');

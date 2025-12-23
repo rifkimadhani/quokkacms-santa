@@ -146,13 +146,17 @@ class ModelApp{
 	 * @param $id - App ID from database
 	 * @param $ip - TV IP address
 	 * @param $stbId - STB/Device ID
+	 * @param $simulate - If true, no actual ADB commands are executed
 	 * @return array - Results of each step
 	 */
-	static public function installPhilips($id, $ip, $stbId){
+	static public function installPhilips($id, $ip, $stbId, $simulate = false){
 		require_once __DIR__ . '/../library/Adb.php';
 		require_once __DIR__ . '/../library/Security.php';
 		require_once __DIR__ . '/ModelStb.php';
 		require_once __DIR__ . '/ModelSetting.php';
+
+		// Enable simulation mode if requested
+		Adb::setSimulateMode($simulate);
 
 		$basePath = realpath(__DIR__ . '/..');
 

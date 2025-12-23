@@ -77,6 +77,66 @@ class Installer extends BaseController
         return json_encode($r);
     }
 
+    /**
+     * Batch installer page
+     */
+    public function batch()
+    {
+        $baseUrl = $this->getBaseUrl();
+
+        $model = new AppModel();
+
+        $mainview = 'installer/batch';
+        $pageTitle = 'Batch Installer';
+        $latestgroupapk = $model->getLatestApk(self::APPLICATION_ID);
+
+        return view('layout/template', compact('mainview', 'baseUrl', 'pageTitle', 'latestgroupapk'));
+    }
+
+    /**
+     * AJAX endpoint for single device installation
+     * Used by batch installer - processes one device at a time
+     */
+    public function ajaxInstallSingle(){
+        require_once __DIR__ . '/../../model/ModelApp.php';
+        require_once __DIR__ . '/../../model/ModelStb.php';
+
+        header('Content-Type: application/json');
+
+        try {
+            $ip = isset($_POST['ip_address']) ? trim($_POST['ip_address']) : '';
+            $deviceName = isset($_POST['device_name']) ? trim($_POST['device_name']) : '';
+            $appId = isset($_POST['latest_apk']) ? $_POST['latest_apk'] : '';
+            $simulate = isset($_POST['simulate']) && $_POST['simulate'] === '1';
+
+            // Validate inputs
+            if (empty($ip) || empty($deviceName) || empty($appId)) {
+                return json_encode(['success' => false, 'error' => 'Missing required fields']);
+            }
+
+            // Get or create STB by name
+            $stbId = \ModelStb::getOrCreateByName($deviceName, $ip);
+            if (is_null($stbId)) {
+                return json_encode(['success' => false, 'error' => 'Failed to create/find device']);
+            }
+
+            // Run Philips TV installation
+            $result = \ModelApp::installPhilips($appId, $ip, $stbId, $simulate);
+
+            // Check if installation was successful (based on disconnect step)
+            $success = isset($result['disconnect']) && $result['disconnect']['retValue'] == 0;
+
+            return json_encode([
+                'success' => $success,
+                'stb_id' => $stbId,
+                'result' => $result
+            ]);
+
+        } catch (\Exception $e) {
+            return json_encode(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
 //    public function connect()
 //    {
 //        if($this->input->server('REQUEST_METHOD') == 'POST')

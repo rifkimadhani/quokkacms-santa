@@ -12,6 +12,24 @@ class Adb
 	// Cache for ADB path (detected once, reused)
 	private static $adbPath = null;
 
+	// Simulation mode - when true, no actual ADB commands are executed
+	private static $simulateMode = false;
+
+	/**
+	 * Enable/disable simulation mode
+	 * When enabled, ADB commands return mock success responses
+	 */
+	static public function setSimulateMode($enabled){
+		self::$simulateMode = $enabled;
+	}
+
+	/**
+	 * Check if simulation mode is enabled
+	 */
+	static public function isSimulateMode(){
+		return self::$simulateMode;
+	}
+
 	/**
 	 * Dynamically detect ADB path
 	 * Tries 'which adb' first, then common installation paths
@@ -204,7 +222,19 @@ class Adb
 
 
 	static private function execute($cmd){
-//		echo 'execute ' . $cmd;
+		// echo 'execute ' . $cmd;
+
+		// Simulation mode - return mock success without executing
+		if (self::$simulateMode) {
+			usleep(500000); // 0.5 second delay to simulate real execution
+			return [
+				'cmd' => $cmd . ' [SIMULATED]',
+				'retValue' => 0,
+				'retString' => 'Success (simulated)',
+				'output' => ['Simulation mode - no actual command executed']
+			];
+		}
+
 		// Replace 'adb' with dynamically detected full path
 		$adbPath = self::getAdbPath();
 		$cmd = preg_replace('/^adb\b/', $adbPath, $cmd);
