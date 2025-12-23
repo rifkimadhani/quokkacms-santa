@@ -21,6 +21,13 @@ body::-webkit-scrollbar
     <div class="box-body">
         <form id="newForm" action="<?= $baseUrl?>/installapp" method="post">
             <div class="form-group">
+              <label class='col-form-label'><b>Device Type</b></label>
+              <select class='form-control' id='device_type' name='device_type' required>
+                  <option value='android_stb' selected>Android STB (Rooted)</option>
+                  <option value='philips_tv'>Philips TV (Non-Rooted)</option>
+              </select>
+            </div>
+            <div class="form-group">
                 <label class="col-form-label"><b>Device IP adress</b></label>
                 <input type="text" name="ip_address" value="<?php if(isset($ip_address))echo $ip_address; ?>" required minlength="0" maxlength="15" placeholder="eg. 1.2.3.4" autocomplete="off" class="form-control">
             </div>
@@ -133,19 +140,54 @@ body::-webkit-scrollbar
 //      console.log('updateStatus');
 //      console.log(data);
 
-      //connect
-      updateDiv('connect', $('#div_connect'), data.connect);
-      updateDiv('mkdir', $('#div_mkdir'), data.mkdir);
-      updateDiv('chmod', $('#div_chmod'), data.chmod);
-      updateDiv('push apk', $('#div_pushapk'), data.push_apk);
-      updateDiv('push config', $('#div_pushconfig'), data.push_config);
-      updateDiv('install', $('#div_install'), data.install);
-      updateDiv('run application', $('#div_runapp'), data.runapp);
-      updateDiv('disconnect', $('#div_disconnect'), data.disconnect);
+      // Helper function to safely get step data
+      function getStep(key, altKey) {
+          if (data[key]) return data[key];
+          if (altKey && data[altKey]) return data[altKey];
+          return null;
+      }
+
+      // Clear all divs first
+      clearDiv();
+
+      // Common steps (both device types)
+      if (getStep('connect')) updateDiv('connect', $('#div_connect'), getStep('connect'));
+      
+      // Android STB specific steps
+      if (getStep('root')) updateDiv('root', $('#div_mkdir'), getStep('root'));
+      if (getStep('mkdir') && getStep('chmod')) {
+          updateDiv('mkdir', $('#div_mkdir'), getStep('mkdir'));
+          updateDiv('chmod', $('#div_chmod'), getStep('chmod'));
+      }
+      if (getStep('push_apk')) updateDiv('push apk', $('#div_pushapk'), getStep('push_apk'));
+      
+      // Install step (both device types)
+      if (getStep('install')) updateDiv('install', $('#div_install'), getStep('install'));
+      
+      // Config push (different keys for each device type)
+      var configStep = getStep('push_config', 'copy_config');
+      if (configStep) updateDiv('push config', $('#div_pushconfig'), configStep);
+      
+      // Philips TV specific steps
+      if (getStep('runapp_first')) updateDiv('run app (init)', $('#div_runapp'), getStep('runapp_first'));
+      if (getStep('disable_bloatware')) updateDiv('disable bloatware', $('#div_mkdir'), getStep('disable_bloatware'));
+      if (getStep('accessibility')) updateDiv('accessibility', $('#div_chmod'), getStep('accessibility'));
+      if (getStep('set_home')) updateDiv('set home activity', $('#div_pushapk'), getStep('set_home'));
+      
+      // Run app (final step for both)
+      if (getStep('runapp')) updateDiv('run application', $('#div_runapp'), getStep('runapp'));
+      
+      // Disconnect (both device types)
+      if (getStep('disconnect')) updateDiv('disconnect', $('#div_disconnect'), getStep('disconnect'));
+
+      // Hide loader
+      jQuery('#overlay-loader-indicator').hide();
   }
 
   function updateDiv(title, div, step) {
-      const text = step.retString;
+      if (!step) return; // Skip if no data
+      
+      const text = step.retString || '';
       var color = 'blue'; //default color blue
 
       html = "<h5 style='margin-bottom: 0;'><p style='margin-bottom: 0;'>" + title + "</p></h5>";

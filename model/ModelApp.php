@@ -139,4 +139,149 @@ class ModelApp{
         return ['root'=>$r0, 'connect'=>$r1, 'mkdir'=>$r2, 'chmod'=>$r3, 'push_apk'=>$r4, 'push_config'=>$r5, 'install'=>$r6, 'runapp'=>$r7, 'disconnect'=>$r8];
 	}
 
+	/**
+	 * Install app on Philips TV (Non-Rooted)
+	 * Uses run-as for config injection and direct APK installation
+	 *
+	 * @param $id - App ID from database
+	 * @param $ip - TV IP address
+	 * @param $stbId - STB/Device ID
+	 * @return array - Results of each step
+	 */
+	static public function installPhilips($id, $ip, $stbId){
+		require_once __DIR__ . '/../library/Adb.php';
+		require_once __DIR__ . '/../library/Security.php';
+		require_once __DIR__ . '/ModelStb.php';
+		require_once __DIR__ . '/ModelSetting.php';
+
+		$basePath = realpath(__DIR__ . '/..');
+
+		//1. Get apk Path and app info
+		$app = self::get($id);
+		if (is_null($app)) {
+			echo errCompose(ERR_FAIL_GET_LATEST_APP);
+			exit();
+		}
+		$pathApk = str_replace('{BASE-PATH}', $basePath, $app['path']);
+		$appId = $app['app_id'];
+		$mainActivity = $app['main_activity'];
+
+		//2. Create session for this STB
+		$stbSession = substr($stbId . Security::random(24), 0, 24);
+		$r = ModelStb::createStbSession($stbId, $stbSession);
+		if ($r == 0) {
+			echo errCompose(ERR_CREATE_STB_SESSION_FAIL);
+			exit();
+		}
+
+		//3. Get settings for config.json
+		$sessionId = $stbSession;
+		$hostApi = base_url('');
+		$timeZone = ModelSetting::getTimezone();
+		$hostWeather = ModelSetting::getWeatherServer();
+
+		//4. Configuration
+		$port = 5555;
+		$targetRelativePath = 'files/mr';  // Relative to /data/data/{package}/
+		$configFilename = 'config.json';
+		$tempConfigFilename = 'config_temp.json';
+		$accessibilityService = 'com.madeiraresearch.library.cdb.AppWatcherAccessibility';
+
+		// Bloatware packages to disable
+		$bloatwarePackages = [
+			'com.google.android.tvlauncher',
+			'org.droidtv.welcome',
+			'com.google.android.tungsten.setupwraith'
+		];
+
+		//5. Create temp config.json file on server
+		$configData = [
+			'host_api' => $hostApi,
+			'time_zone' => $timeZone,
+			'host_weather' => $hostWeather,
+			'session_id' => $sessionId
+		];
+		$configJson = json_encode($configData);
+		$tempConfigPath = sys_get_temp_dir() . '/' . $tempConfigFilename;
+		file_put_contents($tempConfigPath, $configJson);
+
+		$name = "{$ip}:{$port}";
+
+		//===========================================================================
+		// Begin Philips TV Installation Process
+		//===========================================================================
+
+		//Step 1: Connect to device
+		$r1 = Adb::connect($ip, $port);
+		Log::writeLn('Philips Install - Connect: ' . json_encode($r1));
+		sleep(2);
+
+		//Step 2: Install APK directly (not via shell)
+		$r2 = Adb::installDirect($name, $pathApk);
+		Log::writeLn('Philips Install - Install APK: ' . json_encode($r2));
+
+		//Step 3: Run app first (required for run-as to work)
+		$r3 = Adb::runApp($name, $appId, $mainActivity);
+		Log::writeLn('Philips Install - Run App: ' . json_encode($r3));
+		sleep(2);
+
+		//Step 4: Push config to sdcard (temp location)
+		$r4 = Adb::pushToSdcard($name, $tempConfigPath, $tempConfigFilename);
+		Log::writeLn('Philips Install - Push Config to SDCard: ' . json_encode($r4));
+
+		//Step 5: Create directory using run-as
+		$r5 = Adb::runAsCommand($name, $appId, "mkdir -p {$targetRelativePath}");
+		Log::writeLn('Philips Install - Mkdir: ' . json_encode($r5));
+
+		//Step 6: Copy config from sdcard to app's internal storage
+		$r6 = Adb::runAsCommand($name, $appId, "cp /sdcard/{$tempConfigFilename} {$targetRelativePath}/{$configFilename}");
+		Log::writeLn('Philips Install - Copy Config: ' . json_encode($r6));
+
+		//Step 7: Cleanup temp file from sdcard
+		$r7 = Adb::removeFile($name, "/sdcard/{$tempConfigFilename}");
+		Log::writeLn('Philips Install - Cleanup: ' . json_encode($r7));
+
+		//Step 8: Disable bloatware packages
+		$rBloat = [];
+		foreach ($bloatwarePackages as $pkg) {
+			$rBloat[$pkg] = Adb::disablePackage($name, $pkg);
+		}
+		Log::writeLn('Philips Install - Disable Bloatware: ' . json_encode($rBloat));
+
+		//Step 9: Enable accessibility service
+		$r8 = Adb::enableAccessibility($name, $appId, $accessibilityService);
+		Log::writeLn('Philips Install - Enable Accessibility: ' . json_encode($r8));
+
+		//Step 10: Set as default home activity
+		$r9 = Adb::setHomeActivity($name, $appId, $mainActivity);
+		Log::writeLn('Philips Install - Set Home Activity: ' . json_encode($r9));
+
+		//Step 11: Restart app
+		$r10 = Adb::forceStop($name, $appId);
+		$r11 = Adb::runApp($name, $appId, $mainActivity);
+		Log::writeLn('Philips Install - Restart App: ' . json_encode($r11));
+
+		//Step 12: Disconnect
+		$r12 = Adb::disconnect($name);
+		Log::writeLn('Philips Install - Disconnect: ' . json_encode($r12));
+
+		// Cleanup server temp file
+		@unlink($tempConfigPath);
+
+		return [
+			'connect' => $r1,
+			'install' => $r2,
+			'runapp_first' => $r3,
+			'push_config' => $r4,
+			'mkdir' => $r5,
+			'copy_config' => $r6,
+			'cleanup_temp' => $r7,
+			'disable_bloatware' => ['cmd' => 'pm disable-user (multiple)', 'retValue' => 0, 'retString' => 'Disabled ' . count($bloatwarePackages) . ' packages', 'output' => []],
+			'accessibility' => $r8,
+			'set_home' => $r9,
+			'runapp' => $r11,
+			'disconnect' => $r12
+		];
+	}
+
 }

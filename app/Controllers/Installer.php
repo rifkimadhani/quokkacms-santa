@@ -64,8 +64,14 @@ class Installer extends BaseController
         $ip = $_POST['ip_address'];
         $appId = $_POST['latest_apk'];
         $stbId= $_POST['stb_id'];
+        $deviceType = isset($_POST['device_type']) ? $_POST['device_type'] : 'android_stb';
 
-        $r = \ModelApp::install($appId, $ip, $stbId);
+        // Route to appropriate installation method based on device type
+        if ($deviceType === 'philips_tv') {
+            $r = \ModelApp::installPhilips($appId, $ip, $stbId);
+        } else {
+            $r = \ModelApp::install($appId, $ip, $stbId);
+        }
 
         header('Content-Type: application/json');
         return json_encode($r);
