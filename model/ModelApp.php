@@ -209,11 +209,24 @@ class ModelApp{
 		$tempConfigPath = sys_get_temp_dir() . '/' . $tempConfigFilename;
 		file_put_contents($tempConfigPath, $configJson);
 
-		$name = "{$ip}:{$port}";
-
 		//===========================================================================
 		// Begin Philips TV Installation Process
 		//===========================================================================
+
+		$name = "{$ip}:{$port}";
+
+		//Step 0: Ping to check if device is reachable (5 second timeout)
+		$r0 = Adb::ping($ip, 5);
+		Log::writeLn('Philips Install - Ping: ' . json_encode($r0));
+
+		// If ping fails, return early with error
+		if ($r0['retValue'] != 0) {
+			return [
+				'ping' => $r0,
+				'success' => false,
+				'error' => 'Device not reachable (ping failed)'
+			];
+		}
 
 		//Step 1: Connect to device
 		$r1 = Adb::connect($ip, $port);

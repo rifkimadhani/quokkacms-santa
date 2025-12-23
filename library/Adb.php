@@ -83,6 +83,36 @@ class Adb
 		return self::execute($cmd);
 	}
 
+	/**
+	 * Ping IP to check if device is reachable
+	 * Use this before adb connect to fail fast on unreachable IPs
+	 * @param $ip - IP address to ping
+	 * @param $timeout - Timeout in seconds (default 5)
+	 * @return array - retValue 0 = reachable, non-zero = unreachable
+	 */
+	static public function ping($ip, $timeout = 5){
+		// -c 1 = single packet, -W = timeout in seconds
+		$cmd = "ping -c 1 -W {$timeout} {$ip}";
+
+		// Ping bypasses simulation mode - we always want real network check
+		$origSimulate = self::$simulateMode;
+		self::$simulateMode = false;
+		$result = self::execute($cmd);
+		self::$simulateMode = $origSimulate;
+
+		// In simulation mode, return success
+		if ($origSimulate) {
+			return [
+				'cmd' => $cmd . ' [SIMULATED]',
+				'retValue' => 0,
+				'retString' => 'Ping success (simulated)',
+				'output' => ['Simulation mode - ping bypassed']
+			];
+		}
+
+		return $result;
+	}
+
 	static public function connect($ip, $port=5555){
 		$cmd = "adb connect {$ip}:{$port}";
 		return self::execute($cmd);
