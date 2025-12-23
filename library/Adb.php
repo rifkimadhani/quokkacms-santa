@@ -9,6 +9,48 @@
 
 class Adb
 {
+	// Cache for ADB path (detected once, reused)
+	private static $adbPath = null;
+
+	/**
+	 * Dynamically detect ADB path
+	 * Tries 'which adb' first, then common installation paths
+	 */
+	static private function getAdbPath(){
+		// Return cached path if already detected
+		if (self::$adbPath !== null) {
+			return self::$adbPath;
+		}
+
+		// Try 'which adb' first
+		$whichAdb = trim(shell_exec('which adb 2>/dev/null') ?? '');
+		if (!empty($whichAdb) && file_exists($whichAdb)) {
+			self::$adbPath = $whichAdb;
+			return self::$adbPath;
+		}
+
+		// Common ADB installation paths
+		$commonPaths = [
+			'/home/quokka/platform-tools/adb',  // Current server
+			'/usr/bin/adb',
+			'/usr/local/bin/adb',
+			'/opt/android-sdk/platform-tools/adb',
+			'/home/' . get_current_user() . '/Android/Sdk/platform-tools/adb',
+			'/home/' . get_current_user() . '/platform-tools/adb',
+		];
+
+		foreach ($commonPaths as $path) {
+			if (file_exists($path)) {
+				self::$adbPath = $path;
+				return self::$adbPath;
+			}
+		}
+
+		// Fallback to 'adb' (hope it's in PATH)
+		self::$adbPath = 'adb';
+		return self::$adbPath;
+	}
+
 	/**list all connected device
 	 *
 	 * @return array
@@ -163,6 +205,9 @@ class Adb
 
 	static private function execute($cmd){
 //		echo 'execute ' . $cmd;
+		// Replace 'adb' with dynamically detected full path
+		$adbPath = self::getAdbPath();
+		$cmd = preg_replace('/^adb\b/', $adbPath, $cmd);
         $cmd = $cmd . ' 2>&1';
 		$ret = exec($cmd, $output, $retValue);
 		return ['cmd'=>$cmd, 'retValue'=>$retValue, 'retString'=>$ret, 'output'=>$output];
