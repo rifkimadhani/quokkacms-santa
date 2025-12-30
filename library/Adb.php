@@ -160,6 +160,21 @@ class Adb
 
 	//adb shell am start -n com.madeiraresearch.hoteliptv2/.MainActivity
 	static public function runApp($name, $appId, $mainActivity){
+		// Handle different activity name formats:
+		// - ".MainActivity" - already shorthand, use as-is
+		// - "MainActivity" - needs dot prefix for shorthand
+		// - "com.pkg.name.MainActivity" - if starts with appId, convert to shorthand
+		
+		if (!empty($mainActivity)) {
+			if (strpos($mainActivity, $appId . '.') === 0) {
+				// Full path like "com.pkg.MainActivity" - convert to ".MainActivity"
+				$mainActivity = '.' . substr($mainActivity, strlen($appId) + 1);
+			} elseif ($mainActivity[0] !== '.' && strpos($mainActivity, '.') === false) {
+				// Simple name like "MainActivity" - prepend dot
+				$mainActivity = '.' . $mainActivity;
+			}
+		}
+		
 		$cmd = "adb -s {$name} shell am start -n {$appId}/{$mainActivity}";
 		return self::execute($cmd);
 	}
